@@ -1,0 +1,1425 @@
+
+body {
+ 	position: inline;
+	background-color: black;
+	color: #888888;
+	margin-top: 0px;
+	margin-left: 0px;
+	margin-right: 0px;
+	min-height: 220px; /* 268px; */
+	width: 320px;
+	overflow-y: visible;
+	overflow-x: hidden;
+	/*overflow-y: hidden;*/
+}
+
+div {
+	overflow: visible;
+}
+
+img {
+	border: 0;
+}
+
+.naked {
+	border: 0;
+	margin: 0;
+	padding: 0;
+}
+
+a {
+	outline: none;
+}
+
+a:hover, a:visited, a:active, a:link {
+	text-decoration:none;
+	color: #c8c8c8;
+}
+
+a:hover {
+	color:#99CCE7;   /*AAAA44;*/
+}
+
+body, table, input, select, p, li, a {
+	font-family: Arial, Helvetica, sans-serif;
+}
+
+input {
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    width: 100%;
+    margin: 8px 0 0 0;
+    padding: 6px 6px 6px 50px;
+    font-size: 16px;
+    font-weight: normal;
+    text-wrap: ellipsis;
+    nowrap;
+}
+
+label {
+    position: absolute;
+    margin: 16px 0 0 6px;
+    font-size: 14px;
+    color: #999999;
+}
+
+
+/* Alarm and Timer */
+
+
+.alarmrow {
+ 	position: relative;
+	height: 88;
+	font-size: 17;
+	font-weight:bold;
+	text-shadow: #ffffff 0px 1px 1px;
+	background-color: #81b1e6;
+	background-image: url(html/images/bgfield.png); /*clockbg.png*/
+	background-repeat: repeat-x;
+	background-position: top left;
+	border-bottom: 1px solid #888888;
+	border-top: 1px solid #c8c8c8;
+}
+
+.a_editrow {
+ 	position: relative;
+	height: 86;
+	font-size: 17;
+	font-weight:bold;
+	text-shadow: #ffffff 0px 1px 1px;
+	background-color: #81b1e6;
+	background-image: url(html/images/bgs20.png), url(html/images/bgfield.png); /*clockbg.png*/
+	background-repeat: repeat, repeat-x;
+	background-position: top left, top left;
+	border-top: 1px solid #888888;
+	border-bottom: 1px solid #c8c8c8;
+}
+
+li.selectedli {
+	color: #324F85;
+	background-image: url(html/images/checked.png);
+	background-repeat: no-repeat;
+	background-position: 275px center;
+}
+
+
+/* HOME styles go here ... */
+
+
+.iHomePage {
+ 	position: relative !important; 
+	min-height: 348px !important;
+}
+
+.embedList, table.embedList, ul {
+	padding: 0;
+	margin: 10 0; /* 10 */
+	
+	font-size:20px;
+	font-family: Helvetica;
+	font-weight:bold;
+	color:black;
+	
+	width: 300px;
+	background-color: white;
+	
+	border-width: 1px;
+	border-style:solid;
+	border-color: rgb(172,172,172);
+	
+	-webkit-border-radius: 8px;
+}
+
+div#browsedbList {
+	padding: 0;	   
+	margin: 0px;
+	
+	font-size:16px;
+	font-family: Helvetica;
+	font-weight:bold;
+	color:black;
+	
+	width: 320px;
+	background-color: white;
+	
+	border-width: 1px 0px 0px 0px;
+	border-style:solid;
+	border-color: rgb(172,172,172);
+	overflow: hidden ! important;
+}
+
+div#containerspacer {
+	float: right;
+	top: 0;
+	right: 0;
+	width: 0;
+    height: 323px;
+    padding: 0; 
+	border: 0; 
+	margin: 0; 
+	overflow: hidden;
+}
+
+div#currentPlaylistControl {
+	padding: 0;	   
+	margin 0px;
+	
+	font-size:16px;
+	font-family: Helvetica;
+	font-weight:bold;
+	color:black;
+	
+	width: 320px;
+	background-color: #81b1e6;   /*dfdfdf; */
+	
+	border-width: 0;
+	border-top: 1px solid rgb(172,172,172);
+	border-bottom: 1px solid #888888;
+	overflow: hidden ! important;
+	background-image: url(html/images/bgfield.png);
+}
+
+.embedItem, table.embedItem, tr.embedItem, td.embedItem, li {	
+	list-style-type: none;
+	color: black;
+	
+	border-width: 1 0 0 0;
+	border-top-style:solid;
+	border-top-color:rgb(217,217,217);
+
+	padding: 10 16 12 10;
+}
+
+
+.embedItem:first-child, tr.embedItem:first-child, li:first-child {
+	border-top: 0;    /* Remove border above the first item of the list */
+}
+
+.embedImage {
+	width: 40;
+}
+
+.biggerLine {
+	line-height: 140%;
+}
+
+.paddedPic {
+	margin: 0;
+	position: relative; 
+	float: left; 
+	top: -2;
+}
+
+.radioPic {
+	margin: 0;
+	position: relative;
+	float: left;
+	top: -3;
+	padding: 2 5 2 5;
+}
+
+.secondary
+{
+	/*float:left;*/
+	margin-left: 0px;
+	padding-top: 10px;
+	padding-bottom: 12px;
+	margin-right:10px;	  
+}
+
+.backgroundtext {
+	margin-left: 18px;
+	margin-top: 10px;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	text-shadow: #ffffff 0px 1px 1px;
+	color: rgb(76,86,108);
+	font-weight: bold;
+}
+
+.selectItems {
+	font-size: 15px; 
+	font-weight: bold;
+	background: white; 
+	color: black; 
+	float: right; 
+	margin-right: 10;
+	max-width: 160;
+	overflow: hidden;
+}
+
+a.tapblock
+{
+	display: block;
+	
+	padding: 7 8 7 0;
+	margin: 0 -8 0 0;
+	
+	text-decoration: none;
+	color:black;
+	-webkit-tap-highlight-color: rgba(25,79,219,0.5);
+}
+
+a.tapblockFull
+{
+	display: block;
+	
+	padding: 10px 10px 10px 10px;
+	margin: -0px -10px -10px -10px;
+	text-decoration: none;
+	color:black;
+	-webkit-tap-highlight-color: rgba(25,79,219,0.5);
+}
+
+a.tapblockHalf
+{
+	display: block;
+	padding: 2px 8px 3px 0px;
+	margin: -6px -8px -0px -0px;
+	text-decoration: none;
+	color:black;
+	-webkit-tap-highlight-color: rgba(25,79,219,0.5);
+}
+
+a.tapblock[selected], a.tapblock:active {
+    background-color: #194fdb !important;
+    background-image: url(html/iui/selection.png) !important;
+    background-repeat: repeat-x;
+    background-position: left top;
+    color: #FFFFFF !important;
+    padding: 7px 8px 7px 0px;
+    margin: -0px -8px -0px -0px;
+}
+
+a.tapblockFull[selected], a.tapblockFull:active {
+    background-color: #194fdb !important;
+    background-image: url(html/iui/selection.png) !important;
+    background-repeat: repeat-x;
+    background-position: left top;
+    color: #FFFFFF !important;
+	margin: -10px -10px -10px -10px;
+	padding: 10px 10px 10px 10px;
+}
+
+a.tapblockHalf[selected], a.tapblockHalf:active {
+    background-color: #194fdb !important;
+    background-image: url(html/iui/selection.png) !important;
+    background-repeat: repeat-x;
+    background-position: left top;
+    color: #FFFFFF !important;
+	margin: -6px -8px -0px -0px;
+	padding: 2px 8px 3px 0px;
+}
+
+
+.itemtext {
+	font-size: 17px;
+	text-decoration: none;
+}
+
+.popUpText {
+	font-size: 16px;
+/*	font-weight: bold;*/
+	padding: 5;
+	border: 0;
+	margin: 0;
+	text-decoration: none;
+}
+
+.listFullTitle {
+	font-size: 14px;
+	font-weight: bold;
+	padding-left: 5;
+	margin: 0;
+	color: black;
+	text-decoration: none;
+/*    text-overflow: ellipsis;*/
+}
+
+.listFullArtist {
+	font-size: 13px;
+	padding-left: 5;
+	margin: 0;
+	color: #888888;
+	text-decoration: none;
+/*    text-overflow: ellipsis;*/
+}
+
+.listNoAlbum {
+	font-size: 19px;
+	font-weight: bold;
+/*    text-overflow: ellipsis;*/
+}
+
+.popUpHeaderArtist {
+	font-size: 12px;
+	font-style: bold;
+	padding-left: 5;
+	padding-right: 25;
+/*	border: 0;*/
+	margin: 0;
+	color: #111111;
+	text-decoration: none;
+}
+
+.popUpHeaderTitle {
+	font-size: 14px;
+	font-style: bold;
+	padding-left: 5;
+	padding-right: 25;
+/*	border: 0;*/
+	margin: 0;
+	color: #111111;
+	text-decoration: none;
+}
+
+.pagebartext {
+	font-size: 16px;
+}
+
+.altheadertext, .headertext {
+	font-size: 14px;
+	padding-left: 10px;
+}
+
+.smalltext {
+	font-size: 12px;
+}
+
+.pagebarheadertext {
+	font-size: 14px;
+}
+
+table.playlistbox { 
+	background-color: black;
+}
+table.thinborder { 
+	border: 1px solid white;
+}
+table.thinborder_grey { 
+	border: 1px solid white;
+}
+table.noborder { 
+	border: none;
+}
+table.playlistcontrols {
+	width: 125px;
+	overflow: hidden;
+}
+
+td.playlistcontrols {
+	width: 25px;
+}
+
+td.listing {
+	padding-top: 8px;
+	padding-bottom: 8px;
+}
+
+div#pagecontainer {
+	position: relative;
+/*	top: 25; 80 */
+/*	height: 262px;*/
+	width: 480px;
+	overflow-y: visible;
+	overflow-x: hidden;
+}
+
+div#pagecontainer_vert {
+	position: relative;
+/*	top: 44; 80 */
+/*	height: 262px;*/
+/*	min-height: 323px;*/
+	width: 320px;
+	top: 0; 
+	left: 0;
+	margin: 0;
+	border: 0;
+	background-color: white;
+	overflow-y: visible;
+	overflow-x: hidden;
+}
+
+div#innerSanctum {
+	position: absolute;
+/*	width: 480px; */
+}
+
+div#hidden {
+	display: none;
+}
+
+div#footer {
+/*	position: absolute;*/
+	bottom: 0;
+/*	top: 0;*/
+	clear: both;
+/*	background-color: #333333;*/
+	background-image: url(html/images/bottomframe.png);
+	z-index: 10;
+}
+
+tr.playing {
+	background-color: #3c9ed0; /*#9ef5f6;*/
+	padding-top: 10px;
+	padding-bottom: 10px;
+}
+
+
+tr.listRow, td.listRow, div.listRow, listRow {
+	position: relative; 
+	height: 46;
+	border: 1px solid #d9d9d9;
+	border-left: hidden;
+	border-right: hidden;
+	border-top: hidden;
+	color: black;
+	-webkit-tap-highlight-color: rgba(25,79,219,0.5);
+}
+
+.supertinytext {
+	font-size: 10;
+	text-align: center;
+	color: white;
+}
+
+.coverimg, td.coverimg {
+	width: 46;
+	padding: 0; 
+	background-image: url(html/images/cover46.png);
+	background-position: center center;
+	background-repeat: no-repeat;
+}
+
+.artworkimg {
+	position: relative;
+	width: 130;
+	height: 130;
+	padding: 0;
+	margin: 5 0 5 8;
+	background-image: url(html/images/cover130.png);
+	background-position: center center;
+	background-repeat: no-repeat;
+}
+
+.floater {
+	float: left;
+	text-align: center;
+	margin-top: 5px;
+	margin-right: 10px;
+	margin-bottom: 5px;
+}
+
+tr.listHeader, td.listHeader {
+    position: relative;
+    top: -1px;
+    margin-bottom: -2px;
+    border-top: 1px solid #7d7d7d;
+    border-bottom: 1px solid #999999;
+    padding: 1px 10px;
+    background-color: rgb(182,201,207) !important;
+    background: url(html/iui/listGroup.png) repeat-x;
+    font-size: 17px;
+    font-weight: bold;
+    text-shadow: rgba(0, 0, 0, 0.4) 0 1px 0;
+    color: #FFFFFF;
+}
+
+a.linkAreaRowToPlus {
+ 	display: block;
+
+	/* The padding properties adjust the text content within the href block */
+	padding: 10 0 9 4;
+	
+	/* The margin properties adjust the size of the href block	*/
+	margin: -0 -0 -9 -4;
+	
+	text-decoration: none;
+	color:black;
+	-webkit-tap-highlight-color: rgba(25,79,219,0.5);
+}
+
+a.linkAreaRowFromImg {
+	display: block;
+	padding: 5 0 8 0;
+	margin: 0 0 -5 1;
+	
+	text-decoration: none;
+	color:black;
+	-webkit-tap-highlight-color: rgba(25,79,219,0.5);
+}
+
+div#bottombar {
+	position: relative;
+	float: left;
+	bottom: 0;
+	background-image: url(html/images/iBottomBar.png);
+	color: white;
+	font-size: 12;
+	font-weight: bold;
+	padding: 0;
+	border-top: 1px solid black;
+	border-bottom: 0px;
+	margin: 0;
+	width: 320px;
+	height: 48px;
+	overflow: hidden;
+	z-index: 10;
+}
+
+div#bottombarSelect {
+	position: absolute;
+	background-image: url(html/images/iBottomSelectedButton.png);
+	width: 60;
+	height: 44;
+	border: 0;
+	left: 2;
+	top: 2;
+	padding: 0;
+	z-index: 11;
+}
+
+div#bottombararea {
+ 	position: absolute;
+ 	left: 0;
+ 	top: 0;
+	padding: 0;
+	height: 48;
+	border: 0;
+ 	width: 320;
+	z-index: 12;
+}
+
+.bottombartext {
+	font-size: 10;
+	font-weight: bold;
+	color: rgb(152,152,152);
+	text-align: center;
+	padding: 1;
+}
+
+.bottombartextOn {
+	font-size: 10;
+	font-weight: bold;
+	color: white;
+	text-shadow: #000 0px 1px 1px;
+	text-align: center;
+	padding: 1;
+}
+
+a.bottombarClick {
+	display: block; 
+	position: absolute; 
+	top: 1; 
+	left: 2;
+	width: 60; 
+	height: 40; 
+	margin: 0; 
+	padding: 0;
+}
+
+div#playerSelect {
+	z-index: 10;
+	position: absolute;
+	right: 0;
+	top: 0;
+	height: 22;
+	overflow: visible;
+}
+
+div#menu {  
+	position: absolute;
+	top: 0; /*25*/
+	left: 0;
+	width: 100%; /*480px*/
+	overflow: visible;
+	z-index: 10;
+}
+
+.pbar {
+	font-size: 14px;
+	font-weight: bold;
+	color: white;
+}
+
+div#systemWorking{
+	position: absolute;
+	left: 2;
+	top: 25;
+/*	width: 1;*/
+	height: 58;
+	background-color: black;
+	z-index: 12;
+}
+div#systemNotWorking{
+	position: absolute;
+	left: 2;
+	top: 25;
+	z-index: 12;
+}
+
+div#crumblist, .crumblist {
+	position: relative;
+	width: 480px;
+	font-size: 17;
+	z-index: 11;
+}
+
+div#crumblist_vert, .crumblist_vert {
+	position: relative;
+	left: 0;
+	top: 0; /*80*/
+	width: 312px;
+	z-index: 11;
+	font-size: 17;
+	padding: 4;
+	background: white;
+}
+
+div#alphamap {
+	position: absolute;
+	left: 300px;
+/*	left: 0;*/
+	height: 480;
+	width: 20px;
+	top: 50;
+	padding: 0;
+	border: 0;
+	text-align: right;
+	overflow: hidden;
+	z-index: 11;
+}
+
+div#OSDbg {
+	position: absolute;
+	z-index: 100;
+	top: 50;
+	left: 18;
+	width: 284;
+	height: 111;
+	border: 0;
+	padding: 0;
+	margin: 0;
+	/*border-width: 82px 6px 11px 6px;
+	-webkit-border-image: url(html/images/OSDBackground.png) 82 6 11 6;*/
+	background-image: url(html/images/OSDBackground.png);
+	z-index: 99;
+}
+
+div#OSD {
+	position: absolute;
+	z-index: 100;
+	top: 50;
+	left: 18;
+	width: 284;
+	height: 111;
+	background-color: none;
+	color: white;
+	font-weight: bold;
+	font-size: 16;
+	text-shadow: rgba(0, 0, 0, 0.6) 0px -1px 0;
+	padding: 26px 6px 11px 6px;
+	border: none;
+	text-align: -webkit-center;
+	vertical-align: -webkit-baseline-middle;
+}
+
+div#albumInfo {
+	position: absolute;
+	z-index: 99;
+	top: 30%;
+	left: 25;
+	width: 396;
+	background-position: 0 34;
+	color: #161616;
+	padding: 2px;
+	border: 1px solid white;
+	overflow: hidden;
+}
+
+div#closeAlbumInfo {
+	position: relative;
+	float: right;
+}
+
+.homeMenuSection {
+        float: left;
+}
+
+.playerSelect {
+        font-size: 14px;
+        background: #666666;
+        color: white;
+}
+
+.thinborder {
+	border: 1px solid white;
+}
+div.settingSection .groupHead, .settingSection .prefHead {
+        /* home menu list header */
+        background-color: #c5c5c5;
+        height: 15px;
+        padding: 3px 3px 4px;
+        font-size: 15px;
+        font-weight: bold;
+}
+
+div.prefHead {
+        height: 13px;
+        padding: 8px 6px 2px 0px;
+        margin-top: 6px;
+        margin-bottom: 6px;
+		text-transform: uppercase;
+}
+
+div.groupHead {
+        margin-top: 6px;
+        margin-bottom: 6px;
+		text-transform: uppercase;
+}
+
+div.prefDesc,.groupDesc,.groupHead {
+        padding-bottom: 10px;
+}
+
+.bar {
+	/* width: 480; */
+	padding-left: 10px;
+	padding-right: 10px;
+}
+
+input.searchForm {	/* dummy class to overrride deeper BS */
+/*    padding: 10;*/
+}
+
+.listing {
+	padding-left: 10px;
+}
+
+div.fileselectorautocomplete {
+	position: absolute;
+	width: 250px;
+	height: 100px;
+	overflow: auto;
+	background-color: black;
+	border: 1px solid #888;
+	margin: 0px;
+	padding: 0px;
+}
+
+div.fileselectorautocomplete ul {
+	list-style-type: none;
+	margin: 0px;
+	padding: 0px;
+}
+
+div.fileselectorautocomplete ul li.selected {
+	background-color: navy;
+	color: white;
+}
+
+div.fileselectorautocomplete ul li {
+	list-style-type: none;
+	display: block;
+	margin: 0;
+	padding: 2px;
+	height: 12px;
+	cursor: pointer;
+	white-space: nowrap;
+}
+
+div.buffered {
+       padding-top: 0px;	/* 5*/
+       padding-bottom: 5px;
+}
+
+ 
+span.buttonControls {
+ 	   position: relative;
+ 	   left: 0;
+ 	   top: 0;
+       padding: 5; /*5 5 5 5;*/
+}
+
+span.artworkButtons {
+ 	   position: absolute;
+ 	   left: 0;
+ 	   bottom: 0;
+ 	   z-index: 12;
+       padding: 0; /*5 5 5 5;*/
+}
+
+span.rowtext {
+	padding: 8 8 8 8;
+}
+
+.favoritesText {
+	font-size: 100%;
+}
+
+.favoritesContent {
+	font-size: 14px;
+	font-weight: bold;
+	padding: 0 0 0 5;
+	margin: 0;
+	color: black;
+	text-decoration: none;
+/*    text-overflow: ellipsis;*/
+}
+
+
+table.topcaption {
+	background-color: black;
+	color: #eeeeee;
+	width: 100%;
+	border: 0;
+}
+
+td.opaquetext {
+	opacity: 1.0;
+}
+
+
+
+
+
+/* Main Menu styles go here */
+
+form#PCDiv {
+	position: absolute;
+	top: -45;
+	left: 0;
+	width: 320;
+	z-index:99;
+	padding: 90 11 11 11;
+	margin: 0 !important;
+	border: 0 !important;
+	color: white;
+	overflow: hidden;
+    -webkit-box-sizing: border-box;
+}
+
+div#FullBG {
+ 	position: absolute;
+ 	top: -45;
+ 	left: 0;
+ 	width: 320;
+ 	height: 417;
+ 	margin: 0;
+	background-image: url(html/images/fullbg.png);
+	background-repeat: repeat-x;
+	opacity: 1;
+	z-index: 98;
+	overflow: hidden;
+}
+
+
+
+
+
+/* STATUS styles go here... */
+
+.coversquare {
+	position: absolute;
+	left: 0;
+	top: 44;
+	width: 320;
+	height: 320;
+	overflow: hidden;
+	background-color: black;
+	background-image: url(html/images/NowPlayingTableBackground.png);
+	color: white;
+	font-size: 17;
+	font-weight: bold;
+}
+
+.darksquare {
+ 	background-color: rgba(0,0,0,0) !important;
+	background-image: url(html/images/fullbg.png);
+	background-repeat: repeat-x;
+	left: -320;	
+}
+
+div#iNowPlayingTopbar {
+	position: absolute;
+	background-image: url(html/images/iNowPlayingTopbar.png);
+	color: white;
+	text-shadow: #666666 0px -1px -1px;
+	font-size: 10;
+	font-weight: bold;
+	text-align: center;
+	padding-top: 1;
+	border: 0;
+	border-bottom: 1px solid black;
+	top: 0;
+	left: 0;
+	height: 43;	/* 44- padding-top */
+	width: 320;
+	overflow: hidden;
+	z-index: 10;	
+}
+
+div#streaminfo, div#songinfo {
+	position: absolute;
+	left: 48;
+	top: 1;
+	width: 225;
+	height: 43;
+	color: rgb(152,152,152);
+	text-align: center;
+	text-shadow: #000 0px 1px 1px;
+	font-size: 12;
+	font-weight: bold;
+	overflow: hidden;
+	padding: 0;
+	border: 0;
+	z-index: 12;
+}
+
+div#coverart, div#radioart, div#emptyplayer {
+	z-index: 5;
+}
+
+div#iNowBottombar {
+	position: absolute;
+	background-image: url(html/images/iNowBottombar.png);
+	text-align: center;
+	padding-top: 8;
+	border: 0;
+	border-top: 1px solid black;
+	top: 364;
+	left: 0;
+	height: 43;	/* 51- padding-top */
+	width: 320;
+	overflow: hidden;
+	z-index: 10;	
+}
+
+
+.iNowOverlayClass {
+	opacity: 0.9;
+	z-index: 10;
+	display: none;
+}
+
+.iNowWrapperClass {
+ 	background-color: none !important;
+	z-index: 11;
+	padding: 0;
+	margin: 0;
+	border: 0;	
+	overflow: hidden;
+	display: none;
+}
+
+.iNowOBarTop {
+	background-image: url(html/images/NowPlayingTopOverlay.png);
+	background-position: top;
+	background-color: none;
+	position: absolute;
+	top: 44;
+	left: 0;
+	width: 320;
+	height: 48;
+}
+
+.iNowOBarBottom {
+	background-image: url(html/images/NowPlayingBottomOverlay.png);
+	background-color: none;
+	position: absolute;
+	top: 316;
+	left: 0;
+	width: 320;
+	height: 48;
+}
+
+div#playliststatus {
+	position: absolute;
+	left: 0;
+	top: 33;
+	width: 320;
+	overflow: hidden;
+    z-index: 13;
+    font-size: 11;
+    color: white;
+	text-shadow: #666666 0px 1px 1px;
+	text-align: center;
+}
+
+div#shuffleControl {
+	position: absolute;
+	top: 13;
+	left: 290;
+	border: 0;
+	margin: 0;
+	padding: 0;
+	z-index: 12;
+}
+
+div#repeatControl {
+	position: absolute;
+	top: 13;
+	left: 5;
+	width: 25;
+	z-index: 12;
+}
+
+.topbartextNow {
+	font-size: 12;
+	font-weight: bold;
+	color: rgb(152,152,152);
+	text-align: center;
+	text-shadow: #000 0px 1px 1px;
+	padding: 0;
+}
+
+div#progressbar_overlay {
+	position: absolute;
+	left: 40;
+	width: 240;
+	top: 13;
+	height: 19;
+	z-index: 13;
+}
+
+div#iNowPlayerName {
+	position: absolute;
+	left: 0;
+	bottom: 1;
+	padding: 0;
+	padding-right: 3;
+	padding-left: 3;
+	margin: 0;
+	width: 320;
+	height: 10;
+	color: rgb(152,152,152);
+	text-align: left;
+	text-shadow: #000 0px 1px 1px;
+	font-size: 10;
+	font-weight: bold;
+	overflow: hidden;
+	z-index: 12;
+}
+
+div#volumeControls {
+	position: absolute;
+	top: 13;
+	left: 20;
+	height: 22;
+	width: 280px;
+	z-index: 13;
+	font-size: 14;
+}
+
+.playingitemtext, a.playingitemtext {
+	font-size: 14px;
+	font-weight: bold;
+	color: #111111;	/*BB5544;*/
+}
+a.playingitemtext:hover {
+	color: white;
+}
+
+div#trackstat_display {
+	position: absolute;
+	left: 50;
+	width: 220;
+	top: 49;
+	height: 36;
+	z-index: 12;
+}
+
+.NowPlayingPlugin {
+ 	position: relative;
+	left: 0;
+	padding: 5;
+	color: white;
+	max-width: 320;
+	min-height: 46;
+	overflow-x: hidden;
+	overflow-y: visible;
+    -webkit-box-sizing: border-box;
+}
+
+.pluginContent {
+	float: left;
+	margin: -5 8 0 0;
+}
+
+
+
+
+/* STATUS-PLAYLIST styles go here... */
+
+div#playlistNow {
+	overflow-x: hidden;
+	overflow-y: scroll;
+	background-image: url(html/images/NowPlayingTableBackground.png);
+	background-position: center center;
+	z-index: 1;
+}
+
+
+@media screen and (min-device-width: 481px) {
+	.xchgdiv {
+		position: absolute;
+		left: 0;
+		display: block;
+		width: 320;
+		margin: -7 0 -4 0;
+		padding: 6 0 -6 0;
+		z-index: 2;
+	}
+}
+
+@media screen and (max-device-width: 480px) {
+	.xchgdiv {
+		position: absolute;
+		left: 0;
+		display: block;
+		width: 320;
+		margin: -24 0 0 0;
+		padding: 6 0 -6 0;
+		z-index: 2;
+	}
+}
+
+.xchgimg {
+	position: relative;
+	top: -6;
+	left: 38;
+	z-index: 2;
+	padding: 0;
+	margin: 0 0 -4 0;
+}
+
+.delimg {
+	margin: -19 -4 -13 -4;
+	position: relative;
+	float: right;
+}
+
+tr.even, td.even, div.even {
+	background-color: #181818; /*d0d0d0;*/
+	color: white;		/*#eeeeee;*/
+	padding-top: 10px;
+	padding-bottom: 10px;
+	opacity: 0.75;
+}
+
+tr.odd, td.odd, div.odd {
+	background-color: none; /* black; */
+	color: #f0f0f0;		/*#e6e6e6;*/
+	padding-top: 10px;
+	padding-bottom: 10px;
+	opacity: 0.75;
+}
+
+.black {
+	background-color: black !important;
+}
+
+tr.selectedRow, td.selectedRow, div.selectedRow, selectedRow {
+    background-color: #194fdb;
+	background-image: url(html/images/selection38.png);
+    background-repeat: repeat-x;
+    background-position: left top;
+	color: white;
+	padding-top: 10px;
+	padding-bottom: 10px;	
+}
+
+
+
+
+
+
+/* HEADER and FOOTER styles go here ... */
+
+div#iPengName {
+	position: absolute !important;
+	/*top: 354 !important;*/
+	bottom: 52 !important;
+	right: 0 !important;
+	height: 10 !important;
+	padding: 0 !important;
+	padding-right: 3 !important;
+	padding-left: 3 !important;
+	margin: 0 !important;
+	text-shadow: #ffffff 0px 1px 1px !important;
+	color: rgb(76,86,108) !important;
+	text-align: right !important;
+	font-size: 10 !important;
+	font-weight: bold !important;
+	overflow: visible !important;
+	background: none !important;
+	z-index: 12 !important;
+	border: none  !important;
+}
+
+.iTopHomeDiv {
+	position: absolute; 
+	left: 4; 
+	top: 4; 
+	z-index: 16;
+}
+
+.iButton, input.iButton
+{	
+	display:block;		    
+	line-height: 29px;	 
+	/*width:150px;			*/
+	
+	font-size: 12px;
+	font-weight: bold;
+	font-family: Arial, Heveltica, sans-serif;
+	color: #FFFFFF;
+	
+	text-decoration: none;
+	text-align:center;
+}
+
+.blue
+{
+	margin: 3px auto;
+	color: white;
+	text-shadow: #000 0px 1px 1px;
+	border-width: 0 7px 0 7px;	   
+	-webkit-border-image:url(html/iui/blueButton.png) 0 7 0 7;	
+}
+
+.red
+{
+	margin: 3px auto;
+	color: white;
+	text-shadow: #000 0px 1px 1px;
+	border-width: 0 10px 0 10px;	   
+	-webkit-border-image:url(html/images/button_red.png) 0 10 0 10;	
+}
+
+.silver
+{
+	margin: 3px auto;
+	color: black;
+	text-shadow: #ffffff 0px 1px 1px;
+	border-width: 0 10px 0 10px;	   
+	-webkit-border-image:url(html/images/button_silver.png) 0 10 0 10;	
+}
+
+.start
+{
+	margin: 3px auto;
+	color: white !important;
+	text-shadow: #000000 0px 1px 1px !important;
+	border-width: 0 7px 0 7px;	   
+	-webkit-border-image:url(html/images/startbtn.png) 0 7 0 7;	
+}
+
+.stop
+{
+	margin: 3px auto;
+	color: white !important;
+	text-shadow: #000000 0px 1px 1px !important;
+	border-width: 0 7px 0 7px;	   
+	-webkit-border-image:url(html/images/stopbtn.png) 0 7 0 7;	
+}
+
+.white, input.white
+{
+	margin: 3px auto;
+	border-width: 0 14px 0 14px;
+	color: black;
+	text-shadow: #fff 0px 1px 1px;	
+	-webkit-border-image:url(html/images/whiteButton.png) 0 14 0 14;
+}
+
+.emptybutton, input.emptybutton {
+	margin: 3px auto;
+	border-width: 1px;
+	color: black;
+	text-shadow: #fff 0px 1px 1px;	
+}
+
+.lightbutton, input.lightbutton
+{
+	margin: 3px auto;
+	border-width: 0 5px 0 5px;
+	color: black;
+	text-shadow: #fff 0px 1px 1px;	
+	-webkit-border-image:url(html/images/lightbutton.png) 0 5 0 5;
+}
+
+.black	
+{
+	border-width: 0 14px 0 14px;
+	color: white;
+	text-shadow: #000 0px 1px 1px;	
+	-webkit-border-image:url(html/images/grayButton.png) 0 14 0 14;
+	margin: 3px auto;	
+}
+
+.blackLeft 
+{
+	margin: 3px auto;
+	color: white;
+	text-shadow: #000 0px 1px 1px;	 
+	border-width: 0 5px 0 12px;
+	-webkit-border-image: url(html/images/leftButton.png) 0 5 0 12;		
+}
+
+.blueLeft, iblueLeft
+{
+	margin: 3px auto;
+	color: white;
+	text-shadow: #000 0px 1px 1px;	 
+	border-width: 0 5px 0 12px;
+	-webkit-border-image: url(html/images/backButton.png) 0 5 0 13;		
+}
+
+.blackRight	 
+{
+	margin: 3px auto;
+	border-width: 0 12px 0 5px;
+	color: white;
+	text-shadow: #000 0px 1px 1px;
+	-webkit-border-image: url(html/images/rightButton.png) 0 12 0 5;
+}
+
+div#topbar {
+	position: absolute;
+	background-image: url(html/images/topframe.png);
+	text-align: center;
+	font-size: 20;
+	font-weight: bold;
+	color: white;
+	text-shadow: #666666 0px -1px -1px;
+	padding-top: 1;
+	top: 0;
+	left: 0;
+	height: 24; /* 25 - 1 */
+	width: 480;
+	overflow: hidden;
+	z-index: 10;
+}
+
+div#topbar_vert {
+	position: absolute;
+	background-image: url(html/images/button-bar.png);
+	color: white;
+	text-shadow: #666666 0px -1px -1px;
+	font-size: 20;
+	font-weight: bold;
+	text-align: center;
+	padding-top: 9;
+	border: 0;
+	border-bottom: 1px solid black;
+/*	background-color: #333333;*/
+	top: 0;
+	left: 0;
+	height: 34;	/* 43 - 9 */
+	width: 320;
+	overflow: hidden;
+	z-index: 10;
+}
+
+

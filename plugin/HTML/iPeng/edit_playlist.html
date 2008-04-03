@@ -1,0 +1,38 @@
+[%- pagetitle = "EDIT_PLAYLIST" | string -%] 
+[%- pageicon = 'EDIT_PLAYLIST' -%] 
+[%- pwd_list = BLOCK -%]
+	/ [% "EDIT_PLAYLIST" | string %] / <a [% browsePlaylistHRef %]>[% playlist.title %]</a>
+[% END -%]
+[% goHomeURI = browsePlaylistHRef %][% homeString = "Done" %]
+[% title = playlist.title %]
+[% PROCESS iHeaderVert.html %]
+
+
+<div style = "position: relative; height: 44; border: 0; padding: 0;">&nbsp;</div>  <!-- spacer to keeps margins from collapsing on safari -->
+
+	<form id="editPlaylist" method="get" action="edit_playlist.html" style = "margin: 0 11 8 11">
+		<table cellspacing = 0; cellpadding = 0;>	
+			<tr>
+				<td>
+					<label>[% "TITLE" | string %][% "COLON" | string %]</label>
+					<input type=text class="stdedit" name="form_title" value="[% form_title %]" size=30>
+				</td>
+				<td><a class="iButton silver" style = "height: 29; margin: 8 0 0 8; padding: 2 10;" onclick='document.forms.editPlaylist.submit();'>[% "ADD" | string %]</a></td>
+			</tr>
+			<tr>
+				<td colspan="2">
+					<label>[% "URL" | string %][% "COLON" | string %]</label>
+					<input type=text class="stdedit" name="form_url" value="[% form_url %]" size=40></td>
+			</tr>
+		</table>
+		<input type=hidden name="playlist.id" value="[% playlist.id %]">
+		<input type=hidden name="player" value="[% player %]">
+	</form>
+
+[% WRAPPER contentcontainer %]
+<div style = "float: right; top: 0; right: 0; width: 0; height: 234px; padding: 0; border: 0; margin: 0; overflow: hidden;">&nbsp;</div> <!-- keep buttons at bottom -->
+	[% FOREACH item = items %]
+		[% PROCESS edit_playlist_list.html %]
+	[% END %]
+[% END %]
+[% PROCESS iFooterVert.html %]

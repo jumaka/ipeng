@@ -1,0 +1,240 @@
+[% IF query %]
+	[%# Add the search query to each link if available %]
+	[% searchquery = 'query=' _ query _ '&amp;' %]
+[% END %]
+
+[% FILTER null %]
+[% pageicon = 'RADIO'; noSpacer = NOT streaminfo; %]
+[%
+homeString = 'Home';
+page_vertical = 1;
+goHomeURI = '"' _ webroot _ 'home.html?player=' _ playerURI _ '"';
+IF crumb;
+	title = crumb.last.name || title;
+	IF crumb.max > 0;
+		item = crumb.max - 1;
+		homeString = crumb.$item.name || homeString;
+		goHomeURI = '"' _ path _ '?' _ searchquery _ 'player=' _ playerURI _ '&amp;index=' _ crumb.$item.index _ '"';
+	END;
+END;
+
+omitList = [ 'SHOUTcast Internet Radio - ' ];
+%]
+[% pwd_list = [];
+	FOREACH crumb IN crumb;
+		crumbItem = BLOCK %]
+			<a href="[% path %]?[% searchquery %]player=[% playerURI %]&amp;index=[% crumb.index %]">[% crumb.name %]</a>
+		[% END %]
+		[% pwd_list.push(crumbItem) %]
+	[% END %]
+[% END # filter -%]
+
+[% IF useAJAX %][% pageHeaderScripts = BLOCK %]
+	<script TYPE="text/javascript">[% PROCESS html/vars.js %]</script>
+	<script src="[% webroot %]html/prototype1.js?r=[% revision %]" type = 'text/javascript' defer></script>
+	<script src="[% webroot %]html/prototype2.js?r=[% revision %]" type = 'text/javascript' defer></script>
+	<script src="[% webroot %]html/prototype3.js?r=[% revision %]" type = 'text/javascript' defer></script>
+	<script src="[% webroot %]html/prototype4.js?r=[% revision %]" type = 'text/javascript' defer></script>
+	<script src="[% webroot %]html/prototype5.js?r=[% revision %]" type = 'text/javascript' defer></script>
+	<script type="text/javascript" src="[% webroot %]html/scriptaculous/scriptaculous.js?load=effects,dragdrop&amp;r=[% revision %]" defer></script>
+	<script TYPE="text/javascript" src="[% webroot %]html/global.js?r=[% revision %]"></script>
+	<script TYPE="text/javascript">
+	window.onload = function () {
+		globalOnload ();
+	}</script>
+[% END %][% END %]
+
+[% IF NOT ajaxUpdate;
+	IF (!title && pagetitle); title = pagetitle; END %]
+	[%	FOREACH omit = omitList;
+			olen = omit.length;
+			IF (title.length > olen) && (title.substr(0, olen) == omit); title = title.substr(olen); END;
+			IF (homeString.length > olen) && (homeString.substr(0, olen) == omit); homeString = homeString.substr(olen); END;
+	END %]
+[% PROCESS iHeaderVert.html thispage = thispage -%]
+
+<style>
+a[selected], a:active {
+    background-color: #194fdb !important;
+    background-image: url(html/iui/selection.png) !important;
+    background-repeat: repeat-x;
+    background-position: left top;
+    color: #FFFFFF !important;
+	-webkit-tap-highlight-color: rgba(25,79,219,0.5);
+}
+</style>
+
+<div style = "position: relative; height: 44; border: 0; padding: 0;">&nbsp;</div>  <!-- spacer to keeps margins from collapsing on safari -->
+[% PROCESS playlistCTRLcontainer %]
+[% PROCESS activatePLcontainer %]
+[% PROCESS storeReturnPage %]
+
+<div id = 'mainbody' style = "position: relative;">
+[% ELSE %] [%# ajaxUpdate %]
+<meta http-equiv="Content-Type" content="text/html; charset=[% LOCALE %]"/>
+[% END %]
+
+[% IF msg %][% WRAPPER contentcontainer %]
+	<b>[% msg %]</b>
+[% END %][% END %]
+
+[% IF streaminfo %]
+	[% IF streaminfo.item.enclosure || streaminfo.item.url %]
+	<div id="songInfoHeader">
+		[% WRAPPER playlink %]href="[% path %]?[% searchquery %]action=play&amp;index=[% streaminfo.index %]&amp;player=[% player | uri %]"[% END %] [% "PLAY_THIS_SONG" | string %]<br />
+		[% WRAPPER addlink %]href="[% path %]?[% searchquery %]action=add&amp;index=[% streaminfo.index %]&amp;player=[% player | uri %]"[% END %] [% "ADD_THIS_SONG_TO_PLAYLIST" | string %]
+	</div>
+	[% END %]
+	
+	[% PROCESS xmlbrowser_details.html %]
+[% END %]
+
+[% IF search %]
+	<form id="searchForm" name="searchForm" method="GET">
+		<input type="search" autosave="radio" id="query" name="query" size="40" 
+			style = "-webkit-border-radius:10px; 
+					 height: 32; 
+					 width: 210;
+					 margin: 11 0 0 11;
+					 padding: 5 8 8 8;
+					 font-size: 15;
+					 color: dark blue;
+					 border-width: 1;" 
+			value="[% query %]"/>
+		<a class="iButton silver" onclick='document.forms["searchForm"].submit();' 
+			style = "position: absolute; right: 8; top: 8; width: 60; height: 32; padding: 0;">
+			[% "SEARCH" | string %]</a><p>
+		<input type="hidden" value="[% player %]" name="player">
+	</form>
+[% END %]
+
+[%# IF NOT ajaxUpdate %]
+<div id="pagecontainer_vert" style = "min-height: [% IF search %]265[% ELSE %]323[% END %];">
+[%# END %]
+
+[%- odd = 1 %]
+[%- IF items.size -%]
+	[% IF hasPagebar %]
+		[% PROCESS top_pagebar %]
+	[% END %]
+	
+	[% BLOCK favoritescontrol %]<span id="controls[% index _ (start + loop.index) %]">
+		[% IF item.favorites == 1 %]
+			[% WRAPPER favaddlink noTarget=1 %]
+				[%- IF useAJAX -%]href="javascript:void(0);" onClick="ajaxUpdate('[% path %]', 'action=favadd&index=[% index _ (start + loop.index) %]&start=[% pageinfo.startitem %]')"
+				[%- ELSE       -%]href="[% path %]?action=favadd&index=[% index _ (start + loop.index) %]&amp;start=[% pageinfo.startitem %]&amp;player=[% player | uri %]"
+				[%- END -%]
+			[% END %]
+		[% ELSIF item.favorites == 2 %]
+			[% WRAPPER favdellink noTarget=1 %]
+				[%- IF useAJAX -%]href="javascript:void(0);" onClick="ajaxUpdate('[% path %]', 'action=favdel&index=[% index _ (start + loop.index) %]&start=[% pageinfo.startitem %]')"
+				[%- ELSE       -%]href="[% path %]?action=favdel&index=[% index _ (start + loop.index) %]&amp;start=[% pageinfo.startitem %]&amp;player=[% player | uri %]"
+				[%- END -%]
+			[% END %]
+		[% END %]</span>
+	[% END %]
+	
+	[%- WRAPPER contentcontainer containerheight = 1 omitPCTRL = 1 %]
+
+		[% IF image %]
+		<ul>
+			<img src="[% image %]" />
+		</ul>
+		[% END %]
+		
+		[% IF itemsHaveAudio %]
+			[%- BLOCK allcontrol -%]
+				[% WRAPPER addlink %]href="[% path %]?[% searchquery %]action=addall&amp;index=[% currentIndex %]&amp;player=[% player | uri %]"[% END %]
+			[%- END %]
+			[% textlink = path _ "?" _ searchquery _ "action=playall&amp;index=" _ currentIndex _ "&amp;player=" _ playerURI;
+			target = ""; %]
+			[%- WRAPPER contentitem leftcontrols = 'dummylink' rightcontrols = 'allcontrol' lineclass = ' ' %]
+				[% "ALL_SONGS" | string %]
+			[%- END %]
+			[%- odd = (not odd) %]
+		[% END %]
+		
+		[%- FOREACH item = items %]
+			[%- BLOCK gencontrol -%]
+				[% IF item.type == 'audio' || item.enclosure || item.play %]
+					[% WRAPPER addlink %]href="[% path %]?[% searchquery %]action=add[% IF item.type == 'playlist' %]all[% END %]&amp;index=[% index _ (start + loop.index) %]&amp;player=[% player | uri %]" target=""[% END %]
+				[% ELSIF item.type == 'playlist' %]
+					[% WRAPPER playlink %]href="[% path %]?[% searchquery %]action=play[% IF item.type == 'playlist' %]all[% END %]&amp;index=[% index _ (start + loop.index) %]&amp;player=[% player | uri %]" target=""[% END %]
+				[% ELSE %]
+					[% PROCESS dummylink %]
+				[% END %]
+			[%- END %]
+			
+			[% IF item.type == 'search' %]
+				<form id="searchForm[% index _ (start + loop.index) %]" method="GET">
+					[% item.name || item.title %]
+					<input type="search" autosave="radio" id="q" name="q" size="40" 
+						style = "-webkit-border-radius:10px; 
+							 height: 32; 
+							 width: 210;
+							 margin: 11 0 0 11;
+							 padding: 5 8 8 8;
+							 font-size: 15;
+							 color: dark blue;
+							 border-width: 1;" 
+						value=""/>
+					<a class="iButton silver" onclick='document.forms["searchForm[% index _ (start + loop.index) %]"].submit();' 
+						style = "margin-top: -32; position: absolute; right: 8; width: 60; height: 32; padding: 0;">[% "SEARCH" | string %]</a><p>
+					<input type="hidden" value="[% player %]" name="player" />
+					<input type="hidden" value="[% index _ (start + loop.index) %]" name="index" />
+				</form>
+			[% ELSE %]
+				[% IF item.type == 'playlist';
+					IF item.weblink;
+						textlink = item.weblink; 
+						target = "_blank";
+					ELSIF item.type != 'text';
+						textlink = path _ "?" _ searchquery _ "action=playall" _ "&amp;index=" _ index _ (start + loop.index) _ "&amp;player=" _ playerURI;
+						target = "";
+					END;
+				ELSIF item.type == 'audio' || item.enclosure || item.play;
+					textlink = path _ "?" _ searchquery _ "action=play";
+					IF item.type == 'playlist';
+						textlink = textlink _ "all";
+					END;
+					textlink = textlink _ "&amp;index=" _ index _ (start + loop.index) _ "&amp;player=" _ playerURI;
+					target = "";
+				ELSE;
+					IF item.weblink;
+						textlink = item.weblink; 
+						target = "_blank";
+					ELSIF item.type != 'text';
+						textlink = path _ "?" _ searchquery _ "index=" _ index _ (start + loop.index) _ "&amp;player=" _ playerURI;
+						target = "";
+					END;
+				END %]
+				[% lcontent = item.name || item.title;
+				FOREACH omit = omitList;
+						olen = omit.length;
+						IF (lcontent.length > olen) && (lcontent.substr(0, olen) == omit); 
+							lcontent = lcontent.substr(olen); 
+						END;
+				END %]
+				[% lcontent = lcontent | truncate(48) %]
+				[% IF (lcontent.length > 23) || lcontent.match('\n|\r|\f'); 
+					lineclass = '';
+				ELSE; lineclass = ' '; END %]
+				[%- WRAPPER contentitem  rightcontrols = 'gencontrol' leftcontrols = 'favoritescontrol' %]
+					[% lcontent %]
+				[%- END %]
+			[%- END %]
+			[%- odd = (not odd) %]
+		[%- END %]
+
+	[%- END %]
+	[% IF hasPagebar %]
+		[% PROCESS bottom_pagebar %]
+	[% END %]
+[%- END %]
+
+	</div>
+[% IF NOT ajaxUpdate %]
+	</div>  <!-- mainbody -->
+	[% PROCESS iFooterVert.html selectedButton = 4 classFooter = " selected = 'true' class = 'toolbar' " %]
+[% END %]
+

@@ -1,0 +1,298 @@
+[%# Page status.html %]
+[%- IF ajaxRequest -%]
+	<pre>
+	[% PROCESS ajaxRequest.txt page = 'status' %]
+	</pre>
+[%- ELSE -%]
+[% pagetitle = BLOCK %]
+[%- playermodel | string %] : [% "PLAYING" | string -%]
+[%- END -%]
+[%- pageicon = 'MUSIC'
+    setup    = '1'
+    music    = '0'
+    playlist = '0'
+    status   = '1' -%]
+[% pageStyle = "style = 'background-color: black; color: white; -webkit-text-size-adjust:none;'" %]
+[% pageHeaderScripts = PROCESS StatusHeader %]
+[%- PROCESS iHeaderVert.html thispage = 'status' noShowBar = 1 -%]
+<!-- status.html -->
+
+[% BLOCK StatusHeader %]
+	<script type="text/javascript">[% PROCESS html/vars.js %]</script>
+	<script src="[% webroot %]html/prototype1.js?r=[% revision %]" type = 'text/javascript' defer></script>
+	<script src="[% webroot %]html/prototype2.js?r=[% revision %]" type = 'text/javascript' defer></script>
+	<script src="[% webroot %]html/prototype3.js?r=[% revision %]" type = 'text/javascript' defer></script>
+	<script src="[% webroot %]html/prototype4.js?r=[% revision %]" type = 'text/javascript' defer></script>
+	<script src="[% webroot %]html/prototype5.js?r=[% revision %]" type = 'text/javascript' defer></script>
+	<script src="[% webroot %]html/global.js?r=[% revision %]" type = 'application/x-javascript' defer></script>
+	<!--script src="[% webroot %]html/skin_global.js?r=[% revision %]" type = 'application/x-javascript' defer></script-->
+	<script>
+		var remotestreaming = "[% "REMOTE_STREAMING" | string %]";
+	</script>
+	<script src="[% webroot %]html/status.js?r=[% revision %]" type = 'application/x-javascript' defer></script>
+[% END %]
+
+
+<div style = "position: absolute; float: left; left: 0; top: 0; width: 324; z-index: 0"></div>
+<div style = "position: relative; left: 2; width: 320;">
+
+	<div id= 'iNowPlayingTopbar'></div>
+	
+	<div style = 'position: absolute; right: 4; top: 17; width: 44; z-index: 14;'>
+	[% i = 0; WHILE i < 4 %]
+		<img id = 'pdote[% i %]' src = "[% webroot %]html/images/pagesdotempty.png" style="float: right[%- 
+			IF (i == 1) || (i == 3); "; display: none"; END; 
+			-%]" onclick="doSwipe([% i %]);"/><img id = 'pdotb[% i %]' src="[% webroot %]html/images/pagesdotblue.png" style = "[%-
+			IF i != 1; "display: none; "; END %]float: right"/>
+	[% i = i + 1; END %]
+	</div>
+
+	<div class = 'iTopHomeDiv' onClick='returnToViewPage();'>
+		<span class="blackLeft iButton" style = "color: white; padding: 6; padding-left: 0; padding-right: 4; text-align: center;"><img src = "[% webroot %]html/images/left.png"'></span>
+	</div>
+
+	<div id = 'songinfo' style = 'display: block;'>
+		[% INCLUDE song_info_display %]
+	</div>
+	
+	<div id = 'extension' class = 'coversquare darksquare' style = 'display: block; z-index: 12;'></div>
+	<div id = 'mainbody' class = 'coversquare' style = 'display: block; z-index: 13; left: -320; overflow: scroll;'></div>
+
+	<div id = 'coverart' class = 'coversquare'>
+		[% INCLUDE cover_art_display %]
+	</div>
+	<div id = 'playlistNow' class = 'coversquare' onmousewheel = 'Playlist.evtWheel(event);' onscroll = 'Playlist.evtWheel(event);'> <!-- onscroll is for debugging on firefox -->
+		[% INCLUDE playlist_display %]
+	</div>
+
+	<div id = 'iNowBottombar'>
+		[% INCLUDE player_controls %]
+		[% INCLUDE player_name %]
+	</div>
+
+	[% trackstat = "PLUGIN_TRACKSTAT" | getstring %]
+	[% has_trackstat = (trackstat != "PLUGIN_TRACKSTAT") %]
+
+	<div id = 'iNowWrapperTop' class = 'iNowOBarTop iNowWrapperClass'>
+			<!--[% IF has_trackstat %]style = 'height: 88;'[% END %]-->
+	
+		<div id = 'playliststatus'>
+			[% INCLUDE playlist_info_display %]
+		</div>
+		
+		<div id = 'shuffleControl'>
+		 [% INCLUDE shuffle_settings %]
+		</div>
+		
+		<div id = 'repeatControl'>
+		 [% INCLUDE repeat_settings %]
+		</div>
+
+		[% INCLUDE progress_bar_display %]
+		
+		[% IF has_trackstat; INCLUDE trackstat_info_display; END %]
+		
+	</div>
+
+	<div id = 'iNowWrapperBottom' class = 'iNowOBarBottom iNowWrapperClass'>
+
+		[% INCLUDE volume_settings %]
+	
+	</div>
+
+
+
+	<!--div id = 'statusSpacer'>&nbsp;</div-->
+	[%# PROCESS heightSpacer buffer = '243' %]
+
+</div>
+</body>
+</html>
+
+[%# /Page status.html %]
+
+[% END %]
+
+[% BLOCK repeat_settings %]
+	<img id = 'repeatcontrol_0' 
+		src = "[% webroot %]html/images/repeat_off.png" 
+		title ='[% "REPEAT" | string | ucfirst %] Off' 
+		alt ='[% "REPEAT" | string | ucfirst %] Off' 
+		onClick = "Player.controls.evtRepeatShuffle(2, 'repeat');" 
+		style = 'display:[% IF repeat == 0 %]block[% ELSE %]none[% END %];'></a>
+	<img id = 'repeatcontrol_2' 
+		src = "[% webroot %]html/images/repeat_on.png" 
+		title ='[% "REPEAT" | string | ucfirst %] Playlist' 
+		alt ='[% "REPEAT" | string | ucfirst %] Playlist' 
+		onClick = "Player.controls.evtRepeatShuffle(1, 'repeat');" 
+		style = 'display:[% IF repeat == 2 %]block[% ELSE %]none[% END %];'></a>
+	<img id = 'repeatcontrol_1' 
+		src = "[% webroot %]html/images/repeat_on_1.png" 
+		title ='[% "REPEAT" | string | ucfirst %] Song' 
+		alt ='[% "REPEAT" | string | ucfirst %] Song' 
+		onClick = "Player.controls.evtRepeatShuffle(0, 'repeat');" 
+		style = 'display:[% IF repeat == 1 %]block[% ELSE %]none[% END %];'></a>
+[% END %]
+
+[% BLOCK shuffle_settings %]
+	<img id = 'shufflecontrol_0' 
+		src = "[% webroot %]html/images/shuffle_off.png" 
+		title = '[% "SHUFFLE" | string | ucfirst %] Off' 
+		onClick = "Player.controls.evtRepeatShuffle(1, 'shuffle');" 
+		alt = '[% "SHUFFLE" | string | ucfirst %] Off' 
+		style = 'display:[% IF shuffle == 0 %]block[% ELSE %]none[% END %];'></a>
+	<img id = 'shufflecontrol_1' 
+		src = "[% webroot %]html/images/shuffle_on.png" 
+		title = '[% "SHUFFLE" | string | ucfirst %] Song' 
+		onClick = "Player.controls.evtRepeatShuffle(2, 'shuffle');" 
+		alt = '[% "SHUFFLE" | string | ucfirst %] Song' 
+		style = 'display:[% IF shuffle == 1 %]block[% ELSE %]none[% END %];'></a>
+	<img id = 'shufflecontrol_2' 
+		src = "[% webroot %]html/images/shuffle_on_disc.png" 
+		title = '[% "SHUFFLE" | string | ucfirst %] Album' 
+		onClick = "Player.controls.evtRepeatShuffle(0, 'shuffle');" 
+		alt = '[% "SHUFFLE" | string | ucfirst %] Album' 
+		style = 'display:[% IF shuffle == 2 %]block[% ELSE %]none[% END %];'></a>
+[% END %]
+
+[% BLOCK cover_art_display %]
+	<img width = '320' height="320" id = 'coverartpath' onClick = 'toggleOverlays();'> <!-- src="[% webroot %]html/images/cover.png" -->
+[% END %]
+
+[% BLOCK playlist_info_display %]
+	<span id = 'thissongnum' style = 'font-weight: bold;'></span><b> [% "OUT_OF" | string %] </b><span id = 'songcount' style = 'font-weight: bold;'></span>
+[% END %]
+
+[% BLOCK song_info_display %]
+	<span id = 'artist' class = 'topbartextNow'></span><br>
+	<span id = 'songtitle' class = 'topbartextNow' style = 'color: white; text-shadow: #666666 0px 1px 1px;'></span><br>
+	<span id = 'album' class = 'topbartextNow'></span>
+[% END %]
+
+[% BLOCK progress_bar_display %]
+
+<div id = 'progressbar_overlay' onClick = 'Player.controls.evtTime(event);'> 
+	<div class = "pbar" style = 'text-align: right; position: absolute; left: 0; width: 30; top: 2' nowrap id = 'elapsed'>0:00</div>
+	<div class = "pbar" style = 'text-align: left; position: absolute; right: 0; width: 33; top: 2' nowrap id = 'duration'></div>
+	<img src = '[% webroot %]html/images/VolumeBlueCap.png' style = 'position: absolute; left: 37; top: 5'>
+	<img src = '[% webroot %]html/images/VolumeWhiteMusicFill.png' style = 'position: absolute; left: 42; top: 5; width: 156; height: 9;'>
+	<img src = '[% webroot %]html/images/VolumeWhiteMusicCap.png' style = 'position: absolute; left: 196; top: 5'>
+	<img id="progressBar" name="progressBar" src="[% webroot %]html/images/VolumeBlueFill.png" style = 'position: absolute; left: 40; top: 5; height: 9; width: 1'>
+	<img id = 'progressButton' name='progressButton' src = '[% webroot %]html/images/MusicVolumeKnob.png' style = 'position: absolute; top: 2; height: 19; width: 17; left: 34;' >
+</div>
+
+[% END %]
+
+[% BLOCK trackstat_info_display %]
+
+<div id = 'trackstat_display'>
+	<table width = '100%'>
+		[% tc = 0; WHILE tc < 5; tc = tc + 1; %]
+			<td align = "center">
+				<img id = 'trackstat_star[% tc %]' 
+					 src = '[% webroot %]html/images/nostar.png' 
+					 onClick = 'Player.controls.evtTrackStat([% tc %])'>
+			</td>
+		[% END %]
+	</table>
+</div>
+
+[% END %]
+
+[% BLOCK player_controls %]
+	<table border="0" cellspacing="0" cellpadding="0" width = '100%'>
+		<td align = "left" width = "40">
+		
+		<img id = 'powerControlOn' 
+			src = '[% webroot %]html/images/iOffBlue.png' 
+			onClick='Player.controls.evtPower(0);' 
+			style = 'display: [% IF myClientState.power %]block[% ELSE %]none[% END %]'
+			title = '[% "ON" | string %]'
+			alt = '[% "ON" | string %]'>
+		<img id = 'powerControlOff' 
+			src = '[% webroot %]html/images/iOffWhite.png' 
+			onClick='Player.controls.evtPower(1);'
+			style = 'display: [% IF myClientState.power %]none[% ELSE %]block[% END %]'
+			border = "0" alt = '[% "OFF" | string %]'>
+		</td>
+
+		<td align ="center"> 
+		<img id = 'playercontrol_prev' 
+			src="[% webroot %]html/images/prevtrack.png" 
+			onclick="Player.controls.evtPrev();" 
+			alt = [% 'PREVIOUS' | string | ucfirst %]
+			title = [% 'PREVIOUS' | string | ucfirst %]>
+		</td>
+
+		<td align ="center">
+		<img id = 'playercontrol_active_play' 
+			src = "[% webroot %]html/images/pause.png" 
+			onClick="Player.controls.evtPause();" 
+			style = 'display:[% IF modepause || modestop %]none[% ELSE %]block[% END %];' 
+			alt = [% 'PAUSE' | string | ucfirst %]
+			title = [% 'PAUSE' | string | ucfirst %]>
+		<img id = 'playercontrol_play' 
+			src = "[% webroot %]html/images/play.png" 
+			onclick="Player.controls.evtPlay();" 
+			style = 'display:[% IF modepause || modestop %]block[% ELSE %]none[% END %];' 
+			alt = [% 'PLAY' | string | ucfirst %]
+			title = [% 'PLAY' | string | ucfirst %]>
+		</td>
+        
+		<td align ="center">
+		<img id = 'playercontrol_next' 
+			src="[% webroot %]html/images/nexttrack.png" 
+			onclick="Player.controls.evtNext();" 
+			alt = [% 'NEXT' | string | ucfirst %]
+			title = [% 'NEXT' | string | ucfirst %]>
+		</td>
+		
+		<td align = "right" width = 40>
+		<a title = "Home" href = "[% webroot %]home.html?player=[% playerURI %]"><img src = "[% webroot %]html/images/iHomeBlack.png"></a>
+		</td>
+
+	</table>
+		<img id = 'statusalarm' src = "[% webroot %]html/images/AlarmIndicator.png" style = 'display: none; position: absolute; float: right; right: 0; bottom: 0;'>
+		<img id = 'statustimer' src = "[% webroot %]html/images/TimerIndicator5.png" style = 'display: [% IF sleeptime %]block[% ELSE %]none[% END %]; position: absolute; float: right; right: 15; bottom: 0;'>
+[% END %]
+
+[% BLOCK player_name %]
+
+<div id = "iNowPlayerName">
+[%- USE Clients; players = Clients.get("id") -%]
+[% IF players.size > 1 %]
+	[% FOREACH playerobj IN players %]
+		[% IF player == playerobj.id %]
+			<span id = "playerName">
+			[% IF playerobj.name %]
+				[% playerobj.name %]
+			[% ELSE %]
+				[% player %]
+			[% END %]
+			</span>
+		[% END %]
+	[% END %]
+[% END %]
+</div>
+
+[% END %]
+
+[% BLOCK volume_settings %]
+<div id = 'volumeControls' onClick = 'Player.controls.evtVolume(event);'>
+	[% IF isplayer %]
+		<img src = '[% webroot %]html/images/VolumeBlueCap.png' style = 'position: absolute; left: 4; top: 5'>
+	<img src = '[% webroot %]html/images/VolumeWhiteMusicFill.png' style = 'position: absolute; left: 9; top: 5; width: 262; height: 9;'>
+	<img src = '[% webroot %]html/images/VolumeWhiteMusicCap.png' style = 'position: absolute; left: 271; top: 5'>
+	<img id="volumeBar" src="[% webroot %]html/images/VolumeBlueFill.png" style = 'position: absolute; left: 9; top: 5; height: 9; width: 1'>
+	<img id = 'volumeButton' src = '[% webroot %]html/images/MusicVolumeKnob.png' style = 'position: absolute; top: 0; left: 0;' >
+	[% ELSE %]
+		<span>volume settings not available for this player</span>
+	[% END %]
+</div>
+[% END %]
+
+
+[% BLOCK playlist_display %]
+<table id = 'playlisttableNow' width = '100%' cellspacing = '0' cellpadding = "0" style = "font-weight: bold; border-collapse: collapse;"></table>
+[% END %]
+

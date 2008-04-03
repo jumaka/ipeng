@@ -1,0 +1,12 @@
+<title>[% IF pagetitle; pagetitle; ELSE; "iPeng"; END -%]</title>
+<link rel="shortcut icon" href="[% webroot %]favicon.ico" type="image/x-icon"/>
+<link rel="icon" href="[% webroot %]favicon.ico" type="image/x-icon"/>
+<!--style type="text/css" media="screen">@import "[% webroot%]slimserver.css";</style>
+<style type="text/css" media="screen">@import "[% webroot%]skin.css";</style-->
+[% USE Prefs; IF Prefs.preferences('server').get('language') == 'HE' %]
+	<link rel="stylesheet" type="text/css" href="[% webroot %]rtl.css"/>
+	[% IF lefttoright %]<style>table, td, th, tr { text-align: left; }</style>[% END %]
+[% END %]
+<link rel="stylesheet" type="text/css" href="[% webroot %]slimserver.css"/>
+<link rel="stylesheet" type="text/css" href="[% webroot %]skin.css"/>
+<meta http-equiv="Content-Type" content="text/html; charset=[% LOCALE %]"/>

@@ -1,0 +1,95 @@
+[% pagetitle = 'Search'; pageicon = 'Search' %]
+[% pageHeaderScripts = BLOCK %]
+	<script TYPE="text/javascript">[% PROCESS html/vars.js %]</script>
+	<script src="[% webroot %]html/prototype1.js?r=[% revision %]" type = 'text/javascript' defer></script>
+	<script src="[% webroot %]html/prototype2.js?r=[% revision %]" type = 'text/javascript' defer></script>
+	<script src="[% webroot %]html/prototype3.js?r=[% revision %]" type = 'text/javascript' defer></script>
+	<script src="[% webroot %]html/prototype4.js?r=[% revision %]" type = 'text/javascript' defer></script>
+	<script src="[% webroot %]html/prototype5.js?r=[% revision %]" type = 'text/javascript' defer></script>
+	<script TYPE="text/javascript" src="[% webroot %]html/common.js?r=[% revision %]"></script>
+	<script TYPE="text/javascript" src="[% webroot %]html/global.js?r=[% revision %]"></script>
+[% END %]
+[% bodyscript = 'onload="globalOnload (); document.searchForm.query.focus();"' %]
+[% pwd_list = BLOCK %]
+<a href="search.html?player=[% playerURI %][% IF liveSearch %]&amp;livesearch=1[% END %]">[% "SEARCH" | string %]</a>
+[% END %]
+[% PROCESS pageheader.html dontscroll=1 %]
+
+<script>
+	storeReturnLevel();
+	storeReturnPage();
+</script>
+
+[% IF liveSearch %]
+
+	<form id="searchForm" name="searchForm" method="GET" action="search.html">
+		<input type="search" autosave="search" id="query" name="query" size="40" autocomplete="off" 
+			style = "-webkit-border-radius:10px; 
+					 height: 32; 
+					 width: 298;
+					 margin: 11 0 0 11;
+					 padding: 8;
+					 font-size: 15;
+					 color: dark blue;
+					 border-width: 1;" />
+
+[% ELSE %]
+
+	<form id="searchForm" name="searchForm" method="GET" action="search.html">
+		<input type="search" autosave="search" id="query" name="query" size="40" value="[% query %]"
+			style = "-webkit-border-radius:10px; 
+					 height: 32; 
+					 width: 298;
+					 margin: 11 0 0 11;
+					 padding: 5 8 8 8;
+					 font-size: 15;
+					 color: dark blue;
+					 border-width: 1;" />
+
+[% END %]
+
+		<a class="iButton silver" 
+			style = "margin: 11 0 0 11;
+					 padding: 0px;
+					 width: 278;
+					 height: 32px;
+					 text-align: center;
+					 font-size: 15;" onclick='document.forms["searchForm"].submit();'>[% "SEARCH" | string %]</a><p>
+		<input type="hidden" value="1" name="manualSearch">
+		<input type="hidden" value="[% player %]" name="player">
+	</form>
+
+<div id="search-results"></div>
+
+<div id="browsedbHeader">
+	[% IF searchError %]
+		[% searchError %]
+	[% END %]
+	[% IF pageinfo.totalpages && pageinfo.totalpages > 1 %][% PROCESS pagebar %][% END %]
+</div>
+
+<div id="pagecontainer_vert" style = "min-height: 222">
+
+	[% PROCESS playlistCTRLcontainer %]
+	[% PROCESS activatePLcontaiener %]
+
+	[% IF browse_items.size %]
+		<table width = '100%' class = 'noborder listNoAlbum' cellspacing = "0" bgcolor = 'white' border = "collapse">
+		
+		[% FOREACH item = browse_items %]
+			[%# PROCESS browsedbitems_list.html noLink=(levelName == 'track') %]
+			[% PROCESS browsedbitems_list.html noLink=true %]
+		[% END %]
+		
+		</table>
+
+	[% ELSIF manualSearch %]
+		[% "NO_SEARCH_RESULTS" | string %]
+	[% END %]
+</div>
+
+[% IF pageinfo.totalpages && pageinfo.totalpages > 1 %][% PROCESS pagebar %][% END %]
+
+[% IF liveSearch; INCLUDE "search-observer.html"; END %]
+
+[% PROCESS iFooterVert.html selectedButton = 'Search' %]

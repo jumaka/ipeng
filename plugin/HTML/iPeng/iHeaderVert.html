@@ -1,0 +1,96 @@
+<!-- iHeaderVert.html -->
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+      <head>
+	[%- IF (thispage == 'artwork') || ( orientation == 1 && (levelName == 'album' || levelName == 'age')) %]
+	<meta name="viewport" content="width=480; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;"/>
+	[%- page_vertical = 0;
+	ELSE %]
+	<meta name="viewport" content="width=320; initial-scale=1.0; user-scalable=0;"/>
+	[%- page_vertical = 1;
+	END %]
+	<link rel="apple-touch-icon" href="[% webroot %]html/images/apple-touch-icon.png"/>
+	
+    [% PROCESS standardheader.html;
+	IF pageHeaderScripts;
+		pageHeaderScripts %]
+		<!--script src="[% webroot %]html/global.js?r=[% revision %]" type = 'application/x-javascript' defer></script-->
+		<script src="[% webroot %]html/skin_global.js?r=[% revision %]" type = 'application/x-javascript' defer></script>
+	[% ELSE %]
+		<script type="text/javascript">[% PROCESS html/vars.js %]</script>
+		<script src="[% webroot %]html/prototype1.js?r=[% revision %]" type = 'text/javascript' defer></script>
+		<script src="[% webroot %]html/prototype2.js?r=[% revision %]" type = 'text/javascript' defer></script>
+		<script src="[% webroot %]html/prototype3.js?r=[% revision %]" type = 'text/javascript' defer></script>
+		<script src="[% webroot %]html/prototype4.js?r=[% revision %]" type = 'text/javascript' defer></script>
+		<script src="[% webroot %]html/prototype5.js?r=[% revision %]" type = 'text/javascript' defer></script>
+		<script src="[% webroot %]html/global.js?r=[% revision %]" type = 'application/x-javascript' defer></script>
+		<script src="[% webroot %]html/skin_global.js?r=[% revision %]" type = 'application/x-javascript' defer></script>
+		<script type = 'application/x-javascript'>
+		[% IF thispage == 'search';
+			PROCESS search.js;
+		ELSIF (thispage == 'artwork') || (orientation == 1 && (levelName == 'album' || levelName == 'age'));
+			PROCESS artwork.js;
+		ELSE;
+			PROCESS browse.js;
+		END %]
+		</script>
+	[% END %]
+      </head>
+
+
+<body [% IF !page_vertical %]style = 'width: 480px;'[% ELSIF pageStyle; pageStyle; ELSE %]style = 'background-color: white; background-image: url([% webroot %]html/images/background.png); -webkit-text-size-adjust:none;'[% END %] marginwidth=0 marginheight=0 [% bodyscript %]>
+[% IF page_vertical %]
+<style type="text/css">
+
+a:hover, a:visited, a:active, a:link {
+	text-decoration:none;
+	color: black;
+}
+</style>
+[% END %]
+
+<div id = 'OSDbg' style='display:none'></div>
+<div id = 'OSD' style='display:none'>Added to playlist</div>
+
+[%# IF thispage == 'status' || thispage == 'playlist' || thispage == 'artwork' || thispage == 'browse' %]
+<div id='systemWorking' style='display:none'></div>
+[%# END %]
+
+[% IF !noShowBar %]
+	<div id = 'topbar[% IF page_vertical %]_vert[% END %]'>
+		<span id = "title"
+		[%- IF page_vertical;
+			IF title.length > 15 -%]
+				style = "font-size: 80%; display: block; padding: 3 0" >
+				[%- title | truncate (18);
+			ELSE -%]
+				style = "font-size: 100%;" >
+				[%- title;
+			END;
+		ELSE -%]
+			style = "font-size: 100%;" >
+			[%- title | truncate (28);
+		END %]
+		</span>
+		
+		<div style = 'position: absolute; right: 4; top: [% IF page_vertical %]4[% ELSE %]-2[% END %]; z-index: 12;'>
+		<a class="blackRight iButton" href="[% webroot %]status.html?player=[% playerURI %]" style = "color: white; width: 43; padding: 0; text-align: right;[% IF !page_vertical %] height: 25;[% END %]"><img src = "[% webroot %]html/images/coolioicon.png" style = "padding-right: 10"></a>
+		</div>
+		
+		[% IF homeString;
+			IF page_vertical -%]
+			<div class = 'iTopHomeDiv' onClick = 'returnToLevel([% goHomeURI %]);'>
+				<span class="blueLeft iButton" 
+					  style = "color: white; padding: 0; text-align: right;">[% homeString | truncate (12) %]</span>
+			</div>
+		[% ELSE -%]
+			<div class = 'iTopHomeDiv' onClick='returnToLevel([% goHomeURI %]);' 
+				 style = "top: -2; height: 25;">
+				<span class="blackLeft iButton" style = "color: white; padding: 3 6 3 2; text-align: center;"><img src = "[% webroot %]html/images/left.png"'></span>
+			</div>
+		[%- END;
+	END %]
+	</div>
+[% END %]
+
+<!-- /Element iHeaderVert.html -->

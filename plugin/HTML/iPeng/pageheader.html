@@ -1,0 +1,18 @@
+[%-
+IF !goHomeURI; goHomeURI = '"' _ webroot _ 'home.html?player=' _ playerURI _ '"'; END;
+homeString = homeString || 'Home';
+title = title || pagetitle;
+IF !bodyscript; bodyscript = 'onload="globalOnload ();"'; END;
+-%]
+[%- PROCESS iHeaderVert.html -%]
+
+<div style = "position: relative; height: 44; border: 0; padding: 0; z-index:9;">&nbsp;</div>  <!-- spacer to keeps margins from collapsing on safari -->
+[%- IF pageHeaderInfo;
+	WRAPPER contentcontainer omitPCTRL=1 containerid='pageHeaderInfoContainer' containerheight=1;
+		WRAPPER contentanchor;
+			pageHeaderInfo;
+		END;
+	END;
+END -%]
+
+<!--div id = 'pagecontainer_vert'>[% IF thispage == '' %]<p>[% END %]-->

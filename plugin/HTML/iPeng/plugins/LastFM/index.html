@@ -1,0 +1,437 @@
+[% origlastfm = lastfm;
+origlastfmp1 = lastfmp1;
+IF origlastfm != 'browse';
+	lastfm = '';
+	lastfmp1 = '';
+END;
+sas = 'PLUGIN_LASTFM_SIMILAR_ARTISTS' | string;
+
+pagetitle = 'PLUGIN_LASTFM_MODULE_NAME' | string; pageicon = 'RADIO';
+pwd_list = BLOCK -%]
+	<a href="[% webroot %][% path %]?player=[% player | uri %]">
+		[% "PLUGIN_LASTFM_MODULE_NAME" | string %]
+	</a>
+	[% IF origlastfm == 'browse' %]
+	[% crumbSeparator || '/' %]
+	<a href="[% webroot %][% path %]?player=[% player | uri %]&lastfm=[%lastfm | uri %]&lastfmp1=[% lastfmp1 | uri %]">
+       		[% origlastfmp1 %]
+	</a>
+	[% END;
+END;
+
+IF !ajaxUpdate;
+
+IF origlastfm == 'browse';
+	pagetitle = origlastfmp1;
+	homeString = 'Favourites';
+	
+	command = ''; type = ''; noAjax = 1;
+	goHomeURI = PROCESS href lastfm="$type" lastfmp1="$command";
+END;
+
+pageHeaderInfo = BLOCK;
+	IF user;
+		anchorcontrols = 'stationanchor';
+		user %]'s [% "PLUGIN_LASTFM_MODULE_NAME" | string;
+	END;
+END;
+
+PROCESS pageheader.html bodyscript="onLoad='self.focus();document.station.lastfmp1.focus();globalOnload();'"; %]
+
+<div id = 'mainbody' style = "position: relative; min-height: 323px;">
+
+<style>
+input {
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    width: 100%;
+    margin: 8px 0 8px 0;
+    padding: 6px 6px 6px 10px;
+    font-size: 16px;
+    font-weight: normal;
+    text-wrap: ellipsis;
+    nowrap;
+}
+input[type="image"] {
+    -webkit-box-sizing: content-box;
+ 	margin: 3px;
+ 	padding: 0;
+ 	display: block;
+ 	width: auto;
+}
+.toggle {
+    position: absolute;
+    top: -4px;
+    right: 6px;
+    width: 100px;
+    height: 28px;
+    border: 1px solid #888888;
+    -webkit-border-radius: 6px;
+    background: #FFFFFF url([% webroot %]html/iui/toggle.png) repeat-x;
+    font-size: 19px;
+    font-weight: bold;
+    line-height: 30px;
+}
+.toggle[toggled="true"] {
+    border: 1px solid #143fae;
+    background: #194fdb url([% webroot %]html/iui/toggleOn.png) repeat-x;
+}
+.toggleOn {
+    display: none;
+    position: absolute;
+    width: 60px;
+    text-align: center;
+    left: 0;
+    top: 0;
+    color: #FFFFFF;
+    text-shadow: rgba(0, 0, 0, 0.4) 0px -1px 0;
+}
+.toggleOff {
+    position: absolute;
+    width: 60px;
+    text-align: center;
+    right: 0;
+    top: 0;
+    color: #666666;
+}
+.toggle[toggled="true"] > .toggleOn {
+    display: block;
+}
+.toggle[toggled="true"] > .toggleOff {
+    display: none;
+}
+.thumb {
+    position: absolute;
+    top: -1px;
+    left: -1px;
+    width: 40px;
+    height: 28px;    
+    border: 1px solid #888888;
+    -webkit-border-radius: 6px;
+    background: #ffffff url([% webroot %]html/iui/thumb.png) repeat-x;
+}
+.toggle[toggled="true"] > .thumb {
+    left: auto;
+    right: -1px;
+}
+</style>
+
+<!-- start plugins output -->
+<SCRIPT>
+	setTimeout("aReload()", [% refresh %] * 1000);
+	storeReturnPage();
+	
+	function aReload() {
+		ajaxUpdate("index.html", "?lastfm=[%lastfm | uri %]&lastfmp1=[% lastfmp1 | uri %]");
+	}
+	function play() {
+		sArray = [ "play" ];
+		callJSONRPC (sArray, function (res) { aReload(); });
+	}
+	function pause() {
+		sArray = [ "pause", "1" ];
+		callJSONRPC (sArray, function (res) { aReload(); });
+	}
+	function skip() {
+		sArray = [ "playlist", "index", "+1" ];
+		callJSONRPC (sArray, function (res) { aReload(); });
+	}
+</SCRIPT>
+
+[% ELSE %] [%# ajaxUpdate %]
+<meta http-equiv="Content-Type" content="text/html; charset=[% LOCALE %]"/>
+[% END %]
+
+
+[%- BLOCK href -%]
+	[%- IF !noHref %]href="[% END %][% IF !noAjax %]javascript:ajaxRequest('[% END %][% webroot %][% path %][% IF !noAjax %]', '[% END %]?lastfm=[%  lastfm | uri %]&amp;lastfmp1=[% lastfmp1 | uri %][% IF !noAjax %]');aReload();[% END %][% IF !noHref %]"[% END -%]
+[%- END -%]
+<!--&amp;player=[% player | uri %]-->
+
+[% BLOCK lastfmLink;
+	IF !noHref;
+		WRAPPER $link noTarget=1;
+			PROCESS href;
+		END;
+	ELSE;
+		PROCESS href;
+	END;
+END;
+
+BLOCK simfav;
+	PROCESS lastfmLink noHref=0 lastfm="addlfm" lastfmp1="artist/$simartist/similarartists" link="favaddlink";
+END;
+
+BLOCK simplay;
+	PROCESS lastfmLink noHref=1 lastfm="playlfm" lastfmp1="artist/$simartist/similarartists" link="nolink";
+END;
+
+BLOCK simplayIcon;
+	PROCESS lastfmLink noHref=0 lastfm="playlfm" lastfmp1="artist/$simartist/similarartists" link="playlink";
+END;
+
+BLOCK ccontrols;
+	PROCESS lastfmLink lastfm="$type" lastfmp1="$command";
+END;
+
+BLOCK stationanchor %]
+	<div style = "float: right; padding: 2 10 -2 0; margin: 0 0 -2 0;">
+		<a href = "#[% 'PLUGIN_LASTFM_CHANGE_STATION' | string %]" title = '[% "PLUGIN_LASTFM_STATION" | string %]'>
+		<img src = "[% webroot %]html/images/tobottom.png" alt = '[% "PLUGIN_LASTFM_STATION" | string %]'></a>
+	</div>
+[% END;
+
+BLOCK startanchor %]
+	<div style = "float: right; padding: 2 10 -2 0; margin: 0 0 -2 0;">
+		[% PROCESS cmdToTop %]
+	</div>
+[% END;
+
+WRAPPER contentcontainer;
+IF player == '';
+	'<h3>'; 'PLUGIN_LASTFM_CHOOSE_PLAYER' | string; '</h3>';
+ELSIF user == '';
+	'<h3>'; 'PLUGIN_LASTFM_SETUP_LOGIN' | string; '</h3>';
+ELSE;
+	IF lastfmplaying;
+#		anchorcontrols = 'stationanchor';
+#		WRAPPER contentanchor; 'NOW_PLAYING' | string; END;
+		anchorcontrols = '';
+		WRAPPER contentitem %]
+			<div style = "min-height: 100; overflow: hidden;">
+			[% IF track.image %]
+				<div id="COVERART" style = "float: left;">
+					<a href="[% track.trackpage %]" target = "_blank">
+						<img src="[% track.image %]" alt="coverArt" title = "[% track.albumpage %]" style = "max-width: 300">
+					</a>
+				</div>
+			[% END %]
+			<div id="linkedSongInfoItems" 
+				 style = "float: right; position: absolute; 
+				 		  right: 0; width: 160; padding-right: 3; 
+						  background-color: white; opacity: 0.7; overflow: hidden">
+				<a class="tapblock" href="[% track.trackpage %]" target="_blank">
+				<span class="listFullTitle">[% track.title %]</span></a>
+				<a class="tapblockHalf" href="[% track.artistpage %]" target="_blank">
+				<span class="listFullTitle" style = "color: gray">[% track.creator %]</span></a>
+				[% IF track.album %]
+					<a class="tapblockHalf" href="[% track.albumpage %]" target="_blank">
+					<span class="listFullTitle">[% track.album %]</span></a>
+				[% END %]
+				<a class="tapblock">
+				<span class="listFullTitle">[% track.nicetime %]</span></a>
+			</div>
+			</div>
+		[% END;
+		IF station_url;
+			type = 'addlfm';
+			command = station_url;
+			link = 'favaddlink';
+			WRAPPER contentitem leftcontrols='ccontrols' rightcontrols = 'dummylink' %]
+				<span class="listFullTitle">[% station %]</span>
+			[% END;
+		ELSE;
+			WRAPPER contentitem %]
+				<span class="listFullTitle">[% station %]</span>
+			[% END;
+		END;
+		simartist = track.creator;
+		textlink = PROCESS simplay;
+		WRAPPER contentitem leftcontrols='simfav' noHref=0 lineclass = " ";
+			track.creator;
+		END;
+		textlink = ""; lineclass = "";
+	END;
+
+	IF status;
+		'<h3>';
+			IF status == 'FAILEDLOGIN';
+				'PLUGIN_LASTFM_SESSION_ERROR' | string;
+			ELSIF status == 'FAILEDCONNECT';
+				'PLUGIN_LASTFM_CONNECTION_ERROR' | string;
+			ELSIF status == 'STARTING';
+				'PLUGIN_LASTFM_WAIT' | string;
+			ELSIF status == 'WARN';
+				'PLUGIN_LASTFM_WARNING' | string;
+			ELSIF status == 'NOCONTENT';
+				'PLUGIN_LASTFM_NO_TRACKS' | string;
+			END;
+		'</h3>';
+	END;
+
+# myClientState.playmode;
+	IF lastfmplaying;
+		WRAPPER contentanchor; END; #'Commands';
+		link = 'playlink';
+		type = 'command';
+		textlink = ""; 
+		controls = "";
+		leftcontrols = "";
+		rightcontrols = "";
+		WRAPPER contentitem %]
+		<div style = "padding: 3 1 3 1; height: 32; position: relative;">
+			<a [% PROCESS href noHref=0 lastfm="$type" lastfmp1="love" %]>
+			<img src="html/images/love.png" style = "position: absolute; left: 20"/></a>
+			<a [% PROCESS href noHref=0 lastfm="$type" lastfmp1="ban" %]>
+			<img src="html/images/ban.png" style = "position: absolute; left: 100"/></a>
+			<img src="html/images/skip.png" 
+				 style = "position: absolute; right: 100" 
+				 onClick = 'skip();'/>
+			[% SWITCH myClientState.playmode;
+				CASE [ "play" "playout-play" ] %]
+					<img src="html/images/stop.png" 
+						 style = "position: absolute; right: 20" 
+						 onClick = 'pause();'/>
+				[% CASE %]
+					<img src="html/images/play.png" 
+						 style = "position: absolute; right: 20" 
+						 onClick = 'play();'/>
+			[% END %]
+		</div>
+		[% END;
+			
+		excludecmds = { love = 0, ban = 0, skip = 0 };
+		textlink = ""; 
+		controls = "";
+		leftcontrols ="";
+		rightcontrols = "";
+		noHref=0;
+		
+		FOREACH command = commands;
+			IF !excludecmds.keys.grep(command).size;
+				IF command == 'rtp';
+					BLOCK rstate -%]
+					    <div id = "rtptoggle" class="toggle"
+					    		onClick = "ajaxRequest('[% webroot %][% path %]', '?lastfm=[% type | uri %]&amp;lastfmp1=[% command | uri %]');aReload();"
+								[% IF rtp == 1 %]toggled = "true"[% END %]>
+							<span class="thumb"></span>
+							<span class="toggleOn">[% 'ON' | string %]</span>
+							<span class="toggleOff">[% 'OFF' | string %]</span>
+						</div>
+					[%- END; 
+					textlink = ''; controls = '';
+					WRAPPER contentitem lineclass = " " %]
+						<div style = "position: relative; >;
+						<span style = "max-width: 200">[% "PLUGIN_LASTFM_RTP" | string; "COLON" | string; %]</span>
+						[%- PROCESS rstate -%]
+						</div>
+				[% END;
+				ELSIF command == 'discovery';
+					BLOCK dstate -%]
+					    <div id = "discotoggle" class="toggle"
+					    		onClick = "ajaxRequest('[% webroot %][% path %]', '?lastfm=[% type | uri %]&amp;lastfmp1=[% command | uri %]');aReload();"
+								[% IF disco == 1 %]toggled = "true"[% END %]>
+							<span class="thumb"></span>
+							<span class="toggleOn">[% 'ON' | string %]</span>
+							<span class="toggleOff">[% 'OFF' | string %]</span>
+						</div>
+					[%- END; 
+					textlink = ''; controls = '';
+					WRAPPER contentitem lineclass = " " %]
+						<div style = "position: relative; >;
+						<span style = "max-width: 200">[% "PLUGIN_LASTFM_DISCOVERY" | string; "COLON" | string; %]</span>
+						[%- PROCESS dstate -%]
+						</div>
+					[% END;
+				ELSE;
+					textlink = PROCESS ccontrols noHref=1 lastfm="$type" lastfmp1="$command";
+					WRAPPER contentitem lineclass = " ";
+						command;
+					END;
+				END;
+				textlink = ""; controls = ""; noHref=0; lineclass = "";
+			END;
+		END;
+		command = 0;
+	END;
+
+	IF history.size > 0;
+		anchorcontrols = 'stationanchor';
+		WRAPPER contentanchor; 'Recently Played'; END;
+		anchorcontrols = '';
+		FOREACH htrack = history;
+			simartist = htrack.0;
+			textlink = PROCESS simplay;
+			WRAPPER contentitem leftcontrols='simfav' %]
+					<span class = "listFullTitle">[% htrack.1 %]</span><br>
+					<span class = "listFullArtist">[% htrack.0 %]</span>
+				[% IF htrack.2 %]
+						<br><span class = "listFullTitle">[% htrack.2 %]</span>
+		       	[% END;
+			END;
+		END;
+	END;
+
+	anchorcontrols = 'startanchor';
+	IF lastfmplaying;
+		WRAPPER contentanchor; 'PLUGIN_LASTFM_CHANGE_STATION' | string; END;
+	ELSE;
+		WRAPPER contentanchor; 'PLAY' | string; 'PLUGIN_LASTFM_MODULE_NAME' | string; END;
+	END;
+	anchorcontrols = '';
+
+	IF origlastfm != 'browse';
+		type = 'browse';
+		link = 'descendlink';
+		noAjax = 1;
+		command = 'Neighbours';
+		WRAPPER contentitem controls='ccontrols' lineclass = " " %]
+			<a class="tapblockFull" [% PROCESS href lastfm="browse" lastfmp1="$command" %]>Browse Neighbours</a>
+		[%- END;
+		command = 'Friends';
+		WRAPPER contentitem controls='ccontrols' lineclass = " " %]
+			<a class="tapblockFull" [% PROCESS href lastfm="browse" lastfmp1="$command" %]>Browse Friends</a>
+		[%- END;
+		noAjax = 0 %]
+
+		[%- BLOCK ldcontrol -%]
+		<span class="buttonControls" style = "padding: 0px 5px 0px 8px !important;">
+			<br><input type="image" src="[% webroot %]html/images/favadd.png" tabindex="2" value="addlfm" name="addlfm"  alt="[% 'ADD' | string %]"  title="[% 'ADD' | string %]">
+		</span>
+		[%- END -%]
+		[%- BLOCK rdcontrol -%]
+		<span class="buttonControls" style = "padding: 0px 0px 0px 10px !important;">
+			<br><input type="image" src="[% webroot %]html/images/play_white.png" tabindex="1" value="playlfm" name="playlfm"  alt="[% 'PLAY' | string %]"  title="[% 'PLAY' | string %]">
+		</span>
+		[%- END -%]
+		<form name="search" method="get" action="index.html">
+			<input type="hidden" name="player" value="[% player %]">
+			[%- WRAPPER contentitem leftcontrols='ldcontrol' rightcontrols='rdcontrol' %]
+				<a class="tapblockFull">Similar Artist Radio:</a>
+				<input type="search" class="stdedit" name="lastfms1" size="30" autosave="artist">
+				[% odd = (not odd) -%]
+			[%- END -%]
+		</form>
+
+		<form name="station" method="get" action="index.html">
+			<input type="hidden" name="player" value="[% player %]">
+			[%- WRAPPER contentitem leftcontrols='ldcontrol' rightcontrols='rdcontrol' -%]
+				<a class="tapblockFull">[% 'PLUGIN_LASTFM_STATION' | string; 'COLON' | string %]</a>
+				<input type="search" class="stdedit" name="lastfmp1" size="30" autosave="station">
+				[% odd = (not odd) %]
+			[%- END -%]
+		</form>
+	[%- END -%]
+
+	[% BLOCK myfavdel;
+		PROCESS lastfmLink lastfm="delete" lastfmp1="$stationlink" link="favdellink";
+	END;
+	loop = 0;
+	WHILE loop < stationnames.size;
+		station = stationnames.$loop;
+		stationlink = stationlinks.$loop;
+		textlink = PROCESS lastfmLink noHref=1 lastfm="playlfm" lastfmp1="$stationlink" link="playlink";
+		WRAPPER contentitem leftcontrols='myfavdel' noHref=0 rightcontrols="dummylink";
+			station;
+		END;
+		loop = loop + 1;
+	END;
+END;
+END; # contentcontainer %]
+<!--br><h3><a href="help.html?player=[% player | uri %]">Help?</a></h3><br-->
+
+[% IF !ajaxUpdate %]
+</div>
+<!-- end plugins output -->
+[% PROCESS pagefooter.html %]
+[% END %]

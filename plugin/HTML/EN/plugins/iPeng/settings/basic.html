@@ -1,0 +1,10 @@
+[% page = "PLUGIN_IPENG" %]
+[% PROCESS settings/header.html %]
+
+[% PROCESS plugins/iPeng/settings/subpage_chooser.html %]
+
+[% WRAPPER setting title="SETUP_PLUGIN_IPENG_CONFIG_DIRECTORY" desc="SETUP_PLUGIN_IPENG_CONFIG_DIRECTORY_DESC" %]
+	<input type="text" class="stdedit selectFolder" name="config_dir" id="config_dir" value="[% prefs.config_dir %]" size="40">
+[% END %]
+
+[% PROCESS settings/footer.html %]

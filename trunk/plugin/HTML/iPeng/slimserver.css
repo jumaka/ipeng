@@ -148,18 +148,6 @@ div#browsedbList {
 	overflow: hidden ! important;
 }
 
-div#containerspacer {
-	float: right;
-	top: 0;
-	right: 0;
-	width: 0;
-    height: 323px;
-    padding: 0; 
-	border: 0; 
-	margin: 0; 
-	overflow: hidden;
-}
-
 div#currentPlaylistControl {
 	padding: 0;	   
 	margin 0px;
@@ -393,22 +381,8 @@ a.tapblockHalf[selected], a.tapblockHalf:active {
 table.playlistbox { 
 	background-color: black;
 }
-table.thinborder { 
-	border: 1px solid white;
-}
-table.thinborder_grey { 
-	border: 1px solid white;
-}
 table.noborder { 
 	border: none;
-}
-table.playlistcontrols {
-	width: 125px;
-	overflow: hidden;
-}
-
-td.playlistcontrols {
-	width: 25px;
 }
 
 td.listing {
@@ -442,7 +416,6 @@ div#pagecontainer_vert {
 
 div#innerSanctum {
 	position: absolute;
-/*	width: 480px; */
 }
 
 div#hidden {
@@ -450,9 +423,7 @@ div#hidden {
 }
 
 div#footer {
-/*	position: absolute;*/
 	bottom: 0;
-/*	top: 0;*/
 	clear: both;
 /*	background-color: #333333;*/
 	background-image: url(html/images/bottomframe.png);
@@ -625,15 +596,6 @@ div#playerSelect {
 	top: 0;
 	height: 22;
 	overflow: visible;
-}
-
-div#menu {  
-	position: absolute;
-	top: 0; /*25*/
-	left: 0;
-	width: 100%; /*480px*/
-	overflow: visible;
-	z-index: 10;
 }
 
 .pbar {
@@ -928,7 +890,7 @@ div#FullBG {
 	overflow: hidden;
 	background-color: black;
 	background-image: url(html/images/NowPlayingTableBackground.png);
-	color: white;
+	color: #cfcfcf;
 	font-size: 17;
 	font-weight: bold;
 }
@@ -959,7 +921,7 @@ div#iNowPlayingTopbar {
 	z-index: 10;	
 }
 
-div#streaminfo, div#songinfo {
+div#streaminfo {
 	position: absolute;
 	left: 48;
 	top: 1;
@@ -1111,15 +1073,6 @@ div#volumeControls {
 	font-size: 14;
 }
 
-.playingitemtext, a.playingitemtext {
-	font-size: 14px;
-	font-weight: bold;
-	color: #111111;	/*BB5544;*/
-}
-a.playingitemtext:hover {
-	color: white;
-}
-
 div#trackstat_display {
 	position: absolute;
 	left: 50;
@@ -1132,13 +1085,20 @@ div#trackstat_display {
 .NowPlayingPlugin {
  	position: relative;
 	left: 0;
-	padding: 5;
 	color: white;
-	max-width: 320;
-	min-height: 46;
 	overflow-x: hidden;
 	overflow-y: visible;
     -webkit-box-sizing: border-box;
+}
+
+.NPPRow {
+	max-width: 320;
+	min-height: 46;
+}
+
+.NPPSpan {
+	float: left;
+	padding: 5;
 }
 
 .pluginContent {
@@ -1423,3 +1383,21 @@ div#topbar_vert {
 }
 
 
+/* SongInfo */
+
+.songInfoTitle {
+	display: block;
+	padding: 8 0 3 0;
+	color: #b0b0b0;
+	font-size: 14;
+}
+
+.songInfoText {
+	color: white;
+	font-size: 17;
+}
+
+.songInfoText > a {
+	color: white !important;
+ 	font-style: italic;
+}

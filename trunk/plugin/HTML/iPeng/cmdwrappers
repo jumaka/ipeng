@@ -209,10 +209,6 @@
 </div>
 [%- END %]
 
-[% BLOCK containerspacer %]
-	<div class = "containerspacer" [% IF containerheight %]style = "height: [% containerheight %]"[% END %]> </div>
-[% END %]
-
 [% BLOCK contentitem -%]
 [%- IF anchor;
 	WRAPPER contentanchor;
@@ -382,6 +378,23 @@ PROCESS ajaxCmdHRef cmdType='play' %]", true);' border=0 alt='Play Now' title='P
 		[% PROCESS $mixer %]
 	[% END %]
 [% END %]
+
+
+[% BLOCK songInfoPlayLinks %]
+	<div id="songInfoPlayLinks">
+		[% PROCESS browsecontrols %]
+	</div>
+[% END %]
+
+[% BLOCK songInfoItem %]
+	<div id="[% title %]">
+		<span class="songInfoTitle">
+			[% IF title; title | string; "COLON" | string; END %]
+		</span>
+		<span class="songInfoText">[% item %]</span>
+	</div>
+[% END %]
+
 
 [%- BLOCK itemOnClickPlay;
 	temp = 'ALL_SONGS' | string;

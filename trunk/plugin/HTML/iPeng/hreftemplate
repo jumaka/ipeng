@@ -209,7 +209,7 @@ href="[% webroot %]browsetree.html?hierarchy=[% item.hierarchy | html %]&amp;pla
 [% BLOCK thumbnailItemImg -%][% IF NOT height; height = 100; END %][% IF NOT resizeParam; resizeParam = 'p'; END %]
  [% artistlist = ''; IF item.artist; itemobj=item.itemobj; artistlist = PROCESS artistsAsText.html; END %]
 [% IF height < 100 %]
-	[%- "<img $style src=\"/music/$item.coverThumb/cover_"; height;"x"; height; "_"; resizeParam; IF bgcolor; "_"; bgcolor; END; ".png\"" %][% " height=\"";height;"\" width=\"";height;"\"" %]
+	[%- "<img $style src=\"/music/$item.coverThumb/cover_"; height;"x"; height; "_"; resizeParam; IF bgcolor; "_"; bgcolor; END; ".jpg\"" %][% " height=\"";height;"\" width=\"";height;"\"" %]
 [% ELSIF height < 200 %]
 	[%- "<img $style src=\"/music/$item.coverThumb/cover_"; height;"x"; height; "_"; resizeParam; IF bgcolor; "_"; bgcolor; END; ".jpg\"" %][% " height=\"";height;"\" width=\"";height;"\"" %]
 [% ELSE %]

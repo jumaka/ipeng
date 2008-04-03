@@ -913,7 +913,7 @@ PluginCmd.prototype.paramString = function() {
 				if (Player.status.track["playlist index"])
 					params += "&" + pair.value + "=" + Player.status.track["playlist index"];
 			break;
-			case "playlist":
+			case "playlist_name":
 			case "playlist_id":
 				if (Player.status[pair.key])
 					params += "&" + pair.value + "=" + Player.status[pair.key];
@@ -962,6 +962,42 @@ var Plugins = {
 	exec: function(cmd) { var temp = Plugins.findCmd(cmd); if (temp) temp.exec(); },
 
 	display : function () {
+	
+		function addnameicon (pidiv, key, subsect) {
+			var sect = document.createElement("span");
+			var parent = document.createElement("a");
+			sect.className = "NowPlayingPlugin NPPSpan";
+			parent.style.color = "#f0f0f0";
+			parent.className = "tapblock";
+			parent.style.maxWidth = "320";
+			if (key.name) parent.title = key.name;
+			if (key.url) {
+				Plugins.addCmd(new PluginCmd(key.type, subsect.id + "." + key.id, key.url, key.parameters));
+				if (key.type) {
+					parent.href="javascript:void(0);";
+					parent.onclick = function () { Plugins.exec(subsect.id + "." + key.id); };
+				}
+			}
+			if ((key.width && key.name) || key.html) {
+				if (width) sect.width = width;
+				if (height) sect.height = height;
+			}
+			if (key.icon) {
+				var piicon = document.createElement("img");
+				piicon.className = "pluginContent";
+				if (key.height) piicon.height = height;
+				
+				piicon.src = webroot + key.icon;
+				parent.appendChild(piicon);
+			}
+			if (key.name) {
+				var pispan = document.createTextNode(key.name);
+				parent.appendChild(pispan);
+			}
+			sect.appendChild(parent);
+			pidiv.appendChild(sect);
+		};
+	
 		if (!Plugins.extID) Plugins.extID = $('extension');
 //alert(Plugins.extID + ".this:" + this + ".PI:" + Plugins);
 		var sArray = [ 'ipeng', 'commands', 'nowplaying' ];
@@ -970,39 +1006,15 @@ var Plugins = {
 				Plugins.extID.removeChild(Plugins.extID.firstChild);
 			r2.result.subsections_loop.each(function(subsect) {
 //	$H(subsect).each(function(pair){ alert(pair.key + ":" + pair.value); });
+				var pidiv = document.createElement("div");
+				pidiv.className = "NowPlayingPlugin NPPRow";
+				if (subsect.icon || subsect.name)
+					addnameicon (pidiv, subsect, subsect);
 				subsect.commands_loop.each(function(key) {
 //	$H(key).each(function(pair){ alert(pair.key + ":" + pair.value); });
-					var pidiv = document.createElement("div");
-					pidiv.className = "NowPlayingPlugin";
-					var pilink = document.createElement("a");
-					pilink.style.color = "#f0f0f0";
-					pilink.className = "tapblock";
-					pilink.style.minWidth = "320";
-					if (key.name) pilink.title = key.name;
-					if (key.url) {
-						Plugins.addCmd(new PluginCmd(key.type, subsect.id + "." + key.id, key.url, key.parameters));
-						if (key.type) {
-							pilink.href="javascript:void(0);";
-							pilink.onclick = function () { Plugins.exec(subsect.id + "." + key.id); };
-						}
-					}
-					if (key.icon) {
-						var piicon = document.createElement("img");
-						piicon.className = "pluginContent";
-						piicon.src = webroot + key.icon;
-						pidiv.style.height = piicon.style.scrollHeight;
-						pilink.appendChild(piicon);
-					}
-					if (key.name) {
-						var pispan = document.createTextNode(key.name);
-		//				pispan.className = "pluginContent";
-		//				pispan.textContent = key.name;
-						pilink.appendChild(pispan);
-					}
-					pilink.clientHeight = innerHeight;
-					pidiv.appendChild(pilink);
-					Plugins.extID.appendChild(pidiv);
+					addnameicon (pidiv, key, subsect);
 				});
+				Plugins.extID.appendChild(pidiv);
 			});			
 	
 		}, function (r2) {});

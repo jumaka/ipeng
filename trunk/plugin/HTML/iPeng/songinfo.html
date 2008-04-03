@@ -1,0 +1,41 @@
+[% IF !ajaxUpdate;
+	IF itemobj.title;
+		pagetitle = itemobj.title | html;
+	ELSE;
+		pagetitle = "SONG_INFO" | string;
+	END;
+	PROCESS pageheader.html;
+	
+	songInfoPlayLinks = BLOCK; PROCESS songInfoPlayLinks; END %]
+	
+<div id="pagecontainer_vert">
+<style>
+.songInfoTitle {
+	display: block;
+	padding: 8 0 3 0;
+	color: #333333;
+	font-size: 14;
+}
+
+.songInfoText {
+	color: black;
+	font-size: 17;
+}
+
+.songInfoText > a {
+	color: black !important;
+ 	font-style: italic;
+}
+</style>
+
+	[% artAtTop = 1; 
+ELSE; 
+	artAtTop = 0; 
+END; # !ajaxupdate 
+
+PROCESS songinfo_details.html;
+
+IF !ajaxUpdate;
+	'</div>';
+	PROCESS pagefooter.html; 
+END %]

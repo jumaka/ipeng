@@ -1,0 +1,244 @@
+[%# Page browsedb.html %]
+[%- IF ajaxRequest -%]
+        <pre>
+	[% pageType = 'artwork';
+	IF browseby == 'BROWSE_BY_ARTWORK' && level == 0;
+		pageType = 'artwork';
+	END;
+	PROCESS ajaxRequest.txt page = pageType %]
+        </pre>
+[%- ELSIF artwork == 4;
+	PROCESS browse_popup;
+ELSE;
+# -- browsedb.html --
+
+	title = BLOCK;
+		playermodel | string; " : "; browseby | string;
+	END;
+	browse   = '0';
+	playlist = '0';
+	music    = '1';
+	pageicon = 'MUSIC';
+	homeString = '';
+	title = browseby | string;
+	browseAjax = '1';
+	
+	IF orientation == 1;
+		pageinfo.otherparams = pageinfo.otherparams _ "&orientation=1";
+		IF (levelName == 'album' || levelName == 'age');
+			thispage = 'artwork';
+			page_vertical = 0;
+		ELSE;
+			orientation = 0;
+			thispage = 'browse';
+			page_vertical = 1;
+		END;
+	ELSE;
+		thispage = 'browse';
+		page_vertical = 1;
+	END;
+	
+	IF pageinfo.startitem.search("#");
+		pageinfo.startitem = pageinfo.startitem.split("#").0;
+	END;
+
+	IF !ajaxUpdate;
+		IF levelName == 'album' || levelName == 'age';
+			bodyscript = 'onorientationchange="updateOrientation();"';
+		END;
+		goHomeURI = 'href = "' _ webroot _ 'home.html?player=' _ playerURI _ '"'; 
+		homeString = 'Home'; # <!-- 'HOME' | string -->
+		
+		FOREACH item = pwd_list.list;
+			IF not loop.last;
+				IF item.title;
+					goHomeURI = PROCESS "${item.hreftype}ItemHRef";
+					homeString = item.title;  
+				END;
+			END;
+		END;
+		IF item.title; title = item.title; END;
+		
+		PROCESS iHeaderVert.html thispage = thispage; -%]
+
+<style>
+a[selected], a:active {
+    background-color: #194fdb !important;
+    background-image: url(html/iui/selection.png) !important;
+    background-repeat: repeat-x;
+    background-position: left top;
+    color: #FFFFFF !important;
+}
+</style>
+<script>
+function updateOrientation () {
+ 	var oldOrientation = [% orientation || 0 %];
+ 	var newOrientation = 0;
+	switch(window.orientation)
+	{
+		case -90:
+		case 90:
+			newOrientation = 1;
+		break;
+	}
+	if (oldOrientation != newOrientation) {
+		var rExp = /\&orientation=[0-9]*/gi;
+	 	var path = getReturnViewPage();  //new String(document.location.href);
+	 	path = path.replace(rExp, "");
+		if (newOrientation)
+			if (path.indexOf("#") != -1)
+				document.location = path.replace("#", "&orientation=1#");
+			else
+				document.location = path + "&orientation=1";
+		else
+			document.location = path;
+	}
+}
+</script>
+
+<div style = "position: relative; height:[% IF page_vertical %]44[% ELSE %]25[% END %]; border: 0; padding: 0;">&nbsp;</div>  <!-- spacer to keeps margins from collapsing on safari -->
+[%- IF !page_vertical -%]
+<div id = 'albumInfo' style="display:none;">
+	<div id = 'closeAlbumInfo'>
+		<img src = "[% webroot %]html/images/cancel.png" onClick = "javascript:hideAlbumInfo();"></div>
+	<div id = 'trackInfo'></div>
+</div>
+[%- END -%]
+<div id = "mainbody">
+[%- PROCESS storeReturnPageLevel;
+
+END;	# -- !ajaxUpdate
+
+has_pagebar = 0;
+IF (browse_items.max > 10) && pageinfo.alphamap && ((pageinfo.totalpages > 1) || (pageinfo.totalalphapages != 1));
+	map_vertical = 1; 
+	has_pagebar = 1;
+ELSIF (pageinfo.totalpages > 1) && (pageinfo.totalalphapages != 1);
+	map_vertical = 0; 
+	has_pagebar = 1;
+END;
+IF has_pagebar;
+		PROCESS top_pagebar;
+END;
+	
+
+containerid = 'pagecontainer';
+IF page_vertical;
+	containerid = containerid _ '_vert';
+END;
+
+-%]<div id = '[% containerid %]' 
+	 style = "min-height: [% IF orientation == 1 %]213[% ELSE %]285[% END %]">
+	<!-- keep buttons at bottom -->[%-
+
+IF warn;
+	'<b>'; "NOTE" | string; '</b>'; "SCAN_WARNING" | string;
+	IF audiodir; 
+		"SCAN_CLICK" | string -%]
+		<a href="browsetree.html?player=[% playerURI %]"><font class="pagebartext">[% "HERE" | string %]</a>.</font>
+	[%- END;
+END;
+
+IF page_vertical;
+	PROCESS playlistCTRLcontainer;
+	PROCESS activatePLcontainer;
+END;
+
+IF orientation == 1;
+	IF browse_items;
+		itemCount = 0;
+		temp = 'ALL_SONGS' | string;
+		FOREACH item = browse_items;
+			IF loop.first && item.text == temp %]
+				<table width = '100%' cellspacing = 0 style = "margin: 5 0 0 0;">
+				[%- PROCESS browsedbitems_list.html rowClass = 'even' enforceNoBorder = '1' darkBG = 1 noLink = 1 -%]
+				</table>
+			[%- ELSE;
+				PROCESS browsedb_artwork.html;
+			END;
+			itemCount = itemCount + 1;
+		END;
+	END;
+ELSE;
+
+	BLOCK anchorctrl -%]
+		<div style = "float: right; padding: 2 [% IF map_vertical %]50[% ELSE %]30[% END %] -2 0; margin: 0 0 -2 0;">
+		[%- PROCESS cmdToTop;
+		PROCESS cmdToBottom -%]
+		</div>
+	[%- END -%]
+
+	<table width = '100%' 
+		   class = 'noborder [% IF (levelName != 'album') && (levelName != 'age') %]listNoAlbum[% END %]' 
+		   cellspacing = "0" 
+		   border = "collapse"> 
+	[%- IF browse_items;
+		anchorcontrols = 'anchorctrl';
+		temp = 'ALL_SONGS' | string;
+		FOREACH item = browse_items;
+			IF pageinfo.alphamap && ((pageinfo.totalpages > 1) || (pageinfo.totalalphapages != 1)) && item.anchor;
+				WRAPPER contentanchor firstrow = loop.first;
+					item.anchor;
+				END;
+			END;
+			IF loop.first && item.text == temp;
+				PROCESS browsedbitems_list.html noLink=1;
+			ELSE;
+				PROCESS browsedbitems_list.html noLink=(levelName == 'track');
+			END;
+		END;
+	ELSE;
+		browse_list;
+	END;
+	'</table>';
+
+END;
+'</div>';
+IF has_pagebar && map_vertical;
+	PROCESS expandAlphamap;
+END;
+
+PROCESS bottom_pagebar;
+
+'</div>';
+
+IF !ajaxUpdate;
+	'</div>';
+
+
+	IF page_vertical;
+		SWITCH browseby;
+			CASE 'BROWSE_BY_ALBUM'; selectedButton = 'Album';
+			CASE 'BROWSE_BY_ARTIST'; selectedButton = 'Artist';
+			CASE 'SAVED_PLAYLISTS'; selectedButton = 'Playlist';
+			CASE; selectedButton = '';
+		END;
+		PROCESS iFooterVert.html;
+	END;
+	'</body>';
+	'</html>';
+	
+END;
+END;
+
+BLOCK browse_popup;
+	IF browse_items -%]
+		<table width = '100%' cellspacing = '0' cellpadding = "0" >
+			<tr class = 'playing' height = '32'>
+				[%- IF browse_items.max;
+					item = browse_items.1;
+				ELSE;
+					item = browse_items.0;
+				END -%]
+				<td>
+					<span class = 'popUpHeaderArtist'>[% item.artist.name | truncate(56) %]<br></span>
+					<span class = 'popUpHeaderTitle'><b>[% item.itemobj.album.name | truncate (46) %]</b></span>
+				</td>
+				<td colspan = 2>&nbsp;</td>
+			</tr>
+			[%- FOREACH item = browse_items;
+		           PROCESS browsedbitems_list.html textClass = 'popUpText' playLink = 'ajax' noLink = 1 enforceNoBorder = 1 darkBG = 1;
+			END -%]
+		</table>
+	[%- END;
+END -%]

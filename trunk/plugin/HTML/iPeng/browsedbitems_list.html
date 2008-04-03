@@ -1,0 +1,107 @@
+<!-- browsedbitems_list.html -->
+[%- IF item.heading -%]
+	<tr class="listHeader" nowrap>
+		<td class = "listHeader" colspan = 3>
+			[%- "$item.heading" _ "SMATCHING" | string %] "[% query %]"[% "COLON" | string %][% item.numresults -%]
+		</td>
+	</tr>
+[%- ELSE;
+IF darkBG %]
+	<tr [% IF rowClass %]class = "[% rowClass %][% ELSIF item.odd %]class="even[% ELSE %]class="odd black[% END %] buffered" style = "position: relative; height: 40; padding: 3">
+	[%- truncateAt = 40;
+ELSE;
+	truncateAt = 26;
+	linkAreaClass = ' class = "linkAreaRowToPlus"' -%]
+	<tr class = "listRow" style = "padding: 3;">
+[%- END;
+		
+BLOCK openAlbumTD;
+	attributes = item.attributes;
+	goCmd = 'AjaxOnClickPlaySwitch';
+	IF	item.itemobj.album.id; attributes = "&album.id=" _ item.itemobj.album.id;
+	ELSIF item.album; attributes = "&album.id=" _ item.album;
+	ELSIF (tmp = attributes.match('album.id=\d*', 1));
+		attributes = "&" _ tmp.0;
+	ELSE; goCmd = 'AjaxOnClickPlay';
+	END %]
+	<td [% IF !enforceNoBorder %]class = "listRow coverimg" [% ELSE %]class = "coverimg" [% END %]
+		onClick = [% PROCESS $goCmd
+			itemobj     = item.itemobj
+			odd         = item.odd
+			mixerlinks  = item.mixerlinks
+			anchor      = item.anchor 
+			showdescend = item.showdescend
+			showplay    = item.showplay
+			showplayall = item.showplayall
+			playallhref = item.playallhref
+			addallhref  = item.addallhref
+			href        = item.href %]
+		title="[% item.text | html %]">
+		[%- content;
+		linkAreaClass = ' class = "linkAreaRowFromImg"' -%]
+	</td>
+[%- END;
+
+		csval = 1;
+		IF !noLink && (levelName == 'album' || levelName == 'age');
+			WRAPPER openAlbumTD;
+				IF item.coverThumb;
+					PROCESS thumbnailItemImg bgcolor='FFFFFF' height="46" width="46" style='STYLE="border: none"';
+				# ELSE;
+					# PROCESS dummyItemImg bgcolor='FFFFFF' height="46" width="46" style='STYLE="border: none"';
+				END;
+			END;
+		ELSIF ((item.itemobj.album.id && !item.descend) || item.album) && !noLink && (item.item || !item.defined('level') && item.itemobj);
+			WRAPPER openAlbumTD -%]
+				<img STYLE="border: none" 
+					 src="/music/[% IF item.coverThumb; 
+										item.coverThumb; 
+									#ELSIF item.album;
+										#item.album;
+									ELSE;
+										item.itemobj.id; 
+									END %]/cover_46x46_f_FFFFFF.png" width="46">
+			[%- END;
+		ELSE; csval = 2; END -%]
+		<td colspan = [% csval;
+			IF !enforceNoBorder %] class = "listRow" [% END;
+			IF noLink;
+				PROCESS itemOnClickPlay;
+			END %]
+			style = "padding-left: [% IF noLink || !(levelName == 'album' || levelName == 'age') %]1[% END %]0;" 
+			title = "[% item.text | html %]">
+		[%- IF noLink;
+			item.text | html | truncate(truncateAt);
+		ELSE;
+			PROCESS iteminfo;
+		END -%]
+		</td>
+		<td [% IF !enforceNoBorder %]class = "listRow" [% END %]
+			align = 'right' 
+			style = "width: [% IF darkBG %]32[% ELSE %]35[% END %]; padding-left: 0; padding-right: [% IF map_vertical %]25[% ELSIF darkBG %]3[% ELSE %]10[% END %];">
+		[%- useImg = "";
+			IF (levelName == 'playlist') || (item.itemobj.content_type() == "ssp"); 
+			goCmd = 'AjaxBrowseCtrlPlay';
+		ELSE; 
+			IF darkBG;
+				useImg = webroot _ 'html/images/grey_plus_add.png'; 
+			ELSE; 
+				useImg = webroot _ 'html/images/blue_plus_trans.png'; 
+			END;
+			goCmd = 'AjaxBrowseCtrlAdd';
+		END;
+		PROCESS $goCmd
+			itemobj     = item.itemobj
+			attributes  = item.attributes
+			odd         = item.odd
+			mixerlinks  = item.mixerlinks
+			anchor      = item.anchor 
+			showdescend = item.showdescend
+			showplay    = item.showplay
+			showplayall = item.showplayall
+			playallhref = item.playallhref
+			addallhref  = item.addallhref
+			href        = item.href -%]
+		</td>
+</tr>
+[%- END -%]

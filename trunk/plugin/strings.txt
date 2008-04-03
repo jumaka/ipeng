@@ -1,0 +1,39 @@
+IPENG
+	EN	iPeng
+
+PLUGIN_IPENG
+	EN	iPeng
+
+PLUGIN_IPENG_DESC
+	EN	iPeng is a plugin that provides the iPeng skin
+
+SETUP_PLUGIN_IPENG_SECTION
+	EN	Settings Section
+
+SETUP_PLUGIN_IPENG_SECTION_DESC
+	EN	Select a settings section
+
+PLUGIN_IPENG_SETTINGS
+	EN	Various Settings
+
+PLUGIN_IPENG_SETTINGS_ENABLEDCOMMANDS
+	EN	Enable/Disable commands
+
+SETUP_PLUGIN_IPENG_CONFIG_DIRECTORY
+	EN	Configuration directory
+
+SETUP_PLUGIN_IPENG_CONFIG_DIRECTORY_DESC
+	EN	Directory where user configuration *.ipeng.xml files are read from
+
+SETUP_PLUGIN_IPENG_ENABLED_COMMANDS
+	EN	Enable/Disable commands
+
+SETUP_PLUGIN_IPENG_ENABLED_COMMANDS_DESC
+	EN	Select which commands you like to be enabled in the iPeng skin
+
+PLUGIN_IPENG_SELECT_COMMANDS_ALL
+	EN	Select all
+
+PLUGIN_IPENG_SELECT_COMMANDS_NONE
+	EN	Select none
+

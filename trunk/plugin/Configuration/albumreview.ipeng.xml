@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<configuration>
+	<section id="nowplaying">
+		<subsection id="albumreview">
+			<command id="albumreview">
+				<weight>30</weight>
+				<name>Album Review</name>
+				<icon>html/images/mixbutton.png</icon>
+				<url>plugins/AlbumReview/pure.html</url>
+				<type>content</type>
+			</command>
+		</subsection>
+	</section>
+</configuration>
+

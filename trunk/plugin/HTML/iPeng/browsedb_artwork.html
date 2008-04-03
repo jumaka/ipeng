@@ -1,0 +1,42 @@
+<!--browsedb_artwork.html-->
+
+	<div class = 'floater noborder' style = "height: 170; width: 146; overflow: hidden;" cellspacing = 0 cellpadding = 0>
+		[%- IF item.anchor -%]
+			<a name = "[% item.anchor %]"></a>
+		[%- END -%]
+		<div class = 'artworkimg' onClick = 'popUpAlbumInfoPos("[% item.itemobj.id %]", [% item.coverThumb %], 1, [% 10+180*(itemCount DIV 3)%])'>
+		[%- IF item.coverThumb;
+			PROCESS thumbnailItemImg bgcolor='000000' height="130" width="130" style='STYLE="border: none"';
+		END -%]
+		<span style = 'position: absolute; left: 4; bottom: 2;'>
+		[%- PROCESS AjaxBrowseCtrlPlay 
+       	         itemobj = item.itemobj
+       	         attributes = item.attributes
+       	         odd = item.odd
+       	         mixerlinks = item.mixerlinks 
+				 useImg = webroot _ 'html/images/play_pure_dark.png' -%]
+		</span>
+		<span style = 'position: absolute; right: 4; bottom: 2;'>
+		[%- PROCESS AjaxBrowseCtrlAdd
+		         itemobj = item.itemobj
+       	         attributes = item.attributes
+       	         odd = item.odd
+       	         mixerlinks = item.mixerlinks 
+				 useImg = webroot _ 'html/images/add_pure_dark.png' -%]
+		</span>
+		</div>
+		<span nowrap class = 'supertinytext'>
+		[%- IF item.artist;
+			itemobj = item.itemobj;
+			artistlist = PROCESS artistsAsText.html noby = '1' %][% artistlist | truncate(28);
+			#- PROCESS artistsAsHTML.html noby = '1';
+		END -%]
+		</span><br>
+		<span nowrap class = 'supertinytext'>
+		[%- IF item.item;
+			item.item | truncate(28);
+		ELSE;
+			PROCESS iteminfo;
+		END -%]
+		</span>
+	</div>

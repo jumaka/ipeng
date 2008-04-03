@@ -21,8 +21,8 @@ function max(a, b) { return (a > b) ? a : b; }
 
 function min(a, b) { return (a < b) ? a : b; }
 
-function chooseAlbumOrderBy(value, option, artwork)
-{
+function chooseAlbumOrderBy(value, option, artwork) {
+	var oderByUrl;
 	if (!artwork && artwork != 0) {
 		artwork = 1;
 	}
@@ -33,11 +33,9 @@ function chooseAlbumOrderBy(value, option, artwork)
     window.location = orderByUrl;
 }
 
-function setAlbumOrderBy(value, option)
-{
+function setAlbumOrderBy(value, option) {
     setCookie( 'SqueezeCenter-orderBy', option );
 }
-
 
 function setCookie(name, value) {
         var expires = new Date();
@@ -81,20 +79,16 @@ function showVolumeOSD(message, duration) {
 		$('volumeOSD').style.display = 'block';
 		$('volumeOSD').innerHTML = message;
 	}
-
 	var intervalID = setTimeout(hideVolumeOSD, msDuration);
 }
 
 function hideVolumeOSD() {
-
 	if ($('volumeOSD')) {
 		$('volumeOSD').style.display = 'none';
 	}
-
 }
 
 function showAdded() {
-
 	if ($('OSDbg')) {
 	 	$('OSDbg').style.top = window.pageYOffset + 140;
 		$('OSDbg').style.display = 'block';
@@ -103,12 +97,10 @@ function showAdded() {
 	 	$('OSD').style.top = window.pageYOffset + 140;
 		$('OSD').style.display = 'block';
 	}
-
 	var intervalID = setTimeout("hideAdded()", 2000);
 }
 
 function hideAdded() {
-
 	if ($('OSD')) {
 		$('OSD').style.display = 'none';
 	}
@@ -118,14 +110,8 @@ function hideAdded() {
 }
 
 function resize(src,width) {
-	if (!width) {
-		// special case for IE (argh)
-		if (document.all) {
-			width = document.body.clientWidth*0.5;
-		} else if (document.getElementById) { //else if NS6+ 
-			width = window.innerWidth*0.5;
-		}
-	}
+	if (!width)
+		width = 320;
 	if (src.width > width ) {
 		src.width = width;
 	}

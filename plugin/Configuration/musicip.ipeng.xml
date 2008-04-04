@@ -3,14 +3,14 @@
 	<section id="nowplaying">
 		<subsection id="musicip">
 			<name>Music IP</name>
-			<!--icon>plugins/MusicMagic/html/images/icon.png</icon-->
+			<icon>plugins/MusicMagic/html/images/icon.png</icon>
+			<height>30</height>
 			<weight>50</weight>
 			<command id="mix">
 				<weight>10</weight>
 				<name>Mixer</name>
 				<icon>html/images/mixbutton.png</icon>
 				<url>plugins/MusicMagic/musicmagic_mix.html</url>
-				<!--height>30<height-->
 				<parameters>
 					<id>song</id>
 					<player>player</player>
@@ -22,7 +22,6 @@
 				<name>Moods</name>
 				<icon>html/images/mixbutton.png</icon>
 				<url>plugins/MusicMagic/musicmagic_moods.html</url>
-				<!--height>30<height-->
 				<parameters>
 					<id>song</id>
 					<player>player</player>

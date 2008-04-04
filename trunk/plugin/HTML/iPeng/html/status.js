@@ -979,13 +979,14 @@ var Plugins = {
 				}
 			}
 			if ((key.width && key.name) || key.html) {
-				if (width) sect.width = width;
-				if (height) sect.height = height;
+				if (key.width) sect.width = key.width;
+				if (key.height) sect.height = key.height;
 			}
 			if (key.icon) {
 				var piicon = document.createElement("img");
 				piicon.className = "pluginContent";
-				if (key.height) piicon.height = height;
+				if (key.height) piicon.height = key.height;
+				if (key.width && !key.name && !key.html) piicon.width = key.width;
 				
 				piicon.src = webroot + key.icon;
 				parent.appendChild(piicon);
@@ -994,6 +995,8 @@ var Plugins = {
 				var pispan = document.createTextNode(key.name);
 				parent.appendChild(pispan);
 			}
+			if (key.html)
+				sect.innerHTML = key.html;
 			sect.appendChild(parent);
 			pidiv.appendChild(sect);
 		};

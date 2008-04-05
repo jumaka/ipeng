@@ -47,6 +47,8 @@ my $driver;
 
 my %sections = ();
 
+my $lastUpdate = undef;
+
 =head1 NAME
 Plugins::iPeng::Plugin
 
@@ -112,6 +114,7 @@ sub addSubSection {
 	foreach my $key (keys %$data) {
 		if($key ne 'command') {
 			$subsectioncontext->{$key} = $data->{$key};
+			$lastUpdate =  Time::HiRes::time() if(!defined($lastUpdate) || $lastUpdate <  Time::HiRes::time());
 		}
 	}
 }
@@ -166,9 +169,11 @@ sub addCommand {
 	if(defined($command) && defined($data)) {
 		$log->debug("Adding command: $command ".Dumper($data));
 		$subsectioncontext->{'command'}->{$command} = $data;
+		$lastUpdate =  Time::HiRes::time() if(!defined($lastUpdate) || $lastUpdate <  Time::HiRes::time());
 	}elsif(defined($command)) {
 		$log->debug("Deleting command: $command ");
 		delete $subsectioncontext->{'command'}->{$command} if exists $subsectioncontext->{'command'};
+		$lastUpdate =  Time::HiRes::time() if(!defined($lastUpdate) || $lastUpdate <  Time::HiRes::time());
 	}
 }
 
@@ -206,6 +211,7 @@ sub deleteCommand {
 			if(exists $context->{'command'} && exists $context->{'command'}->{$command}) {
 				$log->debug("Deleting command: $command");
 				delete $context->{'command'}->{$command};
+				$lastUpdate = Time::HiRes::time() if(!defined($lastUpdate) || $lastUpdate < Time::HiRes::time());
 			}else {
 				$log->warn("Command $command does not exist");
 			}
@@ -336,10 +342,12 @@ sub _readConfigurationFromFiles {
 
 sub postinitPlugin {
 	Slim::Control::Request::addDispatch(['ipeng','commands','_type'], [1, 1, 1, \&jsonHandler]);
+	Slim::Control::Request::addDispatch(['ipeng','status'], [1, 1, 0, \&jsonStatusHandler]);
 }
 
 sub shutdownPlugin {
 	Slim::Control::Request::unsubscribe(\&jsonHandler);
+	Slim::Control::Request::unsubscribe(\&jsonStatusHandler);
 }
 
 
@@ -398,6 +406,10 @@ sub jsonHandler {
 			my $enabled = $prefs->get('command_'.escape($params->{'_type'}."_".$key."_".$command_id).'_enabled');
 			if(defined($enabled) && !$enabled) {
 				delete $commands->{$command_id};
+			}elsif(exists $commands->{$command_id}->{'requireplugins'} && !_isPluginsInstalled($client,$commands->{$command_id}->{'requireplugins'})) {
+				delete $commands->{$command_id};
+			}elsif(exists $commands->{$command_id}->{'defaultenabled'} && !$commands->{$command_id}->{'defaultenabled'} && !defined($enabled)) {
+				delete $commands->{$command_id};
 			}
 		}
 
@@ -454,6 +466,7 @@ sub jsonHandler {
 	} @menu;
 	my $menuResult = \@menu;
 
+	$request->addResult('timestamp',$lastUpdate);
 	$request->addResult('count',scalar(@$menuResult));
 
 	# Add the array of sub sections as a subsections_loop
@@ -468,6 +481,47 @@ sub jsonHandler {
 
 	$request->setStatusDone();
 	$log->debug("Exiting jsonHandler\n");
+}
+
+sub jsonStatusHandler {
+	$log->debug("Entering jsonStatusHandler\n");
+	my $request = shift;
+	my $client = $request->client();
+
+	if (!$request->isQuery([['ipeng'],['status']])) {
+		$log->warn("Incorrect command\n");
+		$request->setStatusBadDispatch();
+		$log->debug("Exiting jsonStatusHandler\n");
+		return;
+	}
+	if(!defined $client) {
+		$log->warn("Client required\n");
+		$request->setStatusNeedsClient();
+		$log->debug("Exiting jsonStatusHandler\n");
+		return;
+	}
+
+	$request->addResult('timestamp',$lastUpdate);
+
+	$request->setStatusDone();
+	$log->debug("Exiting jsonStatusHandler\n");
+}
+
+sub updateLastUpdateTime {
+	my $time = shift || Time::HiRes::time();
+	$lastUpdate = $time if(!defined($lastUpdate) || $lastUpdate < $time);
+}
+
+sub _isPluginsInstalled {
+        my $client = shift;
+        my $pluginList = shift;
+        my $enabledPlugin = 1;
+        foreach my $plugin (split /,/, $pluginList) {
+                if($enabledPlugin) {
+                        $enabledPlugin = grep(/$plugin/, Slim::Utils::PluginManager->enabledPlugins($client));
+                }
+        }
+        return $enabledPlugin;
 }
 
 sub _readFromDir {
@@ -485,6 +539,7 @@ sub _readFromDir {
 		next if -d catdir($dir, $item);
 
 		my $path = catfile($dir, $item);
+		my $timestamp = (stat ($path) )[9];
 
 		# Read the contents of the current file
 		my $content = eval { read_file($path) };
@@ -509,6 +564,7 @@ sub _readFromDir {
 				$log->warn("Failed to parse configuration ($item) because:\n$@\n");
 			}else {
 				$items->{$item} = $xml;
+				$lastUpdate = $timestamp if(!defined($lastUpdate) || $lastUpdate < $timestamp);
 			}
 		}else {
 			if ($@) {

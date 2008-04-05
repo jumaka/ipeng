@@ -11,10 +11,10 @@
   <module>Plugins::iPeng::Plugin</module>
   <optionsURL>plugins/iPeng/settings/basic.html</optionsURL>
   <targetApplication>
-    <id>SlimServer</id>
+    <id>SqueezeCenter</id>
     <maxVersion>*</maxVersion>
     <minVersion>7.0a</minVersion>
   </targetApplication>
   <type>2</type>
-  <version>1.0.beta03</version>
+  <version>0.4</version>
 </extension>

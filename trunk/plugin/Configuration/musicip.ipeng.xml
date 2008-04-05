@@ -7,6 +7,7 @@
 			<height>30</height>
 			<weight>50</weight>
 			<command id="mix">
+				<requireplugins>MusicMagic</requireplugins>
 				<weight>10</weight>
 				<name>Mixer</name>
 				<icon>html/images/mixbutton.png</icon>
@@ -18,6 +19,7 @@
 				<type>content</type>
 			</command>
 			<command id="moods">
+				<requireplugins>MusicMagic</requireplugins>
 				<weight>20</weight>
 				<name>Moods</name>
 				<icon>html/images/mixbutton.png</icon>

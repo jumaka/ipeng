@@ -78,9 +78,11 @@ sub initCommands {
 				$webmenu{'id'} = $sectionKey."_".$subSectionKey."_".$webmenu{'id'};
 				$webmenu{'name'} = $sectionKey."/".$subSectionKey."/".$webmenu{'name'};
 				my $enabled = $prefs->get('command_'.escape($webmenu{'id'}).'_enabled');
-				if(!defined($enabled) || $enabled) {
+				if(defined($enabled) && $enabled) {
 					$webmenu{'enabled'} = 1;
-				}else {
+				}elsif((!exists $commands->{$commandKey}->{'defaultenabled'} || $commands->{$commandKey}->{'defaultenabled'}) && !defined($enabled)) {
+					$webmenu{'enabled'} = 1;
+				} else {
 					$webmenu{'enabled'} = 0;
 				}
 				push @commandsResult,\%webmenu;
@@ -106,10 +108,17 @@ sub handler {
 				my $commands = $sections->{$subSectionKey}->{'command'};
 				for my $commandKey (keys %$commands) {
 					my $commandid = "command_".escape($sectionKey."_".$subSectionKey."_".$commandKey);
+					my $current = $prefs->get($commandid.'_enabled');
 		        	        if($paramRef->{$commandid}) {
-		        	                $prefs->set($commandid.'_enabled',1);
+						if(defined($current) && !$current) {
+			        	                $prefs->set($commandid.'_enabled',1);
+							Plugins::iPeng::Plugin::updateLastUpdateTime();
+						}
 		        	        }else {
-		        	                $prefs->set($commandid.'_enabled',0);
+						if(!defined($current) || $current) {
+			        	                $prefs->set($commandid.'_enabled',0);
+							Plugins::iPeng::Plugin::updateLastUpdateTime();
+						}
 		        	        }
 				}
 			}

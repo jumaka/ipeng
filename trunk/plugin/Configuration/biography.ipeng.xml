@@ -3,6 +3,7 @@
 	<section id="nowplaying">
 		<subsection id="biography">
 			<command id="biography">
+				<requireplugins>Biography</requireplugins>
 				<weight>40</weight>
 				<name>Biography</name>
 				<icon>html/images/mixbutton.png</icon>

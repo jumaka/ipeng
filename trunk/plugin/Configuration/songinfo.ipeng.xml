@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<configuration>
+	<section id="nowplaying">
+		<subsection id="songinfo">
+			<weight>10</weight>
+			<command id="Song Info">
+				<weight>10</weight>
+				<name>Song Info Details</name>
+				<icon>html/images/info.png</icon>
+				<url>songinfo.html?artAtTop=0</url>
+				<type>content</type>
+				<parameters>
+					<id>item</id>
+					<player>player</player>
+				</parameters>
+			</command>
+		</subsection>
+	</section>
+</configuration>

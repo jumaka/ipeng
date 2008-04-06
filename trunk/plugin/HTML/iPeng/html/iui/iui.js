@@ -63,7 +63,7 @@ window.iui =
         }
     },
 
-    showPageByHref: function(href, args, method, replace, cb)
+    showPageByHref: function(href, args, method, replace, cb, delay)
     {
         var req = new XMLHttpRequest();
         req.onerror = function()
@@ -85,7 +85,7 @@ window.iui =
                     iui.insertPages(frag.childNodes);
                 }
                 if (cb)
-                    setTimeout(cb, 2000, true);
+                    setTimeout(cb, (delay) ? delay : 2000, true);
             }
         };
 
@@ -160,8 +160,10 @@ addEventListener("click", function(event)
     if (link)
     {
         function unselect() { link.removeAttribute("selected"); }
-		if (link.target.substr(0, 12) == "_javascript:")
+		if (link.target.substr(0, 12) == "_javascript:") {
 			eval(link.target.substr(12));
+			link.target = null;
+		}
         if (link.href && link.hash && link.hash != "#")
         {
             link.setAttribute("selected", "true");
@@ -174,21 +176,18 @@ addEventListener("click", function(event)
             submitForm(findParent(link, "form"));
         else if (link.getAttribute("type") == "cancel")
             cancelDialog(findParent(link, "form"));
-        else if (link.target == "_replace")
-        {
-            link.setAttribute("selected", "progress");
-            iui.showPageByHref(link.href, null, null, link, unselect);
-        }
-        else if (!link.target)
-        {
-            link.setAttribute("selected", "progress");
-            iui.showPageByHref(link.href, null, null, null, unselect);
-        }
-        else if (link.target == "_none")
-        { }
-        else
-            return;
-        
+        else if (link.target == "_replace") {
+            	link.setAttribute("selected", "progress");
+            	iui.showPageByHref(link.href, null, null, link, unselect);
+        } else if (link.target == "_none") { }
+       	else if (link.target.substr(0, 8) == "_onload:") { 
+				link.setAttribute("selected", "progress");
+				iui.showPageByHref(link.href, null, null, null, link.target.substr(8), 1);
+				unselect();
+		} else if (!link.target) {
+				link.setAttribute("selected", "progress");
+            	iui.showPageByHref(link.href, null, null, null, unselect);
+        } else return;
         event.preventDefault();        
     }
 }, true);

@@ -42,8 +42,9 @@ BLOCK openAlbumTD;
 	</td>
 [%- END;
 
+		IF !noLink && (levelName == 'album' || levelName == 'age'); showcover = 1; ELSE; showcover = 0; END;
 		csval = 1;
-		IF !noLink && (levelName == 'album' || levelName == 'age');
+		IF showcover;
 			WRAPPER openAlbumTD;
 				IF item.coverThumb;
 					PROCESS thumbnailItemImg bgcolor='FFFFFF' height="46" width="46" style='STYLE="border: none"';
@@ -68,10 +69,15 @@ BLOCK openAlbumTD;
 			IF noLink;
 				PROCESS itemOnClickPlay;
 			END %]
-			style = "padding-left: [% IF noLink || !(levelName == 'album' || levelName == 'age') %]1[% END %]0;" 
+			style = "[%-
+				IF showcover;
+					'padding-left: 0; max-width: 214;';
+				ELSE;
+					'padding-left: 10; max-width: 250;';
+				END %]" 
 			title = "[% item.text | html %]">
 		[%- IF noLink;
-			item.text | html | truncate(truncateAt);
+			item.text | html;# | truncate(truncateAt);
 		ELSE;
 			PROCESS iteminfo;
 		END -%]

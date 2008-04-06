@@ -244,6 +244,10 @@ a.tapblock
 	margin: 0 -8 0 0;
 	
 	text-decoration: none;
+	overflow: hidden;
+	text-decoration: none;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 	color:black;
 	-webkit-tap-highlight-color: rgba(25,79,219,0.5);
 }
@@ -255,6 +259,9 @@ a.tapblockFull
 	padding: 10px 10px 10px 10px;
 	margin: -0px -10px -10px -10px;
 	text-decoration: none;
+    text-overflow: ellipsis;
+	overflow: hidden;
+    white-space: nowrap;
 	color:black;
 	-webkit-tap-highlight-color: rgba(25,79,219,0.5);
 }
@@ -265,6 +272,9 @@ a.tapblockHalf
 	padding: 2px 8px 3px 0px;
 	margin: -6px -8px -0px -0px;
 	text-decoration: none;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+	overflow: hidden;
 	color:black;
 	-webkit-tap-highlight-color: rgba(25,79,219,0.5);
 }
@@ -277,6 +287,8 @@ a.tapblock[selected], a.tapblock:active {
     color: #FFFFFF !important;
     padding: 7px 8px 7px 0px;
     margin: -0px -8px -0px -0px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 a.tapblockFull[selected], a.tapblockFull:active {
@@ -287,6 +299,8 @@ a.tapblockFull[selected], a.tapblockFull:active {
     color: #FFFFFF !important;
 	margin: -10px -10px -10px -10px;
 	padding: 10px 10px 10px 10px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 a.tapblockHalf[selected], a.tapblockHalf:active {
@@ -297,6 +311,8 @@ a.tapblockHalf[selected], a.tapblockHalf:active {
     color: #FFFFFF !important;
 	margin: -6px -8px -0px -0px;
 	padding: 2px 8px 3px 0px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 
@@ -321,7 +337,6 @@ a.tapblockHalf[selected], a.tapblockHalf:active {
 	margin: 0;
 	color: black;
 	text-decoration: none;
-/*    text-overflow: ellipsis;*/
 }
 
 .listFullArtist {
@@ -330,13 +345,11 @@ a.tapblockHalf[selected], a.tapblockHalf:active {
 	margin: 0;
 	color: #888888;
 	text-decoration: none;
-/*    text-overflow: ellipsis;*/
 }
 
 .listNoAlbum {
 	font-size: 19px;
 	font-weight: bold;
-/*    text-overflow: ellipsis;*/
 }
 
 .popUpHeaderArtist {
@@ -348,6 +361,8 @@ a.tapblockHalf[selected], a.tapblockHalf:active {
 	margin: 0;
 	color: #111111;
 	text-decoration: none;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .popUpHeaderTitle {
@@ -359,6 +374,8 @@ a.tapblockHalf[selected], a.tapblockHalf:active {
 	margin: 0;
 	color: #111111;
 	text-decoration: none;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .pagebartext {
@@ -1200,21 +1217,18 @@ div#iPengName {
 	position: absolute !important;
 	/*top: 354 !important;*/
 	bottom: 52 !important;
-	right: 0 !important;
+	left: 0 !important;
+	width: 320;
 	height: 10 !important;
-	padding: 0 !important;
-	padding-right: 3 !important;
-	padding-left: 3 !important;
+	padding: 0 5 0 0 !important;
 	margin: 0 !important;
 	text-shadow: #ffffff 0px 1px 1px !important;
 	color: rgb(76,86,108) !important;
 	text-align: right !important;
 	font-size: 10 !important;
 	font-weight: bold !important;
-	overflow: visible !important;
 	background: none !important;
 	z-index: 12 !important;
-	border: none  !important;
 }
 
 .iTopHomeDiv {

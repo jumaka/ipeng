@@ -453,12 +453,12 @@ END -%]
 		<a class = "tapblock" href="javascript:void(0);" 
 			[% PROCESS itemOnClickPlay %]
 			title="[% item.text | html %]">
-		<span class = 'listFullTitle'>[% item.text | html | truncate (25) %]
+		<span class = 'listFullTitle'>[% item.text | html %]
         [%- IF item.showYear && item.year;' ('; item.year; ')'; END -%]
 	    </span></a>
 		[%- IF verbose -%]
 			<a class = "tapblockHalf" [% PROCESS albumItemHRef %] title="[% item.itemobj.album.title | html %]">
-				<span class = 'listFullArtist' title="[% item.itemobj.album.title | html %]">[% item.itemobj.album.title | html | truncate (30) %]</span></a>
+				<span class = 'listFullArtist' title="[% item.itemobj.album.title | html %]">[% item.itemobj.album.title | html %]</span></a>
 			[%-# PROCESS artistsAsHTML.html notarget=1 -%]
 		[%- END -%]
 [%-# IF includeArtist && artist; PROCESS artistsAsHTML.html notarget = 1; END -%]
@@ -496,7 +496,7 @@ END -%]
 	[% END %]
 	[% IF item.includeAlbum && item.itemobj.album && item.itemobj.album.title != item.noAlbum && item.itemobj.album.title != "" %]
 		<a class = "tapblockHalf" [% PROCESS albumItemHRef %] title="[% item.itemobj.album.title | html %]">
-		<span class = "listFullArtist" title="[% item.itemobj.album.title | html %]">[% item.itemobj.album.title | html | truncate(23) %]</span></a>
+		<span class = "listFullArtist" title="[% item.itemobj.album.title | html %]">[% item.itemobj.album.title | html %]</span></a>
 	[% END %]
 [% END %]
 
@@ -707,13 +707,13 @@ END %]
          IF item.descend;
 	            # Include the artist for the album view
 			IF item.hierarchy %]<a class = "tapblock[% IF (levelName != 'album' && levelName != 'age') %]Full[% END %]" [% PROCESS "${item.hreftype}ItemHRef" %] title="[% item.text | html %]">[% END %]
-			<span [% IF (levelName == 'album' || levelName == 'age') %]class = 'listFullTitle'[% END %]>[% item.text | html | truncate (23);
+			<span [% IF (levelName == 'album' || levelName == 'age') %]class = 'listFullTitle'[% END %]>[% item.text | html;
 	        IF item.showYear && item.year; ' ('; item.year; ')'; END -%]
 		    <br></span>
             [%- IF item.artist.name && item.artist.name != item.noArtist;
-				artistlist = PROCESS artistsAsText.html noby = '1' notarget = '1' dotruncate = 56 itemobj=item.itemobj -%]
+				artistlist = PROCESS artistsAsText.html noby = '1' notarget = '1' itemobj=item.itemobj -%]
 				<span class = 'listFullArtist'>
-				[%- artistlist | truncate (34) -%]
+				[%- artistlist -%]
 				</span>
 			[%- END;
         ELSE;

@@ -10,7 +10,7 @@ var Pi = 3.14159265;
 function Clock(theday, thetime, dowrite) {
 	this.day = theday || 0;
 	this.time = thetime || 0;
-	var dowrite = dowrite || true;
+	var dowrite = (dowrite === undefined) ? true : dowrite;
 	this.id = 'clock' + theday;
 	if (dowrite) document.write('<canvas id = \'' + this.id + '\' width = \'76\' height = \'77\' time = \'' + this.time + '\'></canvas>');
 	this.element = $(this.id);
@@ -81,6 +81,8 @@ Clock.prototype.getTimeStr = function () {
 }
 
 Clock.prototype.drawall = function() {
+	for (var i = 0; i < 8; i++)
+		new Clock(i, 0, false);
  	var imagePL = 2;
  	function olCheck() {
 		imagePL--;
@@ -177,7 +179,7 @@ Alarms.prototype.update = function () {
 		if (r2.result.count == 8)
 			Element.hide('a_plus');
 		else
-			Element.show('a_plus', 'alarmSet');
+			Element.show('a_plus');
 	 	if (r2.result.count > 0) {
 		 	Athis.all = r2.result.alarms_loop;
 			r2.result.alarms_loop.each(function(key) {
@@ -435,7 +437,7 @@ function startAEdit(id) {
 	var thetargetrow = $('alarm' + id);
 	var thetargetinfo = $('a_info' + id);
 	var thetargetedit = $('a_editrow' + id);
-	var showDivs = [ 'a_delete', 'e_time', 'a_arrow', 'a_moreedit' ]
+	var showDivs = [ 'a_delete', 'e_time', 'a_arrow', 'a_moreedit' ];
 	thetargetrow.appendChild($('a_delete'));
 	thetargetinfo.appendChild($('e_time'));
 	thetargetinfo.appendChild($('a_arrow'));
@@ -613,7 +615,10 @@ Sleep.prototype.displayTime = function() {
 Sleep.prototype.Count = function (startflag) {
  	var sthis = this;
 	if (startflag) {
-		var temp = parseInt($('s_minutes').value) * 60;
+		var mval = $('s_minutes').value;
+		if (mval.substr(0, 1) == "0")
+			mval = mval.substr(1);
+		var temp = parseInt(mval) * 60;
 		temp = temp + parseInt($('s_hours').value) * 3600;
 		this.timeout = temp;
 		if (!temp) return;
@@ -625,10 +630,15 @@ Sleep.prototype.Count = function (startflag) {
 	}, function (r1) {});
 }
 
+function localOnload() {
+	Clock.prototype.drawall();
+ 	myAlarms.update();
+}
+
 // OnLoad
 
 window.onload = function() {
-	Clock.prototype.drawall();
- 	myAlarms.update();
+/*	Clock.prototype.drawall();
+ 	myAlarms.update();*/
 	globalOnload();
 }

@@ -1,0 +1,56 @@
+<div id = "sleep" title = "[% 'SLEEP' | string %]" 
+	 style = "width: 320; height: 325; 
+			  background-color: #1A1A1A; 
+			  background-image: url([% webroot %]html/images/cooliosleep1.png), url([% webroot %]html/images/sleepbg.png); 
+			  background-position: 120 23, top left; 
+			  background-repeat: no-repeat, repeat-x;">
+	 
+	<span id = "sleeptime" style = "position: absolute; font-size: 80; top: 106; width: 320; -webkit-box-sizing: border-box; text-align: center; color: white; display: none">&nbsp;</span>
+
+	<div id = "sleepedit" style = "position: absolute; font-size: 32; top: 126; width: 320; -webkit-box-sizing: border-box; padding: 0 35 0 35;">
+		<select id="s_hours" name="s_hours" class = "selectItems" title = "hours"
+				style = "float: left; font-size: 32; text-align: right; "
+				onChange = "void(0);">
+			[% j = 0; WHILE j < 24; %]
+			<option id = "s_h[% j %]" value = "[% j %]">[% j %]</option>
+			[% j = j + 1; END %]
+		</select>
+	
+		<span style = "font-size: 48; color: white;">&nbsp;:</span>
+	
+		<select id="s_minutes" name="s_minutes" title = "[% 'MINUTES' | string %]" class = "selectItems" 
+				style = "float: right; font-size: 32;"
+				onChange = "void(0);">
+			[% j = 0; WHILE j < 60; %]
+			<option id = "s_m[% j %]" value = "[% IF j < 10; '0'; END; j %]">[% IF j < 10; '0'; END; j %]</option>
+			[% IF j < 15; j = j + 1;
+			   ELSE; j = j + 5; END;
+			END %]
+		</select>
+	</div>
+
+    <a id = 'sleepstart' class="iButton start" 
+	   href="javascript:sleep.Count(true);"	target = "_self"
+	   style = "position: absolute; display: block;
+	   			top: 210; left: 11;
+			    padding: 8 0 0 0;
+			    width: 298;
+			    height: 48px;
+			    text-align: center;
+			    font-size: 24;
+		        -webkit-box-sizing: border-box;
+		">Start</a>
+    <a id = 'sleepstop' class="iButton red" 
+		href = "javascript:sleep.Count(false);" target = "_self"
+		style = "position: absolute; display: none;
+	   			top: 210; left: 11;
+		 		padding: 8 0 0 0;
+				 width: 298;
+				 height: 48px;
+				 text-align: center;
+				 font-size: 24;
+			     -webkit-box-sizing: border-box;
+			     color: white;
+		">Stop</a>
+
+</div>

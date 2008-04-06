@@ -7,13 +7,17 @@ playlist = '0';
 thispage = 'home';
 
 IF ajaxRequest;
-        '<pre>';
-PROCESS ajaxRequest.txt page = thispage;
-        '</pre>';
+	'<pre>';
+	PROCESS ajaxRequest.txt page = thispage;
+	'</pre>';
+ELSIF runAlarm;
+	PROCESS alarm_set.html;
+ELSIF runSleep;
+	PROCESS sleep_set.html;
 ELSE;
 
 title = 'SqueezeCenter';
-homeString = 'Home'; 
+homeString = 'IPENG_BUTTON_HOME' | string; 
 goHomeURI = 'href = "' _ webroot _ 'home.html?player=' _ playerURI _ '"'; #  "HOME" | string
 pageHeaderScripts = PROCESS HomeHeader;
 PROCESS iHeaderVert.html noShowBar = 1;
@@ -165,10 +169,10 @@ BLOCK HomeHeader %]
 	
 	function playerUnselectAll() {
 		[%- USE Clients; players = Clients.get("id") -%]
-		[% FOREACH playerobj IN players %]
+		[%- FOREACH playerobj IN players %]
 			if ($('player[% playerobj.id %]'))
 			 	$('player[% playerobj.id %]').selected = false;
-	 	[% END %]
+	 	[%- END %]
 	 	$('playernone').selected = true;
 	}
 	</script>
@@ -197,25 +201,25 @@ PROCESS browseSettings;
 PROCESS browseRadio;
 PROCESS musicServices;
 PROCESS alarmSet;
-PROCESS sleepSet -%]
+-%]
 
 
-<div id = "main" title = "Home" selected = 'true' class = "panel"><!-- 'HOME' | string -->
+<div id = "main" title = "[% 'IPENG_BUTTON_HOME' | string %]" selected = 'true' class = "panel" style = "width: 320">
 <ul>
 	<li class = "biggerLine">
 		<a href="#Database">
 		<img src="[% webroot %]html/images/iSongWhite.png" width="40" height="30" class = "paddedPic" alt = 'radio'>&nbsp;
-		Browse Library</a> <!-- "DATABASE" | string -->
+		[% 'IPENG_BROWSE_LIBRARY' | string %]</a>
 	</li>
 	<li class = "biggerLine">
-	[%- IF additionalLinks.browse.PLUGIN_CUSTOMBROWSE %]
-		<a href="[% webroot %][% additionalLinks.browse.PLUGIN_CUSTOMBROWSE %]&player=[% playerURI %]" target="_self">
-		<img src="[% webroot %][% additionalLinks.icons.${'PLUGIN_CUSTOMBROWSE'}.replace('.png', "_40x30_f.png") %]" width="40" height="30" class = "paddedPic">&nbsp;
-		<span class="secondary">[% 'PLUGIN_CUSTOMBROWSE' | string %]</span></a>
+	[%- IF additionalLinks.browseiPeng.PLUGIN_IPENG_CUSTOM_BROWSE_MORE %]
+		<a href="[% webroot %][% additionalLinks.browseiPeng.PLUGIN_IPENG_CUSTOM_BROWSE_MORE %]&player=[% playerURI %]" target="_self">
+		<img src="[% webroot %][% additionalLinks.icons.${'PLUGIN_IPENG_CUSTOM_BROWSE_MORE'}.replace('.png', "_40x30_f.png") %]" width="40" height="30" class = "paddedPic">&nbsp;
+		<span class="secondary">[% 'PLUGIN_IPENG_CUSTOM_BROWSE_MORE' | string %]</span></a>
 	[%- ELSE -%]
 		<a href="#Lists">
 		<img src="[% webroot %]html/images/iBookWhite.png" width="40" height="30" class = "paddedPic" alt = 'radio'>&nbsp;
-		Browse More</a>  <!-- "LISTS" | string-->
+		[% 'IPENG_BROWSE_MORE' | string %]</a>
 	[%- END -%]
 	</li>
 </ul>
@@ -225,70 +229,70 @@ PROCESS sleepSet -%]
 		<img src="[% webroot %]html/images/iRadioWhite.png" width="40" height="30" class = "paddedPic" alt = 'radio'>&nbsp;
 		<span class="secondary">[% 'RADIO' | string %]</span></a>
 	</li>
-[% IF additionalLinks.music_services %]
+[%- IF additionalLinks.music_services %]
 	<li class = "biggerLine">
 		<a href="#MusicServices">
 		<img src="[% webroot %]html/images/iRadioWhite.png" width="40" height="30" class = "paddedPic" alt = 'radio'>&nbsp;
 		<span class="secondary">[% 'MUSIC_SERVICES' | string %]</span></a>
 	</li>
-[% END %]
+[% END;
 	
-</ul>
+'</ul>';
 
-[% PROCESS playerChoose %]
+PROCESS playerChoose;
 
-<ul>
+'<ul>'; %]
 	<li class = "biggerLine">
 		<a href="#browseSettings">
-		[% "PLUGINS" | string %]</a>
-	</li>
-</ul>
+		[%- "PLUGINS" | string; '</a>';
+	'</li>';
+'</ul>';
 
 
-[%# END %]
+# END;
 
-<div id = "iPengName" class = "toolbar iPengName">iPeng v0.3 (C) 2007, 2008 Joerg Schwieder</div>
-[% PROCESS spacer %]
-</div>
+-%]
+<div id = "iPengName" class = "toolbar iPengName">iPeng v0.4 (C) 2007, 2008 Joerg Schwieder</div>
+[%- PROCESS spacer;
+'</div>';
 
-[% PROCESS iFooterVert.html selectedButton = 'Home' classFooter = " selected = 'true' class = 'toolbar' " %]
+PROCESS iFooterVert.html selectedButton = 'Home' classFooter = " selected = 'true' class = 'toolbar' ";
 
-</body>
+'</body>';
 
-<script> window.scrollBy (0,1); </script>
+'<script> window.scrollBy (0,1); </script>';
 
-</html>
-
-
-[%- END -%]
+'</html>';
 
 
+END;
 
-[% BLOCK browseDatabase %]
-[% browseCategories = { BROWSE_BY_ALBUM = { icon = 'html/images/iAlbumWhite.png', text = 'ALBUMS' }, 
-						BROWSE_BY_ARTIST = { icon = 'html/images/iArtistWhite.png', text = 'ARTIST' },
-						BROWSE_BY_GENRE = { icon = 'html/images/iGenreWhite.png', text = 'GENRES' },
-						BROWSE_MUSIC_FOLDER = { icon = 'html/images/iFolderWhite2.png', text = 'SETUP_AUDIODIR' },
-						BROWSE_BY_YEAR = { icon = 'html/images/iAlbumWhite.png', text = 'BROWSE_BY_YEAR' },
-						#PLUGIN_CUSTOMBROWSE = { icon = additionalLinks.icons.${'PLUGIN_CUSTOMBROWSE'}.replace('.png', "_40x30_f.png"), text = 'PLUGIN_CUSTOMBROWSE' } 
-						} %]
 
-<div id = "Database" class = "panel" title = "Database"> <!-- "DATABASE" | string -->
+
+BLOCK browseDatabase;
+browseCategories = { BROWSE_BY_ALBUM = { icon = 'html/images/iAlbumWhite.png', text = 'ALBUMS' }, 
+					 BROWSE_BY_ARTIST = { icon = 'html/images/iArtistWhite.png', text = 'ARTIST' },
+					 BROWSE_BY_GENRE = { icon = 'html/images/iGenreWhite.png', text = 'GENRES' },
+					 BROWSE_MUSIC_FOLDER = { icon = 'html/images/iFolderWhite2.png', text = 'SETUP_AUDIODIR' },
+					 BROWSE_BY_YEAR = { icon = 'html/images/iAlbumWhite.png', text = 'BROWSE_BY_YEAR' },
+					 PLUGIN_CUSTOMBROWSE = { icon = additionalLinks.icons.${'PLUGIN_CUSTOMBROWSE'}.replace('.png', "_40x30_f.png"), text = 'PLUGIN_CUSTOMBROWSE' } } -%]
+
+<div id = "Database" class = "panel" title = "[% 'IPENG_BROWSE_LIBRARY' | string %]" style = 'width: 320'>
 
 <ul style = "font-size: 110%; margin-bottom: 8; margin-top: 0;">
-[% FOREACH cat = browseCategories.keys %]
-	[% IF additionalLinks.browse.$cat %]
+[%- FOREACH cat = browseCategories.keys;
+	IF additionalLinks.browse.$cat %]
 		<li class = "biggerLine">
 		<a href="[% webroot %][% additionalLinks.browse.$cat %]&player=[% playerURI %]" target="_self">
 		<img src="[% webroot %][% browseCategories.$cat.icon %]" width="40" height="30" class = "paddedPic">&nbsp;
 		<span class="secondary">[% browseCategories.$cat.text | string %]</span></a>
 		</li>
-	[% END %]
-[% END %]
+	[%- END;
+END;
 
-</ul>
+'</ul>';
 
-[% orderByList = {
+orderByList = {
 	'album.titlesort'                                     => 'ALBUM',
 	'album.year,album.titlesort'                          => 'SORT_YEARALBUM',
 	'album.year,contributor.namesort,album.titlesort'     => 'SORT_YEARARTISTALBUM',
@@ -296,17 +300,17 @@ PROCESS sleepSet -%]
 	'contributor.namesort,album.year,album.titlesort'     => 'SORT_ARTISTYEARALBUM',
 	'genre.namesort,album.titlesort'                      => 'SORT_GENREALBUM',
 	'genre.namesort,contributor.namesort,album.titlesort' => 'SORT_GENREARTISTALBUM',
-} %]
+} -%]
 
 <!--label for="orderBy" class="backgroundtext">[% "SORT_BY" | string %]</label-->[%# 'ALBUMS' | string %]
-<div class="backgroundtext" style = "float: left; padding-top: 0; margin: 8 0 0 3; width: 120" wrap>[% "SORT_BY" | string %]</div>
+<div class="backgroundtext" style = "float: left; padding-top: 0; margin: 8 0 0 3; width: 120" wrap>[% "IPENG_ALBUMSORT" | string %]</div>
 <select class = "selectItems" name="orderBy" onChange="setAlbumOrderBy(selectedIndex,options[selectedIndex].value)">
 [% FOREACH orderType = orderByList.keys.sort %]
 	<option [% IF orderType == orderBy %]selected[% END %] value="[% orderType %]">[% orderByList.$orderType | string %]</option>
 [% END;
 '</select>';
 
-IF additionalLinks.browse.PLUGIN_CUSTOMBROWSE;
+IF additionalLinks.browseiPeng.PLUGIN_IPENG_CUSTOM_BROWSE_MORE;
 	'<br><br>';
 	PROCESS blDetails;
 END;
@@ -317,19 +321,23 @@ PROCESS spacer;
 END;
 
 BLOCK browseLists %]
-<div id = "Lists" class = "panel" title = "Browse More"> <!-- "LISTS" | string -->
+<div id = "Lists" class = "panel" title = "[% 'IPENG_BROWSE_MORE' | string %]">
 [%- PROCESS blDetails;
 PROCESS spacer;
 '</div>';
 
-END %]
+END;
 
-[%- BLOCK blDetails;
+BLOCK blDetails;
 browseMoreCategories = { SAVED_PLAYLISTS = { icon = 'iPlaylistWhite.png', text = 'PLAYLISTS' }, 
 						 FAVORITES = { icon = 'iFavoritesWhite.png', text = 'FAVORITES' }, 
 						 BROWSE_NEW_MUSIC = { icon = 'iNewWhite.png', text = 'BROWSE_NEW_MUSIC' }, 
-						 PLUGIN_RANDOMPLAY = { icon = 'iRandomWhite.png', text = 'PLUGIN_RANDOMPLAY' } } -%]
+						 PLUGIN_RANDOMPLAY = { icon = 'iRandomWhite.png', text = 'PLUGIN_RANDOMPLAY' } };
+						 
+browseMoreExclude = { PLUGIN_IPENG_CUSTOM_BROWSE_MORE = '' };
 
+
+-%]
 <ul  style = "font-size: 110%; margin: 0 0 8 0; ">
 [%- FOREACH cat = browseMoreCategories.keys;
 	IF additionalLinks.browse.$cat -%]
@@ -348,7 +356,7 @@ END -%]
 	<span class="secondary">[% 'SEARCH' | string %]</span></a>
 	</li>
 [%- FOREACH link = additionalLinks.browseiPeng;
-	IF !browseCategories.keys.grep(link.key).size && !browseMoreCategories.keys.grep(link.key).size -%]
+	IF !browseCategories.keys.grep(link.key).size && !browseMoreCategories.keys.grep(link.key).size && !browseMoreExclude.keys.grep(link.key).size -%]
 		<li class = "biggerLine">
 		<a href="[% webroot %][% link.value %]&player=[% playerURI %]" target="_self">
 		[%- IF additionalLinks.icons.${link.key} -%]
@@ -374,18 +382,18 @@ FOREACH link = additionalLinks.searchiPeng;
 	[% END;
 END;
 '</ul>';
-END %]
+END;
 
 
 
-[% BLOCK playerChoose %]
+BLOCK playerChoose;
 
-[%- USE Clients; players = Clients.get("id") -%]
+USE Clients; players = Clients.get("id");
 
-[% IF player_chooser_list %]
+IF player_chooser_list %]
 	<div id = "FullBG" style = "display: none"></div>
 	<form id = "PCDiv" style="display: none;">
-		<span style = "margin: 8">Select the players to sync with</span>
+		<span style = "margin: 8">[% 'IPENG_SYNC_CHOOSE' | string %]</span>
 		<span id="currentplayername" style="display: block; font-weight: bold; margin: 8; font-size: 120%;"></span>
 		<span><br></span>
 		<select id="synchronize" 
@@ -396,13 +404,13 @@ END %]
 				font-size: 15;
 			    min-width: 275;
 				min-height: 38;">
-			[% c_playername = ''; FOREACH playerobj IN players %]
-				[% IF player == playerobj.id;
+			[% c_playername = ''; FOREACH playerobj IN players;
+				IF player == playerobj.id;
 					c_playername = playerobj.name;
-				ELSE; %]
+				ELSE; -%]
 					<option id = "player[% playerobj.id %]" value = "[% playerobj.id %]">[% playerobj.name %]</option>
-				[% END %]
-			[% END %]
+				[% END;
+			END -%]
 			<option id = "playernone" value = "none" selected>[% 'SETUP_NO_SYNCHRONIZATION' | string %]</option>
 		</select>
 	    <a class="iButton white" 
@@ -437,7 +445,7 @@ END %]
 
 	<form method="get" class = "backgroundtext" style = "margin: 0 11">
 		<!--label for = "player" class = "backgroundtext" style = "position: absolute; float:left; margin: 0 16" >[% "CURRENT_PLAYER" | string %]</label-->
-		<span class = "backgroundtext" style = "float:left; margin: 0; padding: 0; display: block;" >Player:</span>
+		<span class = "backgroundtext" style = "float:left; margin: 0; padding: 0; display: block;" >[% 'IPENG_PLAYER' | string %]</span>
 		<select id="player" name="player" class = "selectItems" onChange="playerSubmit(this);" style = "float: right; max-width: 220; display: block; margin: -4 0 0 0;">
 		[% FOREACH playerobj IN players %]
 			<option id = "[% playerobj.id %]" value = "[% playerobj.id %]" [% IF player == playerobj.id %]selected[% END %]>[% playerobj.name %]</option>
@@ -446,37 +454,42 @@ END %]
 			<OPTION id="do_sync" value="sync">[% 'SETUP_SYNCHRONIZE' | string %]</OPTION>
 		</OPTGROUP>
 		</select>
-	[% IF page %]<input type = 'hidden' name = 'page' value = '[% page %]'>[% END %]
-	[% IF playerid %]<input type = 'hidden' name = 'playerid' value = '[% playerid %]'>[% END %]
-	<br>
-	</form>
-[% ELSE %]
-	[% temp = '0'; FOREACH playerobj IN players %]
-		[% IF player == playerobj.id; temp = '1'; %]
-				<span class = "backgroundtext">[% "CURRENT_PLAYER" | string %] [% IF playerobj.name %][% playerobj.name %][% ELSE %][% player %][% END %]</span>
-				<br>
-		[% END %]
-	[% END %]
-	[% IF !temp %]
-		<span class = "backgroundtext">[% "CURRENT_PLAYER" | string %] [% "NONE" | string %]</span>
+	[% IF page %]<input type = 'hidden' name = 'page' value = '[% page %]'>[% END;
+	IF playerid %]<input type = 'hidden' name = 'playerid' value = '[% playerid %]'>[% END;
+	'<br>';
+	'</form>';
+ELSE;
+	temp = '0'; FOREACH playerobj IN players;
+		IF player == playerobj.id; temp = '1'; %]
+				<span class = "backgroundtext">[% "IPENG_PLAYER" | string; " "; 
+				IF playerobj.name;
+					playerobj.name;
+				ELSE;
+					player;
+				END; '</span>';
+				'<br>';
+		END;
+	END;
+	IF !temp %]
+		<span class = "backgroundtext">[% "IPENG_PLAYER" | string %] [% "NONE" | string %]</span>
 		<br>
-	[% END %]
-[% END %]
+	[% END;
+END;
 
-[% END %]
+END;
 
 
-[% BLOCK browseSettings %]
+BLOCK browseSettings %]
 <div id = "browseSettings" class = "panel" title = "[% 'SETTINGS' | string %]">
 <ul  style = "font-size: 110%; margin-bottom: 8;">
 
 	<li class = "biggerLine">
-	<a href="#alarmSet">
+	<a href="[% webroot %]home.html?runAlarm=1" target="_onload:localOnload();">
 	<img src="[% webroot %]html/images/iAlarmWhite.png" width="40" height="32" class = "paddedPic">&nbsp;
 	<span class="secondary">[% 'ALARM' | string | truncate(20) %]</span></a>
 	</li>
 	<li class = "biggerLine">
-	<a href="#sleep" target="_javascript:sleep.init();">
+	<a href="[% webroot %]home.html?runSleep=1" target="_onload:sleep.init();">
 	<img src="[% webroot %]html/images/iSleepWhite.png" width="40" height="30" class = "paddedPic">&nbsp;
 	<span class="secondary">[% 'SLEEP' | string | truncate(20) %]</span></a>
 	</li>
@@ -489,25 +502,25 @@ END %]
 	[% END %]		
 	<span class="secondary">[% link.key | string | truncate (20) %]</span></a>
 	</li>
-[% END %]
+[% END;
 
-[% knownPlugins = { PLUGIN_NOALBUMREVIEW = 0,
-					PLUGIN_NOBIOGRAPHY = 0 } %]
+knownPlugins = { PLUGIN_NOALBUMREVIEW = 0,
+				 PLUGIN_NOBIOGRAPHY = 0 };
 
-[% FOREACH link = additionalLinks.plugins %]
-	[% IF knownPlugins.keys.grep(link.key).size %]
+FOREACH link = additionalLinks.plugins;
+	IF knownPlugins.keys.grep(link.key).size %]
 		<li class = "biggerLine">
 		<a href="[% webroot %][% link.value %]&player=[% playerURI %]" target="_self">
-		[% IF additionalLinks.icons.${link.key} %]
+		[%- IF additionalLinks.icons.${link.key} %]
 			<img src="[% webroot %][% additionalLinks.icons.${link.key}.replace('.png', "_40x30_f.png") %]" width="40" height="30" class = "paddedPic">&nbsp;
-		[% END %]
+		[% END -%]
 		<span class="secondary">[% link.key | string | truncate (20) %]</span></a>
 		</li>
-	[% END %]
-[% END %]
+	[% END;
+END;
 
 
-
+%]
 	<!-- SERVER SETTINGS -->
 	<li class = "biggerLine">
 	<a href="[% webroot %]settings/server/basic.html" target="_self">
@@ -522,12 +535,12 @@ END %]
 	<span class="secondary">[% 'PLAYER_SETTINGS' | string | truncate(22) %]</span></a>
 	</li>
 </ul>	
-[% PROCESS spacer %]
-</div>
-[% END %]
+[% PROCESS spacer;
+'</div>';
+END;
 
 
-[% BLOCK browseRadio %]
+BLOCK browseRadio %]
 <form id = "Radio" class = "panel" name="tune" method="get" action="status.html" target = "_self" title = '[% "RADIO" | string %]' style = 'background: none;'>
 [% PROCESS tune_in_form %]
 <ul style = "margin-left: 0;">
@@ -545,13 +558,13 @@ END %]
 			<img src="[% webroot %][% additionalLinks.icons.${key}.replace('.png', "_30x30_f.png") %]" width="30" class = "radioPic" style = "top: -7" alt="[% key | string %]">
 			<span class="secondary" style = "font-size: 80%; padding-left: 5">[% key | string | truncate(26) %]</span></a>
 		</li>
-	[% END %]
-</ul>
-[% PROCESS spacer %]
-</form>
-[% END %]
+	[% END;
+'</ul>';
+PROCESS spacer;
+'</form>';
+END;
 
-[% BLOCK tune_in_form %]
+BLOCK tune_in_form %]
     <input type="hidden" name="p0" value="playlist">
     <input type="hidden" name="p1" value="play">
     <input type="hidden" name="player" value="[% player %]">
@@ -569,11 +582,11 @@ END %]
 				 height: 30px;
 				 text-align: center;
 				 font-size: 15;
-			">[% "RADIO_TUNEIN_CHOOSE" | string %]</a>
-[% END %]
+			">[% "RADIO_TUNEIN_CHOOSE" | string; '</a>';
+END;
 
 
-[% BLOCK musicServices %]
+BLOCK musicServices %]
 <div id = "MusicServices" class = "panel" title = "[% 'MUSIC_SERVICES' | string %]">
 	<ul>
 	[%- FOREACH key = additionalLinkOrder.music_services %]
@@ -582,248 +595,39 @@ END %]
 			<img src="[% webroot %][% additionalLinks.icons.${key}.replace('.png', "_30x30_f.png") %]" width="30" class = "radioPic" alt="[% key | string %]">
 			<span class="secondary" style = "font-size: 80%; padding-left: 5">[% key | string | html | truncate (26) %]</span></a>
 		</li>
-	[%- END %]
-	[%- FOREACH link = additionalLinks.music_services; IF !additionalLinkOrder.music_services.grep(link.key).size %]
+	[%- END;
+	FOREACH link = additionalLinks.music_services; 
+		IF !additionalLinkOrder.music_services.grep(link.key).size %]
 		<li class = "biggerLine">
 			<a href="[% webroot %][% link.value | html %]player=[% playerURI %]" target="_self">
 			<img src="[% webroot %][% additionalLinks.icons.${link.key}.replace('.png', "_30x30_f.png") %]" width="30" class = "radioPic" alt="[% link.key | string %]">
 			<span class="secondary" style = "font-size: 80%; padding-left: 5">[% link.key | string | html %]</span></a>
 		</li>
-	[%- END; END %]
-	[% IF additionalLinks.radios.exists('PLUGIN_PANDORA_MODULE_NAME') %]
+	[%- END;
+	END;
+	IF additionalLinks.radios.exists('PLUGIN_PANDORA_MODULE_NAME') %]
 		<li class = "biggerLine">
 			<a href="[% webroot %][% additionalLinks.radio.PLUGIN_PANDORA_MODULE_NAME | html %]player=[% playerURI %]" target="_self">
-			<span class="secondary" style = "font-size: 80%; padding-left: 5">[% "PLUGIN_PANDORA_MODULE_NAME" | string | html %]</span></a>
-		</li>
-	[%- END %]
-	</ul>
-[% PROCESS spacer %]
-</div>
-[%- END %]
+			<span class="secondary" style = "font-size: 80%; padding-left: 5">[% "PLUGIN_PANDORA_MODULE_NAME" | string | html;
+			'</span></a>';
+		'</li>';
+	END;
+	'</ul>';
+PROCESS spacer;
+'</div>';
+END;
 
-
-[% BLOCK sleepSet %]
-<div id = "sleep" title = "[% 'SLEEP' | string %]" 
-	 style = "width: 100%; height: 325; 
-			  background-color: #1A1A1A; 
-			  background-image: url([% webroot %]html/images/cooliosleep1.png), url([% webroot %]html/images/sleepbg.png); 
-			  background-position: 120 23, top left; 
-			  background-repeat: no-repeat, repeat-x;">
-	 
-	<span id = "sleeptime" style = "position: absolute; font-size: 80; top: 106; width: 320; -webkit-box-sizing: border-box; text-align: center; color: white; display: none">&nbsp;</span>
-
-	<div id = "sleepedit" style = "position: absolute; font-size: 32; top: 126; width: 320; -webkit-box-sizing: border-box; padding: 0 35 0 35;">
-		<select id="s_hours" name="s_hours" class = "selectItems" title = "hours"
-				style = "float: left; font-size: 32; text-align: right; "
-				onChange = "void(0);">
-			[% j = 0; WHILE j < 24; %]
-			<option id = "a_h[% j %]" value = "[% j %]">[% j %]</option>
-			[% j = j + 1; END %]
-		</select>
-	
-		<span style = "font-size: 48; color: white;">&nbsp;:</span>
-	
-		<select id="s_minutes" name="s_minutes" title = "[% 'MINUTES' | string %]" class = "selectItems" 
-				style = "float: right; font-size: 32;"
-				onChange = "void(0);">
-			[% j = 0; WHILE j < 60; %]
-			<option id = "a_m[% j %]" value = "[% IF j < 10; '0'; END; j %]">[% IF j < 10; '0'; END; j %]</option>
-			[% IF j < 15; j = j + 1;
-			   ELSE; j = j + 5; END;
-			END %]
-		</select>
-	</div>
-
-    <a id = 'sleepstart' class="iButton start" 
-	   href="javascript:sleep.Count(true);"	target = "_self"
-	   style = "position: absolute; display: block;
-	   			top: 210; left: 11;
-			    padding: 8 0 0 0;
-			    width: 298;
-			    height: 48px;
-			    text-align: center;
-			    font-size: 24;
-		        -webkit-box-sizing: border-box;
-		">Start</a>
-    <a id = 'sleepstop' class="iButton red" 
-		href = "javascript:sleep.Count(false);" target = "_self"
-		style = "position: absolute; display: none;
-	   			top: 210; left: 11;
-		 		padding: 8 0 0 0;
-				 width: 298;
-				 height: 48px;
-				 text-align: center;
-				 font-size: 24;
-			     -webkit-box-sizing: border-box;
-			     color: white;
-		">Stop</a>
-
-</div>
-[% END %]
-
-[% BLOCK alarmSet %]
+BLOCK alarmSet %]
 
 <div id = "playlists" class = "panel" title = "[% 'PLAYLISTS' | string %]">
 	<ul id = "a_playlists" style = "margin: 0 0 8 0" selectrow = "0">
 	</ul>
-[% PROCESS spacer %]
-</div>
+[% PROCESS spacer;
+'</div>';
 
-<div id="alarmSet" title = "[% 'ALARM' | string %]">
-	<div style = "margin: 0; padding: 3 0; background-image: url(html/images/clockbgsmall.png); background-repeat: repeat-x; bakground-position: top left; background-color: #B4B4B8">
-    <div class="row" style = "margin: 3 0; border: 0;">
-        <a id = "a_plus" class="iButton blue" href = 'javascript:startAAdd();' target = "_self"
-			style = "
-				 display: none;
-				 color: white;
-				 float: left;
-				 margin: 6 0 0 11;
-				 padding: 0px;
-				 height: 30px;
-				 width: 30px;
-				 text-align: center;
-				 font-size: 20;
-			">+</a>
-    	<span class = "backgroundtext" style = "float: right; margin: 4 130 0 0">Fade In</span>
-	    <div id = "a_fade" class="toggle" onclick="updateFade();" 
-[%# playerPrefs = Prefs.preferences('server').client(Clients.client( player)); %]
-[%# playerPrefs.get('alarmfadeseconds'); %]
-			[% USE Prefs; IF Prefs.preferences('server').get("_client:$player").alarmfadeseconds; %]
-				toggled = "true"
-			[% END %]
-			><span class="thumb">
-			</span><span class="toggleOn">ON</span><span class="toggleOff">OFF</span>
-		</div>
-    </div>
-    <div id = "e_add" class = "a_editrow" style = "height: 48; display: none;">
-		<select id = "e_weekdays" title = "Weekday" class = "selectItems" 
-				style = "float: left; margin: 8 4 4 8; padding: 1; 
-						 font-size: 17; height: 32; min-width: 180; max-width: 180;
-		 			     -webkit-box-sizing: border-box;
-						 text-align: center;"
-				onclick = "event.stopPropagation();"
-				onChange = "doAAdd(this.value);">
-			<option value = "dummy" | string %]" selected>Select Weekday</option>
-		</select>
-	    <a class="iButton red" 
-		   href = "javascript:cancelAAdd();"
-		   target = "_self"
-		   style = "
-				 float: right;
-				 margin: 8 8 4 4;
-				 padding: 1;
-				 width: 100;
-				 height: 32px;
-				 text-align: center;
-				 font-size: 15;
-			     -webkit-box-sizing: border-box;
-			     color: white;
-			">[% 'CANCEL' | string %]</a>
-	</div>
-	</div>
+END;
 
-[% i = 0; WHILE i < 8 %]
-	<div id = "alarm[% i %]" class = "alarmrow" style = "display: none" onclick="startAEdit([% i %]);event.stopPropagation();">
-		<div style = "position: absolute; left: 0; top: 0; margin: 5 3 5 6">
-		<script>new Clock([% i %], [% i * 10000 %]);</script>
-		</div>
-		<div id = "a_info[% i %]" style = "position: relative; height: 100%; left: 87px; overflow: hidden; padding: 12 6 6 8">
-			<span id = "a_title[% i %]" 
-				  style = "position: absolute; top: 12;">[% "ALARM_DAY$i" | getstring %]</span><br>
-			<span id = "a_time[% i %]"
-				  style = "position: absolute; display: block; 
-				           top: 33; font-size: 80%">00:00pm</span>
-			<a id = "a_playlist[% i %]"
-				  target = "_none";
-				  style = "position: absolute; display: block;
-				  		   top: 55; width: 225; height: 17;
-						   font-size: 80%; padding: 6 0; z-index: 3">Current Playlist
-			</a>
-		</div>
-		<div class = "row" style = "position: absolute; right: 0; top: 9; width: 110; border: 0;">
-			<div id = "a_onoff[% i %]" class="toggle" onclick="toggleDay([% i %]); event.stopPropagation();">
-				<span class="thumb"></span><span class="toggleOn">ON</span><span class="toggleOff">OFF</span>
-			</div>
-		</div>
-	</div>
-	<div id = "a_editrow[% i %]" class="a_editrow" style = "display: none">
-	</div>
-[% i = i + 	1; 
-END %]
 
-	<img id = "a_delete" src = "[% webroot %]html/images/minus.png" onclick = "deleteAlarm(); event.stopPropagation();"
-		 style = "position: absolute; left: 0; top: 0; margin: 5; display: none; z-index: 2">
-
-	<span id = "e_time"
-		  style = "position: absolute; display: none; 
-		           top: 30; font-size: 80%">
-		<select id="e_hours" name="e_hours" class = "selectItems" title = "hours" 
-				style = "position: absolute; top: 0; left: -5; height: 24; width: 50;"
-				onclick = "event.stopPropagation();"
-				onChange = "updateHoursMinutes();">
-			[% j = 0; WHILE j < 24; %]
-			<option id = "a_h[% j %]" value = "[% j %]">[% j %]</option>
-			[% j = j + 1; END %]
-		</select>
-		<span style = "position: absolute; left: 48; top: 3">:</span>
-		<select id="e_minutes" name="e_minutes" title = "[% 'MINUTES' | string %]" class = "selectItems" 
-				style = "position: absolute; top: 0; left: 56; height: 24; width: 50;" 
-				onclick = "event.stopPropagation();"
-				onChange = "updateHoursMinutes();">
-			[% j = 0; WHILE j < 60; %]
-			<option id = "a_m[% j %]" value = "[% IF j < 10; '0'; END; j %]">[% IF j < 10; '0'; END; j %]</option>
-			[% j = j + 1; END %]
-		</select>
-	</span>
-	<img id = "a_arrow" src = "[% webroot %]html/images/chevron.png" 
-	 style = "position: absolute; display: none;
-	 		  top: 64; left: 205; margin: 2 4; z-index: 2;">
-
-	<div id = "a_moreedit" style = "display: none">
-		<div id = "e_volume" 
-			 style =  "position: relative; top: 11; left: 20; height: 22; width: 280px;" 
-			 volume = "0"
-			 onClick = 'evtAVolume(event);'>
-			<img src = '[% webroot %]html/images/VolumeBlueCap.png' style = 'position: absolute; left: 4; top: 5'>
-			<img src = '[% webroot %]html/images/VolumeWhiteMusicFill.png' style = 'position: absolute; left: 9; top: 5; width: 262; height: 9;'>
-			<img src = '[% webroot %]html/images/VolumeWhiteMusicCap.png' style = 'position: absolute; left: 271; top: 5'>
-			<img id="volumeBar" src="[% webroot %]html/images/VolumeBlueFill.png" style = 'position: absolute; left: 9; top: 5; height: 9; width: 1'>
-			<img id = 'volumeButton' src = '[% webroot %]html/images/MusicVolumeKnob.png' style = 'position: absolute; top: 0; left: 0;' >
-		</div>
-	    <a class="iButton silver" 
-		   href = "javascript:closeAEdit(false);"
-		   target = "_self"
-		   style = "
-		   		 float: left;
-				 margin: 23 4 4 8;
-				 padding: 1;
-				 width: 148;
-				 height: 32px;
-				 text-align: center;
-				 font-size: 15;
-			     -webkit-box-sizing: border-box;
-			     color: black;
-		   ">OK</a>
-	    <a class="iButton red" 
-		   href = "javascript:closeAEdit(true);"
-		   target = "_self"
-		   style = "
-				 float: right;
-				 margin: 23 8 4 4;
-				 padding: 1;
-				 width: 148;
-				 height: 32px;
-				 text-align: center;
-				 font-size: 15;
-			     -webkit-box-sizing: border-box;
-			     color: white;
-			">[% 'CANCEL' | string %]</a>
-	</div>
-[% PROCESS spacer %]
-</div>
-
-[% END %]
-
-[% BLOCK spacer %]
+BLOCK spacer %]
 <div style = "height: 48"></div>
 [% END %]

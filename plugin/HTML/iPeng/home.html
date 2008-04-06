@@ -1,20 +1,24 @@
+[% pagetitle = "HOME" | string;
+pageicon = 'MUSIC';
+browse = '1';
+music = '1';
+playlist = '0';
 
+thispage = 'home';
 
-[% pagetitle = "HOME" | string %] [% pageicon = 'MUSIC' %] [% browse = '1' %] [% music = '1' %][% playlist = '0' %]
+IF ajaxRequest;
+        '<pre>';
+PROCESS ajaxRequest.txt page = thispage;
+        '</pre>';
+ELSE;
 
-[%- thispage = 'home' -%]
+title = 'SqueezeCenter';
+homeString = 'Home'; 
+goHomeURI = 'href = "' _ webroot _ 'home.html?player=' _ playerURI _ '"'; #  "HOME" | string
+pageHeaderScripts = PROCESS HomeHeader;
+PROCESS iHeaderVert.html noShowBar = 1;
 
-[%- IF ajaxRequest -%]
-        <pre>
-[% PROCESS ajaxRequest.txt page = thispage %]
-        </pre>
-[%- ELSE -%]
-
-[% title = 'SqueezeCenter'; homeString = 'Home'; goHomeURI = 'href = "' _ webroot _ 'home.html?player=' _ playerURI _ '"' %][%# <!-- "HOME" | string --> %]
-[% pageHeaderScripts = PROCESS HomeHeader %]
-[% PROCESS iHeaderVert.html noShowBar = 1 %]
-
-[% BLOCK HomeHeader %]
+BLOCK HomeHeader %]
 
 	<style>
 	body > div > ul > li > a, .panel > ul > li > a
@@ -84,12 +88,14 @@
 	
 	// Synchronization
 	
-	[%- USE Clients; players = Clients.get("id") -%]
-	[% c_playername = ''; FOREACH playerobj IN players %]
-		[% IF player == playerobj.id;
+	[%- USE Clients; 
+	players = Clients.get("id");
+	c_playername = ''; 
+	FOREACH playerobj IN players;
+		IF player == playerobj.id;
 			c_playername = playerobj.name;
-		END %]
-	[% END %]
+		END;
+	END %]
 	
 	function playerSubmit(me) {
 		if (me.value == "sync") {
@@ -100,8 +106,8 @@
 			var sArray = [ 'sync', '?' ];
 			callJSONRPC(sArray, function (r2) { 
 			 	var selnone = true;
-				[%- USE Clients; players = Clients.get("id") -%]
-				[% FOREACH playerobj IN players %]
+				[%-	players = Clients.get("id");
+				FOREACH playerobj IN players %]
 					if ($('player[% playerobj.id %]'))
 						if (r2.result._sync.include('[% playerobj.id %]')) {
 					 		$('player[% playerobj.id %]').selected = true;
@@ -185,13 +191,13 @@
 <script>storeReturnPage();</script>
 
 
-[% PROCESS browseDatabase; %]
-[% PROCESS browseLists; %]
-[% PROCESS browseSettings; %]
-[% PROCESS browseRadio; %]
-[% PROCESS musicServices; %]
-[% PROCESS alarmSet %]
-[% PROCESS sleepSet %]
+[%- PROCESS browseDatabase;
+PROCESS browseLists;
+PROCESS browseSettings;
+PROCESS browseRadio;
+PROCESS musicServices;
+PROCESS alarmSet;
+PROCESS sleepSet -%]
 
 
 <div id = "main" title = "Home" selected = 'true' class = "panel"><!-- 'HOME' | string -->
@@ -202,9 +208,15 @@
 		Browse Library</a> <!-- "DATABASE" | string -->
 	</li>
 	<li class = "biggerLine">
+	[%- IF additionalLinks.browse.PLUGIN_CUSTOMBROWSE %]
+		<a href="[% webroot %][% additionalLinks.browse.PLUGIN_CUSTOMBROWSE %]&player=[% playerURI %]" target="_self">
+		<img src="[% webroot %][% additionalLinks.icons.${'PLUGIN_CUSTOMBROWSE'}.replace('.png', "_40x30_f.png") %]" width="40" height="30" class = "paddedPic">&nbsp;
+		<span class="secondary">[% 'PLUGIN_CUSTOMBROWSE' | string %]</span></a>
+	[%- ELSE -%]
 		<a href="#Lists">
 		<img src="[% webroot %]html/images/iBookWhite.png" width="40" height="30" class = "paddedPic" alt = 'radio'>&nbsp;
 		Browse More</a>  <!-- "LISTS" | string-->
+	[%- END -%]
 	</li>
 </ul>
 <ul>
@@ -258,7 +270,8 @@
 						BROWSE_BY_GENRE = { icon = 'html/images/iGenreWhite.png', text = 'GENRES' },
 						BROWSE_MUSIC_FOLDER = { icon = 'html/images/iFolderWhite2.png', text = 'SETUP_AUDIODIR' },
 						BROWSE_BY_YEAR = { icon = 'html/images/iAlbumWhite.png', text = 'BROWSE_BY_YEAR' },
-						PLUGIN_CUSTOMBROWSE = { icon = additionalLinks.icons.${'PLUGIN_CUSTOMBROWSE'}.replace('.png', "_40x30_f.png"), text = 'PLUGIN_CUSTOMBROWSE' } } %]
+						#PLUGIN_CUSTOMBROWSE = { icon = additionalLinks.icons.${'PLUGIN_CUSTOMBROWSE'}.replace('.png', "_40x30_f.png"), text = 'PLUGIN_CUSTOMBROWSE' } 
+						} %]
 
 <div id = "Database" class = "panel" title = "Database"> <!-- "DATABASE" | string -->
 
@@ -290,30 +303,43 @@
 <select class = "selectItems" name="orderBy" onChange="setAlbumOrderBy(selectedIndex,options[selectedIndex].value)">
 [% FOREACH orderType = orderByList.keys.sort %]
 	<option [% IF orderType == orderBy %]selected[% END %] value="[% orderType %]">[% orderByList.$orderType | string %]</option>
-[% END %]
-</select>
-[% PROCESS spacer %]
-</div>
+[% END;
+'</select>';
 
-[% END %]
+IF additionalLinks.browse.PLUGIN_CUSTOMBROWSE;
+	'<br><br>';
+	PROCESS blDetails;
+END;
 
-[% BLOCK browseLists %]
-[% browseMoreCategories = { SAVED_PLAYLISTS = { icon = 'iPlaylistWhite.png', text = 'PLAYLISTS' }, 
-							FAVORITES = { icon = 'iFavoritesWhite.png', text = 'FAVORITES' }, 
-							BROWSE_NEW_MUSIC = { icon = 'iNewWhite.png', text = 'BROWSE_NEW_MUSIC' }, 
-							PLUGIN_RANDOMPLAY = { icon = 'iRandomWhite.png', text = 'PLUGIN_RANDOMPLAY' } } %]
+PROCESS spacer;
+'</div>';
 
+END;
+
+BLOCK browseLists %]
 <div id = "Lists" class = "panel" title = "Browse More"> <!-- "LISTS" | string -->
+[%- PROCESS blDetails;
+PROCESS spacer;
+'</div>';
+
+END %]
+
+[%- BLOCK blDetails;
+browseMoreCategories = { SAVED_PLAYLISTS = { icon = 'iPlaylistWhite.png', text = 'PLAYLISTS' }, 
+						 FAVORITES = { icon = 'iFavoritesWhite.png', text = 'FAVORITES' }, 
+						 BROWSE_NEW_MUSIC = { icon = 'iNewWhite.png', text = 'BROWSE_NEW_MUSIC' }, 
+						 PLUGIN_RANDOMPLAY = { icon = 'iRandomWhite.png', text = 'PLUGIN_RANDOMPLAY' } } -%]
+
 <ul  style = "font-size: 110%; margin: 0 0 8 0; ">
-[% FOREACH cat = browseMoreCategories.keys %]
-	[% IF additionalLinks.browse.$cat %]
+[%- FOREACH cat = browseMoreCategories.keys;
+	IF additionalLinks.browse.$cat -%]
 		<li class = "biggerLine">
 		<a href="[% webroot %][% additionalLinks.browse.$cat %]&player=[% playerURI %]" target="_self">
 		<img src="[% webroot %]html/images/[% browseMoreCategories.$cat.icon %]" width="40" height="30" class = "paddedPic">&nbsp;
 		<span class="secondary">[% browseMoreCategories.$cat.text | string %]</span></a>
 		</li>
-	[% END %]
-[% END %]
+	[%- END;
+END -%]
 
 	<!-- SEARCH -->
 	<li class = "biggerLine">
@@ -321,37 +347,36 @@
 	<img src="[% webroot %]html/images/iSearchWhite.png" width="40" height="30" class = "paddedPic">&nbsp;
 	<span class="secondary">[% 'SEARCH' | string %]</span></a>
 	</li>
-[% FOREACH link = additionalLinks.browseiPeng %]
-	[% IF !browseCategories.keys.grep(link.key).size && !browseMoreCategories.keys.grep(link.key).size %]
+[%- FOREACH link = additionalLinks.browseiPeng;
+	IF !browseCategories.keys.grep(link.key).size && !browseMoreCategories.keys.grep(link.key).size -%]
 		<li class = "biggerLine">
 		<a href="[% webroot %][% link.value %]&player=[% playerURI %]" target="_self">
-		[% IF additionalLinks.icons.${link.key} %]
+		[%- IF additionalLinks.icons.${link.key} -%]
 			<img src="[% webroot %][% additionalLinks.icons.${link.key}.replace('.png', "_40x30_f.png") %]" width="40" height="30" class = "paddedPic">&nbsp;
-		[% ELSE %]
+		[%- ELSE -%]
 			<img src="[% webroot %]html/images/blank.png" width="40" height="30" class = "paddedPic">&nbsp;
-		[% END %]		
+		[%- END -%]		
 		<span class="secondary">[% link.key | string %]</span></a>
 		</li>
-	[% END %]
-[% END %]
-[% FOREACH link = additionalLinks.searchiPeng %]
-	[% IF link.key != "SEARCHMUSIC" %]
+	[%- END;
+END;
+FOREACH link = additionalLinks.searchiPeng;
+	IF link.key != "SEARCHMUSIC" -%]
 		<li class = "biggerLine">
 		<a href="[% webroot %][% link.value %]&player=[% playerURI %]" target="_self">
-		[% IF additionalLinks.icons.${link.key} %]
+		[%- IF additionalLinks.icons.${link.key} -%]
 			<img src="[% webroot %][% additionalLinks.icons.${link.key}.replace('.png', "_40x30_f.png") %]" width="40" height="30" class = "paddedPic">&nbsp;
-		[% ELSE %]
+		[%- ELSE -%]
 			<img src="[% webroot %]html/images/blank.png" width="40" height="30" class = "paddedPic">&nbsp;
-		[% END %]		
+		[%- END -%]		
 		<span class="secondary">[% link.key | string %]</span></a>
 		</li>
-	[% END %]
-[% END %]
-</ul>
-[% PROCESS spacer %]
-</div>
+	[% END;
+END;
+'</ul>';
+END %]
 
-[% END %]
+
 
 [% BLOCK playerChoose %]
 

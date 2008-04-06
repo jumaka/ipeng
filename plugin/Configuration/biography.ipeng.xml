@@ -6,7 +6,6 @@
 				<requireplugins>Biography</requireplugins>
 				<weight>40</weight>
 				<name>Biography</name>
-				<icon>html/images/mixbutton.png</icon>
 				<url>plugins/Biography/pure.html</url>
 				<type>content</type>
 			</command>

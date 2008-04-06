@@ -1,4 +1,4 @@
-IPENG
+﻿IPENG
 	EN	iPeng
 
 PLUGIN_IPENG
@@ -6,34 +6,85 @@ PLUGIN_IPENG
 
 PLUGIN_IPENG_DESC
 	EN	iPeng is a plugin that provides the iPeng skin
+	DE	iPeng ist ein Plugin, dass die iPeng-Oberfäche bereitstellt
 
 SETUP_PLUGIN_IPENG_SECTION
 	EN	Settings Section
+	DE	Einstellungsblöcke
 
 SETUP_PLUGIN_IPENG_SECTION_DESC
 	EN	Select a settings section
+	DE	Einstellungsblock auswählen
 
 PLUGIN_IPENG_SETTINGS
 	EN	Various Settings
+	DE	Verschiedene Einstellungen
 
 PLUGIN_IPENG_SETTINGS_ENABLEDCOMMANDS
 	EN	Enable/Disable commands
+	DE	Kommandos Ein/Aus schalten
 
 SETUP_PLUGIN_IPENG_CONFIG_DIRECTORY
 	EN	Configuration directory
+	DE	Konfigurationsverzeichnis
 
 SETUP_PLUGIN_IPENG_CONFIG_DIRECTORY_DESC
 	EN	Directory where user configuration *.ipeng.xml files are read from
+	DE	Verzeichnis, aus dem *.ipeng.xml-Konfigurationsdateien gelesen werden
 
 SETUP_PLUGIN_IPENG_ENABLED_COMMANDS
 	EN	Enable/Disable commands
+	DE	Kommandos Ein/Aus schalten
 
 SETUP_PLUGIN_IPENG_ENABLED_COMMANDS_DESC
 	EN	Select which commands you like to be enabled in the iPeng skin
+	DE	Auswählen, welche Kommandos in iPeng zur Verfügung stehen sollen
 
 PLUGIN_IPENG_SELECT_COMMANDS_ALL
 	EN	Select all
+	DE	Alle auswählen
 
 PLUGIN_IPENG_SELECT_COMMANDS_NONE
 	EN	Select none
+	DE	Alle abwählen
 
+
+# Add Playlist Message
+IPENG_ADD_TO_PLAYLIST
+	EN	Added to playlist
+	DE	Zur Playlist hinzugefügt
+
+# (Play) Lists Button - Max 10 Characters
+IPENG_BUTTON_LISTS
+	EN	Lists
+	DE	Listen
+	
+# Home Button - Max 10 Characters
+IPENG_BUTTON_HOME
+	EN	Home
+	DE	Start
+	
+# Browse Library - Max 20 Characters
+IPENG_BROWSE_LIBRARY
+	EN	Browse Library
+	DE	Musikbibliothek
+	
+# Browse More - Max. 20 Characters
+IPENG_BROWSE_MORE
+	EN	Browse More
+	DE	Mehr Musik...
+	
+# Album Sort By - Max. 12 Characters
+IPENG_ALBUMSORT
+	EN	Sort By
+	DE	Sortierung
+	
+# Message "Select the players to sync with"
+IPENG_SYNC_CHOOSE
+	EN	Select the players to sync with:
+	DE	Player zu synchronisieren mit:
+	
+# Player
+IPENG_PLAYER
+	EN	Player:
+	DE	Player:

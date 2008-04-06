@@ -2,7 +2,7 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
       <head>
-	[%- IF (thispage == 'artwork') || ( orientation == 1 && (levelName == 'album' || levelName == 'age')) %]
+	[%- IF (thispage == 'songinfo') || (thispage == 'artwork') || ( orientation == 1 && (levelName == 'album' || levelName == 'age')) %]
 	<meta name="viewport" content="width=480; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;"/>
 	[%- page_vertical = 0;
 	ELSE %]
@@ -50,7 +50,7 @@ a:hover, a:visited, a:active, a:link {
 [% END %]
 
 <div id = 'OSDbg' style='display:none'></div>
-<div id = 'OSD' style='display:none'>Added to playlist</div>
+<div id = 'OSD' style='display:none'>[% 'IPENG_ADD_TO_PLAYLIST' | string %]</div>
 
 [%# IF thispage == 'status' || thispage == 'playlist' || thispage == 'artwork' || thispage == 'browse' %]
 <div id='systemWorking' style='display:none'></div>

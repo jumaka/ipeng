@@ -1,62 +1,59 @@
 <!-- iFooterVert.html -->
 
-[% btButtons = [ { num = 1, icon = 'Album', text = 'ALBUMS', href = 'dummy' }, 
+[%- btButtons = [ { num = 1, icon = 'Album', text = 'ALBUMS', href = 'dummy' }, 
 				 { num = 2, icon = 'Artist', text = 'ARTIST', href = 'dummy' },
-				 { num = 3, icon = 'Playlist', text = 'Lists', href = 'dummy' },
-				 { num = 4, icon = 'Search', text = 'Search', href = 'dummy' },
-				 { num = 5, icon = 'Home', text = 'Home', href = webroot _ 'home.html?player=' _ playerURI } ] %]
-[% btButtons.0.text = 'ALBUMS' | string %]
-[% btButtons.1.text = 'ARTIST' | string %]
-[% btButtons.3.text = 'SEARCH' | string %]
+				 { num = 3, icon = 'Playlist', text = 'IPENG_BUTTON_LISTS', href = 'dummy' },
+				 { num = 4, icon = 'Search', text = 'SEARCH', href = 'dummy' },
+				 { num = 5, icon = 'Home', text = 'IPENG_BUTTON_HOME', href = webroot _ 'home.html?player=' _ playerURI } ];
 
-[% btButtons.0.href = PROCESS browseAlbumLink %]
-[% btButtons.1.href = PROCESS browseArtistLink %]
-[% btButtons.2.href = PROCESS browsePlaylistsLink %]
-[% btButtons.3.href = PROCESS browseSearchLink %]
+btButtons.0.href = PROCESS browseAlbumLink;
+btButtons.1.href = PROCESS browseArtistLink;
+btButtons.2.href = PROCESS browsePlaylistsLink;
+btButtons.3.href = PROCESS browseSearchLink -%]
 
 <div id = 'bottombar' [% classFooter %]>
-[% FOREACH btItem = btButtons %]
-	[% IF btItem.icon == selectedButton %]
+[%- FOREACH btItem = btButtons;
+	IF btItem.icon == selectedButton -%]
 		<div id = 'bottombarSelect' style = "left: [% (btItem.num - 1) * 64 + 2 %];"></div>
-	[% END %]
-[% END %]
+	[% END;
+END;
 
+-%]
 <div id = 'bottombararea'>
 <table width="100%" height = "48"; cellspacing = "0" cellpadding="0" border = "0">
+[%- FOREACH btItem = btButtons;
+	PROCESS btDisplay;
+END;
 
-[% FOREACH btItem = btButtons %]
-	[% PROCESS btDisplay %]
-[% END %]
+'</table>';
+'</div>';
+'</div>';
 
-</table>
-</div>
-</div>
-
-<!-- /iFooterVert.html -->
+'<!-- /iFooterVert.html -->';
 
 
-[% BLOCK btDisplay %]
+BLOCK btDisplay %]
 	<td align = "center" style = "width: 60; padding-top: 1; padding-bottom: 0;">
 		<img src="[% webroot %]html/images/i[% btItem.icon %]Trans[% IF btItem.icon == selectedButton %]Selected[% END %].png" style = "padding: 0; border: 0; margin: 0;"><br>
-		<span class= "bottombartext[% IF btItem.icon == selectedButton %]On[% END %]">[% btItem.text %]</span> 
-		[% IF btItem.href %]
+		<span class= "bottombartext[% IF btItem.icon == selectedButton %]On[% END %]">[% btItem.text | string %]</span> 
+		[%- IF btItem.href %]
 			<a class = "bottombarClick" style = "left: [% (btItem.num - 1) * 64 + 2 %]" href="[% btItem.href %]" target="_self"></a>
-		[% END %]
-	</td>	
-[% END %]
+		[%- END;
+	'</td>';
+END;
 
-[% BLOCK browseAlbumLink %]
-[% webroot _ 'browsedb.html?hierarchy=album,track&level=0&&player=' _ playerURI %]
-[% END %]
+BLOCK browseAlbumLink;
+	webroot _ 'browsedb.html?hierarchy=album,track&level=0&&player=' _ playerURI;
+END;
 
-[% BLOCK browseArtistLink %]
-[% webroot _ 'browsedb.html?hierarchy=contributor,album,track&level=0&&player=' _ playerURI %]
-[% END %]
+BLOCK browseArtistLink;
+	webroot _ 'browsedb.html?hierarchy=contributor,album,track&level=0&&player=' _ playerURI;
+END;
 
-[% BLOCK browsePlaylistsLink %]
-[% webroot _ 'browsedb.html?hierarchy=playlist,playlistTrack&level=0&&player=' _ playerURI %]
-[% END %]
+BLOCK browsePlaylistsLink;
+	webroot _ 'browsedb.html?hierarchy=playlist,playlistTrack&level=0&&player=' _ playerURI;
+END;
 
-[% BLOCK browseSearchLink %]
-[% webroot _ 'search.html?player=' _ playerURI %]
-[% END %]
+BLOCK browseSearchLink;
+	webroot _ 'search.html?player=' _ playerURI;
+END %]

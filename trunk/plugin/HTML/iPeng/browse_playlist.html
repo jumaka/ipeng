@@ -1,10 +1,10 @@
-[% pagetitle = "SAVED_PLAYLISTS" | string %]
-[% pageicon = 'SAVED_PLAYLISTS' %]
-[% IF NOT ajaxUpdate %]
-[% IF playlist.title; title = playlist.title; ELSE; title = 'PLAYLIST' | string; END %]
-[% homeString = 'PLAYLIST' | string %]
-[% goHomeURI = 'href = "' _ webroot _ 'browsedb.html?hierarchy=playlist,playlistTrack&level=0&&player=' _ playerURI _ '"' %]
-[% PROCESS iHeaderVert.html dontscroll = 1 %]
+[% pagetitle = "SAVED_PLAYLISTS" | string;
+pageicon = 'SAVED_PLAYLISTS';
+IF NOT ajaxUpdate;
+IF playlist.title; title = playlist.title; ELSE; title = 'PLAYLIST' | string; END;
+homeString = 'PLAYLIST' | string;
+goHomeURI = 'href = "' _ webroot _ 'browsedb.html?hierarchy=playlist,playlistTrack&level=0&&player=' _ playerURI _ '"';
+PROCESS iHeaderVert.html dontscroll = 1 %]
 
 <script>
 function doDeletePlaylist(arg) {
@@ -40,17 +40,6 @@ function doRenamePlaylist(arg) {
 	}
 }
 </script>
-
-
-		<span id = "title" 
-		[% IF title.length > 15 %]
-			  style = "font-size: 80%; display: block; padding: 3 0" >
-			[% title | truncate (18) %]
-		[% ELSE %]
-			  style = "font-size: 100%;" >
-			[% title %]
-		[% END %]
-		</span>
 
 
 [% IF page_vertical %]
@@ -105,23 +94,23 @@ function doRenamePlaylist(arg) {
 <div style = "float: right; top: 0; right: 0; width: 0; height: 222px; padding: 0; border: 0; margin: 0; overflow: hidden;">&nbsp;</div> <!-- keep buttons at bottom -->
 
 <table width = '100%' class = 'noborder listNoAlbum' cellspacing = "0" bgcolor = 'white' border = "collapse">
-	[%- IF browse_items %]
-		[%- FOREACH item = browse_items %]
-			[% PROCESS browsedbitems_list.html noLink=item.descend %] <!--(levelName == 'track') -->
-		[% END -%]
-	[%- ELSE -%]
-		[% browse_list -%]
-	[% END -%]
-</table>
+	[%- IF browse_items;
+		FOREACH item = browse_items;
+			PROCESS browsedbitems_list.html noLink=item.descend; # <!--(levelName == 'track') -->
+		END;
+	ELSE;
+		browse_list;
+	END;
+'</table>';
 
-</div>
+'</div>';
 
-[% IF NOT ajaxUpdate %]
-	[% IF hasPagebar %]
+IF NOT ajaxUpdate;
+	IF hasPagebar %]
 		<div id="crumblist_vert">
-		[% PROCESS pagebar %]
-	[% END %]
-</div>
+		[% PROCESS pagebar;
+	END;
+	'</div>';
 
-[% PROCESS iFooterVert.html %]
-[% END %]
+	PROCESS iFooterVert.html;
+END %]

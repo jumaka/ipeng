@@ -53,6 +53,7 @@ BLOCK openAlbumTD;
 				END;
 			END;
 		ELSIF ((item.itemobj.album.id && !item.descend) || item.album) && !noLink && (item.item || !item.defined('level') && item.itemobj);
+			showcover = 1;
 			WRAPPER openAlbumTD -%]
 				<img STYLE="border: none" 
 					 src="/music/[% IF item.coverThumb; 

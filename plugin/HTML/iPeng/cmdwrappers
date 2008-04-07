@@ -447,28 +447,29 @@ END -%]
 	[%- ELSIF item.num || item.num == 0 -%]
 			<b><a [% PROCESS cmdHRef cmdType = 'jump' num = item.num %] >&nbsp;[% item.num + 1 %].&nbsp;</a>
 			<a [% PROCESS cmdHRef cmdType = 'jump' num = item.num %] >[% item.title | html %]</a></b>
-	[%-# browse list items -%]
-	[%-# no level info means its a music folder item, and check for itemobj to make sure it isn't just a text item -%]
-	[%- ELSIF item.item || !item.defined('level') && item.itemobj -%]
+	[%-# browse list items
+	   # no level info means its a music folder item, and check for itemobj to make sure it isn't just a text item
+	ELSIF item.item || !item.defined('level') && item.itemobj -%]
 		<a class = "tapblock" href="javascript:void(0);" 
-			[% PROCESS itemOnClickPlay %]
+			[%- PROCESS itemOnClickPlay -%]
 			title="[% item.text | html %]">
-		<span class = 'listFullTitle'>[% item.text | html %]
-        [%- IF item.showYear && item.year;' ('; item.year; ')'; END -%]
-	    </span></a>
-		[%- IF verbose -%]
+		<span class = 'listFullTitle'>[% item.text | html;
+        IF item.showYear && item.year;' ('; item.year; ')'; END;
+	    '</span></a>';
+		IF verbose -%]
 			<a class = "tapblockHalf" [% PROCESS albumItemHRef %] title="[% item.itemobj.album.title | html %]">
-				<span class = 'listFullArtist' title="[% item.itemobj.album.title | html %]">[% item.itemobj.album.title | html %]</span></a>
-			[%-# PROCESS artistsAsHTML.html notarget=1 -%]
-		[%- END -%]
-[%-# IF includeArtist && artist; PROCESS artistsAsHTML.html notarget = 1; END -%]
-	[%- ELSIF item.songtitle -%]
-		<a [% PROCESS songinfoItemHRef %] >[% item.songtitle | html %]</a>
-	[%- ELSE -%]
-		<a class = "tapblockFull" [% PROCESS itemOnClickPlay %]>
-			[%- item.text | html -%]
-		</a>
-	[%- END;
+				<span class = 'listFullArtist' title="[% item.itemobj.album.title | html %]">[% item.itemobj.album.title | html;
+				'</span></a>';
+			# PROCESS artistsAsHTML.html notarget=1;
+		END;
+# IF includeArtist && artist; PROCESS artistsAsHTML.html notarget = 1; END;
+	ELSIF item.songtitle -%]
+		<a [% PROCESS songinfoItemHRef %] >[% item.songtitle | html; '</a>';
+	ELSE -%]
+		<a class = "tapblockFull" [% PROCESS itemOnClickPlay; '>';
+			item.text | html;
+		'</a>';
+	END;
 
 	INCLUDE by_from_info;
 END -%]
@@ -477,28 +478,29 @@ END -%]
 [% BLOCK ajax_by_from_info %]
 	<span class = 'smalltext' id = 'byfrominfo_[% item.num %]'>
 	<span id = 'artist_[% item.num %]'>
-		[% PROCESS artistsAsHTML.html notarget = 1 %]
-	</span>
-	[%# IF item.includeAlbum && item.album && item.album != item.noAlbum %]
-	[% IF item.includeAlbum && item.itemobj.album && item.itemobj.album.title != item.noAlbum && item.itemobj.album.title != "" %]
-		<i><a [% IF classinfo %]class = [% classinfo %] [% END %][% PROCESS albumItemHRef %] id = 'albumlink_[% item.num %]'> [% item.itemobj.album.title | html %] </a></i>
-	[% END %]
-	</span>
-[% END %]
+		[%- PROCESS artistsAsHTML.html notarget = 1;
+	'</span>';
+	# IF item.includeAlbum && item.album && item.album != item.noAlbum;
+	IF item.includeAlbum && item.itemobj.album && item.itemobj.album.title != item.noAlbum && item.itemobj.album.title != "" -%]
+		<i><a [% IF classinfo %]class = [% classinfo %] [% END %][% PROCESS albumItemHRef %] id = 'albumlink_[% item.num %]'> [% item.itemobj.album.title | html; '</a></i>';
+	END;
+	'</span>';
+END %]
 
-[% BLOCK by_from_info %]
-	[%# IF item.includeAlbum && item.album && item.album != item.noAlbum %]
-	[% IF (item.includeArtist && item.artist && item.artist != item.noArtist) || (item.itemobj.artist && item.itemobj.artist != item.itemobj.noArtist) %]
+[% BLOCK by_from_info;
+	# IF item.includeAlbum && item.album && item.album != item.noAlbum;
+	IF (item.includeArtist && item.artist && item.artist != item.noArtist) || (item.itemobj.artist && item.itemobj.artist != item.itemobj.noArtist) %]
 		<span class = "listFullArtist">
-			[% PROCESS artistsAsHTML.html notarget = 1 noby = 1 itemobj = item.itemobj %]<br>
+			[%- PROCESS artistsAsHTML.html notarget = 1 noby = 1 itemobj = item.itemobj %]<br>
 		</span>
 		<span style = "height: 0; font-size: 4">&nbsp;</span>
-	[% END %]
-	[% IF item.includeAlbum && item.itemobj.album && item.itemobj.album.title != item.noAlbum && item.itemobj.album.title != "" %]
+	[%- END;
+	IF item.includeAlbum && item.itemobj.album && item.itemobj.album.title != item.noAlbum && item.itemobj.album.title != "" -%]
 		<a class = "tapblockHalf" [% PROCESS albumItemHRef %] title="[% item.itemobj.album.title | html %]">
-		<span class = "listFullArtist" title="[% item.itemobj.album.title | html %]">[% item.itemobj.album.title | html %]</span></a>
-	[% END %]
-[% END %]
+		<span class = "listFullArtist" title="[% item.itemobj.album.title | html %]">[% item.itemobj.album.title | html;
+		'</span></a>';
+	END;
+END %]
 
 
 [% BLOCK settingSection %]

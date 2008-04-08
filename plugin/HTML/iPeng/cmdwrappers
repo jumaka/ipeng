@@ -1,216 +1,216 @@
-[%- FILTER null %]
-[% statusroot      = 'status.html' %]
-[% noHomeLink      = 1 %]
-[% controlGraphics = 1 %]
-[% useTabList      = 1 %]
-[% useAJAX         = 1 %]
-[% crumbSeparator = '|' %]
-[% useExtJS = 0 %]
-[% bgcolor = "FFFFFF" %]
-[% resizeParam = "p" %]
+[%- FILTER null;
+statusroot      = 'status.html';
+noHomeLink      = 1;
+controlGraphics = 1;
+useTabList      = 1;
+useAJAX         = 1;
+crumbSeparator = '|';
+useExtJS = 0;
+bgcolor = "FFFFFF";
+resizeParam = "p";
 
-[%# Default to no targets for links %]
-[% notarget        = 1 %]
+# Default to no targets for links;
+notarget        = 1;
 
-[% BLOCK cmdlink %]
+BLOCK cmdlink %]
 	<span class = 'buttonControls'><a [% content %]><img src="[% webroot %]html/images/[% cmdimage %]" border=0 alt='[% cmdtitle | string | ucfirst %]' title='[% cmdtitle | string | ucfirst %]'></a></span>
-[% END %]
+[% END;
 
-[% BLOCK dummylink -%]
+BLOCK dummylink -%]
 	<img src="[% webroot %]html/images/spacer.gif" width="20" height="20" alt="" title="">
-[%- END %]
+[%- END;
 
-[% BLOCK playlink %]
-	[% PROCESS cmdlink
+BLOCK playlink;
+	PROCESS cmdlink
 		cmdtitle = "PLAY"
-		cmdimage = "play_white.png" %]
-[% END %]
+		cmdimage = "play_white.png";
+END;
 
-[% BLOCK addlink %]
-	[% PROCESS cmdlink
+BLOCK addlink;
+	PROCESS cmdlink
 		cmdtitle = "ADD_TO_PLAYLIST"
-		cmdimage = "blue_plus_trans.png" %]
-[% END %]
+		cmdimage = "blue_plus_trans.png";
+END;
 
-[% BLOCK descendlink %]
-	[% PROCESS cmdlink
+BLOCK descendlink;
+	PROCESS cmdlink
 		cmdtitle = "NEXT"
-		cmdimage = "chevron.png" %]
-[% END %]
+		cmdimage = "chevron.png";
+END;
 
-[% BLOCK ascendlink %]
-	[% PROCESS cmdlink
+BLOCK ascendlink;
+	PROCESS cmdlink
 		cmdtitle = "PREV"
-		cmdimage = "chevron_back.png" %]
-[% END %]
+		cmdimage = "chevron_back.png";
+END;
 
-[% BLOCK insertlink %]
-	[% PROCESS cmdlink
+BLOCK insertlink;
+	PROCESS cmdlink
 		cmdtitle = "NEXT"
-		cmdimage = "chevron.png" %]
-[% END %]
+		cmdimage = "chevron.png";
+END;
 
-[% BLOCK removelink %]
-	[% PROCESS cmdlink
+BLOCK removelink;
+	PROCESS cmdlink
 		cmdtitle = "REMOVE_FROM_PLAYLIST"
-		cmdimage = "remove.png" %]
-[% END %]
+		cmdimage = "remove.png";
+END;
 
-[% BLOCK infolink %]
-	[% PROCESS cmdlink
+BLOCK infolink;
+	PROCESS cmdlink
 		cmdtitle = "SONG_INFO"
-		cmdimage = "song_info.gif"
-		 %]
-[% END %]
+		cmdimage = "song_info.gif";
+END;
 
-[%# this is to wrap around an href which does an add-to-favorites command, with a default image for skins that support it %]
-[%- BLOCK favaddlink -%]
-	[%- PROCESS cmdlink
+# this is to wrap around an href which does an add-to-favorites command, with a default image for skins that support it
+BLOCK favaddlink;
+	PROCESS cmdlink
 		cmdtitle = "PLUGIN_FAVORITES_ADD"
-		cmdimage = "favadd.png" -%]
-[%- END -%]
+		cmdimage = "favadd.png";
+END;
 
-[%# this is to wrap around an href which does a delete-from-favorites command, with default image reference %]
-[%- BLOCK favdellink -%]
-	[%- PROCESS cmdlink
+# this is to wrap around an href which does a delete-from-favorites command, with default image reference
+BLOCK favdellink;
+	PROCESS cmdlink
 		cmdtitle = "PLUGIN_FAVORITES_REMOVE"
-		cmdimage = "favdel.png" -%]
-[%- END -%]
+		cmdimage = "favdel.png";
+END;
 
-[% BLOCK dummy %]
+BLOCK dummy %]
 <td class="[% isCurrent ? "listing2" : "listing" %]" width="11" align="center">
 </td>
-[% END %]
+[% END;
 
-[% BLOCK listitem %]
+BLOCK listitem -%]
 	<td class="listing" align="left">
-		[% IF content == '' %]
-			[% title %]		
-		[% ELSE %]
-			<a [% content %] >[% title %]</a>
-		[% END %]
-	</td>
-[% END %]
+		[% IF content == '';
+			title;
+		ELSE;
+			'<a '; content; ' >'; title; '</a>';
+		END;
+	'</td>';
+END;
 
-[% BLOCK homelink %][% END %]
+BLOCK homelink; END;
 
-[% BLOCK moveuplinkOld %]
-	[% PROCESS cmdlink
+BLOCK moveuplinkOld;
+	PROCESS cmdlink
 		cmdtitle = "MOVEUP"
-		cmdimage = "b_up.gif" %]
-[% END %]
+		cmdimage = "b_up.gif";
+END;
 
-[% BLOCK moveuplink %]
-[% IF !loop.first %]
+BLOCK moveuplink;
+IF !loop.first %]
 	<div style = "position: absolute; left: 0;">
 		<a [% content %] style = "position: absolute; left: 0; display: block; width: 100%; margin: -17 0 -8 -0; padding: 8 0 8 0">
 		<img style = "width: 320; height: 1;" src = "[% webroot %]html/images/between_line_light.png">
 		<img style = "position: relative; top: -6; left: 38; z-index: 1; padding: 0;" src = "[% webroot %]html/images/between_light.png">
 	</div></a> [%# a/div order intentionally wrong!!!! %]
-[% END %]
-[% END %]
+[%- END;
+END;
 
-[% BLOCK movedownlink %]
-[% END %]
+BLOCK movedownlink;
+END;
 
-[% BLOCK movedownlinkOld %]
-	[% PROCESS cmdlink
+BLOCK movedownlinkOld;
+	PROCESS cmdlink
 		cmdtitle = "MOVEDOWN"
-		cmdimage = "b_down.gif" %]
-[% END %]
+		cmdimage = "b_down.gif";
+END;
 
-[%- BLOCK editlink -%]
-	[%- PROCESS cmdlink
+BLOCK editlink;
+	PROCESS cmdlink
 		cmdtitle = "EDIT"
-		cmdimage = "blue_edit.png" -%]
-[%- END -%]
+		cmdimage = "blue_edit.png";
+END;
 
-[% BLOCK scanwarning -%]
-<b>[% "NOTE" | string %]</b> [% "SCAN_WARNING" | string -%]
-	[%- IF audiodir -%]
-		[%- "SCAN_CLICK" | string; %]<a href="browsetree.html?level=0&player=[% playerURI %]">[% "HERE" | string %]</a>.
-	[%- END %]
-[% END %]
+BLOCK scanwarning;
+'<b>'; "NOTE" | string; '</b> '; "SCAN_WARNING" | string;
+	IF audiodir;
+		"SCAN_CLICK" | string; %]<a href="browsetree.html?level=0&player=[% playerURI %]">[% "HERE" | string; '</a>.';
+	END;
+END;
 
 
-[%# the Playlist control container %]
+# the Playlist control container
 
-[% BLOCK playlistsavectrl %]
+BLOCK playlistsavectrl %]
 	<div style = "padding-right: 4">
-	[% PROCESS savePlaylistLink img="save_button.png" target='_self' %]
-	</div>
-[% END %]
-[% BLOCK playlistclearctrl %]
-	<div style = "padding-left: 4">
-	[% PROCESS clearPlaylistLink img="remove.png" %]
-	</div>
-[% END %]
+	[% PROCESS savePlaylistLink img="save_button.png" target='_self';
+	'</div>';
+END;
 
-[% BLOCK playlistCTRLcontainer %]
+BLOCK playlistclearctrl %]
+	<div style = "padding-left: 4">
+	[% PROCESS clearPlaylistLink img="remove.png";
+	'</div>';
+END;
+
+BLOCK playlistCTRLcontainer %]
 <div id='currentPlaylistControl' style = 'display: none'>
 	<table width = '320' class = 'noborder listNoAlbum' cellspacing = "0" border = "collapse">
 	[% WRAPPER contentitem rightcontrols='playlistsavectrl' leftcontrols='playlistclearctrl' map_vertical=0 %]
 		<span class="listFullTitle">[% "CURRENT_PLAYLIST" | string %]</span><br>
 		<span id="curr_playlistname" class="listFullArtist">&nbsp;</span>
-	[% END %]
-	</table>
-</div>
-[% END %]
+	[% END;
+	'</table>';
+'</div>';
+END;
 
-[% BLOCK activatePLcontainer %]
-<script>evaluatePlaylist();</script>
-[% END %]
+BLOCK activatePLcontainer;
+'<script>evaluatePlaylist();</script>';
+END;
 
-[% BLOCK activatePLcontaiener %]
-<script>evaluatePlaylist();</script>
-[% END %]
+BLOCK activatePLcontaiener;
+'<script>evaluatePlaylist();</script>';
+END;
 
-[% BLOCK storeReturnPageLevel %]
-<script>
-	storeReturnLevel();
-	storeReturnPage();
-</script>
-[% END %]
+BLOCK storeReturnPageLevel;
+'<script>';
+	'storeReturnLevel();';
+	'storeReturnPage();';
+'</script>';
+END;
 
-[% BLOCK storeReturnPage %]
-<script>
-	storeReturnPage();
-</script>
-[% END %]
+BLOCK storeReturnPage;
+'<script>';
+	'storeReturnPage();';
+'</script>';
+END;
 
 
-[% BLOCK crumblist -%]
-<table>
-<tr>
-[%- FOREACH item = pwd_list.list -%]
-  [%- IF not loop.first %] / [% END -%]
-  [%- PROCESS crumblistitem -%]
-[%- END -%]
-</tr>
-</table>
-[%- END %]
+BLOCK crumblist;
+'<table>';
+'<tr>';
+FOREACH item = pwd_list.list;
+  IF not loop.first %] / [% END;
+  PROCESS crumblistitem;
+END;
+'</tr>';
+'</table>';
+END;
 
-[% BLOCK crumblistitem -%]
- [%- IF item.title -%]
-<a [% PROCESS "${item.hreftype}ItemHRef" %]>[% item.title %]</a>
- [%- ELSE -%]
-[% item | replace('^\s*/','') %]
- [%- END -%]
-[%- END %]
+BLOCK crumblistitem;
+ IF item.title;
+'<a '; PROCESS "${item.hreftype}ItemHRef"; '>'; item.title; '</a>';
+ ELSE;
+item | replace('^\s*/','');
+ END;
+END;
 
-[% BLOCK contentcontainer %]
+BLOCK contentcontainer %]
 <div id="[% listid or containerid or 'browsedbList' %]" style="min-height: [% containerheight || '323px' %]">
-[% IF !omitPCTRL %]
-	[% PROCESS playlistCTRLcontainer %]
-[% END %]
+[% IF !omitPCTRL;
+	PROCESS playlistCTRLcontainer;
+END %]
 <table width = '100%' class = 'noborder listNoAlbum' cellspacing = "0" cellpadding = "0" border = "collapse"> 
-	[%- content %]
-</table>
-</div>
-[%- END %]
+	[%- content;
+'</table>';
+'</div>';
+END;
 
-[% BLOCK contentitem -%]
-[%- IF anchor;
+BLOCK contentitem;
+IF anchor;
 	WRAPPER contentanchor;
 		anchor;
 	END;
@@ -248,46 +248,45 @@ END %]
 	<tr>
 		<td class = "listHeader" colspan = 3 [% IF firstrow %]style = "top: 0; border-top: none"[% END %]>
 			<a name = "[% content | trim %]"></a>
-			[% content %]
-			[% IF anchorcontrols %][% PROCESS $anchorcontrols %][% END %]
-		</td>
-	</tr>
-[% END %]
+			[% content;
+			IF anchorcontrols; PROCESS $anchorcontrols; END;
+		'</td>';
+	'</tr>';
+END;
 
-[% BLOCK playlistcontrols %]
-	[% width='20' height='20'  %]
-	[% WRAPPER playlink     %][% PROCESS cmdHRef cmdType = 'jump'                           %][% END %]
-	[% WRAPPER moveuplink   %][% PROCESS cmdHRef cmdType = 'move' moveTo = MoveUp           %][% END %]
-	[% WRAPPER movedownlink %][% PROCESS cmdHRef cmdType = 'move' moveTo = MoveDown         %][% END %]
-	[% WRAPPER insertlink   %][% PROCESS cmdHRef cmdType = 'move' moveTo = item.nextsongind %][% END %]
-	[% WRAPPER removelink   %][% PROCESS cmdHRef cmdType = 'delete'                         %][% END %]
-[% END %]
+BLOCK playlistcontrols;
+	width='20'; height='20';
+	WRAPPER playlink;     PROCESS cmdHRef cmdType = 'jump';                           END;
+	WRAPPER moveuplink;   PROCESS cmdHRef cmdType = 'move' moveTo = MoveUp;           END;
+	WRAPPER insertlink;   PROCESS cmdHRef cmdType = 'move' moveTo = item.nextsongind; END;
+	WRAPPER removelink;   PROCESS cmdHRef cmdType = 'delete';                         END;
+END;
 
-[%- BLOCK AjaxOnClickPlay -%]
+BLOCK AjaxOnClickPlay -%]
 'changeOSD("[% IF itemobj.title == ''; "ALL_SONGS" | string; 
 	ELSE; itemobj.title FILTER html FILTER replace('\'', '&#39;'); END;
 " "; "NOW_PLAYING" | string %]"); addItem("[% PROCESS ajaxCmdHRef cmdType='play' %]", true);' [%-
-END -%]
+END;
 
-[%- BLOCK JSONOnClickPlay -%]
+BLOCK JSONOnClickPlay -%]
 'changeOSD("[% IF itemobj.title == ''; "ALL_SONGS" | string;
 	ELSE; itemobj.title FILTER html FILTER replace('\'', '&#39;'); END;
 " "; "NOW_PLAYING" | string %]"); addPlayItem("[% PROCESS JSONCmdHRef cmdType='play' %]");'	[%-
-END -%]
+END;
 
-[%- BLOCK AjaxOnClickPlaySwitch -%]
+BLOCK AjaxOnClickPlaySwitch -%]
 'changeOSD("[% IF itemobj.title == ''; "ALL_SONGS" | string;
 	ELSE; itemobj.title FILTER html FILTER replace('\'', '&#39;'); END;
 " "; "NOW_PLAYING" | string %]"); addItemLoad("[% PROCESS JSONCmdHRef cmdType='play' %]", 0, true);'
-[%- END -%]
+[%- END;
 
-[%- BLOCK AjaxOnClickPlayFromSwitch -%]
+BLOCK AjaxOnClickPlayFromSwitch -%]
 'changeOSD("[% IF itemobj.title == ''; "ALL_SONGS" | string;
 ELSE; itemobj.title FILTER html FILTER replace('\'', '&#39;'); END;
 " "; "NOW_PLAYING" | string %]"); addItemLoad("[% PROCESS JSONCmdHRef cmdType='play' %]", [% (loop.index - 1) %], true);' [%-
-END -%]
+END;
 
-[%- BLOCK AjaxOnClickPlayFromSwitchNMod -%]
+BLOCK AjaxOnClickPlayFromSwitchNMod -%]
 'changeOSD("[% IF itemobj.title == ''; "ALL_SONGS" | string;
 ELSE; itemobj.title FILTER html FILTER replace('\'', '&#39;'); END;
 " "; "NOW_PLAYING" | string %]"); [%-
@@ -296,9 +295,9 @@ IF (itemobj.title != '') && (browse_items.0.itemobj.title == '');
 	INCLUDE JSONCmdHRef cmdType='play' itemobj=browse_items.0.itemobj attributes=browse_items.0.attributes %]", [% (loop.index - 1) %], true);[%-
 ELSE; 
 	-%]addItemLoad("[% PROCESS JSONCmdHRef cmdType='play' %]", 0, true);[% END %]' [%-
-END -%]
+END;
 
-[%- BLOCK AjaxOnClickPlayFrom -%]
+BLOCK AjaxOnClickPlayFrom -%]
 'changeOSD("[% IF itemobj.title == ''; "ALL_SONGS" | string;
 ELSE; itemobj.title FILTER html FILTER replace('\'', '&#39;'); END;
 " "; "NOW_PLAYING" | string %]"); [%-
@@ -307,96 +306,96 @@ IF (itemobj.title != '') && (browse_items.0.itemobj.title == '');
 	INCLUDE JSONCmdHRef cmdType='play' itemobj=browse_items.0.itemobj attributes=browse_items.0.attributes %]", [% (loop.index - 1) %], false);[%-
 ELSE; 
 	-%]addItemLoad("[% PROCESS JSONCmdHRef cmdType='play' %]", 0, false);[% END %]'	
-[%- END -%]
+[%- END;
 
-[%- BLOCK AjaxBrowseCtrlAdd -%]
+BLOCK AjaxBrowseCtrlAdd -%]
 <img src=[% IF useImg; useImg; ELSE %]"[% webroot %]html/images/plus_white.png"[% END;
 -%] onClick = 'changeOSD("[% "ADDING_TO_PLAYLIST" | string; '<br>';
 IF itemobj.title == ''; "ALL_SONGS" | string;
 ELSE; itemobj.title FILTER html FILTER replace('\'','&#39;'); END 
 -%]"); addItem("[%-
 PROCESS ajaxCmdHRef cmdType='add' %]"); evaluatePlaylist();' border=0 alt='[% "ADD_TO_PLAYLIST" | string %]' title='[% "ADD_TO_PLAYLIST" | string %]'>
-[%- END -%]
+[%- END;
 
-[%- BLOCK AjaxBrowseCtrlPlay -%]
+BLOCK AjaxBrowseCtrlPlay -%]
 <img src=[% IF useImg; useImg; ELSE %]"[% webroot %]html/images/play_white.png"[% END; 
 -%] onClick = 'changeOSD("[% IF itemobj.title == ''; "ALL_SONGS" | string;
 ELSE; itemobj.title FILTER html FILTER replace('\'', '&#39;'); END;
 " "; "NOW_PLAYING" | string %]"); addItem("[%-
 PROCESS ajaxCmdHRef cmdType='play' %]", true);' border=0 alt='Play Now' title='Play Now'>
-[%- END -%]
+[%- END;
 
-[% BLOCK browsecontrols_abbr %]
+BLOCK browsecontrols_abbr %]
 	<span class="[% isCurrent ? "listing2" : "listing" %]">
-	[% width='25' height='25'  %]
-	[% IF showplayall %]
-		[% WRAPPER playlink noTarget = 1 %]href="[% playallhref %]"[% END %]
-		[% WRAPPER addlink  noTarget = 1 %]href="[% addallhref %]"[% END %]
-	[% ELSIF showdescend && href %]
-		[% WRAPPER descendlink %][% href %][% END %]
-		[% IF showplay %]
-			[% WRAPPER playlink %][% PROCESS cmdHRef cmdType='play' %][% END %]
-			[% WRAPPER addlink  %][% PROCESS cmdHRef cmdType='add'  %][% END %]
-		[% END %]
-	[% ELSE %]
-		[%- IF playLink == 'ajax' %]
+	[%- width='25'; height='25';
+	IF showplayall;
+		WRAPPER playlink noTarget = 1 %]href="[% playallhref %]"[% END;
+		WRAPPER addlink  noTarget = 1 %]href="[% addallhref %]"[% END;
+	ELSIF showdescend && href;
+		WRAPPER descendlink; href; END;
+		IF showplay;
+			WRAPPER playlink; PROCESS cmdHRef cmdType='play'; END;
+			WRAPPER addlink; PROCESS cmdHRef cmdType='add'; END;
+		END;
+	ELSE;
+		IF playLink == 'ajax' %]
 				<span class = 'buttonControls'>[% PROCESS AjaxBrowseCtrlPlay %]</span>
-		[%- ELSE %]
-			[% WRAPPER playlink   %][% PROCESS cmdHRef cmdType='play' statusroot = 'status.html'  %][% END %]
-		[%- END %]
+		[%- ELSE;
+			WRAPPER playlink; PROCESS cmdHRef cmdType='play' statusroot = 'status.html'; END;
+		END;
 		
-		[%- IF addLink == 'noajax' %]
-		[% WRAPPER addlink    %][% PROCESS cmdHRef cmdType='add' statusroot = 'playlist.html' %][% END %]
-		[%- ELSE %]
+		IF addLink == 'noajax';
+		WRAPPER addlink; PROCESS cmdHRef cmdType='add' statusroot = 'playlist.html'; END;
+		ELSE %]
 				<span class = 'buttonControls'>[% PROCESS AjaxBrowseCtrlAdd %]</span>
-		[%- END %]
-		[% FOREACH mixer = mixerlinks.values.sort %]
+		[%- END;
+		FOREACH mixer = mixerlinks.values.sort %]
 			<span class = 'buttonControls'>[% PROCESS $mixer %]</span>
-		[% END %]
-	[% END %]
-	</span>
-[% END %]
+		[%- END;
+	END;
+	'</span>';
+END;
 
-[% BLOCK browsecontrols %]
-	[% width='20' height='20'  %]
-	[% WRAPPER playlink   %][% PROCESS cmdHRef cmdType='play'   %][% END %]
-	[% WRAPPER addlink    %][% PROCESS cmdHRef cmdType='add'    %][% END %]
-	[% WRAPPER removelink %][% PROCESS cmdHRef cmdType='remove' %][% END %]
-	[% WRAPPER insertlink %][% PROCESS cmdHRef cmdType='insert' %][% END %]
-	[% FOREACH mixer = mixerlinks.values.sort %]
-		[% PROCESS $mixer %]
-	[% END %]
-[% END %]
+BLOCK browsecontrols;
+	width='20'; height='20';
+	WRAPPER playlink;   PROCESS cmdHRef cmdType='play';    END;
+	WRAPPER addlink;    PROCESS cmdHRef cmdType='add';     END;
+	WRAPPER removelink; PROCESS cmdHRef cmdType='remove';  END;
+	WRAPPER insertlink; PROCESS cmdHRef cmdType='insert';  END;
+	FOREACH mixer = mixerlinks.values.sort;
+		PROCESS $mixer;
+	END;
+END;
 
-[% BLOCK browsecontrols_small %]
-	[% width='20' height='11'  %]
-	[% WRAPPER playlink   %][% PROCESS cmdHRef cmdType='play'   %][% END %]
-	[% WRAPPER addlink    %][% PROCESS cmdHRef cmdType='add'    %][% END %]
-	[% WRAPPER removelink %][% PROCESS cmdHRef cmdType='remove' %][% END %]
-	[% WRAPPER insertlink %][% PROCESS cmdHRef cmdType='insert' %][% END %]
-	[% FOREACH mixer = mixerlinks.values.sort %]
-		[% PROCESS $mixer %]
-	[% END %]
-[% END %]
+BLOCK browsecontrols_small;
+	width='20'; height='11';
+	WRAPPER playlink;    PROCESS cmdHRef cmdType='play';    END;
+	WRAPPER addlink;     PROCESS cmdHRef cmdType='add';     END;
+	WRAPPER removelink;  PROCESS cmdHRef cmdType='remove';  END;
+	WRAPPER insertlink;  PROCESS cmdHRef cmdType='insert';  END;
+	FOREACH mixer = mixerlinks.values.sort;
+		PROCESS $mixer;
+	END;
+END;
 
 
-[% BLOCK songInfoPlayLinks %]
+BLOCK songInfoPlayLinks %]
 	<div id="songInfoPlayLinks">
-		[% PROCESS browsecontrols %]
-	</div>
-[% END %]
+		[% PROCESS browsecontrols;
+	'</div>';
+END;
 
-[% BLOCK songInfoItem %]
+BLOCK songInfoItem %]
 	<div id="[% title %]">
 		<span class="songInfoTitle">
 			[% IF title; title | string; "COLON" | string; END %]
 		</span>
-		<span class="songInfoText">[% item %]</span>
-	</div>
-[% END %]
+		<span class="songInfoText">[% item; '</span>';
+	'</div>';
+END;
 
 
-[%- BLOCK itemOnClickPlay;
+BLOCK itemOnClickPlay;
 	temp = 'ALL_SONGS' | string;
 	IF loop.first && item.text == temp -%]
 		onClick = [% INCLUDE AjaxOnClickPlay 
@@ -437,11 +436,11 @@ PROCESS ajaxCmdHRef cmdType='play' %]", true);' border=0 alt='Play Now' title='P
 			addallhref  = item.addallhref
 			href        = item.href;
 	END;
-END -%]
+END %]
 
-[%# onClick = 'playURL ("[%# item.itemobj.url | uri FILTER replace('\'', '&#39;') %]");' %]
+[%# onClick = 'playURL ("[%# item.itemobj.url | uri FILTER replace('\'', '&#39;') %]");';%]
 
-[%- BLOCK trackinfo;
+[% BLOCK trackinfo;
 	IF item.infohref -%]
 			<a [% item.infohref %] >[% ( item.text || item.title ) | html %]</a>
 	[%- ELSIF item.num || item.num == 0 -%]
@@ -472,22 +471,26 @@ END -%]
 	END;
 
 	INCLUDE by_from_info;
-END -%]
-<!--a [% PROCESS songinfoItemHRef %]-->
+END;
 
-[% BLOCK ajax_by_from_info %]
-	<span class = 'smalltext' id = 'byfrominfo_[% item.num %]'>
-	<span id = 'artist_[% item.num %]'>
-		[%- PROCESS artistsAsHTML.html notarget = 1;
-	'</span>';
+BLOCK ajax_by_from_info;
 	# IF item.includeAlbum && item.album && item.album != item.noAlbum;
 	IF item.includeAlbum && item.itemobj.album && item.itemobj.album.title != item.noAlbum && item.itemobj.album.title != "" -%]
 		<i><a [% IF classinfo %]class = [% classinfo %] [% END %][% PROCESS albumItemHRef %] id = 'albumlink_[% item.num %]'> [% item.itemobj.album.title | html; '</a></i>';
 	END;
+	'</span>' -%]
+	<span class = 'smalltext' id = 'byfrominfo_[% item.num %]'>
+	<span id = 'artist_[% item.num %]'>
+		[%- PROCESS artistsAsHTML.html notarget = 1;
 	'</span>';
-END %]
+END;
 
-[% BLOCK by_from_info;
+BLOCK by_from_info;
+	IF item.includeAlbum && item.itemobj.album && item.itemobj.album.title != item.noAlbum && item.itemobj.album.title != "" -%]
+		<a class = "tapblockHalf" [% PROCESS albumItemHRef %] title="[% item.itemobj.album.title | html %]">
+		<span class = "listFullArtist" title="[% item.itemobj.album.title | html %]">[% item.itemobj.album.title | html;
+		'</span></a>';
+	END;
 	# IF item.includeAlbum && item.album && item.album != item.noAlbum;
 	IF (item.includeArtist && item.artist && item.artist != item.noArtist) || (item.itemobj.artist && item.itemobj.artist != item.itemobj.noArtist) %]
 		<span class = "listFullArtist">
@@ -495,53 +498,48 @@ END %]
 		</span>
 		<span style = "height: 0; font-size: 4">&nbsp;</span>
 	[%- END;
-	IF item.includeAlbum && item.itemobj.album && item.itemobj.album.title != item.noAlbum && item.itemobj.album.title != "" -%]
-		<a class = "tapblockHalf" [% PROCESS albumItemHRef %] title="[% item.itemobj.album.title | html %]">
-		<span class = "listFullArtist" title="[% item.itemobj.album.title | html %]">[% item.itemobj.album.title | html;
-		'</span></a>';
-	END;
-END %]
+END;
 
 
-[% BLOCK settingSection %]
+BLOCK settingSection %]
 	<div class="settingSection">
-		[% content %]
-	</div>
-[% END -%]
+		[% content;
+	'</div>';
+END;
 
-[% BLOCK settingGroup %]
+BLOCK settingGroup %]
 	<div class="settingGroup">
-		[% IF title %]<div class="prefHead">[% title | getstring %]</div>[% END %]
-		[% IF desc %]<div class="prefDesc hiddenDesc">[% desc | getstring %]</div>[% END %]
-		<div class="prefs">[% content %]&nbsp;</div>
-	</div>
-[% END -%]
+		[% IF title %]<div class="prefHead">[% title | getstring; '</div>'; END;
+		IF desc %]<div class="prefDesc hiddenDesc">[% desc | getstring; '</div>'; END %]
+		<div class="prefs">[% content; '&nbsp;</div>';
+	'</div>';
+END;
 
-[% BLOCK setting %]
-	[% WRAPPER settingSection %]
-		[% WRAPPER settingGroup %]
-			[% content %]
-		[% END -%]
-	[% END -%]	
-[% END -%]
+BLOCK setting;
+	WRAPPER settingSection;
+		WRAPPER settingGroup;
+			content;
+		END;
+	END;	
+END;
 
 
-[% BLOCK expandAlphamap %]
+BLOCK expandAlphamap %]
 <script>expandAlphamap('[% listid or containerid or 'browsedbList' %]');</script>
-[% END %]
+[% END;
 
-[% BLOCK top_pagebar %]
-	[% IF map_vertical %]
+BLOCK top_pagebar;
+	IF map_vertical %]
 		<div id = 'alphamap'[% IF !page_vertical %] style = 'left: 455px; top: 25;'[% END %]>
 	[% ELSE %]
 		<div class = 'crumblist[% IF page_vertical %]_vert[% END %]'>
 	[% END;
-	PROCESS pagebar %]
-	</div>
-[% END %]
+	PROCESS pagebar;
+	'</div>';
+END;
 
-[% BLOCK wrapPagebar %]
-	[% IF has_pagebar;
+BLOCK wrapPagebar;
+	IF has_pagebar;
 		PROCESS top_pagebar;
 	END;
 	content;
@@ -551,11 +549,11 @@ END %]
 			PROCESS expandAlphamap;
 		END;
 	END;
-END %]
+END;
 
-[%# Display the alphamep vs. FIRST/LAST PREV/NEXT %]
+# Display the alphamep vs. FIRST/LAST PREV/NEXT
 
-[%- BLOCK loadpage;
+BLOCK loadpage;
 	IF browseAjax -%]
 		<a href="javascript:ajaxUpdate('[% pageinfo.path %]', '[% pageinfo.otherparams | html; 
 			IF artwork == 2; "&amp;artwork=2"; END;
@@ -566,9 +564,9 @@ END %]
 	[%- ELSE -%]
 		<a href="[% pageinfo.path %]?[% pageinfo.otherparams | html; "&amp;start="; goStart; goHash %]" [% addStyle %]>
 	[%- END;
-END -%]
+END;
 
-[%- BLOCK pagebar;
+BLOCK pagebar;
 	goTop = 0;
 	IF NOT pageinfo.alphamap; PROCESS pagebarcalc pagesperbar = 11; END;
 	IF pagesstart;
@@ -671,56 +669,56 @@ END %]
 	[% IF !pageinfo.alphamap %]
 	<tr>
 		<td class="pagebartext">
-			[%- IF pageinfo.totalpages > 1 && pageinfo.totalalphapages != 1 %]&nbsp;[% PROCESS pagebar %]
-				&nbsp;|&nbsp;[% PROCESS pagebarheader %]
-			[%- END %]
-		</td>
-	</tr>
-	[% END %]
-</table>
-[% END %]
+			[%- IF pageinfo.totalpages > 1 && pageinfo.totalalphapages != 1; '&nbsp;'; PROCESS pagebar;
+				'&nbsp;|&nbsp;'; PROCESS pagebarheader;
+			END;
+		'</td>';
+	'</tr>';
+	END;
+'</table>';
+END;
 
-[% BLOCK cmdToTop %]
+BLOCK cmdToTop %]
 	<a href = "javascript:window.scrollTo(0,1)" title = '[% "MOVEUP" | string %]'>
 	<img src = "[% webroot %]html/images/totop.png" alt = '[% "MOVEUP" | string %]'></a>
-[% END %]
+[% END;
 
-[% BLOCK cmdToBottom %]
+BLOCK cmdToBottom %]
 	<a href = "javascript:window.scrollTo(0,$('[% containerid or listid or "browsedbList" %]').scrollHeight)" title = '[% "MOVEDOWN" | string %]'>
 	<img src = "[% webroot %]html/images/tobottom.png" alt = '[% "MOVEDOWN" | string %]'></a>
-[% END %]
+[% END;
 
-[% BLOCK pagebarheader %]
+BLOCK pagebarheader %]
 <span class="pagebarheadertext">
-[% "ITEMS" | string %] <span id = '[% prefix %]first_item'>[% pageinfo.startitem + 1%]</span> [% "TO" | string %] <span id = '[% prefix %]last_item'>[% pageinfo.enditem + 1 %]</span> [% "OF" | string %] <span id = '[% prefix %]playlistsize'>[% pageinfo.totalitems %]</span>
-</span>
-[% END %]
+[% "ITEMS" | string %] <span id = '[% prefix %]first_item'>[% pageinfo.startitem + 1%]</span> [% "TO" | string %] <span id = '[% prefix %]last_item'>[% pageinfo.enditem + 1; '</span> '; "OF" | string %] <span id = '[% prefix %]playlistsize'>[% pageinfo.totalitems; '</span>';
+'</span>';
+END;
 
-[%# The following is the end of the null filter, don't put anything below it %]
-[% END -%]
+# The following is the end of the null filter, don't put anything below it
+END;
 
-[% BLOCK heightSpacer %]
+BLOCK heightSpacer %]
 <table>
 <tr><td height = '[% buffer %]'>&nbsp;</tr>
 </table>
-[% END -%]
+[% END;
 
-[% BLOCK iteminfo;
+BLOCK iteminfo;
          IF item.descend;
 	            # Include the artist for the album view
-			IF item.hierarchy %]<a class = "tapblock[% IF (levelName != 'album' && levelName != 'age') %]Full[% END %]" [% PROCESS "${item.hreftype}ItemHRef" %] title="[% item.text | html %]">[% END %]
-			<span [% IF (levelName == 'album' || levelName == 'age') %]class = 'listFullTitle'[% END %]>[% item.text | html;
-	        IF item.showYear && item.year; ' ('; item.year; ')'; END -%]
-		    <br></span>
-            [%- IF item.artist.name && item.artist.name != item.noArtist;
+			IF item.hierarchy %]<a class = "tapblock[% IF (levelName != 'album' && levelName != 'age'); 'Full'; END %]" [% PROCESS "${item.hreftype}ItemHRef" %] title="[% item.text | html %]">[% END %]
+			<span [% IF (levelName == 'album' || levelName == 'age') %]class = 'listFullTitle'[% END; '>'; item.text | html;
+	        IF item.showYear && item.year; ' ('; item.year; ')'; END;
+			'<br></span>';
+            IF item.artist.name && item.artist.name != item.noArtist;
 				artistlist = PROCESS artistsAsText.html noby = '1' notarget = '1' itemobj=item.itemobj -%]
 				<span class = 'listFullArtist'>
-				[%- artistlist -%]
-				</span>
-			[%- END;
+				[%- artistlist;
+				'</span>';
+			END;
         ELSE;
                 PROCESS trackinfo;
         END;
-        IF item.hierarchy %]</a>[% END;
+        IF item.hierarchy; '</a>'; END;
 END %]
 

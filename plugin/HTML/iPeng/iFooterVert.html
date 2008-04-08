@@ -34,9 +34,10 @@ END;
 
 BLOCK btDisplay %]
 	<td align = "center" style = "width: 60; padding-top: 1; padding-bottom: 0;">
-		<img src="[% webroot %]html/images/i[% btItem.icon %]Trans[% IF btItem.icon == selectedButton %]Selected[% END %].png" style = "padding: 0; border: 0; margin: 0;"><br>
-		<span class= "bottombartext[% IF btItem.icon == selectedButton %]On[% END %]">[% btItem.text | string %]</span> 
-		[%- IF btItem.href %]
+		<img src="[% webroot; 'html/images/i'; btItem.icon; 'Trans'; 
+			IF btItem.icon == selectedButton; 'Selected'; END %].png" style = "padding: 0; border: 0; margin: 0;"><br>
+		<span class= "bottombartext[% IF btItem.icon == selectedButton; 'On'; END %]">[% btItem.text | string; '</span>'; 
+		IF btItem.href %]
 			<a class = "bottombarClick" style = "left: [% (btItem.num - 1) * 64 + 2 %]" href="[% btItem.href %]" target="_self"></a>
 		[%- END;
 	'</td>';

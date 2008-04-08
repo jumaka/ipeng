@@ -88,3 +88,60 @@ IPENG_SYNC_CHOOSE
 IPENG_PLAYER
 	EN	Player:
 	DE	Player:
+
+# Weekday
+IPENG_WEEKDAY
+	EN	Weekday
+	DE	Wochentag
+
+# Select Weekday
+IPENG_WEEKDAY_SEL
+	EN	Select Weekday
+	DE	Wochentag wählen
+	
+# ON, Max 3 Characters
+IPENG_ON
+	EN	ON
+	DE	EIN
+	
+# OFF, Max 3 Characters
+IPENG_OFF
+	EN	OFF
+	DE	AUS
+	
+# Current Playlist
+IPENG_CURRENT_PLAYLIST
+	EN	Current Playlist
+	DE	Aktuelle Playlist
+	
+# hours
+IPENG_HOURS
+	EN	hours
+	DE	Stunden
+	
+# OK
+IPENG_OK
+	EN	OK
+	DE	OK
+	
+# Start
+IPENG_START
+	EN	Start
+	DE	Start
+	
+# Stop
+IPENG_STOP
+	EN	Stop
+	DE	Stop
+	
+# "Do You want to clear the Alarm..."
+IPENG_CLEAR_ALARM_MSG
+	EN	Do you really want to clear the alarm
+	DE	Den folgenden Alarm wirklich löschen:
+
+
+# Status "no volume control"
+IPENG_NO_VOLUME_CTRL
+	EN	volume settings not available for this player
+	DE	keine Lautärkeregelung für diesen Player
+	

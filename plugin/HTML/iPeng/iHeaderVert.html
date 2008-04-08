@@ -73,8 +73,10 @@ a:hover, a:visited, a:active, a:link {
 		END %]
 		</span>
 		
-		<div style = 'position: absolute; right: 4; top: [% IF page_vertical %]4[% ELSE %]-2[% END %]; z-index: 12;'>
-		<a class="blackRight iButton" href="[% webroot %]status.html?player=[% playerURI %]" style = "color: white; width: 43; padding: 0; text-align: right;[% IF !page_vertical %] height: 25;[% END %]"><img src = "[% webroot %]html/images/coolioicon.png" style = "padding-right: 10"></a>
+		<div style = 'position: absolute; right: 4; top: [% 
+			IF page_vertical; '4'; ELSE; '-2'; END %]; z-index: 12;'>
+		<a class="blackRight iButton" href="[% webroot %]status.html?player=[% playerURI %]" style = "color: white; width: 43; padding: 0; text-align: right;[% 
+			IF !page_vertical; ' height: 25;'; END %]"><img src = "[% webroot %]html/images/coolioicon.png" style = "padding-right: 10"></a>
 		</div>
 		
 		[% IF homeString;

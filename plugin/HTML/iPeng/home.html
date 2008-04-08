@@ -71,17 +71,19 @@ BLOCK HomeHeader %]
 	<script type="application/x-javascript" src="html/iui/iui.js" defer></script>
 	
 	<script type="text/javascript"> // need some inline code...
-	SpecialPlaylists = [ '[% "CURRENT_PLAYLIST" | string %]',
+	var ClearAlarmMsg = "[% 'IPENG_CLEAR_ALARM_MSG' | string %]";
+	
+	var SpecialPlaylists = [ '[% "CURRENT_PLAYLIST" | string %]',
 						 '[% "PLUGIN_RANDOM_TRACK" | string %]',
 						 '[% "PLUGIN_RANDOM_ALBUM" | string %]',
 						 '[% "PLUGIN_RANDOM_CONTRIBUTOR" | string %]' ];
 	
-	SpecialPLURLs = [ 'CURRENT_PLAYLIST',
+	var SpecialPLURLs = [ 'CURRENT_PLAYLIST',
 					  'PLUGIN_RANDOM_TRACK',
 					  'PLUGIN_RANDOM_ALBUM',
 					  'PLUGIN_RANDOM_CONTRIBUTOR' ];
 					  
-	DayStrings = [ '[% 'ALARM_DAY0' | string %]',
+	var DayStrings = [ '[% 'ALARM_DAY0' | string %]',
 				   '[% 'ALARM_DAY1' | string %]',
 				   '[% 'ALARM_DAY2' | string %]',
 				   '[% 'ALARM_DAY3' | string %]',

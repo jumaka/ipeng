@@ -22,18 +22,18 @@
 				toggled = "true"
 			[% END %]
 			><span class="thumb">
-			</span><span class="toggleOn">ON</span><span class="toggleOff">OFF</span>
+			</span><span class="toggleOn">[% 'IPENG_ON' | string %]</span><span class="toggleOff">[% 'IPENG_OFF' | string %]</span>
 		</div>
 	</div>
 	<div id = "e_add" class = "a_editrow" style = "height: 48; display: none;">
-		<select id = "e_weekdays" title = "Weekday" class = "selectItems" 
+		<select id = "e_weekdays" title = "[% 'IPENG_WEEKDAY' | string %]" class = "selectItems" 
 				style = "float: left; margin: 8 4 4 8; padding: 1; 
 						 font-size: 17; height: 32; min-width: 180; max-width: 180;
 						 -webkit-box-sizing: border-box;
 						 text-align: center;"
 				onclick = "event.stopPropagation();"
 				onChange = "doAAdd(this.value);">
-			<option value = "dummy" selected>Select Weekday</option>
+			<option value = "dummy" selected>[% 'IPENG_WEEKDAY_SEL' | string %]</option>
 		</select>
 		<a class="iButton red" 
 		   href = "javascript:cancelAAdd();"
@@ -68,12 +68,12 @@
 				  target = "_none";
 				  style = "position: absolute; display: block;
 						   top: 55; width: 225; height: 17;
-						   font-size: 80%; padding: 6 0; z-index: 3">Current Playlist
+						   font-size: 80%; padding: 6 0; z-index: 3">[% 'IPENG_CURRENT_PLAYLIST' | string %]
 			</a>
 		</div>
 		<div class = "row" style = "position: absolute; right: 0; top: 9; width: 110; border: 0;">
 			<div id = "a_onoff[% i %]" class="toggle" onclick="toggleDay([% i %]); event.stopPropagation();">
-				<span class="thumb"></span><span class="toggleOn">ON</span><span class="toggleOff">OFF</span>
+				<span class="thumb"></span><span class="toggleOn">[% 'IPENG_ON' | string %]</span><span class="toggleOff">[% 'IPENG_OFF' | string %]</span>
 			</div>
 		</div>
 	</div>
@@ -88,7 +88,7 @@
 	<span id = "e_time"
 		  style = "position: absolute; display: none; 
 				   top: 30; font-size: 80%">
-		<select id="e_hours" name="e_hours" class = "selectItems" title = "hours" 
+		<select id="e_hours" name="e_hours" class = "selectItems" title = "[% 'IPENG_HOURS' | string %]" 
 				style = "position: absolute; top: 0; left: -5; height: 24; width: 50;"
 				onclick = "event.stopPropagation();"
 				onChange = "updateHoursMinutes();">
@@ -134,7 +134,7 @@
 				 font-size: 15;
 				 -webkit-box-sizing: border-box;
 				 color: black;
-		   ">OK</a>
+		   ">[% 'IPENG_OK' | string %]</a>
 		<a class="iButton red" 
 		   href = "javascript:closeAEdit(true);"
 		   target = "_self"

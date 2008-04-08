@@ -360,41 +360,13 @@ sub checkDefaults {
 	}
 }
 
-sub jsonHandler {
-	$log->debug("Entering jsonHandler\n");
-	my $request = shift;
-	my $client = $request->client();
+sub getCommands {
+	my $client = shift;
+	my $section = shift;
+	my $subsection = shift;
+	my $max = shift;
 
-	if (!$request->isQuery([['ipeng'],['commands']])) {
-		$log->warn("Incorrect command\n");
-		$request->setStatusBadDispatch();
-		$log->debug("Exiting jsonHandler\n");
-		return;
-	}
-	if(!defined $client) {
-		$log->warn("Client required\n");
-		$request->setStatusNeedsClient();
-		$log->debug("Exiting jsonHandler\n");
-		return;
-	}
-	my $params = $request->getParamsCopy();
-
-	for my $k (keys %$params) {
-		$log->debug("Got parameter: $k=".$params->{$k}."\n");
-	}
-
-	if(!defined($params->{'_type'})) {
-		$log->warn("section not specified");
-		$request->setStatusBadParams();
-		$log->debug("Exiting jsonHandler\n");
-		return;
-	}	
-
-	my $subsection = $params->{'subsection'};
-
-	$log->debug("Executing CLI commands command\n");
-
-	my $context = _readConfigurationForSection($params->{'_type'});
+	my $context = _readConfigurationForSection($section);
 
 	# Iterate through all sub sections for the requested section
 	foreach my $key (keys %$context) {
@@ -405,7 +377,7 @@ sub jsonHandler {
 		my $commands = $context->{$key}->{'command'};
 		foreach my $command_id (keys %$commands) {
 			$commands->{$command_id}->{'id'} = $command_id;
-			my $enabled = $prefs->get('command_'.escape($params->{'_type'}."_".$key."_".$command_id).'_enabled');
+			my $enabled = $prefs->get('command_'.escape($section."_".$key."_".$command_id).'_enabled');
 			if(defined($enabled) && !$enabled) {
 				delete $commands->{$command_id};
 			}elsif(exists $commands->{$command_id}->{'requireplugins'} && !_isPluginsInstalled($client,$commands->{$command_id}->{'requireplugins'})) {
@@ -457,21 +429,53 @@ sub jsonHandler {
 	}
 
 	# If max is defined, we should prefer commands with subsection defined
-	my $max = $params->{'max'};
 	if(defined($max)) {
 		@menu = splice(@menu,0,$max);
 		@menu = sortByWeight(@menu);
 	}
 
+	return \@menu;
+}
+sub jsonHandler {
+	$log->debug("Entering jsonHandler\n");
+	my $request = shift;
+	my $client = $request->client();
 
-	my $menuResult = \@menu;
+	if (!$request->isQuery([['ipeng'],['commands']])) {
+		$log->warn("Incorrect command\n");
+		$request->setStatusBadDispatch();
+		$log->debug("Exiting jsonHandler\n");
+		return;
+	}
+	if(!defined $client) {
+		$log->warn("Client required\n");
+		$request->setStatusNeedsClient();
+		$log->debug("Exiting jsonHandler\n");
+		return;
+	}
+	my $params = $request->getParamsCopy();
+
+	for my $k (keys %$params) {
+		$log->debug("Got parameter: $k=".$params->{$k}."\n");
+	}
+
+	if(!defined($params->{'_type'})) {
+		$log->warn("section not specified");
+		$request->setStatusBadParams();
+		$log->debug("Exiting jsonHandler\n");
+		return;
+	}	
+
+	$log->debug("Executing CLI commands command\n");
+
+	my $menuResult = getCommands($client,$params->{'_type'},$params->{'subsection'},$params->{'max'});
 
 	$request->addResult('timestamp',$lastUpdate);
 	$request->addResult('count',scalar(@$menuResult));
 
+	my $subsection = $params->{'subsection'};
 	# Add the array of sub sections as a subsections_loop
 	my $cnt = 0;
-	$log->warn("Returning: ".Dumper($menuResult));
 	foreach my $item (@$menuResult) {
 
 		if(defined($subsection)) {

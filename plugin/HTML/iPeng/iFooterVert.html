@@ -11,7 +11,7 @@ btButtons.1.href = PROCESS browseArtistLink;
 btButtons.2.href = PROCESS browsePlaylistsLink;
 btButtons.3.href = PROCESS browseSearchLink -%]
 
-<div id = 'bottombar' [% classFooter %]>
+<div id = 'bottombar' [% classFooter %] selectedButton = "[% selectedButton %]" selectedContext = "[% context || 'default' %]">
 [%- FOREACH btItem = btButtons;
 	IF btItem.icon == selectedButton -%]
 		<div id = 'bottombarSelect' style = "left: [% (btItem.num - 1) * 64 + 2 %]; display: none;"></div>
@@ -19,10 +19,10 @@ btButtons.3.href = PROCESS browseSearchLink -%]
 END;
 
 -%]
-<div id = 'bottombararea' selectedButton = "selectedButton">
+<div id = 'bottombararea'>
 <table width="100%" height = "48"; cellspacing = "0" cellpadding="0" border = "0">
 [%- FOREACH btItem = btButtons;
-	PROCESS btDisplay;
+	PROCESS btDisplay btid = btItem.num - 1;
 END;
 
 '</table>';

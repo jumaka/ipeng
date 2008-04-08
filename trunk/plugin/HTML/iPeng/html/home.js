@@ -470,7 +470,7 @@ function deleteAlarm() {
 	if (a_editHere < 0) return;
 	var id = a_editHere;
 
-	if (confirm("Do you really want to clear the alarm \"" + DayStrings[id] + "\"")) {
+	if (confirm(ClearAlarmMsg + " \"" + DayStrings[id] + "\"?")) {
 		sArray = [ 'alarm', 'cmd:clear', 'dow:' + id ];
 		callJSONRPC (sArray, function (r2) {
 		 	thealarm = myAlarms.get(id);

@@ -222,6 +222,7 @@ function storeReturns(param) {
 
 
 function powerControl (action) {
+alert("power");
 	var args = "p0=power&p1=" + parseInt(action) + "&player=" + player + "&ajaxRequest=1";
 	// always use status.html for this request
 	var old_url = url;

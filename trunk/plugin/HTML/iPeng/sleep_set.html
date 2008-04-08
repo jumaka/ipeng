@@ -8,7 +8,7 @@
 	<span id = "sleeptime" style = "position: absolute; font-size: 80; top: 106; width: 320; -webkit-box-sizing: border-box; text-align: center; color: white; display: none">&nbsp;</span>
 
 	<div id = "sleepedit" style = "position: absolute; font-size: 32; top: 126; width: 320; -webkit-box-sizing: border-box; padding: 0 35 0 35;">
-		<select id="s_hours" name="s_hours" class = "selectItems" title = "hours"
+		<select id="s_hours" name="s_hours" class = "selectItems" title = "[% 'IPENG_HOURS' | string %]"
 				style = "float: left; font-size: 32; text-align: right; "
 				onChange = "void(0);">
 			[% j = 0; WHILE j < 24; %]
@@ -39,7 +39,7 @@
 			    text-align: center;
 			    font-size: 24;
 		        -webkit-box-sizing: border-box;
-		">Start</a>
+		">[% 'IPENG_START' | string %]</a>
     <a id = 'sleepstop' class="iButton red" 
 		href = "javascript:sleep.Count(false);" target = "_self"
 		style = "position: absolute; display: none;
@@ -51,6 +51,6 @@
 				 font-size: 24;
 			     -webkit-box-sizing: border-box;
 			     color: white;
-		">Stop</a>
+		">[% 'IPENG_STOP' | string %]</a>
 
 </div>

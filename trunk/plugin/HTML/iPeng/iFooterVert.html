@@ -1,19 +1,45 @@
 <!-- iFooterVert.html -->
 
-[%- btButtons = [ { num = 1, icon = 'Album', text = 'ALBUMS', href = 'dummy' }, 
-				 { num = 2, icon = 'Artist', text = 'ARTIST', href = 'dummy' },
-				 { num = 3, icon = 'Playlist', text = 'IPENG_BUTTON_LISTS', href = 'dummy' },
-				 { num = 4, icon = 'Search', text = 'SEARCH', href = 'dummy' },
-				 { num = 5, icon = 'Home', text = 'IPENG_BUTTON_HOME', href = webroot _ 'home.html?player=' _ playerURI } ];
+[%- 
+btButtons = [ 	{ id = 'Album', 
+					icon = 'html/images/iAlbumTrans.png', 
+					selectedicon = 'html/images/iAlbumTransSelected.png', 
+					namestring = 'ALBUMS', url = 'dummy' }, 
+				 { id = 'Artist', 
+				 	icon = 'html/images/iArtistTrans.png', 
+				 	selectedicon = 'html/images/iArtistTransSelected.png', 
+				 	namestring = 'ARTIST', url = 'dummy' },
+				 { id = 'Playlist',
+				 	icon = 'html/images/iPlaylistTrans.png',
+				 	selectedicon = 'html/images/iPlaylistTransSelected.png',
+				 	namestring = 'IPENG_BUTTON_LISTS', url = 'dummy' },
+				 { id = 'Search',
+				 	icon = 'html/images/iSearchTrans.png',
+				 	selected = 'html/images/iSearchTransSelected.png',
+				 	namestring = 'SEARCH', url = 'dummy' },
+				 { id = 'Home',
+				 	icon = 'html/images/iHomeTrans.png',
+				 	selectedicon = 'html/images/iHomeTransSelected.png',
+				 	namestring = 'IPENG_BUTTON_HOME', url = webroot _ 'home.html?player=' _ playerURI } ];
 
-btButtons.0.href = PROCESS browseAlbumLink;
-btButtons.1.href = PROCESS browseArtistLink;
-btButtons.2.href = PROCESS browsePlaylistsLink;
-btButtons.3.href = PROCESS browseSearchLink -%]
+btButtons.0.url = PROCESS browseAlbumLink;
+btButtons.1.url = PROCESS browseArtistLink;
+btButtons.2.url = PROCESS browsePlaylistsLink;
+btButtons.3.url = PROCESS browseSearchLink;
+
+USE iPeng;
+i = 0;
+context = context || 'default';
+commands = iPeng.commands('toolbar', context, 5);
+FOREACH command = commands;
+	btButtons.$i = command;
+	i = i + 1;
+END;
+%]
 
 <div id = 'bottombar' [% classFooter %] selectedButton = "[% selectedButton %]" selectedContext = "[% context || 'default' %]">
 [%- FOREACH btItem = btButtons;
-	IF btItem.icon == selectedButton -%]
+	IF btItem.id == selectedButton -%]
 		<div id = 'bottombarSelect' style = "left: [% (btItem.num - 1) * 64 + 2 %]; display: none;"></div>
 	[% END;
 END;
@@ -21,8 +47,11 @@ END;
 -%]
 <div id = 'bottombararea'>
 <table width="100%" height = "48"; cellspacing = "0" cellpadding="0" border = "0">
-[%- FOREACH btItem = btButtons;
-	PROCESS btDisplay btid = btItem.num - 1;
+[%- 
+i = 0;
+FOREACH btItem = btButtons;
+	PROCESS btDisplay btid = i;
+	i = i + 1;
 END;
 
 '</table>';
@@ -32,13 +61,24 @@ END;
 '<!-- /iFooterVert.html -->';
 
 
-BLOCK btDisplay %]
+BLOCK btDisplay -%]
 	<td align = "center" style = "width: 60; padding-top: 1; padding-bottom: 0;">
-		<img id = "btImg[% btid %]" src="[% webroot; 'html/images/i'; btItem.icon; 'Trans'; 
-			IF btItem.icon == selectedButton; 'Selected'; END %].png" style = "padding: 0; border: 0; margin: 0;"><br>
-		<span class= "bottombartext[% IF btItem.icon == selectedButton; 'On'; END %]">[% btItem.text | string; '</span>'; 
-		IF btItem.href %]
-			<a id = "btA[% btid %]" class = "bottombarClick" style = "left: [% (btItem.num - 1) * 64 + 2 %]" href="[% btItem.href %]" target="_self"></a>
+		<img id = "btImg[% btid %]"
+			src="[% webroot;
+				IF btItem.id == selectedButton && btItem.selectedicon; btItem.selectedicon; ELSE; btItem.icon; END;
+			%]" style = "padding: 0; border: 0; margin: 0;"><br>
+		<span class= "bottombartext[% IF btItem.id == selectedButton; 'On'; END %]">[% 
+		IF btItem.namestring; btItem.namestring | string; ELSE; btItem.name; END;
+		'</span>';
+		IF btItem.url %]
+			<a id = "btA[% btid %]" class = "bottombarClick" style = "left: [% (btid) * 64 + 2 %]" href="[% 
+				btItem.url;
+				IF btItem.parameters;
+					FOREACH param = btItem.parameters.keys;
+						'&'; param; '='; val = btItem.parameters.$param; $val;
+					END;
+				END;
+				%]" target="_self"></a>
 		[%- END;
 	'</td>';
 END;

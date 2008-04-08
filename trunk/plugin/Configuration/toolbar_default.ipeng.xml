@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<configuration>
+	<section id="toolbar">
+		<subsection id="*">
+			<command id="Album">
+				<description>Toolbar Icon: Default Browse-By-Album View</description>
+				<weight>1</weight>
+				<namestring>ALBUMS</namestring>
+				<icon>html/images/iAlbumTrans.png</icon>
+				<selectedicon>html/images/iAlbumTransSelected.png</selectedicon>
+				<url>browsedb.html?hierarchy=album,track&amp;level=0&amp;</url> 
+				<type>command</type>
+				<parameters>
+					<player>playerURI</player>
+				</parameters>
+			</command>
+			<command id="Artist">
+				<description>Toolbar Icon: Default Browse-By-Artist View</description>
+				<weight>2</weight>
+				<namestring>ARTIST</namestring>
+				<icon>html/images/iArtistTrans.png</icon>
+				<selectedicon>html/images/iArtistTransSelected.png</selectedicon>
+				<url>browsedb.html?hierarchy=contributor,album,track&amp;level=0&amp;</url> 
+				<type>command</type>
+				<parameters>
+					<player>playerURI</player>
+				</parameters>
+			</command>
+			<command id="Playlist">
+				<description>Toolbar Icon: Default Browse-Playlists View</description>
+				<weight>3</weight>
+				<namestring>IPENG_BUTTON_LISTS</namestring>
+				<icon>html/images/iPlaylistTrans.png</icon>
+				<selectedicon>html/images/iPlaylistTransSelected.png</selectedicon>
+				<url>browsedb.html?hierarchy=playlist,playlistTrack&amp;level=0&amp;</url> 
+				<type>command</type>
+				<parameters>
+					<player>playerURI</player>
+				</parameters>
+			</command>
+			<command id="Search">
+				<description>Toolbar Icon: Default Search View</description>
+				<weight>4</weight>
+				<namestring>SEARCH</namestring>
+				<icon>html/images/iSearchTrans.png</icon>
+				<selectedicon>html/images/iSearchTransSelected.png</selectedicon>
+				<url>search.html?</url> 
+				<type>command</type>
+				<parameters>
+					<player>playerURI</player>
+				</parameters>
+			</command>
+			<command id="Home">
+				<description>Toolbar Icon: Home</description>
+				<weight>5</weight>
+				<namestring>IPENG_BUTTON_HOME</namestring>
+				<icon>html/images/iHomeTrans.png</icon>
+				<selectedicon>html/images/iHomeTransSelected.png</selectedicon>
+				<url>search.html?</url> 
+				<type>command</type>
+				<parameters>
+					<player>playerURI</player>
+				</parameters>
+			</command>
+		</subsection>
+		<subsection id="home">
+			<command id="InternetRadio">
+				<description>Toolbar Icon: Internet Radio Icon for Home Screen</description>
+				<defaultenabled>1</defaultenabled>
+				<weight>5</weight>
+				<name>Radio</name>
+				<icon>html/images/iRadioTrans.png</icon>
+				<selectedicon>html/images/iRadioTransSelected.png</selectedicon>
+				<url>javascript:iui.showPage($('Radio'));</url> 
+				<type>command</type>
+			</command>
+			<command id="MusicService">
+				<description>Toolbar Icon: MusicServices Icon for Home Screen</description>
+				<defaultenabled>0</defaultenabled>
+				<weight>6</weight>
+				<name>MusicServices</name>
+				<icon>html/images/iRadioTrans.png</icon>
+				<selectedicon>html/images/iRadioTransSelected.png</selectedicon>
+				<url>javascript:iui.showPage($('MusicServices'));</url> 
+				<type>command</type>
+			</command>
+		</subsection>
+	</section>
+</configuration>

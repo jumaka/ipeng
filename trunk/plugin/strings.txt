@@ -138,6 +138,11 @@ IPENG_STOP
 IPENG_CLEAR_ALARM_MSG
 	EN	Do you really want to clear the alarm
 	DE	Den folgenden Alarm wirklich löschen:
+	
+# Fade in
+IPENG_FADE_IN
+	EN	Fade in
+	DE	Einblenden
 
 
 # Status "no volume control"

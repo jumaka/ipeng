@@ -13,7 +13,7 @@
 				 text-align: center;
 				 font-size: 20;
 			">+</a>
-		<span class = "backgroundtext" style = "float: right; margin: 4 130 0 0">Fade In</span>
+		<span class = "backgroundtext" style = "float: right; margin: 4 130 0 0">[% 'IPENG_FADE_IN' | string %]</span>
 		<div id = "a_fade" class="toggle" onclick="updateFade();" 
 	[%# playerPrefs = Prefs.preferences('server').client(Clients.client(player)); %]
 	[%# playerPrefs.get('alarmfadeseconds'); %]

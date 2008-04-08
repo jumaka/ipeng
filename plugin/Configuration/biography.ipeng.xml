@@ -3,6 +3,7 @@
 	<section id="nowplaying">
 		<subsection id="biography">
 			<command id="biography">
+				<description>NowPlaying Link for Biography Plugin</description>
 				<requireplugins>Biography</requireplugins>
 				<weight>40</weight>
 				<name>Biography</name>

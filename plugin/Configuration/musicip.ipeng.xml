@@ -7,6 +7,7 @@
 			<height>30</height-->
 			<weight>50</weight>
 			<command id="mix">
+				<description>NowPlaying Link for MusicIP Mixer</description>
 				<requireplugins>MusicMagic</requireplugins>
 				<weight>10</weight>
 				<name>Music IP Mixer</name>

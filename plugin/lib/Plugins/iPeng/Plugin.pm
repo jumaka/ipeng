@@ -390,6 +390,8 @@ sub jsonHandler {
 		return;
 	}	
 
+	my $subsection = $params->{'subsection'};
+
 	$log->debug("Executing CLI commands command\n");
 
 	my $context = _readConfigurationForSection($params->{'_type'});
@@ -415,30 +417,17 @@ sub jsonHandler {
 
 		# Sort the commands in the current sub section by 'weight'
 		my @commandArray = values %$commands;
-		@commandArray = sort { 
-			if(defined($a->{'weight'}) && defined($b->{'weight'})) {
-				if($a->{'weight'}!=$b->{'weight'}) {
-					return $a->{'weight'} <=> $b->{'weight'};
-				}
-			}
-			if(defined($a->{'weight'}) && !defined($b->{'weight'})) {
-				if($a->{'weight'}!=50) {
-					return $a->{'weight'} <=> 50;
-				}
-			}
-			if(!defined($a->{'weight'}) && defined($b->{'weight'})) {
-				if($b->{'weight'}!=50) {
-					return 50 <=> $b->{'weight'};
-				}
-			}
-			return 0; 
-		} @commandArray;
+		@commandArray = sortByWeight(@commandArray);
 
 		# Replace the 'command' hash with a 'commands_loop' array
 		delete $context->{$key}->{'command'};
 		if(scalar(@commandArray)>0) {
-			$context->{$key}->{'commands_loop'} = \@commandArray;
-			$context->{$key}->{'count'} = scalar(@commandArray);
+			if(!defined($subsection) || $key eq '*' || $key eq $subsection) {
+				$context->{$key}->{'commands_loop'} = \@commandArray;
+				$context->{$key}->{'count'} = scalar(@commandArray);
+			}else {
+				delete $context->{$key};
+			}
 		}else {
 			delete $context->{$key};
 		}
@@ -446,7 +435,65 @@ sub jsonHandler {
 
 	# Sort the sub sections by 'weight'
 	my @menu = values %$context;
-	@menu = sort { 
+
+	# If subsection is defined, we should only return the matching commands
+	if(defined($subsection)) {
+
+		my @subsectionCommands = ();
+		my @wildcardCommands = ();
+		foreach my $item (@menu) {
+			my $commands = $item->{'commands_loop'};
+			if($item->{'id'} eq '*') {
+				push @wildcardCommands,@$commands;
+			}else {
+				push @subsectionCommands,@$commands;
+			}
+		}
+		push @subsectionCommands,@wildcardCommands;
+		@menu = @subsectionCommands;
+
+	}else {
+		@menu = sortByWeight(@menu);
+	}
+
+	# If max is defined, we should prefer commands with subsection defined
+	my $max = $params->{'max'};
+	if(defined($max)) {
+		@menu = splice(@menu,0,$max);
+		@menu = sortByWeight(@menu);
+	}
+
+
+	my $menuResult = \@menu;
+
+	$request->addResult('timestamp',$lastUpdate);
+	$request->addResult('count',scalar(@$menuResult));
+
+	# Add the array of sub sections as a subsections_loop
+	my $cnt = 0;
+	$log->warn("Returning: ".Dumper($menuResult));
+	foreach my $item (@$menuResult) {
+
+		if(defined($subsection)) {
+			foreach my $key (keys %$item) {
+				$request->addResultLoop('commands',$cnt,$key,$item->{$key});
+			}
+		}else {
+			foreach my $key (keys %$item) {
+				$request->addResultLoop('subsections',$cnt,$key,$item->{$key});
+			}
+		}
+		$cnt++;
+	}
+
+	$request->setStatusDone();
+	$log->debug("Exiting jsonHandler\n");
+}
+
+sub sortByWeight {
+	my @array = @_;
+
+	@array = sort { 
 		if(defined($a->{'weight'}) && defined($b->{'weight'})) {
 			if($a->{'weight'}!=$b->{'weight'}) {
 				return $a->{'weight'} <=> $b->{'weight'};
@@ -463,24 +510,8 @@ sub jsonHandler {
 			}
 		}
 		return 0; 
-	} @menu;
-	my $menuResult = \@menu;
-
-	$request->addResult('timestamp',$lastUpdate);
-	$request->addResult('count',scalar(@$menuResult));
-
-	# Add the array of sub sections as a subsections_loop
-	my $cnt = 0;
-	foreach my $item (@$menuResult) {
-
-		foreach my $key (keys %$item) {
-			$request->addResultLoop('subsections',$cnt,$key,$item->{$key});
-		}
-		$cnt++;
-	}
-
-	$request->setStatusDone();
-	$log->debug("Exiting jsonHandler\n");
+	} @array;
+	return @array;
 }
 
 sub jsonStatusHandler {

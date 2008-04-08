@@ -85,6 +85,9 @@ sub initCommands {
 				} else {
 					$webmenu{'enabled'} = 0;
 				}
+				if(exists $commands->{$commandKey}->{'description'}) {
+					$webmenu{'description'} = $commands->{$commandKey}->{'description'};
+				}
 				push @commandsResult,\%webmenu;
 			}
 		}

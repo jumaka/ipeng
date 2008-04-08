@@ -3,6 +3,7 @@
 	<section id="nowplaying">
 		<subsection id="albumreview">
 			<command id="albumreview">
+				<description>NowPlaying Link for Album Review Plugin</description>
 				<requireplugins>AlbumReview</requireplugins>
 				<weight>30</weight>
 				<name>Album Review</name>

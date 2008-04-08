@@ -5,6 +5,7 @@
 			<weight>10</weight>
 			<command id="Song Info">
 				<weight>10</weight>
+				<description>NowPlaying Link for Song Info Details</description>
 				<name>Song Info Details</name>
 				<icon>html/images/info.png</icon>
 				<url>songinfo.html?artAtTop=0</url>

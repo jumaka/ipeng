@@ -113,7 +113,7 @@ sub handler {
 					my $commandid = "command_".escape($sectionKey."_".$subSectionKey."_".$commandKey);
 					my $current = $prefs->get($commandid.'_enabled');
 		        	        if($paramRef->{$commandid}) {
-						if(defined($current) && !$current) {
+						if((defined($current) && !$current) || (!defined($current) && exists $commands->{$commandKey}->{'defaultenabled'})) {
 			        	                $prefs->set($commandid.'_enabled',1);
 							Plugins::iPeng::Plugin::updateLastUpdateTime();
 						}

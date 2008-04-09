@@ -56,7 +56,7 @@
 				<namestring>IPENG_BUTTON_HOME</namestring>
 				<icon>html/images/iHomeTrans.png</icon>
 				<selectedicon>html/images/iHomeTransSelected.png</selectedicon>
-				<url>search.html?</url> 
+				<url>home.html?</url> 
 				<type>command</type>
 				<parameters>
 					<player>playerURI</player>

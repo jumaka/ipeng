@@ -38,11 +38,17 @@ END;
 %]
 
 <div id = 'bottombar' [% classFooter %] selectedButton = "[% selectedButton %]" selectedContext = "[% context || 'default' %]">
-[%- FOREACH btItem = btButtons;
-	IF btItem.id == selectedButton -%]
-		<div id = 'bottombarSelect' style = "left: [% (btItem.num - 1) * 64 + 2 %]; display: none;"></div>
-	[% END;
-END;
+[%- hasone = 0; i = 0;
+	FOREACH btItem = btButtons;
+		IF btItem.id == selectedButton -%]
+			<div id = 'bottombarSelect' style = "left: [% i * 64 + 2 %]; display: block;"></div>
+		[%	hasone = 1;
+		END;
+		i = i + 1;
+	END;
+IF !hasone; -%]
+	<div id = 'bottombarSelect' style = "left: [% 2 %]; display: none;"></div>
+[%- END;
 
 -%]
 <div id = 'bottombararea'>
@@ -67,11 +73,12 @@ BLOCK btDisplay -%]
 			src="[% webroot;
 				IF btItem.id == selectedButton && btItem.selectedicon; btItem.selectedicon; ELSE; btItem.icon; END;
 			%]" style = "padding: 0; border: 0; margin: 0;"><br>
-		<span class= "bottombartext[% IF btItem.id == selectedButton; 'On'; END %]">[% 
+		<span id = "btText[% btid %]" class= "bottombartext[% IF btItem.id == selectedButton; 'On'; END %]">[% 
 		IF btItem.namestring; btItem.namestring | string; ELSE; btItem.name; END;
 		'</span>';
 		IF btItem.url %]
 			<a id = "btA[% btid %]" class = "bottombarClick" style = "left: [% (btid) * 64 + 2 %]" href="[% 
+				IF btItem.url.substr(0, 11) != 'javascript:'; webroot; END;
 				btItem.url;
 				IF btItem.parameters;
 					FOREACH param = btItem.parameters.keys;

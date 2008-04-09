@@ -25,6 +25,7 @@ use File::Next;
 use Slim::Utils::Log;
 use Slim::Utils::Prefs;
 use Slim::Utils::Misc;
+use Slim::Utils::Strings;
 
 my $prefs = preferences('plugin.ipeng');
 my $log   = logger('plugin.ipeng');
@@ -70,7 +71,9 @@ sub initCommands {
 			for my $commandKey (keys %$commands) {
 				my %webmenu = ();
 				$webmenu{'id'} = $commandKey;
-				if(exists $commands->{$commandKey}->{'name'}) {
+				if(exists $commands->{$commandKey}->{'namestring'}) {
+					$webmenu{'name'} = Slim::Utils::Strings::getString($commands->{$commandKey}->{'namestring'});
+				}elsif(exists $commands->{$commandKey}->{'name'}) {
 					$webmenu{'name'} = $commands->{$commandKey}->{'name'};
 				}else {
 					$webmenu{'name'} = $commandKey;

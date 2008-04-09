@@ -32,6 +32,7 @@ use Plugins::iPeng::Settings;
 use Plugins::iPeng::EnabledCommands;
 use XML::Simple;
 use Data::Dumper;
+use HTML::iPeng::iPeng;
 
 our $PLUGINVERSION =  undef;
 

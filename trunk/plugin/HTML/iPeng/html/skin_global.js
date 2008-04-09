@@ -221,23 +221,14 @@ function storeReturns(param) {
 }
 
 
-function powerControl (action) {
-alert("power");
-	var args = "p0=power&p1=" + parseInt(action) + "&player=" + player + "&ajaxRequest=1";
-	// always use status.html for this request
-	var old_url = url;
-	if (action) {
-		Element.hide("powerControlOff");
-		document.getElementById("powerControlOn").style.display = "block";
-//		Element.show("powerControlOff");
-		} else {
-		Element.hide("powerControlOn");
-		document.getElementById("powerControlOff").style.display = "block";
-	}
-	url = webroot + 'status.html';
-	getStatusData(args, refreshNothing);
-	url = old_url;
+function togglePower() {
+	callJSONRPC([ 'power' ], function (r2) {}, function (r2) {});
 }
+
+function togglePause() {
+	callJSONRPC([ 'pause' ], function (r2) {}, function (r2) {});
+}
+
 
 function callJSONRPC(paramArray, callback, failure, thisplayer) {
  	var thisplayer = (thisplayer == null) ?  playerid : thisplayer;

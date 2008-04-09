@@ -62,11 +62,48 @@
 					<player>playerURI</player>
 				</parameters>
 			</command>
+			<command id="Power">
+				<description>Toolbar Icon: Power</description>
+				<defaultenabled>0</defaultenabled>
+				<weight>6</weight>
+				<namestring>IPENG_POWER</namestring>
+				<icon>html/images/iOffTrans.png</icon>
+				<selectedicon>html/images/iOffBlue.png</selectedicon>
+				<url>javascript:callJSONRPC([ 'power' ], function (r2) {}, function (r2) {});</url>
+				<type>command</type>
+			</command>
+			<command id="PlayPause">
+				<description>Toolbar Icon: Play / Pause</description>
+				<defaultenabled>0</defaultenabled>
+				<weight>6</weight>
+				<namestring>IPENG_PLAY_PAUSE</namestring>
+				<icon>html/images/iPlayPause.png</icon>
+				<url>javascript:callJSONRPC([ 'pause' ], function (r2) {}, function (r2) {});</url>
+				<type>command</type>
+			</command>
+			<command id="Next">
+				<description>Toolbar Icon: Next Track</description>
+				<defaultenabled>0</defaultenabled>
+				<weight>6</weight>
+				<namestring>NEXT</namestring>
+				<icon>html/images/iNextTrans.png</icon>
+				<url>javascript:callJSONRPC([ 'playlist', 'index', '+1' ], function (r2) {}, function (r2) {});</url>
+				<type>command</type>
+			</command>
+			<command id="Prev">
+				<description>Toolbar Icon: Previous Track</description>
+				<defaultenabled>0</defaultenabled>
+				<weight>6</weight>
+				<namestring>PREV</namestring>
+				<icon>html/images/iPrevTrans.png</icon>
+				<url>javascript:callJSONRPC([ 'playlist', 'index', '-1' ], function (r2) {}, function (r2) {});</url>
+				<type>command</type>
+			</command>
 		</subsection>
 		<subsection id="home">
 			<command id="InternetRadio">
 				<description>Toolbar Icon: Internet Radio Icon for Home Screen</description>
-				<defaultenabled>1</defaultenabled>
+				<defaultenabled>0</defaultenabled>
 				<weight>5</weight>
 				<name>Radio</name>
 				<icon>html/images/iRadioTrans.png</icon>
@@ -82,6 +119,26 @@
 				<icon>html/images/iRadioTrans.png</icon>
 				<selectedicon>html/images/iRadioTransSelected.png</selectedicon>
 				<url>javascript:iui.showPage($('MusicServices'));</url> 
+				<type>command</type>
+			</command>
+			<command id="Alarm">
+				<description>Toolbar Icon: Alarm Icon for Home Screen</description>
+				<defaultenabled>0</defaultenabled>
+				<weight>6</weight>
+				<namestring>ALARM</namestring>
+				<icon>html/images/iAlarmTrans.png</icon>
+				<selectedicon>html/images/iAlarmTransSelected.png</selectedicon>
+				<url>javascript:iui.showPageByHref('home.html?runAlarm=1', null, null, null, 'localOnload();', 1);</url> 
+				<type>command</type>
+			</command>
+			<command id="Sleep">
+				<description>Toolbar Icon: Alarm Icon for Home Screen</description>
+				<defaultenabled>0</defaultenabled>
+				<weight>6</weight>
+				<namestring>SLEEP</namestring>
+				<icon>html/images/iSleepTrans.png</icon>
+				<selectedicon>html/images/iSleepTransSelected.png</selectedicon>
+				<url>javascript:iui.showPageByHref('home.html?runSleep=1', null, null, null, 'sleep.init();', 1);</url> 
 				<type>command</type>
 			</command>
 		</subsection>

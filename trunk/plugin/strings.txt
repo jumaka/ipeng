@@ -150,3 +150,12 @@ IPENG_NO_VOLUME_CTRL
 	EN	volume settings not available for this player
 	DE	keine Lautärkeregelung für diesen Player
 	
+# Play/Pause
+IPENG_PLAY_PAUSE
+	EN	Play/Pause
+	DE	Play/Pause
+	
+# Power On/Off
+IPENG_POWER
+	EN	On/Off
+	DE	Ein/Aus

@@ -11,7 +11,7 @@
 			<tr>
 				[%- commandid = "command_" _ command.id %]
 				<td><input type="checkbox" name="[% commandid | uri %]" id="[% commandid | uri %]" value="1" [% command.enabled ? "checked" : "" %] onclick="changeNumSelected(this)">
-				<label for="[% commandid %]">[% command.name | html %]</label></td><td>[% IF command.description %][% command.description %]<br>[% END %]([% command.id %])<br><br></td>
+				<label for="[% commandid %]">[% IF command.namestring %][% command.name |html %]/[% command.namestring | string %][% ELSE %][% command.name | html %][% END %]</label></td><td>[% IF command.description %][% command.description %]<br>[% END %]([% command.id %])<br><br></td>
 			</tr>
 		[%- END %]
 	</table>

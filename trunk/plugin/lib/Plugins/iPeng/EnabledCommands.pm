@@ -71,15 +71,18 @@ sub initCommands {
 			for my $commandKey (keys %$commands) {
 				my %webmenu = ();
 				$webmenu{'id'} = $commandKey;
-				if(exists $commands->{$commandKey}->{'namestring'}) {
-					$webmenu{'name'} = Slim::Utils::Strings::getString($commands->{$commandKey}->{'namestring'});
-				}elsif(exists $commands->{$commandKey}->{'name'}) {
+				if(exists $commands->{$commandKey}->{'name'}) {
 					$webmenu{'name'} = $commands->{$commandKey}->{'name'};
 				}else {
 					$webmenu{'name'} = $commandKey;
 				}
+				if(exists $commands->{$commandKey}->{'namestring'}) {
+					$webmenu{'namestring'} = $commands->{$commandKey}->{'namestring'};
+					$webmenu{'name'} = $sectionKey."/".$subSectionKey;
+				}else {
+					$webmenu{'name'} = $sectionKey."/".$subSectionKey."/".$webmenu{'name'};
+				}
 				$webmenu{'id'} = $sectionKey."_".$subSectionKey."_".$webmenu{'id'};
-				$webmenu{'name'} = $sectionKey."/".$subSectionKey."/".$webmenu{'name'};
 				my $enabled = $prefs->get('command_'.escape($webmenu{'id'}).'_enabled');
 				if(defined($enabled) && $enabled) {
 					$webmenu{'enabled'} = 1;

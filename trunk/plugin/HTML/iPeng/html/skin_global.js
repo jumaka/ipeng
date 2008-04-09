@@ -518,4 +518,3 @@ function expandAlphamap(thediv) {
 	$('alphamap').style.height = realheight;
 }
 
-

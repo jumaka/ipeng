@@ -246,6 +246,7 @@ function callJSONRPC(paramArray, callback, failure, thisplayer) {
 			  	if (failure) failure(response); } });
 }
 
+function shortJSONRPC (paramArray) { callJSONRPC (paramArray, function (r) {}, function (r) {}); }
 
 function addItem(args, goStatus) {
  	if (goStatus == null)

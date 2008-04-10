@@ -201,7 +201,7 @@ Alarms.prototype.update = function () {
 		for (var i = 0; i < 9; i++)
 			if (a_visible.indexOf(i) == -1)
 				Element.hideRow('alarm' + i, 'alarmSet');
-	}, function (r2) {});
+	});
 }
 
 Alarms.prototype.addOne = function (id) {
@@ -227,7 +227,7 @@ Alarms.prototype.addOne = function (id) {
 			if (Athis.all.length == 8)
 				Element.hide('a_plus');
 		}
-	}, function (r2) {});
+	});
 }
 
 Alarms.prototype.updateOne = function (id) {
@@ -346,7 +346,7 @@ function toggleDay(day) {
 			else
 				$('a_onoff' + day).setAttribute('toggled', 'true');
 		}
-	}, function (r1) {});
+	});
 }
 
 function updateFade() {
@@ -363,7 +363,7 @@ function updateFade() {
 			else
 			 	$('a_fade').removeAttribute('toggled');
 		}, function (r1) {});
-	}, function (r1) {});
+	});
 }
 
 a_editHere = -1;
@@ -477,7 +477,7 @@ function deleteAlarm() {
 		 	closeAEdit(true);
 		 	myAlarms.remove(thealarm);
 		 	Element.hideRow('alarm' + id, 'alarmSet');
-		}, function (r1) {});
+		});
 	}
 }
 
@@ -591,7 +591,7 @@ console.log("init");
 			sthis.timeout = 0;
 			sthis.displayStartStop(false);
 		}
-	}, function (r1) {});
+	});
 	
 	function dodisplayTime() {
 		sleep.displayTime();
@@ -627,7 +627,7 @@ Sleep.prototype.Count = function (startflag) {
 	var sArray = [ 'sleep', this.timeout ];
 	callJSONRPC (sArray, function (r2) {
 	 	sthis.init();
-	}, function (r1) {});
+	});
 }
 
 function localOnload() {

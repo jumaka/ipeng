@@ -91,7 +91,7 @@ BLOCK btDisplay -%]
 				END;
 			%]" target="_self"></a>
 		[%- ELSIF btItem.cli %]
-			<a id = "btA[% btid %]" class = "bottombarClick" style = "left: [% (btid) * 64 + 2 %]" href="javascript:shortJSONRPC(['[%
+			<a id = "btA[% btid %]" class = "bottombarClick" style = "left: [% (btid) * 64 + 2 %]" href="javascript:callJSONRPC(['[%
 				btItem.cli; '\'';
 				IF btItem.parameters;
 					FOREACH param = btItem.parameters.keys;

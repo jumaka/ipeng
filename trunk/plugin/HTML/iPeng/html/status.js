@@ -448,12 +448,11 @@ PluginCmd.prototype.paramString = function() {
 		params = this.paramStub;
 
 	function addKeyValue(key, value) {
-alert(cli + " p: " + params + " k: " + key + " v: " + value);
+//alert(cli + " p: " + params + " k: " + key + " v: " + value);
 		if (cli)
 			params.push(key + (value) ? ':' + value : '');
 		else
 			params += "&" + key + ((value) ? "=" + value : '');
-alert(params);
 	};
 
 	$H(this.params).each(function(pair) {
@@ -492,7 +491,7 @@ alert(params);
 PluginCmd.prototype.exec = function (refresh) {
 	switch (this.type) {
 		case "content":
-alert("p: " + this.path + " pS: " + this.paramString());
+//alert("p: " + this.path + " pS: " + this.paramString());
 			ajaxUpdate(this.path, this.paramString(), (refresh) ? refreshNothing : toggleMainbody);
 			Plugins.lastCmd = this;
 		break;
@@ -500,7 +499,7 @@ alert("p: " + this.path + " pS: " + this.paramString());
 		default:
 			if (!refresh)
 				if (this.cli)
-					shortJSONRPC(this.paramString());
+					callJSONRPC(this.paramString());
 				else
 					ajaxRequest(this.path, this.paramString(), Player.triggerUpdate);
 	}
@@ -586,7 +585,7 @@ var Plugins = {
 				Plugins.extID.appendChild(pidiv);
 			});			
 	
-		}, function (r2) {});
+		});
 	}
 }
 

@@ -1,10 +1,3 @@
-/*var thumbSize = 130;
-var thumbHrefTemplate = '/music/COVER/thumb_'+thumbSize+'x'+thumbSize+'_p.jpg';
-*/
-/*[%# PROCESS html/global.js %]*/
-
-/*var statusstub = webroot + statusroot + '?';*/
-
 
 function globalOnload() {
 //	refreshLibraryInfo();
@@ -222,11 +215,11 @@ function storeReturns(param) {
 
 
 function togglePower() {
-	callJSONRPC([ 'power' ], function (r2) {}, function (r2) {});
+	callJSONRPC([ 'power' ]);
 }
 
 function togglePause() {
-	callJSONRPC([ 'pause' ], function (r2) {}, function (r2) {});
+	callJSONRPC([ 'pause' ]);
 }
 
 
@@ -241,12 +234,10 @@ function callJSONRPC(paramArray, callback, failure, thisplayer) {
 	 		 postBody: Object.toJSON(temp),
 	 		 onSuccess: function (transport) {
 				var response = transport.responseText.evalJSON(true);
-				callback (response); },
-			 onFailure: function (response) { 
+				if (callback) callback (response); },
+			 onFailure: function (response) {
 			  	if (failure) failure(response); } });
 }
-
-function shortJSONRPC (paramArray) { callJSONRPC (paramArray, function (r) {}, function (r) {}); }
 
 function addItem(args, goStatus) {
  	if (goStatus == null)
@@ -330,7 +321,7 @@ function playTrack(trackNr) {
 		
 		if (thetrack == -1 && (r2.result.count - startcnt) > cnt) {
 			var sArr = [ 'titles', startcnt + cnt, '100', 'album_id:' + album, 'sort:tracknum', 'tags:t' ];
-			callJSONRPC(sArr, function (r1) { atCB (cnt, r1); }, function (r1) {});
+			callJSONRPC(sArr, function (r1) { atCB (cnt, r1); });
 		} else if (thetrack != -1)
 			addItemLoad("playlist&loadtracks&album.id=" + album, thetrack + startcnt, true);
 	}
@@ -341,7 +332,7 @@ function playTrack(trackNr) {
 		});
 	var sArr = [ 'titles', '0', '100', 'album_id:' + album, 'sort:tracknum', 'tags:t' ];
 	callJSONRPC(sArr, function (r1) { atCB(0, r1); }, function (r1) {});
-	}, function (r2) {});
+	});
 }
 
 function playPlaylist(trackNr, playlistNr) {
@@ -361,13 +352,13 @@ function playPlaylist(trackNr, playlistNr) {
 		
 		if (thetrack == -1 && (r2.result.count - startcnt) > cnt) {
 			var sArr = [ 'playlists', 'tracks', startcnt + cnt, '100', 'playlist_id:' + playlistNr, 'tags:t' ];
-			callJSONRPC(sArr, function (r1) { atCB (cnt, r1); }, function (r1) {});
+			callJSONRPC(sArr, function (r1) { atCB (cnt, r1); });
 		} else if (thetrack != -1)
 			addItemLoad("playlist&loadtracks&playlist.id=" + playlistNr, thetrack, true);
 	}
 
 	var sArr = [ 'playlists', 'tracks', '0', '100', 'playlist_id:' + playlistNr, 'tags:t' ];
-	callJSONRPC(sArr, function (r1) { atCB(0, r1); }, function (r1) {});
+	callJSONRPC(sArr, function (r1) { atCB(0, r1); });
 }
 
 function playURL(trackURL) {
@@ -397,7 +388,7 @@ function playURL(trackURL) {
 		
 		if (thetrack == -1 && (r2.result.count - startcnt) > cnt) {
 			var sArr = [ 'musicfolder', '0', '100', 'url:' + folderurl, 'tags:t' ];
-			callJSONRPC(sArr, function (r1) { atCB (cnt, r1); }, function (r1) {});
+			callJSONRPC(sArr, function (r1) { atCB (cnt, r1); });
 		} else if (thetrack != -1)
 			if (hasfolders)  // subfolders? -> only play single track!
 				addItemLoad("playlist&play&" + theurl, 0, true);
@@ -411,15 +402,15 @@ function playURL(trackURL) {
 				trackid = key.id;
 		});
 	var sArr = [ 'musicfolder', '0', '100', 'url:' + folderurl, 'tags:t' ];
-	callJSONRPC(sArr, function (r1) { atCB(0, r1); }, function (r1) {});
-	}, function (r2) {});
+	callJSONRPC(sArr, function (r1) { atCB(0, r1); });
+	});
 }
 
 
 function clearCurrentPlaylist() {
 	if (confirm("Do You really want to clear the current playlist?")) {
 		var sArray = [ 'playlist', 'clear' ];
-		callJSONRPC(sArray, function (r2) { hidePlaylistControl(); }, function (r2) {});
+		callJSONRPC(sArray, function (r2) { hidePlaylistControl(); });
 	}
 }
 
@@ -459,7 +450,7 @@ function evaluatePlaylist() {
 					}, function (r3) {});
 	 		} else
 	 			hidePlaylistControl();
-		}, function (r2) {});
+		});
 }
 
 function scrollOverlayUp(id1, id2, offset, onflag) {

@@ -423,18 +423,39 @@ function toggleCover() {
 	SF.initScroll();
 }
 
-function PluginCmd(tpe, id, url, params) {
+function PluginCmd(tpe, id, url, params, cli) {
 	this.type = tpe;
 	this.id = id;
 	this.params = params;
-	var temp = url.indexOf("?");
-	this.path = (temp > -1) ? url.substr(0, temp) : url;
-	this.paramStub = (temp > -1) ? url.substr(temp + 1) : "";
-//alert("type: " + this.type + ".id: " + this.id + ".params: " + "." + this.params + ".path: " + this.path + ".paramStub: " + this.paramStub);
+	if (cli) {
+		this.cli = url;
+		this.path = null;
+	} else {
+		this.cli = null;
+		var temp = url.indexOf("?");
+		this.path = (temp > -1) ? url.substr(0, temp) : url;
+		this.paramStub = (temp > -1) ? url.substr(temp + 1) : "";
+	}
 }
 
 PluginCmd.prototype.paramString = function() {
-	var params = this.paramStub;
+	var cli = (this.cli != null);
+
+	var params = null;
+	if (cli)
+		params = new Array(this.cli);
+	else
+		params = this.paramStub;
+
+	function addKeyValue(key, value) {
+alert(cli + " p: " + params + " k: " + key + " v: " + value);
+		if (cli)
+			params.push(key + (value) ? ':' + value : '');
+		else
+			params += "&" + key + ((value) ? "=" + value : '');
+alert(params);
+	};
+
 	$H(this.params).each(function(pair) {
 		switch (pair.key) {
 			case "id":
@@ -446,19 +467,22 @@ PluginCmd.prototype.paramString = function() {
 			case "genre":
 			case "genre_id":
 				if (Player.status.track[pair.key])
-					params += "&" + pair.value + "=" + Player.status.track[pair.key];
+					addKeyValue (pair.value, Player.status.track[pair.key]);
 			break;
 			case "index":
 				if (Player.status.track["playlist index"])
-					params += "&" + pair.value + "=" + Player.status.track["playlist index"];
+					addKeyValue (pair.value, Player.status.track["playlist index"]);
 			break;
 			case "playlist_name":
 			case "playlist_id":
 				if (Player.status[pair.key])
-					params += "&" + pair.value + "=" + Player.status[pair.key];
+					addKeyValue (pair.value, Player.status[pair.key]);
 			break;
 			case "player":
-				params += "&" + pair.value + "=" + player;
+				addKeyValue (pair.value, player);
+			break;
+			default:
+				addKeyValue (pair.value);
 			break;
 		}
 	});
@@ -468,14 +492,17 @@ PluginCmd.prototype.paramString = function() {
 PluginCmd.prototype.exec = function (refresh) {
 	switch (this.type) {
 		case "content":
-//alert("p: " + this.path + " pS: " + this.paramString());
+alert("p: " + this.path + " pS: " + this.paramString());
 			ajaxUpdate(this.path, this.paramString(), (refresh) ? refreshNothing : toggleMainbody);
 			Plugins.lastCmd = this;
 		break;
 		case "command":
 		default:
 			if (!refresh)
-				ajaxRequest(this.path, this.paramStrin(), Player.triggerUpdate);
+				if (this.cli)
+					shortJSONRPC(this.paramString());
+				else
+					ajaxRequest(this.path, this.paramString(), Player.triggerUpdate);
 	}
 };
 
@@ -510,8 +537,8 @@ var Plugins = {
 			parent.className = "tapblock";
 			parent.style.maxWidth = "320";
 			if (key.name) parent.title = key.name;
-			if (key.url) {
-				Plugins.addCmd(new PluginCmd(key.type, subsect.id + "." + key.id, key.url, key.parameters));
+			if (key.url || key.cli) {
+				Plugins.addCmd(new PluginCmd(key.type, subsect.id + "." + key.id, (key.url) ? key.url : key.cli, key.parameters, !(key.url)));
 				if (key.type) {
 					parent.href="javascript:void(0);";
 					parent.onclick = function () { Plugins.exec(subsect.id + "." + key.id); };

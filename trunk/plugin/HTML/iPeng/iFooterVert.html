@@ -77,31 +77,53 @@ BLOCK btDisplay -%]
 		IF btItem.namestring; btItem.namestring | string; ELSE; btItem.name; END;
 		'</span>';
 		IF btItem.url %]
-			<a id = "btA[% btid %]" class = "bottombarClick" style = "left: [% (btid) * 64 + 2 %]" href="[% 
+			<a id = "btA[% btid %]" class = "bottombarClick" style = "left: [% (btid) * 64 + 2 %]" href="[%
 				IF btItem.url.substr(0, 11) != 'javascript:'; webroot; END;
 				btItem.url;
 				IF btItem.parameters;
 					FOREACH param = btItem.parameters.keys;
-						'&'; param; '='; val = btItem.parameters.$param; $val;
+						'&';
+						IF (btItem.parameters.$param) != "none";
+							btItem.parameters.$param; '=';
+						END;
+						$param;
 					END;
 				END;
-				%]" target="_self"></a>
+			%]" target="_self"></a>
+		[%- ELSIF btItem.cli %]
+			<a id = "btA[% btid %]" class = "bottombarClick" style = "left: [% (btid) * 64 + 2 %]" href="javascript:shortJSONRPC(['[%
+				btItem.cli; '\'';
+				IF btItem.parameters;
+					FOREACH param = btItem.parameters.keys;
+						',\'';
+						IF param.substr(0, 5) == 'other';
+							btItem.parameters.$param;
+						ELSE;
+							IF (btItem.parameters.$param) != "none";
+								btItem.parameters.$param; ':';
+							END;
+							$param;
+						END;
+						'\'';
+					END;
+				END;
+			%]]);" target="_self"></a>
 		[%- END;
 	'</td>';
 END;
 
 BLOCK browseAlbumLink;
-	webroot _ 'browsedb.html?hierarchy=album,track&level=0&&player=' _ playerURI;
+	'browsedb.html?hierarchy=album,track&level=0&&player=' _ playerURI;
 END;
 
 BLOCK browseArtistLink;
-	webroot _ 'browsedb.html?hierarchy=contributor,album,track&level=0&&player=' _ playerURI;
+	'browsedb.html?hierarchy=contributor,album,track&level=0&&player=' _ playerURI;
 END;
 
 BLOCK browsePlaylistsLink;
-	webroot _ 'browsedb.html?hierarchy=playlist,playlistTrack&level=0&&player=' _ playerURI;
+	'browsedb.html?hierarchy=playlist,playlistTrack&level=0&&player=' _ playerURI;
 END;
 
 BLOCK browseSearchLink;
-	webroot _ 'search.html?player=' _ playerURI;
+	'search.html?player=' _ playerURI;
 END %]

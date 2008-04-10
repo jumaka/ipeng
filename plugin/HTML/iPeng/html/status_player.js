@@ -144,7 +144,7 @@ var Player = {
 					Element.show('statusalarm');
 				else
 					Element.hide('statusalarm');
-			}, function (r2) {});
+			});
 	},
 
 	updateTrackStat : function() {
@@ -156,7 +156,7 @@ var Player = {
 			var sArray = [ 'trackstat', 'getrating', this.status.track.id ];
 			callJSONRPC(sArray, function (r2) {
 	 			Player.doRefreshTS (r2.result.rating);
-			}, function (r2) {});
+			});
 		}
 	},
 
@@ -361,20 +361,20 @@ var Player = {
 		doExec : function(sArray) {
 			callJSONRPC(sArray, function (r2) {
 				Player.evalUpdate(r2.result);
-			}, function (r2) {});
+			});
 		},
 		
 		doTrigger : function(sArray) {
 			callJSONRPC(sArray, function (r2) {
 				Player.triggerUpdate();
-			}, function (r2) {});
+			});
 		},
 
 		volume : function(vol) {
 			var sArray = [ 'mixer', 'volume', vol ];
 			callJSONRPC(sArray, function (r2) {
 				Player.updateVolume(vol);
-			}, function (r2) {});
+			});
 		},
 		
 		evtVolume : function(evt) {
@@ -400,14 +400,14 @@ var Player = {
 			var sArray = [ 'play' ];
 			callJSONRPC(sArray, function (r2) {
 				Player.updateMode("play");
-			}, function (r2) {});			
+			});			
 		},
 		
 		evtPause : function(evt) {
 			var sArray = [ 'pause', 1 ];
 			callJSONRPC(sArray, function (r2) {
 				Player.updateMode("pause");
-			}, function (r2) {});			
+			});			
 		},
 
 		evtPrev : function(evt) {
@@ -435,7 +435,7 @@ var Player = {
 			else		
 				callJSONRPC(sArray, function (r2) {
 					Player.updateRepeatShuffle(val, cmd);
-				}, function (r2) {});			
+				});			
 		},
 				
 		evtPower : function(num) {
@@ -453,7 +453,7 @@ var Player = {
 					var sArray2 = [ 'trackstat', 'setrating', track.id, num ];
 					callJSONRPC(sArray2, function (r2) { 
 						Player.doRefreshTS(r2.result.rating);
-					}, function (r2) {});
+					});
 				}
 			}
 		}

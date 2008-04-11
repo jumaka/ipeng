@@ -206,7 +206,7 @@ PROCESS alarmSet;
 -%]
 
 
-<div id = "main" title = "[% 'IPENG_BUTTON_HOME' | string %]" selected = 'true' class = "panel" style = "width: 320">
+<div id = "main" title = "[% 'IPENG_BUTTON_HOME' | string %]" selected = 'true' class = "panel" style = "width: 320; overflow: hidden;">
 <ul>
 	<li class = "biggerLine">
 		<a href="#Database">
@@ -276,7 +276,7 @@ browseCategories = { BROWSE_BY_ALBUM = { icon = 'html/images/iAlbumWhite.png', t
 					 BROWSE_BY_ARTIST = { icon = 'html/images/iArtistWhite.png', text = 'ARTIST' },
 					 BROWSE_BY_GENRE = { icon = 'html/images/iGenreWhite.png', text = 'GENRES' },
 					 BROWSE_MUSIC_FOLDER = { icon = 'html/images/iFolderWhite2.png', text = 'SETUP_AUDIODIR' },
-					 BROWSE_BY_YEAR = { icon = 'html/images/iAlbumWhite.png', text = 'BROWSE_BY_YEAR' },
+					 BROWSE_BY_YEAR = { icon = 'html/images/iTimeWhite.png', text = 'BROWSE_BY_YEAR' },
 					 PLUGIN_CUSTOMBROWSE = { icon = additionalLinks.icons.${'PLUGIN_CUSTOMBROWSE'}.replace('.png', "_40x30_f.png"), text = 'PLUGIN_CUSTOMBROWSE' } } -%]
 
 <div id = "Database" class = "panel" title = "[% 'IPENG_BROWSE_LIBRARY' | string %]" style = 'width: 320'>

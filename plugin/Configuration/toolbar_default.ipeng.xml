@@ -57,6 +57,86 @@
 					<playerURI>player</playerURI>
 				</parameters>
 			</command>
+			<command id="Browsetree">
+				<description>Toolbar Icon: Default Music Folder Browse View</description>
+				<weight>6</weight>
+				<namestring>IPENG_BUTTON_TREE</namestring>
+				<icon>html/images/iFolderTrans1.png</icon>
+				<selectedicon>html/images/iFolderTrans1Selected.png</selectedicon>
+				<url>browsetree.html?</url> 
+				<parameters>
+					<playerURI>player</playerURI>
+				</parameters>
+			</command>
+			<command id="Year">
+				<description>Toolbar Icon: Default Browse-By-Year View</description>
+				<weight>6</weight>
+				<namestring>IPENG_BUTTON_YEAR</namestring>
+				<icon>html/images/iTimeTrans.png</icon>
+				<selectedicon>html/images/iTimeTransSelected.png</selectedicon>
+				<url>browsedb.html?hierarchy=year,album,track&amp;level=0&amp;</url> 
+				<parameters>
+					<playerURI>player</playerURI>
+				</parameters>
+			</command>
+			<command id="Genre">
+				<description>Toolbar Icon: Default Browse-By-Genre View</description>
+				<weight>6</weight>
+				<namestring>BROWSE_BY_GENRE</namestring>
+				<icon>html/images/iGenreTrans.png</icon>
+				<selectedicon>html/images/iGenreTransSelected.png</selectedicon>
+				<url>browsedb.html?hierarchy=genre,contributor,album,track&amp;level=0&amp;</url> 
+				<parameters>
+					<playerURI>player</playerURI>
+				</parameters>
+			</command>
+			<command id="Newmusic">
+				<description>Toolbar Icon: Default Browse-New-Music View</description>
+				<weight>6</weight>
+				<namestring>BROWSE_NEW_MUSIC</namestring>
+				<icon>html/images/iNewTrans.png</icon>
+				<selectedicon>html/images/iNewTransSelected.png</selectedicon>
+				<url>browsedb.html?hierarchy=age,track&amp;level=0&amp;</url> 
+				<parameters>
+					<playerURI>player</playerURI>
+				</parameters>
+			</command>
+			<command id="Random">
+				<description>Toolbar Icon: Random Play</description>
+				<weight>6</weight>
+				<namestring>PLUGIN_RANDOMPLAY</namestring>
+				<requireplugins>RandomPlay</requireplugins>
+				<icon>html/images/iRandomTrans.png</icon>
+				<selectedicon>html/images/iRandomTransSelected.png</selectedicon>
+				<url>plugins/RandomPlay/list.html?</url> 
+				<parameters>
+					<playerURI>player</playerURI>
+				</parameters>
+			</command>
+			<command id="Favorites">
+				<description>Toolbar Icon: Favorites</description>
+				<weight>6</weight>
+				<namestring>FAVORITES</namestring>
+				<requireplugins>Favorites</requireplugins>
+				<icon>html/images/iFavoritesTrans.png</icon>
+				<selectedicon>html/images/iFavoritesTransSelected.png</selectedicon>
+				<url>plugins/Favorites/index.html?</url> 
+				<parameters>
+					<playerURI>player</playerURI>
+				</parameters>
+			</command>
+			<command id="LastFM">
+				<description>Toolbar Icon: LastFM</description>
+				<weight>6</weight>
+				<name>LastFM</name>
+				<requireplugins>SqueezeScrobbler</requireplugins>
+				<icon>plugins/LastFM/html/images/lastfmTrans.png</icon>
+				<selectedicon>plugins/LastFM/html/images/lastfmTransSelected.png</selectedicon>
+				<url>plugins/LastFM/index.html?</url> 
+				<parameters>
+					<playerURI>player</playerURI>
+				</parameters>
+			</command>
 			<command id="Power">
 				<description>Toolbar Icon: Power</description>
 				<defaultenabled>0</defaultenabled>

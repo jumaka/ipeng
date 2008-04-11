@@ -430,8 +430,9 @@ END;
 END; # contentcontainer %]
 <!--br><h3><a href="help.html?player=[% player | uri %]">Help?</a></h3><br-->
 
-[% IF !ajaxUpdate %]
-</div>
-<!-- end plugins output -->
-[% PROCESS pagefooter.html %]
-[% END %]
+[% IF !ajaxUpdate;
+	'</div>
+	<!-- end plugins output -->';
+	selectedButton = 'LastFM';
+	PROCESS pagefooter.html;
+END %]

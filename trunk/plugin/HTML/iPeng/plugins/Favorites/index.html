@@ -269,6 +269,9 @@
 
 [% IF useAJAX %]<script TYPE="text/javascript">initListSortable('draglist', '[% sess %]'[% IF levelindex %], [% levelindex %][% END %]);</script>[% END %]
 
-[% IF NOT ajaxUpdate %]<!--/div-->[% PROCESS pagefooter.html %][% END %]
+[% IF NOT ajaxUpdate;
+	selectedButton = 'Favorites';
+	PROCESS pagefooter.html;
+END %]
 
 [% END %]

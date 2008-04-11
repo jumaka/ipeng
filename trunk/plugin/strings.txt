@@ -159,3 +159,13 @@ IPENG_PLAY_PAUSE
 IPENG_POWER
 	EN	On/Off
 	DE	Ein/Aus
+	
+# Browsetree
+IPENG_BUTTON_TREE
+	EN	Folder
+	DE	Ordner
+	
+# Year
+IPENG_BUTTON_YEAR
+	EN	Year
+	DE	Jahre

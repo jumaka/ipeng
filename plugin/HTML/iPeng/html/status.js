@@ -510,6 +510,7 @@ var Plugins = {
 	
 	lastCmd : null,
 	extID : null,
+	timestamp : null,
 	
 	findCmd : function(key) {
 		for (var i = 0; i < this.contentCmds.length; i++)
@@ -525,6 +526,15 @@ var Plugins = {
 	},
 	
 	exec: function(cmd) { var temp = Plugins.findCmd(cmd); if (temp) temp.exec(); },
+	
+	validateLastCmd : function () {	if (!this.findCmd(this.lastCmd.id)) this.lastCmd = null; },
+	
+	checkTimestamp : function () {
+		callJSONRPC( ['ipeng', 'status' ], function (r2) {
+			if (r2.result.timestamp != Plugins.timestamp)
+				window.setTimeout(Plugins.display, 100);
+		});
+	},
 
 	display : function () {
 	
@@ -570,8 +580,10 @@ var Plugins = {
 //alert(Plugins.extID + ".this:" + this + ".PI:" + Plugins);
 		var sArray = [ 'ipeng', 'commands', 'nowplaying' ];
 		callJSONRPC(sArray, function (r2) {
+			if (r2.result.timestamp == Plugins.timestamp) return;
 			while (Plugins.extID.firstChild)
 				Plugins.extID.removeChild(Plugins.extID.firstChild);
+			Plugins.contentCmds.clear();
 			r2.result.subsections_loop.each(function(subsect) {
 //	$H(subsect).each(function(pair){ alert(pair.key + ":" + pair.value); });
 				var pidiv = document.createElement("div");
@@ -583,8 +595,9 @@ var Plugins = {
 					addnameicon (pidiv, key, subsect);
 				});
 				Plugins.extID.appendChild(pidiv);
-			});			
-	
+			});
+			Plugins.timestamp = r2.result.timestamp;	
+			Plugins.validateLastCmd ();
 		});
 	}
 }

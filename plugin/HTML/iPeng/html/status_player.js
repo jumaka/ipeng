@@ -63,6 +63,7 @@ var Player = {
 				this.updateInfo(result.playlist_loop[0]);
 			if (result.will_sleep_in || sleep) this.updateSleep(result.will_sleep_in);
 			this.updateAlarm();
+			Plugins.checkTimestamp();
 		}
 	},
 	
@@ -278,6 +279,7 @@ var Player = {
 				index = parseInt(idx);
 				refreshElement('thissongnum', index + 1);
 				this.updateInfo(loop);
+				Plugins.checkTimestamp();
 				Plugins.refresh();
 			}
 		}

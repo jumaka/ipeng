@@ -77,12 +77,16 @@ sub initCommands {
 					$webmenu{'name'} = $commandKey;
 				}
 				if(exists $commands->{$commandKey}->{'namestring'}) {
-					$webmenu{'namestring'} = $commands->{$commandKey}->{'namestring'};
-					$webmenu{'name'} = $sectionKey."/".$subSectionKey;
-				}else {
-					$webmenu{'name'} = $sectionKey."/".$subSectionKey."/".$webmenu{'name'};
+					$webmenu{'name'} = Slim::Utils::Strings::getString($commands->{$commandKey}->{'namestring'});
 				}
 				$webmenu{'id'} = $sectionKey."_".$subSectionKey."_".$webmenu{'id'};
+				if(exists $sections->{$subSectionKey}->{'namestring'}) {
+					$webmenu{'group'} = $sectionKey."/".Slim::Utils::Strings::getString($sections->{$subSectionKey}->{'namestring'});
+				}elsif(exists $sections->{$subSectionKey}->{'name'}) {
+					$webmenu{'group'} = $sectionKey."/".$sections->{$subSectionKey}->{'name'};
+				}else {
+					$webmenu{'group'} = $sectionKey."/".$subSectionKey;
+				}
 				my $enabled = $prefs->get('command_'.escape($webmenu{'id'}).'_enabled');
 				if(defined($enabled) && $enabled) {
 					$webmenu{'enabled'} = 1;
@@ -98,7 +102,7 @@ sub initCommands {
 			}
 		}
 	}
-	@commandsResult = sort { $a->{'name'} cmp $b->{'name'} } @commandsResult;
+	@commandsResult = sort { $a->{'id'} cmp $b->{'id'} } @commandsResult;
 	return @commandsResult;
 }
 

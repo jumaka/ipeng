@@ -21,6 +21,7 @@ use strict;
 
 use base qw(Slim::Plugin::Base);
 
+use Storable;
 use Slim::Utils::Prefs;
 use Slim::Buttons::Home;
 use Slim::Utils::Misc;
@@ -30,9 +31,11 @@ use File::Slurp;
 use Scalar::Util qw(blessed);
 use Plugins::iPeng::Settings;
 use Plugins::iPeng::EnabledCommands;
+use Plugins::iPeng::PositionCommands;
 use XML::Simple;
 use Data::Dumper;
 use HTML::iPeng::iPeng;
+use Slim::Utils::Strings;
 
 our $PLUGINVERSION =  undef;
 
@@ -49,6 +52,8 @@ my $driver;
 my %sections = ();
 
 my $lastUpdate = undef;
+
+my %cache = ();
 
 =head1 NAME
 Plugins::iPeng::Plugin
@@ -226,69 +231,57 @@ sub initPlugin {
 	$PLUGINVERSION = Slim::Utils::PluginManager->dataForPlugin($class)->{'version'};
 	Plugins::iPeng::Settings->new();
 	Plugins::iPeng::EnabledCommands->new();
+	Plugins::iPeng::PositionCommands->new();
 	checkDefaults();
 
 	# Read the configuration files, just to show any errors directly at plugin startup
-	my %fileItems = ();
-	_readConfigurationFromFiles(\%fileItems);
-	#foreach my $item (keys %fileItems) {
-	#	my $sections = $fileItems{$item}->{'section'};
-	#	foreach my $section (keys %$sections) {
-	#		my $commands = $sections->{$section}->{'command'};
-	#		foreach my $command (keys %$commands) {
-	#			#addCommandLink($section,$command,$commands->{$command});
-	#		}
-	#	}
-	#}
-}
-
-sub _copySubSection {
-	my $subsection = shift;
-
-	my %result = ();
-	foreach my $subsectionAttr (keys %$subsection) {
-		if($subsectionAttr eq 'command') {
-			my $commands = $subsection->{$subsectionAttr};
-			my %resultCommands = ();
-			foreach my $commandKey (keys %$commands) {
-				$resultCommands{$commandKey} = $commands->{$commandKey};
-			}
-			$result{'command'} = \%resultCommands;
-		}else {
-			$result{$subsectionAttr} = $subsection->{$subsectionAttr};
-		}
-	}
-	return \%result;
-}
-sub _copySubSections {
-	my $subsections = shift;
-
-	my %result = ();
-	foreach my $subsectionKey (keys %$subsections) {
-		my $subsection = $subsections->{$subsectionKey};
-		$result{$subsectionKey} = _copySubSection($subsection);
-	}
-	return \%result;
+	my %defaultFileItems = ();
+	my %customFileItems = ();
+	_readConfigurationFromFiles(\%defaultFileItems,\%customFileItems);
 }
 
 sub _readConfigurationForSection {
 	my $section = shift;
 
 	my $pluginContext = $sections{$section};
-	my %context = ();
+	my %empty = ();
 
 	# Read configuration provided by plugins
-	my $context = _copySubSections($pluginContext);
-	my %fileItems = ();
+	my $context = \%empty;
+	if(defined($pluginContext)) {
+		$context = Storable::dclone($pluginContext);
+	}
+	my %defaultFileItems = ();
+	my %customFileItems = ();
 	
 	# Read configuration from ipeng.xml files
-	_readConfigurationFromFiles(\%fileItems);
-	foreach my $file (keys %fileItems) {
-		if(defined($fileItems{$file}->{'section'}->{$section}) && defined($fileItems{$file}->{'section'}->{$section}->{'subsection'})) {
-			my $fileContext = $fileItems{$file}->{'section'}->{$section}->{'subsection'};
+	_readConfigurationFromFiles(\%defaultFileItems,\%customFileItems);
+	foreach my $file (keys %defaultFileItems) {
+		if(defined($defaultFileItems{$file}->{'section'}->{$section}) && defined($defaultFileItems{$file}->{'section'}->{$section}->{'subsection'})) {
+			my $fileContext = $defaultFileItems{$file}->{'section'}->{$section}->{'subsection'};
 			foreach my $key (keys %$fileContext) {
 				if(!defined($context->{$key})) {
-					$context->{$key} = _copySubSection($fileContext->{$key});
+					$context->{$key} = Storable::dclone($fileContext->{$key});
+				}else {
+					my $commands = $context->{$key}->{'command'};
+					my $fileCommands = $fileContext->{$key}->{'command'};
+					foreach my $id (keys %$fileCommands) {
+						if(!exists $commands->{$id}) {
+							$commands->{$id} = $fileCommands->{$id};
+						}else {
+							$log->debug("Ignoring default $id command, custom version exists");
+						}
+					}
+				}
+			}
+		}
+	}
+	foreach my $file (keys %customFileItems) {
+		if(defined($customFileItems{$file}->{'section'}->{$section}) && defined($customFileItems{$file}->{'section'}->{$section}->{'subsection'})) {
+			my $fileContext = $customFileItems{$file}->{'section'}->{$section}->{'subsection'};
+			foreach my $key (keys %$fileContext) {
+				if(!defined($context->{$key})) {
+					$context->{$key} = Storable::dclone($fileContext->{$key});
 				}else {
 					my $commands = $context->{$key}->{'command'};
 					my $fileCommands = $fileContext->{$key}->{'command'};
@@ -303,41 +296,55 @@ sub _readConfigurationForSection {
 }
 
 sub readConfiguration {
-	my %fileItems = ();
+	my %defaultFileItems = ();
+	my %customFileItems = ();
 	
 	# Read configuration from ipeng.xml files
-	_readConfigurationFromFiles(\%fileItems);
+	_readConfigurationFromFiles(\%defaultFileItems,\%customFileItems);
 
 	my %context;
 
 	# Read configuration provided by plugins
 	foreach my $key (keys %sections) {
 		my $subsections = $sections{$key};
-		$context{$key} = _copySubSections($subsections);
+		$context{$key} = Storable::dclone($subsections);
 	}
 
-	foreach my $file (keys %fileItems) {
-		my $fileSection = $fileItems{$file}->{'section'};
+	my %handled = ();
+	foreach my $file (keys %defaultFileItems) {
+		my $fileSection = $defaultFileItems{$file}->{'section'};
 		foreach my $sect (keys %$fileSection) {
 			my $section = _readConfigurationForSection($sect);
 			$context{$sect}=$section;
+			$handled{$sect}=1;
+		}
+	}
+	foreach my $file (keys %customFileItems) {
+		my $fileSection = $customFileItems{$file}->{'section'};
+		foreach my $sect (keys %$fileSection) {
+			if(!$handled{$sect}) {
+				my $section = _readConfigurationForSection($sect);
+				$context{$sect}=$section;
+				$handled{$sect}=1;
+			}
 		}
 	}
 	return \%context;
 }
 
 sub _readConfigurationFromFiles {
-	my $items = shift;
+	my $defaultItems = shift;
+	my $customItems = shift;
 	my @pluginDirs = Slim::Utils::OSDetect::dirsFor('Plugins');
 	for my $plugindir (@pluginDirs) {
 		$log->debug("Checking for dir: ".catdir($plugindir,"iPeng","Configuration")."\n");
 		next unless -d catdir($plugindir,"iPeng","Configuration");
-		_readFromDir(catdir($plugindir,"iPeng","Configuration"),$items);
+		_readFromDir(catdir($plugindir,"iPeng","Configuration"),$defaultItems);
 	}
 	my $configDir = $prefs->get('config_dir');
 	$log->debug("Checking for dir: $configDir\n");
 	if($configDir && -d $configDir) {
-		_readFromDir($configDir,$items);
+		_readFromDir($configDir,$customItems);
 	}
 }
 
@@ -367,17 +374,34 @@ sub getCommands {
 	my $subsection = shift;
 	my $max = shift;
 
+	$log->debug("Entering getCommands with $section".(defined($subsection)?" and $subsection":""));
+
 	my $context = _readConfigurationForSection($section);
 
 	# Iterate through all sub sections for the requested section
 	foreach my $key (keys %$context) {
 		# Insert the 'id' for the sub section
 		$context->{$key}->{'id'} = $key;
+		if(exists $context->{$key}->{'namestring'}) {
+			$context->{$key}->{'name'} = Slim::Utils::Strings::getString($context->{$key}->{'namestring'});
+		}
 
-		# Insert the 'id' for each command in the current sub section
+		my $position = $prefs->get('subsection_'.escape($section."_".$key).'_position');
+		if(defined($position)) {
+			$context->{$key}->{'position'} = $position;
+		}
+
+		# Insert the 'id' and 'position' for each command in the current sub section
 		my $commands = $context->{$key}->{'command'};
 		foreach my $command_id (keys %$commands) {
 			$commands->{$command_id}->{'id'} = $command_id;
+			if(exists $commands->{$command_id}->{'namestring'}) {
+				$commands->{$command_id}->{'name'} = Slim::Utils::Strings::getString($commands->{$command_id}->{'namestring'});
+			}
+			my $position = $prefs->get('command_'.escape($section."_".$key."_".$command_id).'_position');
+			if(defined($position)) {
+				$commands->{$command_id}->{'position'} = $position;
+			}
 			my $enabled = $prefs->get('command_'.escape($section."_".$key."_".$command_id).'_enabled');
 			if(defined($enabled) && !$enabled) {
 				delete $commands->{$command_id};
@@ -390,7 +414,10 @@ sub getCommands {
 
 		# Sort the commands in the current sub section by 'weight'
 		my @commandArray = values %$commands;
-		@commandArray = sortByWeight(@commandArray);
+		if(scalar(@commandArray)>0) {
+			@commandArray = _sortByWeight(@commandArray);	
+			@commandArray = _sortByPosition(undef,\@commandArray);
+		}
 
 		# Replace the 'command' hash with a 'commands_loop' array
 		delete $context->{$key}->{'command'};
@@ -411,7 +438,8 @@ sub getCommands {
 
 	# If subsection is defined, we should only return the matching commands
 	if(defined($subsection)) {
-
+		
+		# Make sure we prioritize commands with a subsection before commands with subsection = '*'
 		my @subsectionCommands = ();
 		my @wildcardCommands = ();
 		foreach my $item (@menu) {
@@ -422,21 +450,32 @@ sub getCommands {
 				push @subsectionCommands,@$commands;
 			}
 		}
-		push @subsectionCommands,@wildcardCommands;
-		@menu = @subsectionCommands;
+		@subsectionCommands = _sortByWeight(@subsectionCommands);
+		@wildcardCommands = _sortByWeight(@wildcardCommands);
 
+		my $maxWildcardCommands = undef;
+		if(defined($max) && scalar(@subsectionCommands)>=$max) {
+			@wildcardCommands=();
+			$maxWildcardCommands = 0;
+		}elsif(defined($max)) {
+			$maxWildcardCommands = $max - scalar(@subsectionCommands);
+		}
+		@menu = _sortByPosition(\@subsectionCommands,\@wildcardCommands,$maxWildcardCommands);
 	}else {
-		@menu = sortByWeight(@menu);
+		@menu = _sortByWeight(@menu);
+		@menu = _sortByPosition(undef,\@menu);
 	}
+
 
 	# If max is defined, we should prefer commands with subsection defined
 	if(defined($max)) {
 		@menu = splice(@menu,0,$max);
-		@menu = sortByWeight(@menu);
 	}
 
+	$log->debug("Exiting getCommands");
 	return \@menu;
 }
+
 sub jsonHandler {
 	$log->debug("Entering jsonHandler\n");
 	my $request = shift;
@@ -495,7 +534,148 @@ sub jsonHandler {
 	$log->debug("Exiting jsonHandler\n");
 }
 
-sub sortByWeight {
+sub _sortByPosition {
+	my $specifiedItems = shift;
+	my $unspecifiedItems = shift;
+	my $maxUnspecifiedItems = shift;
+
+	# Separate items with positions and items without position attribute
+	my @specifiedWithPosition = ();
+	my @specifiedWithoutPosition = ();
+	if(defined($specifiedItems)) {
+		foreach my $item (@$specifiedItems) {
+			if(exists $item->{'position'} && $item->{'position'}) {
+				push @specifiedWithPosition,$item;
+			}else {
+				push @specifiedWithoutPosition,$item;
+			}
+		}
+	}
+	my @unspecifiedWithPosition = ();
+	my @unspecifiedWithoutPosition = ();
+	if(defined($unspecifiedItems)) {
+		foreach my $item (@$unspecifiedItems) {
+			if(exists $item->{'position'} && $item->{'position'}) {
+				push @unspecifiedWithPosition,$item;
+			}else {
+				push @unspecifiedWithoutPosition,$item;
+			}
+		}
+	}
+	if(!defined($maxUnspecifiedItems)) {
+		$maxUnspecifiedItems = scalar(@unspecifiedWithPosition) + scalar(@unspecifiedWithoutPosition);
+	}
+
+	@specifiedWithPosition = _sortByPositionWeight(@specifiedWithPosition);
+	@unspecifiedWithPosition = _sortByPositionWeight(@unspecifiedWithPosition);
+
+	# Insert positioned items into correct positions and only include the first item if several items with the same position exists
+	my @result = ();
+	my $position = 1;
+	my $unspecifiedCount = 0;
+	foreach my $positionedItem (@specifiedWithPosition) {
+		while($positionedItem->{'position'} > $position && (scalar(@specifiedWithoutPosition)>0 || scalar(@unspecifiedWithoutPosition)>0 || scalar(@unspecifiedWithPosition)>0)) {
+			my $item = 1;
+			while($maxUnspecifiedItems>=$unspecifiedCount && $item && $positionedItem->{'position'} > $position) {
+				$item = _popPosition(\@unspecifiedWithPosition,$position);
+				if($item) {
+					push @result,$item;
+					$position++;
+					$unspecifiedCount++;
+				}
+			}
+
+			if($positionedItem->{'position'} > $position && scalar(@specifiedWithoutPosition)>0) {
+				push @result,shift @specifiedWithoutPosition;
+				$position++;
+			}if($positionedItem->{'position'} > $position && scalar(@unspecifiedWithoutPosition)>0) {
+				push @result,shift @unspecifiedWithoutPosition;
+				$position++;
+				$unspecifiedCount++;
+			}elsif($positionedItem->{'position'} > $position && scalar(@unspecifiedWithPosition)>0) {
+				push @result,shift @unspecifiedWithPosition;
+				$position++;
+				$unspecifiedCount++;
+			}
+		}
+		push @result,$positionedItem;
+		$position++;
+	}
+	my @positionedItems = @unspecifiedWithPosition;
+	foreach my $positionedItem (@positionedItems) {
+		if($positionedItem->{'position'}>=$position) {
+			my $item = 1;
+			while($maxUnspecifiedItems>=$unspecifiedCount && $item && $positionedItem->{'position'} > $position && scalar(@unspecifiedWithPosition)>0) {
+				$item = _popPosition(\@unspecifiedWithPosition,$position);
+				if($item) {
+					push @result,$item;
+					$position++;
+					$unspecifiedCount++;
+				}
+			}
+			while($positionedItem->{'position'} > $position && (scalar(@specifiedWithoutPosition)>0 || scalar(@unspecifiedWithoutPosition)>0)) {
+				if($maxUnspecifiedItems<=$unspecifiedCount) {
+					last;
+				}
+				if($positionedItem->{'position'} > $position && scalar(@specifiedWithoutPosition)>0) {
+					push @result,shift @specifiedWithoutPosition;
+					$position++;
+				}elsif($positionedItem->{'position'} > $position && scalar(@unspecifiedWithoutPosition)>0) {
+					push @result,shift @unspecifiedWithoutPosition;
+					$position++;
+					$unspecifiedCount++;
+				}
+			}
+			if($maxUnspecifiedItems<=$unspecifiedCount) {
+				last;
+			}
+			my $it = _popItem(\@unspecifiedWithPosition,$positionedItem);
+			if(defined($it)) {
+				push @result,$positionedItem;
+				$position++;
+				$unspecifiedCount++;
+			}
+		}else {
+			$log->debug("Skipping ".$positionedItem->{'id'}." command, another command for position $position has already been added");
+		}
+	}
+
+	push @result,@specifiedWithoutPosition;
+	push @result,@unspecifiedWithoutPosition;
+	return @result;
+}
+
+sub _popItem {
+	my $array = shift;
+	my $popItem = shift;
+
+	my $i = 0;
+	foreach my $item (@$array) {
+		if($item == $popItem) {
+			splice(@$array,$i,1);
+			return $item;
+		}
+		$i++;
+	}
+	return undef;
+}
+
+sub _popPosition {
+	my $array = shift;
+	my $position = shift;
+
+	my $i = 0;
+	foreach my $item (@$array) {
+		if($item->{'position'} == $position) {
+			splice(@$array,$i,1);
+			return $item;
+		}
+		$i++;
+	}
+	return undef;
+}
+
+sub _sortByWeight {
 	my @array = @_;
 
 	@array = sort { 
@@ -516,6 +696,35 @@ sub sortByWeight {
 		}
 		return 0; 
 	} @array;
+	return @array;
+}
+
+sub _sortByPositionWeight {
+	my @array = @_;
+
+	@array = sort { 
+		if($a->{'position'} != $b->{'position'}) {
+			return $a->{'position'} <=> $b->{'position'};
+		}else {
+			if(defined($a->{'weight'}) && defined($b->{'weight'})) {
+				if($a->{'weight'}!=$b->{'weight'}) {
+					return $a->{'weight'} <=> $b->{'weight'};
+				}
+			}
+			if(defined($a->{'weight'}) && !defined($b->{'weight'})) {
+				if($a->{'weight'}!=50) {
+					return $a->{'weight'} <=> 50;
+				}
+			}
+			if(!defined($a->{'weight'}) && defined($b->{'weight'})) {
+				if($b->{'weight'}!=50) {
+					return 50 <=> $b->{'weight'};
+				}
+			}
+			return 0; 
+		}
+	} @array;
+
 	return @array;
 }
 
@@ -577,36 +786,47 @@ sub _readFromDir {
 		my $path = catfile($dir, $item);
 		my $timestamp = (stat ($path) )[9];
 
-		# Read the contents of the current file
-		my $content = eval { read_file($path) };
-		if ( $content ) {
-			# Make sure to convert the file data to utf8
-			my $encoding = Slim::Utils::Unicode::encodingFromString($content);
-			if($encoding ne 'utf8') {
-				$content = Slim::Utils::Unicode::latin1toUTF8($content);
-				$content = Slim::Utils::Unicode::utf8on($content);
-				$log->debug("Loading $item and converting from latin1\n");
-			}else {
-				$content = Slim::Utils::Unicode::utf8decode($content,'utf8');
-				$log->debug("Loading $item without conversion with encoding ".$encoding."\n");
-			}
-		}
-
-		# Parse the file using XML::Simple
-		if ( $content ) {
-                	$log->debug("Parsing file: $path\n");
-			my $xml = eval { XMLin($content, forcearray => ["command","section","subsection"], keyattr => ["id"]) };
-			if ($@) {
-				$log->warn("Failed to parse configuration ($item) because:\n$@\n");
-			}else {
-				$items->{$item} = $xml;
-				$lastUpdate = $timestamp if(!defined($lastUpdate) || $lastUpdate < $timestamp);
-			}
+		if(exists $cache{$path} && $cache{$path}->{'timestamp'}==$timestamp) {
+			$log->debug("Retreving from cache: $path");
+			$items->{$cache{$path}->{'item'}} = Storable::dclone($cache{$path}->{'data'});
 		}else {
-			if ($@) {
-				$log->warn("Unable to open file: $path\nBecause of:\n$@\n");
+			# Read the contents of the current file
+			my $content = eval { read_file($path) };
+			if ( $content ) {
+				# Make sure to convert the file data to utf8
+				my $encoding = Slim::Utils::Unicode::encodingFromString($content);
+				if($encoding ne 'utf8') {
+					$content = Slim::Utils::Unicode::latin1toUTF8($content);
+					$content = Slim::Utils::Unicode::utf8on($content);
+					$log->debug("Loading $item and converting from latin1\n");
+				}else {
+					$content = Slim::Utils::Unicode::utf8decode($content,'utf8');
+					$log->debug("Loading $item without conversion with encoding ".$encoding."\n");
+				}
+			}
+	
+			# Parse the file using XML::Simple
+			if ( $content ) {
+	                	$log->debug("Parsing file: $path\n");
+				my $xml = eval { XMLin($content, forcearray => ["command","section","subsection"], keyattr => ["id"]) };
+				if ($@) {
+					$log->warn("Failed to parse configuration ($item) because:\n$@\n");
+				}else {
+					$items->{$item} = Storable::dclone($xml);
+					$lastUpdate = $timestamp if(!defined($lastUpdate) || $lastUpdate < $timestamp);
+					my %cacheEntry = (
+						'timestamp' => $timestamp,
+						'data' => $xml,
+						'item' => $item,
+					);
+					$cache{$path}=\%cacheEntry;
+				}
 			}else {
-				$log->warn("Unable to open file: $path\n");
+				if ($@) {
+					$log->warn("Unable to open file: $path\nBecause of:\n$@\n");
+				}else {
+					$log->warn("Unable to open file: $path\n");
+				}
 			}
 		}
 	}

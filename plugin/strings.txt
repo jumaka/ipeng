@@ -24,6 +24,9 @@ PLUGIN_IPENG_SETTINGS_ENABLEDCOMMANDS
 	EN	Enable/Disable commands
 	DE	Kommandos Ein/Aus schalten
 
+PLUGIN_IPENG_SETTINGS_POSITIONCOMMANDS
+	EN	Positioning commands
+
 SETUP_PLUGIN_IPENG_CONFIG_DIRECTORY
 	EN	Configuration directory
 	DE	Konfigurationsverzeichnis
@@ -36,9 +39,21 @@ SETUP_PLUGIN_IPENG_ENABLED_COMMANDS
 	EN	Enable/Disable commands
 	DE	Kommandos Ein/Aus schalten
 
+SETUP_PLUGIN_IPENG_POSITION_COMMANDS
+	EN	Positioning buttons
+
+SETUP_PLUGIN_IPENG_POSITION_SUBSECTIONS
+	EN	Positioning rows
+
 SETUP_PLUGIN_IPENG_ENABLED_COMMANDS_DESC
 	EN	Select which commands you like to be enabled in the iPeng skin
 	DE	Auswählen, welche Kommandos in iPeng zur Verfügung stehen sollen
+
+SETUP_PLUGIN_IPENG_POSITION_COMMANDS_DESC
+	EN	Select the position for each command, for example where each toolbar button should be positioned in the toolbar, 1 means leftmost position and 5 means rightmost position. Empty means that the button will be placed at free positions if there are any.
+
+SETUP_PLUGIN_IPENG_POSITION_SUBSECTIONS_DESC
+	EN	Select the position for each row, for example where each button row should be positioned in the Now Playing page, 1 means top position and 7 means bottom position. Empty means that the button will be placed at its default position.
 
 PLUGIN_IPENG_SELECT_COMMANDS_ALL
 	EN	Select all

@@ -1,0 +1,63 @@
+.toggle {
+    position: absolute;
+    top: -14px;
+    right: 6px;
+    width: 100px;
+    height: 28px;
+    border: 1px solid #888888;
+    -webkit-border-radius: 6px;
+    background: #FFFFFF url([% webroot %]html/iui/toggle.png) repeat-x;
+    font-size: 19px;
+    font-weight: bold;
+    line-height: 30px;
+}
+
+.toggle[toggled="true"] {
+    border: 1px solid #143fae;
+    background: #194fdb url([% webroot %]html/iui/toggleOn.png) repeat-x;
+}
+
+.toggleOn {
+    display: none;
+    position: absolute;
+    width: 60px;
+    text-align: center;
+    left: 0;
+    top: 0;
+    color: #FFFFFF;
+    text-shadow: rgba(0, 0, 0, 0.4) 0px -1px 0;
+}
+
+.toggleOff {
+    position: absolute;
+    width: 60px;
+    text-align: center;
+    right: 0;
+    top: 0;
+    color: #666666;
+}
+
+.toggle[toggled="true"] > .toggleOn {
+    display: block;
+}
+
+.toggle[toggled="true"] > .toggleOff {
+    display: none;
+}
+
+.thumb {
+    position: absolute;
+    top: -1px;
+    left: -1px;
+    width: 40px;
+    height: 28px;    
+    border: 1px solid #888888;
+    -webkit-border-radius: 6px;
+    background: #ffffff url([% webroot %]html/iui/thumb.png) repeat-x;
+}
+
+.toggle[toggled="true"] > .thumb {
+    left: auto;
+    right: -1px;
+}
+

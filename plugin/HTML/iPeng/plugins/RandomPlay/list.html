@@ -1,0 +1,227 @@
+[% 
+BLOCK statusInfo;
+	IF pluginRandomNowPlaying != '';
+		textlink = PROCESS randomLink type="disable" addOnly="0";
+		WRAPPER contentitem lineclass = "listFullTitle Wrap";
+			# Reload status and playlist to reflect any new mixes
+			'<script type="text/javascript">';
+				'refreshStatus();';
+			'</script>';
+	
+			'<p><em>';
+				"PLUGIN_RANDOM_GENERAL_HELP" | string; ' '; 
+				"PLUGIN_RANDOM_" _ pluginRandomNowPlaying _ "_DISABLE" | string;
+			'</em></p>';
+		END;
+	END;
+END;
+IF ajaxRequest; PROCESS statusInfo; 
+ELSE;
+pagetitle = 'PLUGIN_RANDOMPLAY' | string; pageicon = 'PLUGIN_RANDOMPLAY';
+pwd_list = BLOCK;
+	'/';
+	'<a href="'; webroot; 'plugins/RandomPlay/list.html?player='; playerURI; '">';
+		"PLUGIN_RANDOMPLAY" | string;
+	'</a>';
+END;
+pageHeaderInfo = BLOCK;
+	IF pluginRandomNowPlaying != '';
+		"NOW_PLAYING" | string; "COLON" | string; ' ';
+		"PLUGIN_RANDOM_" _ pluginRandomNowPlaying | upper | string;
+	END;
+END;
+PROCESS pageheader.html;
+%]
+<script>
+function followLink(type, addOnly) {
+	document.genreForm.type.value = type;
+	document.genreForm.addOnly.value = addOnly;
+	document.genreForm.submit();
+	refreshStatus();
+	document.location= webroot + 'plugins/RandomPlay/mix.html?type=' + type + 
+						'&amp;player=' + player + '&amp;addOnly=' + addOnly;
+}
+</script>
+<style>
+[% PROCESS addcss.css %]
+</style>
+[%
+# Following block generates links that submit the form if javascript is enabled.  This allows
+# users to make setting changes then click on a new mix without having to press the submit button.
+BLOCK href %]
+javascript:followLink('[% type %]', [% addOnly %]);
+[% END;
+
+BLOCK randomLink;
+	IF addOnly;
+		WRAPPER addlink noTarget=1;
+			'href="'; PROCESS href; '"';
+		END;
+	ELSE;
+		PROCESS href;
+	END;
+END;
+
+IF player == '';
+	'<p>'; "NO_PLAYER_FOUND" | string; '</p>';
+ELSE %]
+
+	<form action="[% webroot %]plugins/RandomPlay/settings.html" name="genreForm" id="genreForm">
+		<input type="hidden" name="type" value="">
+		<input type="hidden" name="addOnly" value="0">
+		<input type="hidden" name="player" value="[% player %]">
+[%-
+
+		WRAPPER contentcontainer containerheight = 1;
+			PROCESS activatePLcontainer;
+			WRAPPER contentanchor;
+				"PLUGIN_RANDOM_CHOOSE_BELOW" | string;
+			END;
+			FOREACH type IN ['track','contributor','album','year'];
+				BLOCK controls;
+					PROCESS randomLink type="$type" addOnly="1";
+				END;
+				textlink = PROCESS randomLink type="$type" addOnly="0";
+				WRAPPER contentitem controls='controls';
+					'PLUGIN_RANDOM_' _ type _ '_WEB' | string;
+				END;
+			END;
+			'<div id="randomStatus">';
+			PROCESS statusInfo;
+			'</div>';
+			BLOCK cts_checkbox %]
+				<!--div style = "width: 50; height: 50; position: relative;">
+				<input type="checkbox" name="continuousMode" id="continuousMode" value="1"
+					style = "height: 36; right: 5; position: absolute;" 
+					[% IF pluginRandomContinuousMode %]checked[% END %]>
+				</div-->
+				<div  style = "position: relative; width: 105">
+				<div id = "t_continuousMode" class="toggle" onclick="changeNumSelected('continuousMode');" 
+					[% pluginRandomContinuousMode ? "toggled='true'" : "" %]>
+					<span class="thumb"></span>
+					<span class="toggleOn">[% 'IPENG_ON' | string %]</span><span class="toggleOff">[% 'IPENG_OFF' | string %]</span>
+				</div>
+				<input type = "hidden" name="continuousMode" id="continuousMode"
+						[% pluginRandomContinuousMode ? " value = '1' checked" : " value = '0'" %]>
+				</div>
+			[% END;
+			WRAPPER contentitem controls = 'cts_checkbox' lineclass = 'listFullTitle Wrap' fixedwidth = 255 %]
+				<div>
+				[% "PLUGIN_RANDOM_CONTINUOUS_MODE" | string %]
+				</div>
+			[% END;
+			WRAPPER contentanchor;
+				"PLUGIN_RANDOM_GENRE_FILTER_WEB" | string;
+			END;
+		
+			USE table pluginRandomGenreList.keys.sort, cols=1, pad=0 %]
+				[%- FOREACH genrerow = table.rows %]
+					[%- FOREACH genre = genrerow %]
+					[%- genreid = "genre_" _ pluginRandomGenreList.item("$genre").id %]
+						[% BLOCK checkbox %]
+							<div  style = "position: relative;">
+							<div id = "t_[% genreid %]" class="toggle" onclick="changeNumSelected('[% genreid %]');" 
+								[% pluginRandomGenreList.item("$genre").enabled ? "toggled='true'" : "" %]>
+								<span class="thumb"></span>
+								<span class="toggleOn">[% 'IPENG_ON' | string %]</span><span class="toggleOff">[% 'IPENG_OFF' | string %]</span>
+							</div>
+							<input type = "hidden" class="genreCheckbox" name="[% genreid %]" id="[% genreid %]" 
+									[% pluginRandomGenreList.item("$genre").enabled ? " value = '1' checked" : " value = '0'" %]>
+							</div>
+						[% END;
+						WRAPPER contentitem controls = 'checkbox' lineclass = 'listFullTitle Wrap' fixedwidth = 255 %]
+							<div>
+							[% pluginRandomGenreList.item("$genre").name | html %]
+							</div>
+						[% END %]
+					[%- END %]
+				[%- END %]
+		
+			[%
+			textlink = "";
+			WRAPPER contentitem lineclass = 'listFullTitle Wrap' fixedwidth = 308; %]
+				<script type="text/javascript">
+				var f = document.genreForm;
+				var numSelected = 0;
+				var numCheckBoxes = 0;
+				var selectAllString = '[% "PLUGIN_RANDOM_SELECT_ALL" | string %]';
+				var selectNoneString = '[% "PLUGIN_RANDOM_SELECT_NONE" | string %]';
+	
+				// Work out how many checkboxes are initially selected
+				for (var i=0; i < f.elements.length; i++) {
+					if (f.elements[i].className == 'genreCheckbox') {
+						numCheckBoxes++;
+						if (f.elements[i].checked) {
+							numSelected++;
+						}
+					}
+				}
+	
+				// Select none if all are selected, else select all
+				function selectAll() {
+					var newState = numSelected != numCheckBoxes;
+	
+					for (var i=0; i < f.elements.length; i++) {
+						if (f.elements[i].className == 'genreCheckbox' && f.elements[i].name != 'continuousMode')
+							changeNumSelected(f.elements[i].id, true, newState);
+					}
+					if (newState) {
+						numSelected = numCheckBoxes;
+						$('selectAllButton').textContent = selectNoneString;
+					} else {
+						numSelected = 0;
+						$('selectAllButton').textContent = selectAllString;
+					}
+				}
+	
+				// Increase/decrease num selected every time a checkbox changes
+				function changeNumSelected(id, force, val) {
+					var checkBox = $(id);
+					var toggle = $('t_' + id);
+
+					if (id != "continuousMode")
+						if (checkBox.checked) numSelected++;
+						else numSelected--;
+						
+					if ((checkBox.checked && !(force && val)) || force && !val) {
+						checkBox.checked = false;
+						checkBox.value = 0;
+						toggle.removeAttribute('toggled');
+					} else {
+						checkBox.checked = true;
+						checkBox.value = 1;
+						toggle.setAttribute("toggled", "true");						
+					}
+						
+					if (id != "continuousMode" && !force)
+						if (numSelected == numCheckBoxes) $('selectAllButton').textContent = selectNoneString;
+						else $('selectAllButton').textContent = selectAllString;
+				}
+	
+				// Write the button using js, so it won't appear if js isn't enabled/available
+				document.write('<a class="iButton silver"  id="selectAllButton" onclick="selectAll();"' +
+									' style=" margin: 11 0 11 5; padding: 0px; width: 278;' +
+									' height: 30px; text-align: center; font-size: 15;">' 
+									+ (numSelected == numCheckBoxes ? selectNoneString : selectAllString) + '</a>');
+			</script>
+			<br>
+				[% "PLUGIN_RANDOM_BEFORE_NUM_TRACKS" | string %]
+				<div>
+					<label>[% "IPENG_RANDOM_TRACKS" | string %]</label>
+					<input class="stdedit" type="text" size="2" name="numTracks" value="[% pluginRandomNumTracks %]" style = "width: 308; padding-left: 180 !important;">
+				</div>
+				<div>
+					<label>[% "IPENG_RANDOM_OLDTRACKS" | string; %]</label>
+					<input class="stdedit" type="text" size="2" name="numOldTracks" value="[% pluginRandomNumOldTracks %]" style = "width: 308; padding-left: 180 !important;">
+				</div>
+				<a class="iButton silver" onclick="document.genreForm.submit();"
+						style=" margin: 11 0 11 5; padding: 0px; width: 278;
+								height: 30px; text-align: center; font-size: 15;">[% "SAVE" | string %]</a>
+			[% END; %]
+		[% END %]
+	</form>
+[% END;
+selectedButton = 'RandomPlay';
+PROCESS pagefooter.html;
+END;
+%]

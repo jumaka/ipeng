@@ -1,0 +1,50 @@
+[% page = "PLUGIN_IPENG" %]s
+[% PROCESS settings/header.html %]
+
+[% PROCESS plugins/iPeng/settings/subpage_chooser.html %]
+	<div class="settingSection">
+		<div class="prefHead">[% "SETUP_PLUGIN_IPENG_POSITION_SUBSECTIONS" | string | upper %]</div>
+		<div class="prefDesc">[% "SETUP_PLUGIN_IPENG_POSITION_SUBSECTIONS_DESC" | string %]</div>
+
+	<table border="0">
+		[% lastgroup = '' %]
+		[%- FOREACH command IN pluginiPengCommands %]
+			[% IF command.subsection %]
+				[% IF command.group != lastgroup %]
+					<tr>
+						<td colspan="2"><br><strong>[% command.group %]</strong></td>
+					</tr>
+				[% END %]
+				<tr>
+					[%- commandid = "subsection_" _ command.id _ "_position" %]
+					<td><label for="[% commandid %]">[% command.name | html %]</label></td><td><input type="text" class="stdedit" name="[% commandid | uri %]" id="[% commandid | uri %]" value="[% command.position %]" size="2">&nbsp;</td><td>[% IF command.description %][% command.description %]<br>[% END %]([% command.id %])<br><br></td>
+				</tr>
+				[% lastgroup = command.group %]
+			[%- END %]
+		[% END %]
+	</table>
+	</div>
+
+	<div class="settingSection">
+		<div class="prefHead">[% "SETUP_PLUGIN_IPENG_POSITION_COMMANDS" | string | upper %]</div>
+		<div class="prefDesc">[% "SETUP_PLUGIN_IPENG_POSITION_COMMANDS_DESC" | string %]</div>
+
+	<table border="0">
+		[% lastgroup = '' %]
+		[%- FOREACH command IN pluginiPengCommands %]
+			[% IF !command.subsection %]
+				[% IF command.group != lastgroup %]
+					<tr>
+						<td colspan="2"><br><strong>[% command.group %]</strong></td>
+					</tr>
+				[% END %]
+				<tr>
+					[%- commandid = "command_" _ command.id _ "_position" %]
+					<td><label for="[% commandid %]">[% command.name | html %]</label></td><td><input type="text" class="stdedit" name="[% commandid | uri %]" id="[% commandid | uri %]" value="[% command.position %]" size="2">&nbsp;</td><td>[% IF command.description %][% command.description %]<br>[% END %]([% command.id %])<br><br></td>
+				</tr>
+				[% lastgroup = command.group %]
+			[% END %]
+		[%- END %]
+	</table>
+	</div>
+[% PROCESS settings/footer.html %]

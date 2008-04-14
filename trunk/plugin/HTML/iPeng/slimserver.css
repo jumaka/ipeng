@@ -332,6 +332,14 @@ a.tapblockHalf[selected], a.tapblockHalf:active {
 	text-decoration: none;
 }
 
+.Wrap {
+    white-space: normal;
+}
+
+.Rel {
+	position: relative !important;
+}
+
 .listFullArtist {
 	font-size: 13px;
 	padding-left: 5;

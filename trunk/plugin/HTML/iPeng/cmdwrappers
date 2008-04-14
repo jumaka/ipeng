@@ -225,8 +225,10 @@ END %]
 	   IF !leftcontrols; csp = 2; END;
 	   IF (!rightcontrols) && (!controls); csp = csp + 1; END %]
 	<td class = "listRow" 
-		style = "padding-left: 6;[% IF (!controls) && (!rightcontrols) %] padding-right: [% IF map_vertical %]25[% ELSE %]6[% END ; END %];"
-		[%- IF csp > 1; " colspan = ";csp; END; ">";
+		style = "padding-left: 6;[% IF (!controls) && (!rightcontrols); 'padding-right: '; 
+										IF map_vertical; '25;'; ELSE; '6;'; END ; END;
+									IF fixedwidth; 'max-width: '; fixedwidth; ';'; END %]"
+		[%- IF csp > 1; " colspan = ";csp; END;	">";
 		IF textlink %]
 			<a class = "tapblockFull" href = "[% textlink %]" [% IF target %]target = "[% target %]"[% END; ">";
 		END -%]
@@ -236,7 +238,7 @@ END %]
 		IF textlink; "</a>"; END;
 	"</td>";
 	IF controls || rightcontrols %]
-		<td class = "listRow" align = "right" style="min-width: 34; padding-right: [% IF map_vertical %]25[% ELSE %]2[% END %]px;">
+		<td class = "listRow" align = "right" style="min-width: 34; padding-right: [% IF map_vertical; '25'; ELSE; '2'; END %]px;">
 			[% IF controls; PROCESS $controls; END;
 			IF rightcontrols; PROCESS $rightcontrols; END;
 		"</td>";

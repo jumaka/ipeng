@@ -138,17 +138,22 @@ input[type="image"] {
 	}
 </SCRIPT>
 
-[% ELSE %] [%# ajaxUpdate %]
+[% ELSE %][%# ajaxUpdate %]
 <meta http-equiv="Content-Type" content="text/html; charset=[% LOCALE %]"/>
-[% END %]
+[% END;
 
 
-[%- BLOCK href -%]
-	[%- IF !noHref %]href="[% END %][% IF !noAjax %]javascript:ajaxRequest('[% END %][% webroot %][% path %][% IF !noAjax %]', '[% END %]?lastfm=[%  lastfm | uri %]&amp;lastfmp1=[% lastfmp1 | uri %][% IF !noAjax %]');aReload();[% END %][% IF !noHref %]"[% END -%]
-[%- END -%]
-<!--&amp;player=[% player | uri %]-->
+BLOCK href;
+	IF !noHref; 'href="'; END;
+	IF !noAjax; 'javascript:ajaxRequest(\''; END;
+	webroot; path;
+	IF !noAjax; '\',\''; END;
+	'?lastfm='; lastfm | uri; '&amp;lastfmp1='; lastfmp1 | uri;
+	IF !noAjax; '\');aReload();'; END;
+	IF !noHref; '"'; END;
+END;
 
-[% BLOCK lastfmLink;
+BLOCK lastfmLink;
 	IF !noHref;
 		WRAPPER $link noTarget=1;
 			PROCESS href;
@@ -374,6 +379,7 @@ ELSE;
 		type = 'browse';
 		link = 'descendlink';
 		noAjax = 1;
+		noHref = 0;
 		command = 'Neighbours';
 		WRAPPER contentitem controls='ccontrols' lineclass = " " %]
 			<a class="tapblockFull" [% PROCESS href lastfm="browse" lastfmp1="$command" %]>Browse Neighbours</a>

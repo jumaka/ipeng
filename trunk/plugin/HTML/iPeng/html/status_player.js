@@ -1,6 +1,7 @@
 
 var Player = {
 	status :  {
+		buttons : false,
 		power : null,
 		mode : null,
 		current_title : null,
@@ -50,10 +51,6 @@ var Player = {
 			if (result.time !== undefined && (result.time != time)) this.updateTime(result.time);
 			if (result.mode !== undefined && (result.mode != mode)) this.updateMode(result.mode);
 			if (result.power !== undefined && (result.power != power)) this.updatePower(result.power);
-			if (result["playlist repeat"] !== undefined && (result["playlist repeat"] != repeat))
-				this.updateRepeatShuffle(result["playlist repeat"], "repeat");
-			if (result["playlist shuffle"] !== undefined && (result["playlist shuffle"] != shuffle))
-				this.updateRepeatShuffle(result["playlist shuffle"], "shuffle");
 			if (result["mixer volume"] !== undefined && (result["mixer volume"] != volume)) this.updateVolume(result["mixer volume"]);
 			if (result.playlist_cur_index !== undefined && (result.playlist_cur_index != index)) 
 				this.updateIndex(result.playlist_cur_index, result.playlist_tracks, result.playlist_loop[0]);
@@ -61,6 +58,12 @@ var Player = {
 				this.updatePlaylist(result.playlist_tracks, result.playlist_timestamp);
 			if (result.playlist_loop[0].title != track.title)
 				this.updateInfo(result.playlist_loop[0]);
+			if (!buttons) {
+				if (result["playlist repeat"] !== undefined && (result["playlist repeat"] != repeat))
+					this.updateRepeatShuffle(result["playlist repeat"], "repeat");
+				if (result["playlist shuffle"] !== undefined && (result["playlist shuffle"] != shuffle))
+					this.updateRepeatShuffle(result["playlist shuffle"], "shuffle");
+			}
 			if (result.will_sleep_in || sleep) this.updateSleep(result.will_sleep_in);
 			this.updateAlarm();
 			Plugins.checkTimestamp();
@@ -226,8 +229,20 @@ var Player = {
 		}, function (r2) { Playlist.resetScroll() });
 	},
 	
-	updateRepeatShuffle : function(val, cmd) {
-		var val = parseInt(val);
+	updateRepeatShuffle : function(val2, cmd, custom) {
+		var val;
+		if (custom) {
+			val = val2;
+			var temp = $(cmd + 'control_custom');
+			if (val.icon.indexOf('btn_thumbs_up') != -1) val.icon = "html/images/thumbs_up.png";
+			else if (val.icon.indexOf('btn_thumbs_down') != -1) val.icon = "html/images/thumbs_down.png";
+			temp.src = webroot + val.icon;
+			temp.title = val.tooltip;
+			temp.show();
+		} else {
+			val = parseInt(val2);
+			Element.hide(cmd + 'control_custom');
+		}
 		this.status[cmd] = val;
 		for (var i = 0; i < 3; i++)
 			if (i == val)
@@ -251,6 +266,15 @@ var Player = {
 					$('coverartpath').src = webroot + 'html/images/radio256.png';
 				else
 					$('coverartpath').src = webroot + 'html/images/cover.png';
+				if (track.buttons) {
+					if (track.buttons.shuffle) Player.updateRepeatShuffle(track.buttons.shuffle, 'shuffle', true);
+					if (track.buttons.repeat) Player.updateRepeatShuffle(track.buttons.repeat, 'repeat', true);
+					buttons = true;
+				} else if (buttons) {
+					Player.updateRepeatShuffle(shuffle, 'shuffle');
+					Player.updateRepeatShuffle(repeat, 'repeat');
+					buttons = false;
+				} else buttons = false;
 			}
 		};
 		with (this.status) {
@@ -431,13 +455,17 @@ var Player = {
 		},
 				
 		evtRepeatShuffle : function(val, cmd) {
-			var sArray = [ 'playlist', cmd, val ];
-			if (cmd == "shuffle")
-				Player.controls.doTrigger(sArray);
-			else		
-				callJSONRPC(sArray, function (r2) {
-					Player.updateRepeatShuffle(val, cmd);
-				});			
+			if (val == "custom")
+				Player.controls.doTrigger(Player.status[cmd].command);
+			else {
+				var sArray = [ 'playlist', cmd, val ];
+				if (cmd == "shuffle")
+					Player.controls.doTrigger(sArray);
+				else		
+					callJSONRPC(sArray, function (r2) {
+						Player.updateRepeatShuffle(val, cmd);
+					});
+			}
 		},
 				
 		evtPower : function(num) {

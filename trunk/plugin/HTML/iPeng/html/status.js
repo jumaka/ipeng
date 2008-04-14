@@ -347,6 +347,7 @@ function findAttribute(el, attr) {
 }
 
 function timeStr(seconds) {
+	if (!seconds) return "--:--";
 	var s = parseInt(seconds % 60);
 	if (s < 10) { s = "0" + s; }
 	var h = "";

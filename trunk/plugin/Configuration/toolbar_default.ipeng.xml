@@ -105,7 +105,7 @@
 					<playerURI>player</playerURI>
 				</parameters>
 			</command>
-			<command id="Random">
+			<command id="RandomPlay">
 				<description>Toolbar Icon: Random Play</description>
 				<weight>6</weight>
 				<defaultenabled>0</defaultenabled>

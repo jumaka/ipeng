@@ -198,10 +198,12 @@ BLOCK HomeHeader %]
 
 
 [%- PROCESS browseDatabase;
-PROCESS browseLists;
+IF !additionalLinks.browseiPeng.PLUGIN_IPENG_CUSTOM_BROWSE_MORE;
+	PROCESS browseLists;
+END;
 PROCESS browseSettings;
 PROCESS browseRadio;
-PROCESS musicServices;
+#PROCESS musicServices;
 PROCESS alarmSet;
 -%]
 
@@ -231,7 +233,7 @@ PROCESS alarmSet;
 		<img src="[% webroot %]html/images/iRadioWhite.png" width="40" height="30" class = "paddedPic" alt = 'radio'>&nbsp;
 		<span class="secondary">[% 'RADIO' | string %]</span></a>
 	</li>
-[%- IF additionalLinks.music_services %]
+[%- IF additionalLinks.music_services && 0 %]
 	<li class = "biggerLine">
 		<a href="#MusicServices">
 		<img src="[% webroot %]html/images/iRadioWhite.png" width="40" height="30" class = "paddedPic" alt = 'radio'>&nbsp;
@@ -254,7 +256,7 @@ PROCESS playerChoose;
 # END;
 
 -%]
-<div id = "iPengName" class = "toolbar iPengName">iPeng v0.4 (C) 2007, 2008 Joerg Schwieder</div>
+<div id = "iPengName" class = "toolbar iPengName">iPeng v0.4 (C) 2007, 2008 J. Schwieder, E. Isaksson</div>
 [%- PROCESS spacer;
 '</div>';
 
@@ -562,6 +564,35 @@ BLOCK browseRadio %]
 		</li>
 	[% END;
 '</ul>';
+
+IF additionalLinks.music_services;
+	'<span class = "backgroundtext">'; 'MUSIC_SERVICES' | string; '</span>';
+	'<ul>';
+	FOREACH key = additionalLinkOrder.music_services %]
+		<li class = "biggerLine">
+			<a href="[% webroot %][% additionalLinks.music_services.$key | html %]player=[% playerURI %]" target="_self" >
+			<img src="[% webroot %][% additionalLinks.icons.${key}.replace('.png', "_30x30_f.png") %]" width="30" class = "radioPic" alt="[% key | string %]">
+			<span class="secondary" style = "font-size: 80%; padding-left: 5">[% key | string | html | truncate (26) %]</span></a>
+		</li>
+	[%- END;
+	FOREACH link = additionalLinks.music_services; 
+		IF !additionalLinkOrder.music_services.grep(link.key).size %]
+		<li class = "biggerLine">
+			<a href="[% webroot %][% link.value | html %]player=[% playerURI %]" target="_self">
+			<img src="[% webroot %][% additionalLinks.icons.${link.key}.replace('.png', "_30x30_f.png") %]" width="30" class = "radioPic" alt="[% link.key | string %]">
+			<span class="secondary" style = "font-size: 80%; padding-left: 5">[% link.key | string | html %]</span></a>
+		</li>
+	[%- END;
+	END;
+	IF additionalLinks.radios.exists('PLUGIN_PANDORA_MODULE_NAME') %]
+		<li class = "biggerLine">
+			<a href="[% webroot %][% additionalLinks.radio.PLUGIN_PANDORA_MODULE_NAME | html %]player=[% playerURI %]" target="_self">
+			<span class="secondary" style = "font-size: 80%; padding-left: 5">[% "PLUGIN_PANDORA_MODULE_NAME" | string | html;
+			'</span></a>';
+		'</li>';
+	END;
+	'</ul>';
+END;
 PROCESS spacer;
 '</form>';
 END;

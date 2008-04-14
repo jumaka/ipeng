@@ -4,7 +4,7 @@
 		<subsection id="*">
 			<command id="Album">
 				<description>Toolbar Icon: Default Browse-By-Album View</description>
-				<weight>1</weight>
+				<weight>20</weight>
 				<namestring>ALBUMS</namestring>
 				<icon>html/images/iAlbumTrans.png</icon>
 				<selectedicon>html/images/iAlbumTransSelected.png</selectedicon>
@@ -15,7 +15,7 @@
 			</command>
 			<command id="Artist">
 				<description>Toolbar Icon: Default Browse-By-Artist View</description>
-				<weight>2</weight>
+				<weight>21</weight>
 				<namestring>ARTIST</namestring>
 				<icon>html/images/iArtistTrans.png</icon>
 				<selectedicon>html/images/iArtistTransSelected.png</selectedicon>
@@ -26,7 +26,7 @@
 			</command>
 			<command id="Playlist">
 				<description>Toolbar Icon: Default Browse-Playlists View</description>
-				<weight>3</weight>
+				<weight>22</weight>
 				<namestring>IPENG_BUTTON_LISTS</namestring>
 				<icon>html/images/iPlaylistTrans.png</icon>
 				<selectedicon>html/images/iPlaylistTransSelected.png</selectedicon>
@@ -37,7 +37,7 @@
 			</command>
 			<command id="Search">
 				<description>Toolbar Icon: Default Search View</description>
-				<weight>4</weight>
+				<weight>23</weight>
 				<namestring>SEARCH</namestring>
 				<icon>html/images/iSearchTrans.png</icon>
 				<selectedicon>html/images/iSearchTransSelected.png</selectedicon>
@@ -47,8 +47,9 @@
 				</parameters>
 			</command>
 			<command id="Home">
+				<position>5</position>
 				<description>Toolbar Icon: Home</description>
-				<weight>5</weight>
+				<weight>25</weight>
 				<namestring>IPENG_BUTTON_HOME</namestring>
 				<icon>html/images/iHomeTrans.png</icon>
 				<selectedicon>html/images/iHomeTransSelected.png</selectedicon>
@@ -59,7 +60,7 @@
 			</command>
 			<command id="Browsetree">
 				<description>Toolbar Icon: Default Music Folder Browse View</description>
-				<weight>6</weight>
+				<weight>25</weight>
 				<defaultenabled>0</defaultenabled>
 				<namestring>IPENG_BUTTON_TREE</namestring>
 				<icon>html/images/iFolderTrans1.png</icon>
@@ -71,7 +72,7 @@
 			</command>
 			<command id="Year">
 				<description>Toolbar Icon: Default Browse-By-Year View</description>
-				<weight>6</weight>
+				<weight>25</weight>
 				<defaultenabled>0</defaultenabled>
 				<namestring>IPENG_BUTTON_YEAR</namestring>
 				<icon>html/images/iTimeTrans.png</icon>
@@ -83,7 +84,7 @@
 			</command>
 			<command id="Genre">
 				<description>Toolbar Icon: Default Browse-By-Genre View</description>
-				<weight>6</weight>
+				<weight>25</weight>
 				<defaultenabled>0</defaultenabled>
 				<namestring>BROWSE_BY_GENRE</namestring>
 				<icon>html/images/iGenreTrans.png</icon>
@@ -95,7 +96,7 @@
 			</command>
 			<command id="Newmusic">
 				<description>Toolbar Icon: Default Browse-New-Music View</description>
-				<weight>6</weight>
+				<weight>25</weight>
 				<defaultenabled>0</defaultenabled>
 				<namestring>BROWSE_NEW_MUSIC</namestring>
 				<icon>html/images/iNewTrans.png</icon>
@@ -107,7 +108,7 @@
 			</command>
 			<command id="RandomPlay">
 				<description>Toolbar Icon: Random Play</description>
-				<weight>6</weight>
+				<weight>25</weight>
 				<defaultenabled>0</defaultenabled>
 				<namestring>PLUGIN_RANDOMPLAY</namestring>
 				<requireplugins>RandomPlay</requireplugins>
@@ -120,7 +121,7 @@
 			</command>
 			<command id="Favorites">
 				<description>Toolbar Icon: Favorites</description>
-				<weight>6</weight>
+				<weight>25</weight>
 				<defaultenabled>0</defaultenabled>
 				<namestring>FAVORITES</namestring>
 				<requireplugins>Favorites</requireplugins>
@@ -133,7 +134,7 @@
 			</command>
 			<command id="LastFM">
 				<description>Toolbar Icon: LastFM</description>
-				<weight>6</weight>
+				<weight>25</weight>
 				<defaultenabled>0</defaultenabled>
 				<name>LastFM</name>
 				<requireplugins>SqueezeScrobbler</requireplugins>
@@ -147,7 +148,8 @@
 			<command id="Power">
 				<description>Toolbar Icon: Power</description>
 				<defaultenabled>0</defaultenabled>
-				<weight>6</weight>
+				<position>1</position>
+				<weight>25</weight>
 				<namestring>IPENG_POWER</namestring>
 				<icon>html/images/iOffTrans.png</icon>
 				<selectedicon>html/images/iOffBlue.png</selectedicon>
@@ -156,7 +158,8 @@
 			<command id="PlayPause">
 				<description>Toolbar Icon: Play / Pause</description>
 				<defaultenabled>0</defaultenabled>
-				<weight>6</weight>
+				<weight>25</weight>
+				<position>3</position>
 				<namestring>IPENG_PLAY_PAUSE</namestring>
 				<icon>html/images/iPlayPause.png</icon>
 				<cli>pause</cli>
@@ -164,7 +167,8 @@
 			<command id="Next">
 				<description>Toolbar Icon: Next Track</description>
 				<defaultenabled>0</defaultenabled>
-				<weight>6</weight>
+				<weight>25</weight>
+				<position>4</position>
 				<namestring>NEXT</namestring>
 				<icon>html/images/iNextTrans.png</icon>
 				<cli>playlist</cli>
@@ -176,7 +180,8 @@
 			<command id="Prev">
 				<description>Toolbar Icon: Previous Track</description>
 				<defaultenabled>0</defaultenabled>
-				<weight>6</weight>
+				<weight>25</weight>
+				<position>2</position>
 				<namestring>PREV</namestring>
 				<icon>html/images/iPrevTrans.png</icon>
 				<cli>playlist</cli>
@@ -187,28 +192,28 @@
 			</command>
 		</subsection>
 		<subsection id="home">
-			<command id="InternetRadio">
+			<command id="Radio">
 				<description>Toolbar Icon: Internet Radio Icon for Home Screen</description>
 				<defaultenabled>0</defaultenabled>
-				<weight>5</weight>
+				<weight>30</weight>
 				<name>Radio</name>
 				<icon>html/images/iRadioTrans.png</icon>
 				<selectedicon>html/images/iRadioTransSelected.png</selectedicon>
 				<url>javascript:iui.showPage($('Radio'));</url> 
 			</command>
-			<command id="MusicService">
+			<!--command id="MusicService">
 				<description>Toolbar Icon: MusicServices Icon for Home Screen</description>
 				<defaultenabled>0</defaultenabled>
-				<weight>6</weight>
+				<weight>20</weight>
 				<name>MusicServices</name>
 				<icon>html/images/iRadioTrans.png</icon>
 				<selectedicon>html/images/iRadioTransSelected.png</selectedicon>
 				<url>javascript:iui.showPage($('MusicServices'));</url> 
-			</command>
+			</command-->
 			<command id="Alarm">
 				<description>Toolbar Icon: Alarm Icon for Home Screen</description>
 				<defaultenabled>0</defaultenabled>
-				<weight>6</weight>
+				<weight>30</weight>
 				<namestring>ALARM</namestring>
 				<icon>html/images/iAlarmTrans.png</icon>
 				<selectedicon>html/images/iAlarmTransSelected.png</selectedicon>
@@ -217,7 +222,7 @@
 			<command id="Sleep">
 				<description>Toolbar Icon: Alarm Icon for Home Screen</description>
 				<defaultenabled>0</defaultenabled>
-				<weight>6</weight>
+				<weight>30</weight>
 				<namestring>SLEEP</namestring>
 				<icon>html/images/iSleepTrans.png</icon>
 				<selectedicon>html/images/iSleepTransSelected.png</selectedicon>

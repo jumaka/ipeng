@@ -184,3 +184,13 @@ IPENG_BUTTON_TREE
 IPENG_BUTTON_YEAR
 	EN	Year
 	DE	Jahre
+	
+# RandomPlay number of track
+IPENG_RANDOM_TRACKS
+	EN	upcoming songs
+	DE	abzuspielende Songs
+	
+# RandomPlay old tracks
+IPENG_RANDOM_OLDTRACKS
+	EN	recently played songs
+	DE	wiedergegebene Titel

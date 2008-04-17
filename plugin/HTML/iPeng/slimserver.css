@@ -457,7 +457,7 @@ tr.playing {
 
 tr.listRow, td.listRow, div.listRow, listRow {
 	position: relative; 
-	height: 46;
+	height: 50;
 	border: 1px solid #d9d9d9;
 	border-left: hidden;
 	border-right: hidden;
@@ -473,10 +473,10 @@ tr.listRow, td.listRow, div.listRow, listRow {
 }
 
 .coverimg, td.coverimg {
-	width: 46;
+	width: 50;
 	padding: 0; 
 	background-image: url(html/images/cover46.png);
-	background-position: center center;
+	background-position: 2 2;
 	background-repeat: no-repeat;
 }
 

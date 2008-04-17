@@ -47,7 +47,7 @@ BLOCK openAlbumTD;
 		IF showcover;
 			WRAPPER openAlbumTD;
 				IF item.coverThumb;
-					PROCESS thumbnailItemImg bgcolor='FFFFFF' height="46" width="46" style='STYLE="border: none"';
+					PROCESS thumbnailItemImg height="50" style='STYLE="border: none"';
 				# ELSE;
 					# PROCESS dummyItemImg bgcolor='FFFFFF' height="46" width="46" style='STYLE="border: none"';
 				END;
@@ -62,7 +62,7 @@ BLOCK openAlbumTD;
 										#item.album;
 									ELSE;
 										item.itemobj.id; 
-									END %]/cover_46x46_f_FFFFFF.png" width="46">
+									END %]/cover_50x50_p" width="50">
 			[%- END;
 		ELSE; csval = 2; END -%]
 		<td colspan = [% csval;

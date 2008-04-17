@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<configuration>
+	<section id="nowplaying">
+		<subsection id="bioreview">
+			<command id="biography">
+				<description>NowPlaying Link for Biography Plugin</description>
+				<requireplugins>Biography</requireplugins>
+				<weight>40</weight>
+				<name>Biography</name>
+				<url>plugins/Biography/pure.html</url>
+				<type>content</type>
+			</command>
+			<command id="albumreview">
+				<description>NowPlaying Link for Album Review Plugin</description>
+				<requireplugins>AlbumReview</requireplugins>
+				<weight>30</weight>
+				<name>Album Review</name>
+				<url>plugins/AlbumReview/pure.html</url>
+				<type>content</type>
+			</command>
+		</subsection>
+	</section>
+</configuration>

@@ -11,7 +11,7 @@
 				<requireplugins>MusicMagic</requireplugins>
 				<weight>10</weight>
 				<name>Music IP Mixer</name>
-				<icon>plugins/MusicMagic/html/images/icon.png</icon>
+				<icon>plugins/MusicMagic/html/images/icon_30x30_f.png</icon>
 				<height>30</height>
 				<!--icon>html/images/mixbutton.png</icon-->
 				<url>plugins/MusicMagic/musicmagic_mix.html</url>

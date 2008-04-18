@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<configuration>
+	<section id="nowplaying">
+		<subsection id="lyrics">
+			<weight>50</weight>
+			<command id="lyrics">
+				<description>NowPlaying Link for Lyrics Display Plugin</description>
+				<requireplugins>Lyrics</requireplugins>
+				<weight>10</weight>
+				<name>Lyrics</name>
+				<icon>plugins/Lyrics/images/icon_30x30_f.png</icon>
+				<height>30</height>
+				<url>plugins/Lyrics/list.html</url>
+				<parameters>
+					<player>player</player>
+				</parameters>
+				<type>content</type>
+			</command>
+		</subsection>
+	</section>
+</configuration>

@@ -1,0 +1,43 @@
+[%- 
+pagetitle = 'PLUGIN_LYRICS_MODULE_NAME' | string;
+pwd_list = BLOCK -%]/
+	<a href="[% webroot %]plugins/Lyrics/list.html?player=[% player | uri %]">
+		[% "PLUGIN_LYRICS_MODULE_NAME" | string;
+	'</a>';
+END;
+
+
+IF !ajaxUpdate; PROCESS pageheader.html; 
+ELSE; listid = ' '; END;
+
+WRAPPER contentcontainer;
+	IF ajaxUpdate;
+		'<style>
+		.submit_link {}
+		.submit_link > a {
+			color: white !important;
+			font-style: italic;
+		}
+		</style>';
+	END;
+
+	IF artist AND song;
+	  '<b style = "font-size: 120%">';
+	  'PLUGIN_LYRICS_ARTIST' | string; ': '; artist; ' <br> '; 
+	  'PLUGIN_LYRICS_TITLE' | string; ': '; song; '</b><br>&nbsp;';
+	  '<div>';
+		 FOREACH line IN lyrics;
+			line; ' <br>';
+		 END;
+	  '</div>';
+	ELSE;
+		'PLUGIN_LYRICS_NO_SONG' | string;
+	END;
+	'<br><span class = "submit_link">';
+		'PLUGIN_LYRICS_PLEASE_SUBMIT_A' | string;
+	'</span>';
+END;
+
+
+IF !ajaxUpdate; PROCESS pagefooter.html; END; 
+%]

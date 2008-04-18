@@ -502,21 +502,22 @@ BLOCK browseSettings %]
 	<li class = "biggerLine">
 	<a href="[% webroot %][% link.value %]&player=[% playerURI %]" target="_self">
 	[% IF additionalLinks.icons.${link.key} %]
-		<img src="[% webroot %][% additionalLinks.icons.${link.key}.replace('.png', "_40x30_f.png") %]" width="40" height="30" class = "paddedPic">&nbsp;
+		<img src="[% webroot %][% additionalLinks.icons.${link.key}.replace('.png', "_40x30_f.png") %]" height="30" class = "paddedPic">&nbsp;
 	[% END %]		
 	<span class="secondary">[% link.key | string | truncate (20) %]</span></a>
 	</li>
 [% END;
 
 knownPlugins = { PLUGIN_NOALBUMREVIEW = 0,
-				 PLUGIN_NOBIOGRAPHY = 0 };
+				 PLUGIN_NOBIOGRAPHY = 0,
+				 PLUGIN_LYRICS_MODULE_NAME = 0 };
 
 FOREACH link = additionalLinks.plugins;
 	IF knownPlugins.keys.grep(link.key).size %]
 		<li class = "biggerLine">
 		<a href="[% webroot %][% link.value %]&player=[% playerURI %]" target="_self">
 		[%- IF additionalLinks.icons.${link.key} %]
-			<img src="[% webroot %][% additionalLinks.icons.${link.key}.replace('.png', "_40x30_f.png") %]" width="40" height="30" class = "paddedPic">&nbsp;
+			<img src="[% webroot %][% additionalLinks.icons.${link.key}.replace('.png', "_40x30_f.png") %]" height="30" class = "paddedPic">&nbsp;
 		[% END -%]
 		<span class="secondary">[% link.key | string | truncate (20) %]</span></a>
 		</li>

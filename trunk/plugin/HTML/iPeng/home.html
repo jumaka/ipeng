@@ -205,6 +205,7 @@ PROCESS browseSettings;
 PROCESS browseRadio;
 #PROCESS musicServices;
 PROCESS alarmSet;
+PROCESS rescan;
 -%]
 
 
@@ -279,7 +280,8 @@ browseCategories = { BROWSE_BY_ALBUM = { icon = 'html/images/iAlbumWhite.png', t
 					 BROWSE_BY_GENRE = { icon = 'html/images/iGenreWhite.png', text = 'GENRES' },
 					 BROWSE_MUSIC_FOLDER = { icon = 'html/images/iFolderWhite2.png', text = 'SETUP_AUDIODIR' },
 					 BROWSE_BY_YEAR = { icon = 'html/images/iTimeWhite.png', text = 'BROWSE_BY_YEAR' },
-					 PLUGIN_CUSTOMBROWSE = { icon = additionalLinks.icons.${'PLUGIN_CUSTOMBROWSE'}.replace('.png', "_40x30_f.png"), text = 'PLUGIN_CUSTOMBROWSE' } } -%]
+					 #PLUGIN_CUSTOMBROWSE = { icon = additionalLinks.icons.${'PLUGIN_CUSTOMBROWSE'}.replace('.png', "_40x30_f.png"), text = 'PLUGIN_CUSTOMBROWSE' } 
+					 } -%]
 
 <div id = "Database" class = "panel" title = "[% 'IPENG_BROWSE_LIBRARY' | string %]" style = 'width: 320'>
 
@@ -338,7 +340,9 @@ browseMoreCategories = { SAVED_PLAYLISTS = { icon = 'iPlaylistWhite.png', text =
 						 BROWSE_NEW_MUSIC = { icon = 'iNewWhite.png', text = 'BROWSE_NEW_MUSIC' }, 
 						 PLUGIN_RANDOMPLAY = { icon = 'iRandomWhite.png', text = 'PLUGIN_RANDOMPLAY' } };
 						 
-browseMoreExclude = { PLUGIN_IPENG_CUSTOM_BROWSE_MORE = '' };
+temp = 'PLUGIN_IPENG_CUSTOM_BROWSE_MORE' | string;
+
+browseMoreExclude = [ 'PLUGIN_IPENG_CUSTOM_BROWSE_MORE', temp ];
 
 
 -%]
@@ -360,7 +364,8 @@ END -%]
 	<span class="secondary">[% 'SEARCH' | string %]</span></a>
 	</li>
 [%- FOREACH link = additionalLinks.browseiPeng;
-	IF !browseCategories.keys.grep(link.key).size && !browseMoreCategories.keys.grep(link.key).size && !browseMoreExclude.keys.grep(link.key).size -%]
+	temp = link.key | string;
+	IF !browseCategories.keys.grep(link.key).size && !browseMoreCategories.keys.grep(link.key).size && !browseMoreExclude.grep(link.key).size && !browseMoreExclude.grep(temp).size -%]
 		<li class = "biggerLine">
 		<a href="[% webroot %][% link.value %]&player=[% playerURI %]" target="_self">
 		[%- IF additionalLinks.icons.${link.key} -%]
@@ -497,7 +502,11 @@ BLOCK browseSettings %]
 	<img src="[% webroot %]html/images/iSleepWhite.png" width="40" height="30" class = "paddedPic">&nbsp;
 	<span class="secondary">[% 'SLEEP' | string | truncate(20) %]</span></a>
 	</li>
-
+	<li class = "biggerLine">
+	<a href="#rescanLibrary">
+	<img src="[% webroot %]html/images/iRescanWhite.png" width="40" height="30" class = "paddedPic">&nbsp;
+	<span class="secondary">[% 'IPENG_RESCAN' | string | truncate(20) %]</span></a>
+	</li>
 [% FOREACH link = additionalLinks.pluginsiPeng %]
 	<li class = "biggerLine">
 	<a href="[% webroot %][% link.value %]&player=[% playerURI %]" target="_self">
@@ -620,37 +629,6 @@ BLOCK tune_in_form %]
 END;
 
 
-BLOCK musicServices %]
-<div id = "MusicServices" class = "panel" title = "[% 'MUSIC_SERVICES' | string %]">
-	<ul>
-	[%- FOREACH key = additionalLinkOrder.music_services %]
-		<li class = "biggerLine">
-			<a href="[% webroot %][% additionalLinks.music_services.$key | html %]player=[% playerURI %]" target="_self" >
-			<img src="[% webroot %][% additionalLinks.icons.${key}.replace('.png', "_30x30_f.png") %]" width="30" class = "radioPic" alt="[% key | string %]">
-			<span class="secondary" style = "font-size: 80%; padding-left: 5">[% key | string | html | truncate (26) %]</span></a>
-		</li>
-	[%- END;
-	FOREACH link = additionalLinks.music_services; 
-		IF !additionalLinkOrder.music_services.grep(link.key).size %]
-		<li class = "biggerLine">
-			<a href="[% webroot %][% link.value | html %]player=[% playerURI %]" target="_self">
-			<img src="[% webroot %][% additionalLinks.icons.${link.key}.replace('.png', "_30x30_f.png") %]" width="30" class = "radioPic" alt="[% link.key | string %]">
-			<span class="secondary" style = "font-size: 80%; padding-left: 5">[% link.key | string | html %]</span></a>
-		</li>
-	[%- END;
-	END;
-	IF additionalLinks.radios.exists('PLUGIN_PANDORA_MODULE_NAME') %]
-		<li class = "biggerLine">
-			<a href="[% webroot %][% additionalLinks.radio.PLUGIN_PANDORA_MODULE_NAME | html %]player=[% playerURI %]" target="_self">
-			<span class="secondary" style = "font-size: 80%; padding-left: 5">[% "PLUGIN_PANDORA_MODULE_NAME" | string | html;
-			'</span></a>';
-		'</li>';
-	END;
-	'</ul>';
-PROCESS spacer;
-'</div>';
-END;
-
 BLOCK alarmSet %]
 
 <div id = "playlists" class = "panel" title = "[% 'PLAYLISTS' | string %]">
@@ -660,6 +638,39 @@ BLOCK alarmSet %]
 '</div>';
 
 END;
+
+
+BLOCK rescan %]
+<div id = "rescanLibrary" class = "panel" title = "[% 'IPENG_RESCAN' | string %]" style = "width: 320;">
+<span class = "backgroundtext">[% 'SETUP_RESCAN_DESC' | string %]</span><br>&nbsp;
+    <a class="iButton silver" 
+    		onclick = 'changeOSD("[% 'IPENG_RESCAN_STARTED' | string %]"); callJSONRPC([ "rescan" ]); showAdded();'
+    		target = "none"
+			style = "
+				 margin: 0 11 11 0;
+				 padding: 0px;
+				 width: 278;
+				 height: 30px;
+				 text-align: center;
+				 font-size: 15;
+			">[% "SETUP_RESCAN_BUTTON" | string %]</a>
+<br><span class = "backgroundtext">[% 'SETUP_WIPEDB' | string %]</span><br>&nbsp;
+    <a class="iButton red" 
+    		onclick = 'if (!confirm("[% 'IPENG_WIPE_CONFIRM' | string %]")) return;changeOSD("[% 'IPENG_WIPE_STARTED' | string %]"); callJSONRPC([ "wipecache" ]); showAdded();'
+    		target = "none"
+			style = "
+				 margin: 0 11 11 0;
+				 padding: 0px;
+				 width: 278;
+				 height: 30px;
+				 text-align: center;
+				 font-size: 15;
+			">[% "IPENG_WIPE" | string %]</a>
+
+[% PROCESS spacer;
+'</div>';
+END;
+
 
 
 BLOCK spacer %]

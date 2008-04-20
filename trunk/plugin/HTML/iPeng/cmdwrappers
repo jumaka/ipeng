@@ -2,7 +2,7 @@
 statusroot      = 'status.html';
 noHomeLink      = 1;
 controlGraphics = 1;
-useTabList      = 1;
+useTabList      = 0;
 useAJAX         = 1;
 crumbSeparator = '|';
 useExtJS = 0;
@@ -249,8 +249,10 @@ END %]
 [% BLOCK contentanchor %]
 	<tr>
 		<td class = "listHeader" colspan = 3 [% IF firstrow %]style = "top: 0; border-top: none"[% END %]>
-			<a name = "[% content | trim %]"></a>
-			[% content;
+			[%- IF !noanchor -%]
+				<a name = "[% content | trim %]"></a>
+			[%- END;
+			;content;
 			IF anchorcontrols; PROCESS $anchorcontrols; END;
 		'</td>';
 	'</tr>';

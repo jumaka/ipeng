@@ -1,0 +1,12 @@
+[%- FILTER null;
+
+BLOCK setting_textinput;
+	IF label;
+		'<label for="'; id; '">'; label; '</label>';
+	END;
+	'<input type="text" class="stdedit '; classname; '" name="'; id; '" id="'; id; '" size="'; textlen; '" value="';
+	content;
+	'" >';
+END;
+
+END -%]

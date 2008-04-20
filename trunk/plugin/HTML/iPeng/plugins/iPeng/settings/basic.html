@@ -1,0 +1,19 @@
+[%
+page = "PLUGIN_IPENG";
+PROCESS settings/header.html;
+PROCESS plugins/iPeng/settings/settingblocks.html;
+
+PROCESS plugins/iPeng/settings/subpage_chooser.html;
+
+WRAPPER setting title="SETUP_PLUGIN_IPENG_CONFIG_DIRECTORY" desc="SETUP_PLUGIN_IPENG_CONFIG_DIRECTORY_DESC";
+	label = "IPENG_PATHNAME" | string;
+	classname = "selectFolder";
+	id = "config_dir";
+	textlen = 40;
+	WRAPPER setting_textinput;
+		prefs.config_dir;
+	END;
+END;
+
+PROCESS settings/footer.html; 
+%]

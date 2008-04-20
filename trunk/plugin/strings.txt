@@ -26,6 +26,7 @@ PLUGIN_IPENG_SETTINGS_ENABLEDCOMMANDS
 
 PLUGIN_IPENG_SETTINGS_POSITIONCOMMANDS
 	EN	Positioning commands
+	DE	Kommando-Anordnung
 
 SETUP_PLUGIN_IPENG_CONFIG_DIRECTORY
 	EN	Configuration directory
@@ -41,9 +42,11 @@ SETUP_PLUGIN_IPENG_ENABLED_COMMANDS
 
 SETUP_PLUGIN_IPENG_POSITION_COMMANDS
 	EN	Positioning buttons
+	DE	Schaltflächen anordnen
 
 SETUP_PLUGIN_IPENG_POSITION_SUBSECTIONS
 	EN	Positioning rows
+	DE	Zeilen anordnen
 
 SETUP_PLUGIN_IPENG_ENABLED_COMMANDS_DESC
 	EN	Select which commands you like to be enabled in the iPeng skin
@@ -51,9 +54,11 @@ SETUP_PLUGIN_IPENG_ENABLED_COMMANDS_DESC
 
 SETUP_PLUGIN_IPENG_POSITION_COMMANDS_DESC
 	EN	Select the position for each command, for example where each toolbar button should be positioned in the toolbar, 1 means leftmost position and 5 means rightmost position. Empty means that the button will be placed at free positions if there are any.
+	DE	Die Position der Schaltflächen in der Tastenleiste angeben. 1 ist die linke, 5 die rechte Schaltfläche. Wird keine Position angegeben, wird die Schaltfläche auf evtl. vorhandene Leerstellen positioniert.
 
 SETUP_PLUGIN_IPENG_POSITION_SUBSECTIONS_DESC
-	EN	Select the position for each row, for example where each button row should be positioned in the Now Playing page, 1 means top position and 7 means bottom position. Empty means that the button will be placed at its default position.
+	EN	Select the position for each row, for example where each button row should be positioned in the Now Playing page, 1 means top position and 7 means bottom position (without scrolling). Empty means that the button will be placed at its default position.
+	DE	Die Position der Schaltflächen-Zeilen auf der NowPlaying Seite angeben. 1 ist die oberste Position, 7 die unterste auf der ersten Seite. Keine Angabe bedeutet, die Zeile wird an ihrer Standardposition dargestellt.
 
 PLUGIN_IPENG_SELECT_COMMANDS_ALL
 	EN	Select all
@@ -194,3 +199,38 @@ IPENG_RANDOM_TRACKS
 IPENG_RANDOM_OLDTRACKS
 	EN	recently played songs
 	DE	wiedergegebene Titel
+
+# "Path"
+IPENG_PATHNAME
+	EN	path
+	DE	Pfad
+	
+# Rescan
+IPENG_RESCAN
+	EN	Re-Scan
+	DE	Re-Scan
+	
+# Rescan only
+IPENG_RESCAN_ONLY
+	EN	Scan For New Items
+	DE	Nach Änderungen suchen
+
+# Rescan started
+IPENG_RESCAN_STARTED
+	EN	Scanning for changed and added items...
+	DE	Suche nach neuen und geänderten Dateien...
+	
+# Wipe started
+IPENG_WIPE_STARTED
+	EN	Library Wipe and Re-Scan started...
+	DE	Neuaufbau der Sammlung gestarted...
+
+# Wipe question
+IPENG_WIPE_CONFIRM
+	EN	Do you really want to wipe your library and rescan?
+	DE	Datenbank wirklich löschen und neu aufbauen?
+
+# Wipe and Rescan
+IPENG_WIPE
+	EN	Clear and Re-Scan Library
+	DE	Datenbank löschen und neu aufbauen

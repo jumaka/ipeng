@@ -6,11 +6,10 @@ body {
 	margin-top: 0px;
 	margin-left: 0px;
 	margin-right: 0px;
-	min-height: 220px; /* 268px; */
+	min-height: 220px;
 	width: 320px;
 	overflow-y: visible;
 	overflow-x: hidden;
-	/*overflow-y: hidden;*/
 }
 
 div {
@@ -130,7 +129,7 @@ li.selectedli {
 	-webkit-border-radius: 8px;
 }
 
-div#browsedbList {
+div#browsedbList, div#settingsRegion {
 	padding: 0;	   
 	margin: 0px;
 	
@@ -683,6 +682,7 @@ div#OSDbg {
 	/*border-width: 82px 6px 11px 6px;
 	-webkit-border-image: url(html/images/OSDBackground.png) 82 6 11 6;*/
 	background-image: url(html/images/OSDBackground.png);
+	background-repeat: no-repeat;
 	z-index: 99;
 }
 

@@ -1,0 +1,26 @@
+[%- 
+IF playerid && needsClient;
+	setuplinks = playersetup;
+ELSE;
+	setuplinks = additionalLinks.setup;
+END;
+
+FOREACH token = setuplinks.keys;
+	stringkeys.$token = token | string | html;
+END;
+
+BLOCK addSetupLinks;
+	IF setuplinks;
+		FOREACH stringkey = stringkeys.sort %]
+			<option [% IF page == stringkey %]selected[% END %] value="[% stringkey %]" label="[% stringkeys.$stringkey %]">[% stringkeys.$stringkey %]</option>
+		[%- END;
+	END;
+END -%]
+<form id="setup_chooser" name="setup_chooser" method="get" action="[% webroot %]setup.html" target="header" style="margin: 0">
+	<input type="hidden" name="pageAntiCSRFToken" value="[% pageAntiCSRFToken %]">
+	<input type=hidden value="[% page %]" name="page">
+	<input type=hidden value="[% playerid | uri %]" name="playerid">
+	<select ID="choose_setting" NAME="choose_setting" class="stdedit" style="font-size: 15; min-width: 275; min-height: 30; margin: 8 4 8 4" onchange="chooseSettings(selectedIndex,options[selectedIndex].value)">
+		[% PROCESS addSetupLinks %]
+	</select>
+</form>

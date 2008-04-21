@@ -76,6 +76,7 @@ window.iui =
         {
             if (req.readyState == 4)
             {
+            	req.responseText.evalScripts();
                 if (replace)
                     replaceElementWithSource(replace, req.responseText);
                 else

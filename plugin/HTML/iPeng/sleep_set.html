@@ -4,6 +4,105 @@
 			  background-image: url([% webroot %]html/images/cooliosleep1.png), url([% webroot %]html/images/sleepbg.png); 
 			  background-position: 120 23, top left; 
 			  background-repeat: no-repeat, repeat-x;">
+			  
+<script type="text/javascript">
+// Sleep
+
+Sleep = function () {
+	this.timeout = 0;
+	this.tid = null;
+	this.element = null;
+}
+
+sleep = new Sleep();
+
+Sleep.prototype.string = function () {
+	var target = new String();
+	if (this.timeout > 3600) {
+		target = parseInt(this.timeout / 3600) + ":";
+		if (this.timeout < 36000) target = "0" + target;
+	}
+	var temp = this.timeout % 3600;
+	if (temp < 600) target = target + "0";
+	target = target + parseInt(temp / 60) + ":";
+	temp = this.timeout % 60;
+	if (temp < 10) target = target + "0";
+	target = target + temp;
+//console.log("target2: " + target);
+	return target;
+}
+
+Sleep.prototype.displayStartStop = function (startflag) {
+ 		if (startflag) {
+			Element.show('sleeptime');
+			Element.hide('sleepedit');
+			Element.show('sleepstop');
+			Element.hide('sleepstart');
+		} else {
+			Element.hide('sleeptime');
+			Element.show('sleepedit');
+			Element.hide('sleepstop');
+			Element.show('sleepstart');
+		}
+}
+
+Sleep.prototype.init = function() {
+console.log("init");
+ 	var sthis = this;
+	var sArray = [ 'sleep', '?' ];
+	if (!this.element) this.element = $('sleeptime');
+	callJSONRPC (sArray, function (r2) {
+	 	var restemp = parseInt(r2.result._sleep);
+		if (restemp > 0) {
+			sthis.timeout = restemp;
+			sthis.displayStartStop (true);
+			if (!sthis.tid)
+				sthis.tid = setInterval(dodisplayTime, 1000);
+		} else {
+			sthis.timeout = 0;
+			sthis.displayStartStop(false);
+		}
+	});
+	
+	function dodisplayTime() {
+		sleep.displayTime();
+	}
+}
+
+Sleep.prototype.displayTime = function() {
+	if (this.timeout <= 0) {
+		clearInterval(this.tid);
+		this.timeout = 0;
+		this.tid = null;
+		this.displayStartStop(false);
+		return;
+	}
+	this.timeout--;
+	if ((this.timeout % 60) == 0)
+		this.init();
+	if (!this.element) this.element = $('sleeptime');
+	this.element.textContent = this.string();
+}
+
+Sleep.prototype.Count = function (startflag) {
+ 	var sthis = this;
+	if (startflag) {
+		var mval = $('s_minutes').value;
+		if (mval.substr(0, 1) == "0")
+			mval = mval.substr(1);
+		var temp = parseInt(mval) * 60;
+		temp = temp + parseInt($('s_hours').value) * 3600;
+		this.timeout = temp;
+		if (!temp) return;
+	} else
+		this.timeout = 0;
+	var sArray = [ 'sleep', this.timeout ];
+	callJSONRPC (sArray, function (r2) {
+	 	sthis.init();
+	});
+}
+
+</script>
 	 
 	<span id = "sleeptime" style = "position: absolute; font-size: 80; top: 106; width: 320; -webkit-box-sizing: border-box; text-align: center; color: white; display: none">&nbsp;</span>
 
@@ -53,4 +152,5 @@
 			     color: white;
 		">[% 'IPENG_STOP' | string %]</a>
 
+<script>sleep.init();</script>
 </div>

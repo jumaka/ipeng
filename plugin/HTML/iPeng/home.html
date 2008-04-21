@@ -14,6 +14,8 @@ ELSIF runAlarm;
 	PROCESS alarm_set.html;
 ELSIF runSleep;
 	PROCESS sleep_set.html;
+ELSIF runRescan;
+	PROCESS rescan_set.html;
 ELSE;
 
 title = 'SqueezeCenter';
@@ -71,27 +73,14 @@ BLOCK HomeHeader %]
 	<script type="application/x-javascript" src="html/iui/iui.js" defer></script>
 	
 	<script type="text/javascript"> // need some inline code...
-	var ClearAlarmMsg = "[% 'IPENG_CLEAR_ALARM_MSG' | string %]";
+
+	var url = 'status.html';
 	
-	var SpecialPlaylists = [ '[% "CURRENT_PLAYLIST" | string %]',
-						 '[% "PLUGIN_RANDOM_TRACK" | string %]',
-						 '[% "PLUGIN_RANDOM_ALBUM" | string %]',
-						 '[% "PLUGIN_RANDOM_CONTRIBUTOR" | string %]' ];
+	var bottombarTop = 369;
+	var topbarHeight = -4; // should be 44, consider this to be a bug in MS, but MS expands every div to at least 100% height...
 	
-	var SpecialPLURLs = [ 'CURRENT_PLAYLIST',
-					  'PLUGIN_RANDOM_TRACK',
-					  'PLUGIN_RANDOM_ALBUM',
-					  'PLUGIN_RANDOM_CONTRIBUTOR' ];
-					  
-	var DayStrings = [ '[% 'ALARM_DAY0' | string %]',
-				   '[% 'ALARM_DAY1' | string %]',
-				   '[% 'ALARM_DAY2' | string %]',
-				   '[% 'ALARM_DAY3' | string %]',
-				   '[% 'ALARM_DAY4' | string %]',
-				   '[% 'ALARM_DAY5' | string %]',
-				   '[% 'ALARM_DAY6' | string %]',
-				   '[% 'ALARM_DAY7' | string %]' ];
-	
+	var Pi = 3.14159265;
+
 	// Synchronization
 	
 	[%- USE Clients; 
@@ -177,9 +166,16 @@ BLOCK HomeHeader %]
 	 	[%- END %]
 	 	$('playernone').selected = true;
 	}
+
+
+	// OnLoad
+	
+	window.onload = function() {
+		globalOnload();
+	}
 	</script>
 
-	<script src="[% webroot %]html/home.js?r=[% revision %]" type = 'text/javascript'></script>
+	<!--script src="[% webroot %]html/home.js?r=[% revision %]" type = 'text/javascript'></script-->
 [% END %]
 
 
@@ -205,7 +201,6 @@ PROCESS browseSettings;
 PROCESS browseRadio;
 #PROCESS musicServices;
 PROCESS alarmSet;
-PROCESS rescan;
 -%]
 
 
@@ -493,17 +488,17 @@ BLOCK browseSettings %]
 <ul  style = "font-size: 110%; margin-bottom: 8;">
 
 	<li class = "biggerLine">
-	<a href="[% webroot %]home.html?runAlarm=1" target="_onload:localOnload();">
+	<a href="[% webroot %]home.html?runAlarm=1"><!-- target="_onload:localOnload();"-->
 	<img src="[% webroot %]html/images/iAlarmWhite.png" width="40" height="32" class = "paddedPic">&nbsp;
 	<span class="secondary">[% 'ALARM' | string | truncate(20) %]</span></a>
 	</li>
 	<li class = "biggerLine">
-	<a href="[% webroot %]home.html?runSleep=1" target="_onload:sleep.init();">
+	<a href="[% webroot %]home.html?runSleep=1"><!-- target="_onload:sleep.init();"-->
 	<img src="[% webroot %]html/images/iSleepWhite.png" width="40" height="30" class = "paddedPic">&nbsp;
 	<span class="secondary">[% 'SLEEP' | string | truncate(20) %]</span></a>
 	</li>
 	<li class = "biggerLine">
-	<a href="#rescanLibrary">
+	<a href="[% webroot %]home.html?runRescan=1">
 	<img src="[% webroot %]html/images/iRescanWhite.png" width="40" height="30" class = "paddedPic">&nbsp;
 	<span class="secondary">[% 'IPENG_RESCAN' | string | truncate(20) %]</span></a>
 	</li>
@@ -638,39 +633,6 @@ BLOCK alarmSet %]
 '</div>';
 
 END;
-
-
-BLOCK rescan %]
-<div id = "rescanLibrary" class = "panel" title = "[% 'IPENG_RESCAN' | string %]" style = "width: 320;">
-<span class = "backgroundtext">[% 'SETUP_RESCAN_DESC' | string %]</span><br>&nbsp;
-    <a class="iButton silver" 
-    		onclick = 'changeOSD("[% 'IPENG_RESCAN_STARTED' | string %]"); callJSONRPC([ "rescan" ]); showAdded();'
-    		target = "none"
-			style = "
-				 margin: 0 11 11 0;
-				 padding: 0px;
-				 width: 278;
-				 height: 30px;
-				 text-align: center;
-				 font-size: 15;
-			">[% "SETUP_RESCAN_BUTTON" | string %]</a>
-<br><span class = "backgroundtext">[% 'SETUP_WIPEDB' | string %]</span><br>&nbsp;
-    <a class="iButton red" 
-    		onclick = 'if (!confirm("[% 'IPENG_WIPE_CONFIRM' | string %]")) return;changeOSD("[% 'IPENG_WIPE_STARTED' | string %]"); callJSONRPC([ "wipecache" ]); showAdded();'
-    		target = "none"
-			style = "
-				 margin: 0 11 11 0;
-				 padding: 0px;
-				 width: 278;
-				 height: 30px;
-				 text-align: center;
-				 font-size: 15;
-			">[% "IPENG_WIPE" | string %]</a>
-
-[% PROCESS spacer;
-'</div>';
-END;
-
 
 
 BLOCK spacer %]

@@ -1,0 +1,103 @@
+
+<div id = "rescanLibrary" class = "panel" title = "[% 'IPENG_RESCAN' | string %]" style = "width: 320;">
+<script type="text/javascript">
+
+rescanStrings = { 	cleanup1 : '[% 'CLEANUP1_PROGRESS' | string %]',
+					cleanup2 : '[% 'CLEANUP2_PROGRESS' | string %]',
+					dboptimize : '[% 'DBOPTIMIZE_PROGRESS' | string %]',
+					directory : '[% 'DIRECTORY_PROGRESS' | string %]',
+					itunes : '[% 'ITUNES_PROGRESS' | string %]',
+					itunes_playlists : '[% 'ITUNES_PLAYLISTS_PROGRESS' | string %]',
+					mergeva : '[% 'MERGEVA_PROGRESS' | string %]',
+					musicmagic : '[% 'MUSICMAGIC_PROGRESS' | string %]',
+					importer : '[% 'IMPORTER_PROGRESS' | string %]',
+					artwork : '[% 'ARTWORK_PROGRESS' | string %]',					
+					playlist : '[% 'PLAYLIST_PROGRESS' | string %]' };
+
+checkRescan = function () {
+	callJSONRPC([ 'rescanprogress' ], function (r2) {
+		if (!r2.result.rescan) {
+			$('rescan_left').src = webroot + 'html/images/fillFieldNoneLeft.png';
+			$('rescan_right').src = webroot + 'html/images/fillFieldNoneRight.png';
+			$('rescan_bg').style.backgroundImage = 'url(' + webroot + 'html/images/fillFieldNone.png' + ')';
+			$('rescan_bar').style.width = 0;
+			$('rescan_status').textContent = '[% 'COMPLETE' | string %]';
+			return;
+		} else {
+			$('rescan_left').src = webroot + 'html/images/fillFieldActiveLeft.png';
+			$('rescan_right').src = webroot + 'html/images/fillFieldEmptyRight.png';
+			$('rescan_bg').style.backgroundImage = 'url(' + webroot + 'html/images/fillFieldEmpty.png' + ')';
+			$H(r2.result).each(function(pair) {
+				switch (pair.key) {
+					case "rescan": break;
+					case "totaltime": break;
+					default:
+						if (pair.value != 100) {
+							$('rescan_bar').style.width = parseInt(pair.value * 2.82);
+							if (!rescanStrings[pair.key])
+								$('rescan_status').textContent = rescanStrings['importer'];
+							else
+								$('rescan_status').textContent = rescanStrings[pair.key];
+						}
+					break;
+				}
+			});
+			window.setTimeout(checkRescan, 5000);
+		}
+	});
+}
+
+</script>
+
+<span class = "backgroundtext">[% 'SETUP_RESCAN_DESC' | string %]</span><br>&nbsp;
+    <a class="iButton silver" 
+    		onclick = 'changeOSD("[% 'IPENG_RESCAN_STARTED' | string %]"); callJSONRPC([ "rescan" ], checkRescan); showAdded();'
+    		target = "none"
+			style = "
+				 margin: 0 11 11 0;
+				 padding: 0px;
+				 width: 278;
+				 height: 30px;
+				 text-align: center;
+				 font-size: 15;
+			">[% "SETUP_RESCAN_BUTTON" | string %]</a>
+<br><span class = "backgroundtext">[% 'SETUP_WIPEDB' | string %]</span><br>&nbsp;
+    <a class="iButton red" 
+    		onclick = 'if (!confirm("[% 'IPENG_WIPE_CONFIRM' | string %]")) return;changeOSD("[% 'IPENG_WIPE_STARTED' | string %]"); callJSONRPC([ "wipecache" ], checkRescan); showAdded();'
+    		target = "none"
+			style = "
+				 margin: 0 11 11 0;
+				 padding: 0px;
+				 width: 278;
+				 height: 30px;
+				 text-align: center;
+				 font-size: 15;
+			">[% "IPENG_WIPE" | string %]</a>
+
+<div style = "margin: 16 0 0 0; position: relative; left: 0; width: 298;">
+<img id = "rescan_left" src = "[% webroot %]html/images/fillFieldNoneLeft.png">
+<div id = "rescan_bg" style = "z-index: 10;
+				position: absolute; left: 8; top: 0;
+				background-image: url([% webroot %]html/images/fillFieldNone.png);
+				background-repeat: repeat-x;
+				width: 282; height: 31"></div>
+<div id = "rescan_bar" style = "z-index: 11;
+				position: absolute; left: 8; top: 0;
+				background-image: url([% webroot %]html/images/fillFieldActive.png);
+				background-repeat: repeat-x;
+				width: 0; height: 31"></div>
+<div style = "z-index: 12;
+				position: absolute; left: 8; top: 0;
+				padding: 7; text-align:center;
+				width: 282; height: 31">
+<span id = "rescan_status" style = "text-shadow: rgba(255, 255, 255, 0.4) 0px -1px 0;"
+>[% 'COMPLETE' | string %]</span>
+</div>
+<img id = "rescan_right" src = "[% webroot %]html/images/fillFieldNoneRight.png" style = "float: right">
+</div>
+<div style = "height: 48"></div>
+<script>checkRescan();</script>
+</div>
+
+
+

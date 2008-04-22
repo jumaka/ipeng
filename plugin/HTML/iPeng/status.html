@@ -58,7 +58,7 @@ BLOCK StatusHeader -%]
 	</div>
 	
 	<div id = 'extension' class = 'coversquare darksquare' style = 'display: block; z-index: 12; overflow: scroll;'></div>
-	<div id = 'mainbody' class = 'coversquare' style = 'display: block; z-index: 13; left: -320; overflow: scroll;'></div>
+	<div id = 'mainbody' class = 'coversquare' style = 'display: block; z-index: 13; left: -320; overflow: scroll;' onclick = '		if (Player.browser) window.onscroll = sense_scroll;'></div>
 
 	<div id = 'coverart' class = 'coversquare'>
 		[% INCLUDE cover_art_display %]

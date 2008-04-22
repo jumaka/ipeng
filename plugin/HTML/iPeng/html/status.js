@@ -11,8 +11,8 @@ var OVstack = 0;
 var OVMaxstack = 3;
 
 var maxPlLoop = 20;
-var infoFulltags = 'tags:uBJKlaedsRxNpg';
-var infoFewtags = 'tags:uBJKleasxgp';
+var infoFulltags = 'tags:uBjJKlaedsRxNpg';
+var infoFewtags = 'tags:uBJjKleasxgp';
 
 
 var Playlist = {
@@ -665,8 +665,8 @@ function doSwipe(page) {
 		}
 }
 
-function sense_scroll () {
-//alert(window.pageXOffset);
+sense_scroll = function () {
+//console.log(window.pageXOffset);
 		if (window.pageXOffset == 0)
 			doSwipe(OVstack + 2);
 		if (window.pageXOffset == 4)
@@ -675,10 +675,12 @@ function sense_scroll () {
  }
 
 window.onload= function() {
-	Player.triggerUpdate();
+//console.log("onLoad");
  	window.scrollTo (2,1);
-	if (Prototype.Browser.MobileSafari)
-		window.onscroll = sense_scroll;
+ 	Player.browser = Prototype.Browser.MobileSafari;
+	Player.triggerUpdate();
+//	if (Prototype.Browser.MobileSafari)
+//		window.onscroll = sense_scroll;
 }
 
 

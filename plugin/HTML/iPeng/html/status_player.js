@@ -35,6 +35,7 @@ var Player = {
 	regTimeout : null,
 	specialTimeout : null,
 	prgTimer : null,
+	browser: false,
 	
 	emptyTrack : {
 		artwork_url : webroot + 'html/images/empty.png',
@@ -44,6 +45,8 @@ var Player = {
 	},
 	
 	evalUpdate : function(result) {
+		if (this.browser)
+			window.onscroll = sense_scroll;
 //$H(result).each(function(pair) { alert("key: " + pair.key + " value: " + pair.value); });
 		with (this.status) {
 			if (!result.playlist_tracks) this.updateBlank();
@@ -258,7 +261,9 @@ var Player = {
 				refreshElement('songtitle', track.title);
 				refreshElement('album', track.album || " ");
 				refreshElement('artist', track.artist || remotestreaming);
-				if (track.artwork_track_id)
+				if (track.coverart)
+					$('coverartpath').src = '/music/' + track.id + '/cover.jpg';
+				else if (track.artwork_track_id)
 					$('coverartpath').src = '/music/' + track.artwork_track_id + '/cover.jpg';
 				else if (track.artwork_url)
 					$('coverartpath').src = track.artwork_url;

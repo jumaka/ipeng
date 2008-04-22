@@ -217,7 +217,7 @@
 				<namestring>ALARM</namestring>
 				<icon>html/images/iAlarmTrans.png</icon>
 				<selectedicon>html/images/iAlarmTransSelected.png</selectedicon>
-				<url>javascript:iui.showPageByHref('home.html?runAlarm=1',null,null,null,'localOnload();',1);</url> 
+				<url>javascript:iui.showPageByHref('home.html?runAlarm=1',null,null,null,null,1);</url> 
 			</command>
 			<command id="Sleep">
 				<description>Toolbar Icon: Alarm Icon for Home Screen</description>
@@ -226,7 +226,16 @@
 				<namestring>SLEEP</namestring>
 				<icon>html/images/iSleepTrans.png</icon>
 				<selectedicon>html/images/iSleepTransSelected.png</selectedicon>
-				<url>javascript:iui.showPageByHref('home.html?runSleep=1',null,null,null,'sleep.init();',1);</url> 
+				<url>javascript:iui.showPageByHref('home.html?runSleep=1',null,null,null,null,1);</url> 
+			</command>
+			<command id="Rescan">
+				<description>Toolbar Icon: Rescan Icon for Home Screen</description>
+				<defaultenabled>0</defaultenabled>
+				<weight>30</weight>
+				<namestring>IPENG_RESCAN</namestring>
+				<icon>html/images/iRescanTrans.png</icon>
+				<selectedicon>html/images/iRescanTransSelected.png</selectedicon>
+				<url>javascript:iui.showPageByHref('home.html?runRescan=1',null,null,null,null,1);</url> 
 			</command>
 		</subsection>
 	</section>

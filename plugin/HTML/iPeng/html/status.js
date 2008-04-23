@@ -536,6 +536,11 @@ var Plugins = {
 				window.setTimeout(Plugins.display, 100);
 		});
 	},
+	
+	enforceRedraw : function () {
+		this.timestamp = 0;
+		window.setTimeout(Plugins.display, 100);		
+	},
 
 	display : function () {
 	
@@ -571,8 +576,10 @@ var Plugins = {
 				var pispan = document.createTextNode(key.name);
 				parent.appendChild(pispan);
 			}
-			if (key.html)
+			if (key.html) {
 				sect.innerHTML = key.html;
+				key.html.evalScripts();
+			};
 			sect.appendChild(parent);
 			pidiv.appendChild(sect);
 		};

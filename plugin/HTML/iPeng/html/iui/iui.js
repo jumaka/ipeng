@@ -76,14 +76,16 @@ window.iui =
         {
             if (req.readyState == 4)
             {
-            	req.responseText.evalScripts();
-                if (replace)
+                if (replace) {
                     replaceElementWithSource(replace, req.responseText);
+	            	req.responseText.evalScripts();
+                }
                 else
                 {
                     var frag = document.createElement("div");
                     frag.innerHTML = req.responseText;
                     iui.insertPages(frag.childNodes);
+	            	req.responseText.evalScripts();
                 }
                 if (cb)
                     setTimeout(cb, (delay) ? delay : 2000, true);

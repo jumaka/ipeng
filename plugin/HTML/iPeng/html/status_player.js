@@ -308,7 +308,7 @@ var Player = {
 				index = parseInt(idx);
 				refreshElement('thissongnum', index + 1);
 				this.updateInfo(loop);
-				Plugins.checkTimestamp();
+				Plugins.enforceRedraw();
 				Plugins.refresh();
 			}
 		}

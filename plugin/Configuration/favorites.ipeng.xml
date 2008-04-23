@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<configuration>
+	<section id="nowplaying">
+		<subsection id="favorites">
+			<weight>10</weight>
+			<command id="favorites">
+				<description>NowPlaying Link to Add/Remove Favorites</description>
+				<requireplugins>Favorites</requireplugins>
+				<weight>10</weight>
+				<height>30</height>
+				<html>&lt;img id="addToFavorites" src="html/images/favadd.png" 
+					onclick="callJSONRPC(['favorites','add',
+						'title:'+Player.status.track.title,'url:'+Player.status.track.url],requestFavorite);"&gt;
+				&lt;img id="removeFromFavorites" src="html/images/favdel.png" 
+					style="display:none" 
+					onclick="callJSONRPC(['favorites','delete','item_id:'+this.favid],requestFavorite);"&gt;
+&lt;script&gt;
+requestFavorite = function() {
+	ajaxRequest(webroot+'plugins/Favorites/index.html',
+				'url='+escape(Player.status.track.url)+
+				'&amp;title='+escape(Player.status.track.url)+
+				'&amp;ajaxRequest=1', function(ret) {
+					var temp = parseData(ret.responseText);
+					if (temp['index']) {
+						$('addToFavorites').hide();
+						var el = $('removeFromFavorites');
+						el.favid = temp['index'];
+						el.show();
+					} else {
+						$('removeFromFavorites').hide();
+						$('addToFavorites').show();
+					} } ); }
+requestFavorite();
+				&lt;/script&gt;</html>
+				<type>command</type>
+			</command>
+		</subsection>
+	</section>
+</configuration>

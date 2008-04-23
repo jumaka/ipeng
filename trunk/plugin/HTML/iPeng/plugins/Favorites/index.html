@@ -107,6 +107,16 @@
 	[% END -%]
 [% END %]
 
+[%
+IF ajaxRequest;
+	FOREACH entry = entries;
+		IF (entry.url == url);
+			'index|'; entry.index;
+		END;
+	END;
+ELSE;
+%]
+
 
 [% IF action == 'edit' AND useAJAX %]
 	[% odd = 1 - (indexOnLevel % 2) %]
@@ -273,5 +283,7 @@
 	selectedButton = 'Favorites';
 	PROCESS pagefooter.html;
 END %]
+
+[% END %]
 
 [% END %]

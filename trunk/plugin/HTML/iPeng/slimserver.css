@@ -129,7 +129,8 @@ li.selectedli {
 	-webkit-border-radius: 8px;
 }
 
-div#browsedbList, div#settingsRegion {
+/*div#settingsRegion*/
+div#browsedbList, div#innerSettingsBlock {
 	padding: 0;	   
 	margin: 0px;
 	

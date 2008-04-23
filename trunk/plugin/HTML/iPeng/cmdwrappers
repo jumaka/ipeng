@@ -76,6 +76,21 @@ BLOCK favdellink;
 		cmdimage = "favdel.png";
 END;
 
+BLOCK favoritescontrol;
+	IF (item.isFavorite.defined || isFavorite.defined); 
+			IF item.isFavorite || isFavorite; 
+				linktype = 'favdellink'; 
+			ELSE; 
+				linktype = 'favaddlink'; 
+			END; 
+
+			WRAPPER $linktype noTarget=1;
+				IF !ajaxRequest %]href="javascript:void(0);" onClick="toggleFavorite(this, '[% itemobj.url | uri  | replace("'", "%27") %]', '[% (item.text || itemobj.title) | uri  | replace("'", "%27") %]')"[% END;
+			END;
+		END;
+END;
+
+
 BLOCK dummy %]
 <td class="[% isCurrent ? "listing2" : "listing" %]" width="11" align="center">
 </td>
@@ -505,13 +520,15 @@ BLOCK by_from_info;
 END;
 
 
-BLOCK settingSection %]
+BLOCK settingSection; 
+	WRAPPER contentitem %]
 	<div class="settingSection">
 		[% content;
 	'</div>';
+	END;
 END;
 
-BLOCK settingGroup %]
+BLOCK settingGroup; %]
 	<div class="settingGroup">
 		[% IF title %]<div class="prefHead">[% title | getstring; '</div>'; END;
 		IF desc %]<div class="prefDesc hiddenDesc">[% desc | getstring; '</div>'; END %]

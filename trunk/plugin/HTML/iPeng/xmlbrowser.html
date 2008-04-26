@@ -79,23 +79,6 @@ IF msg; WRAPPER contentcontainer;
 	'<b>'; msg; '</b>';
 END; END;
 
-IF streaminfo;
-	IF streaminfo.item.enclosure || streaminfo.item.url;
-	'<div id="songInfoHeader">';
-		WRAPPER playlink; 'href="'; path; '?'; searchquery; 
-							'action=play&amp;index='; streaminfo.index; 
-							'&amp;player='; playerURI; '"';
-		END; ' '; "PLAY_THIS_SONG" | string; '<br />';
-		WRAPPER addlink; 'href="'; path; '?'; searchquery;
-							'action=add&amp;index='; streaminfo.index;
-							'&amp;player='; playerURI; '"';
-		END; ' '; "ADD_THIS_SONG_TO_PLAYLIST" | string;
-	'</div>';
-	END;
-	
-	PROCESS xmlbrowser_details.html;
-END;
-
 IF search %]
 	<form id="searchForm" name="searchForm" method="GET">
 		<input type="search" autosave="radio" id="query" name="query" size="40" 
@@ -117,7 +100,33 @@ IF search %]
 
 <div id="pagecontainer_vert" style = "min-height: [% IF search; '265'; ELSE; '323'; END %];">
 
-[%- odd = 1;
+[%-
+
+IF streaminfo;
+	WRAPPER contentcontainer containerheight = 1 omitPCTRL = 1;
+		IF streaminfo.item.enclosure || streaminfo.item.url;
+				textlink = path _ '?' _ searchquery _
+									'action=play&amp;index=' _ streaminfo.index _
+									'&amp;player=' _ playerURI;
+			BLOCK streamlink;	
+				WRAPPER addlink; 'href="'; path; '?'; searchquery;
+									'action=add&amp;index='; streaminfo.index;
+									'&amp;player='; playerURI; '"';
+				END;
+			END;
+			
+			WRAPPER contentitem rightcontrols = 'streamlink';
+				(streaminfo.item.name || streaminfo.item.title) | html;
+			END;
+		END;
+	END;
+	
+	PROCESS xmlbrowser_details.html;
+END;
+
+
+
+odd = 1;
 IF items.size;
 	IF hasPagebar;
 		PROCESS top_pagebar;

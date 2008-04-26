@@ -229,7 +229,7 @@ var Player = {
 				Playlist.update(firstnew, lastnew);
 			}
 			Playlist.resetScroll();
-		}, function (r2) { Playlist.resetScroll() });
+		}, function (r2) { Playlist.resetScroll() }, playerid, true);
 	},
 	
 	updateRepeatShuffle : function(val2, cmd, custom) {
@@ -239,7 +239,9 @@ var Player = {
 			var temp = $(cmd + 'control_custom');
 			if (val.icon.indexOf('btn_thumbs_up') != -1) val.icon = "html/images/thumbs_up.png";
 			else if (val.icon.indexOf('btn_thumbs_down') != -1) val.icon = "html/images/thumbs_down.png";
-			temp.src = webroot + val.icon;
+			else if (val.icon.indexOf('rew') != -1) val.icon = "html/images/rewd.png";
+			else if (val.icon.indexOf('fwd') != -1) val.icon = "html/images/ffwd.png";
+			temp.style.backgroundImage = 'url(' + webroot + val.icon + ')';
 			temp.title = val.tooltip;
 			temp.show();
 		} else {

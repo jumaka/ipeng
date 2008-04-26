@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <configuration>
 	<section id="nowplaying">
-		<subsection id="favorites">
+		<subsection id="iPeng">
 			<weight>10</weight>
 			<command id="favorites">
 				<description>NowPlaying Link to Add/Remove Favorites</description>

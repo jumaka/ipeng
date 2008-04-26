@@ -115,22 +115,22 @@ BLOCK repeat_settings %]
 		title ='[% "REPEAT" | string | ucfirst %] Off' 
 		alt ='[% "REPEAT" | string | ucfirst %] Off' 
 		onClick = "Player.controls.evtRepeatShuffle(2, 'repeat');" 
-		style = 'display:[% IF repeat == 0 %]block[% ELSE %]none[% END %];'></img>
+		style = 'display:[% IF repeat == 0 %]block[% ELSE %]none[% END %];'/>
 	<img id = 'repeatcontrol_2' 
 		src = "[% webroot %]html/images/repeat_on.png" 
 		title ='[% "REPEAT" | string | ucfirst %] Playlist' 
 		alt ='[% "REPEAT" | string | ucfirst %] Playlist' 
 		onClick = "Player.controls.evtRepeatShuffle(1, 'repeat');" 
-		style = 'display:[% IF repeat == 2 %]block[% ELSE %]none[% END %];'></img>
+		style = 'display:[% IF repeat == 2 %]block[% ELSE %]none[% END %];'/>
 	<img id = 'repeatcontrol_1' 
 		src = "[% webroot %]html/images/repeat_on_1.png" 
 		title ='[% "REPEAT" | string | ucfirst %] Song' 
 		alt ='[% "REPEAT" | string | ucfirst %] Song' 
 		onClick = "Player.controls.evtRepeatShuffle(0, 'repeat');" 
-		style = 'display:[% IF repeat == 1 %]block[% ELSE %]none[% END %];'></img>
-	<img id = 'repeatcontrol_custom' 
+		style = 'display:[% IF repeat == 1 %]block[% ELSE %]none[% END %];'/>
+	<div id = 'repeatcontrol_custom' 
 		onClick = "Player.controls.evtRepeatShuffle('custom', 'repeat');" 
-		style = 'display: none;'></img>
+		style = 'display: none; overflow: hidden; width: 32; height: 22;'></div>
 [% END;
 
 BLOCK shuffle_settings %]
@@ -139,22 +139,22 @@ BLOCK shuffle_settings %]
 		title = '[% "SHUFFLE" | string | ucfirst %] Off' 
 		onClick = "Player.controls.evtRepeatShuffle(1, 'shuffle');" 
 		alt = '[% "SHUFFLE" | string | ucfirst %] Off' 
-		style = 'display:[% IF shuffle == 0 %]block[% ELSE %]none[% END %];'></img>
+		style = 'display:[% IF shuffle == 0 %]block[% ELSE %]none[% END %];'/>
 	<img id = 'shufflecontrol_1' 
 		src = "[% webroot %]html/images/shuffle_on.png" 
 		title = '[% "SHUFFLE" | string | ucfirst %] Song' 
 		onClick = "Player.controls.evtRepeatShuffle(2, 'shuffle');" 
 		alt = '[% "SHUFFLE" | string | ucfirst %] Song' 
-		style = 'display:[% IF shuffle == 1 %]block[% ELSE %]none[% END %];'></img>
+		style = 'display:[% IF shuffle == 1 %]block[% ELSE %]none[% END %];'/>
 	<img id = 'shufflecontrol_2' 
 		src = "[% webroot %]html/images/shuffle_on_disc.png" 
 		title = '[% "SHUFFLE" | string | ucfirst %] Album' 
 		onClick = "Player.controls.evtRepeatShuffle(0, 'shuffle');" 
 		alt = '[% "SHUFFLE" | string | ucfirst %] Album' 
-		style = 'display:[% IF shuffle == 2 %]block[% ELSE %]none[% END %];'></img>
-	<img id = 'shufflecontrol_custom' 
+		style = 'display:[% IF shuffle == 2 %]block[% ELSE %]none[% END %];'/>
+	<div id = 'shufflecontrol_custom' 
 		onClick = "Player.controls.evtRepeatShuffle('custom', 'shuffle');" 
-		style = 'display: none;'></img>
+		style = 'display: none; overflow: hidden; width: 32; height: 22;'></div>
 [% END;
 
 BLOCK cover_art_display %]

@@ -6,53 +6,53 @@
 // myGlobalHandlers allows for an element (typically a div) called systemWorking to 
 // appear whenever an ajax request is in progress. Look at Nokia770/pageheader.html for
 // an example
+var inhibitSW;
+
+removeSW = function () {
+	if ($('systemWorking')) {
+		Element.hide('systemWorking');
+		Element.hide('OSDbg');
+	}
+};
+
 var myGlobalHandlers = {
 	onCreate: function(request){
-		if ($('systemNotWorking')) {
-			Element.hide('systemNotWorking');
-		};
-		
-		if ($('systemWorking')) {
-			// this causes spinner.gif to start at beginning of animation
-			if ($('spinner')) {
-				$('spinner').src = webroot + "html/images/spinner.gif";
-			}
-			
-			Element.show('systemWorking');
+		if (!inhibitSW) {
+			if ($('systemWorking')) {
+				// this causes spinner.gif to start at beginning of animation
+				if ($('spinner')) {
+					$('spinner').src = webroot + "html/images/spinner_big.gif";
+				}
+				
+				$('OSDbg').style.top = window.pageYOffset + 140;
+				Element.show('OSDbg');
+				$('systemWorking').style.top = window.pageYOffset + 140;
+				Element.show('systemWorking');
+			};
 		};
 		request['timeoutId'] = window.setTimeout (
 				function() {
 				if (callInProgress(request.transport)) {
 					request.transport.abort();
-					
+					Ajax.activeRequestCount--;
+					if(Ajax.activeRequestCount == 0)
+						removeSW();
+
 					if (request.options['onFailure']) {
-						request.option['onFailure'](request.transport, request.json);
+						request.options['onFailure'](request.transport, request.json);
 					}
 				}
 			}, 30*1000
 		);
 	},
 	onComplete: function() {
-		if(Ajax.activeRequestCount == 0) {
-			if ($('systemWorking')) {
-				Element.hide('systemWorking');
-			}
-			
-			if ($('systemNotWorking')) {
-				Element.show('systemNotWorking');
-			}
-		}
+		if(Ajax.activeRequestCount == 0)
+			removeSW();
 		window.clearTimeout(request['timeoutId']);
 	},
 	onException: function() {
-		if ($('systemWorking')) {
-			Element.hide('systemWorking');
-		}
-		
-		if ($('systemNotWorking')) {
-			Element.show('systemNotWorking');
-		}
-	}
+		removeSW();
+	},
 };
 Ajax.Responders.register(myGlobalHandlers);
 
@@ -96,7 +96,13 @@ function ajaxRequest(thisurl,params, action) {
 		method: requesttype,
 		postBody: params,
 		parameters: params,
-		onComplete: action,
+		onComplete: function(param) {
+			inhibitSW = false;
+			if (action)
+				action(param);
+			else
+				refreshNothing();
+		},
 		requestHeaders:['Referer', document.location.href]
 	});
 }
@@ -118,13 +124,11 @@ console.log("start ajaxUpdate." + url + "." + params);
 		evalScripts: true,
 		asynchronous: true,
 		onComplete: function() {
+			inhibitSW = false;
 			if (action)
 				action(actionparam);
 			if (phash)
 				document.location=phash;
-		},
-		onFailure: function(t) {
-			alert('Error -- ' + t.responseText);
 		}
 	} );
 }
@@ -253,25 +257,6 @@ function parseData(thisData) {
 }
 
 function refreshLibraryInfo() {
-	var prevURL = url;
-
-	url = webroot + 'home.html';
-
-	var homeArgs = 'player=' + player + '&ajaxRequest=1';
-	getStatusData(homeArgs, displayLibraryInfo);
-	url = prevURL;
-}
-
-function displayLibraryInfo(theData) {
-	var myData = theData.responseText;
-	var homeParsedData = parseData(myData);
-	var libraryString = homeParsedData['song_count'] +', '+ homeParsedData['artist_count'] +', '+ homeParsedData['album_count'];
-
-	if ($('libraryInfo')) {
-		if (homeParsedData['song_count'] != '0') {
-			$('libraryInfo').innerHTML = libraryString;
-		}
-	}
 }
 
 // METHOD:  truncateAt: truncate specified tableId at specified length
@@ -297,23 +282,11 @@ function truncateAt(tableId, lastRow) {
 	}
 }
 
-// miniControls is for putting play/pause on any page. ajax request is made via status.html
-function miniControls(action) {
-	var args = "p0=" + action + "&player=" + player + "&ajaxRequest=1";
-
-	// always use status.html for this request
-	var old_url = url;
-
-	url = webroot + 'status.html';
-	getStatusData(args, refreshNothing);
-	url = old_url;
-}
-
 // put global.js functions here that you want to be run after the page loads
 // requires a window.onLoad function in the js script that calls global.js
 // see Nokia770/browse.js for example
 function globalOnload() {
-	refreshLibraryInfo();
+//	refreshLibraryInfo();
 }
 
 function hideAlbumInfo() {
@@ -337,9 +310,6 @@ function popUpAlbumInfo(attributes) {
 			asynchronous: true,
 			evalScripts: true,
 			postBody: attributes + '&ajaxUpdate=1&player=' + player,
-			onFailure: function(t) {
-				alert('Error -- ' + t.responseText);
-			},
 			onSuccess: function() {
 				new Effect.Appear('albumPopup');
 				new Effect.Fade('viewSelect', { duration:0.4 });
@@ -363,7 +333,6 @@ function showTree(id, page, attributes) {
 			asynchronous: true,
 			postBody: attributes + '&ajaxUpdate=1&tree=1&player='+player, 
 			onFailure: function(t) {
-				alert('Error -- ' + t.responseText);
 				Element.hide("wait"+id);
 				Element.show("descend"+id);
 			},

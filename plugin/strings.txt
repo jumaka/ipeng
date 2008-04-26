@@ -234,3 +234,8 @@ IPENG_WIPE_CONFIRM
 IPENG_WIPE
 	EN	Clear and Re-Scan Library
 	DE	Datenbank löschen und neu aufbauen
+	
+# Loading
+IPENG_LOADING
+	EN	Loading...
+	DE	Laden...

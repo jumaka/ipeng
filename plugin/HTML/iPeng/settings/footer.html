@@ -5,17 +5,17 @@
 
 	<div class="settingSection">
 
-		<div class="prefHead">[% "INFORMATION_DIAGSTRING" | string  %]</div>
+		<div class="prefHead">[% "INFORMATION_DIAGSTRING" | string;  '</div>';
 
-		[% IF versionInfo -%]
-			<p>[% versionInfo %]</p>
-		[%- END %]
+		IF versionInfo;
+			'<p>'; versionInfo; '</p>';
+		END;
 
-		[%- IF newVersion %]
-			<p>[% newVersion %]</p>
-		[% END -%]
-	</div>	
-[%- END;
+		IF newVersion;
+			'<p>'; newVersion; '</p>';
+		END;
+	'</div>';
+	END;
 END %]
 
 <input type="hidden" name="pageAntiCSRFToken" value="[% pageAntiCSRFToken %]">

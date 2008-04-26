@@ -580,8 +580,8 @@ BLOCK loadpage;
 			IF artwork == 2; "&amp;artwork=2"; END;
 			"&amp;start="; goStart; goHash %]', storeReturns, '[% pageinfo.path %]?[% pageinfo.otherparams | html;
 			IF artwork == 2; "&amp;artwork=2"; END;
-			"&amp;start="; goStart; goHash %]'); [%-
-			IF goTop; "window.scrollTo(0,1);"; END %]" [% addStyle %]>
+			"&amp;start="; goStart; goHash; '\'';
+			IF goTop; ",scrollToTop()"; END %]);" [% addStyle %]>
 	[%- ELSE -%]
 		<a href="[% pageinfo.path %]?[% pageinfo.otherparams | html; "&amp;start="; goStart; goHash %]" [% addStyle %]>
 	[%- END;

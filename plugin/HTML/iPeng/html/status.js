@@ -578,7 +578,9 @@ var Plugins = {
 			}
 			if (key.html) {
 				sect.innerHTML = key.html;
+				inhibitSW = true;
 				key.html.evalScripts();
+				inhibitSW = false;
 			};
 			sect.appendChild(parent);
 			pidiv.appendChild(sect);

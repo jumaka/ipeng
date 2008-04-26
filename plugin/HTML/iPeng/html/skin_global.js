@@ -214,21 +214,22 @@ function storeReturns(param) {
 }
 
 
-function togglePower() {
-	callJSONRPC([ 'power' ]);
-}
+function togglePower() { callJSONRPC([ 'power' ]); }
 
-function togglePause() {
-	callJSONRPC([ 'pause' ]);
-}
+function togglePause() { callJSONRPC([ 'pause' ]); }
+
+function scrollToTop() { window.scrollTo(0, 1); }
 
 
-function callJSONRPC(paramArray, callback, failure, thisplayer) {
+function callJSONRPC(paramArray, callback, failure, thisplayer, noinhibit) {
  	var thisplayer = (thisplayer == null) ?  playerid : thisplayer;
 	var temp = {
 	 		"id" : 1,
 			"method" : "slim.request",
 			"params" : [ thisplayer, paramArray ]};
+
+	if (!noinhibit)
+		inhibitSW = true;
 	new Ajax.Request ('/jsonrpc.js', {
 	 		 method: 'post',
 	 		 postBody: Object.toJSON(temp),
@@ -237,6 +238,7 @@ function callJSONRPC(paramArray, callback, failure, thisplayer) {
 				if (callback) callback (response); },
 			 onFailure: function (response) {
 			  	if (failure) failure(response); } });
+	inhibitSW = false;
 }
 
 function addItem(args, goStatus) {

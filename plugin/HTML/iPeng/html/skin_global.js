@@ -242,10 +242,12 @@ function callJSONRPC(paramArray, callback, failure, thisplayer, noinhibit) {
 }
 
 function addItem(args, goStatus) {
+	inhibitSW = true;
  	if (goStatus == null)
 		getStatusData(args, showAdded);
 	else
 		getStatusData(args, goToStatus2);
+	inhibitSW = false;
 }
 
 function goToStatus(goStatus) {

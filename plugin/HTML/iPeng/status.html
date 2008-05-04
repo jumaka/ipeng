@@ -29,6 +29,12 @@ BLOCK StatusHeader -%]
 	<!--script src="[% webroot %]html/skin_global.js?r=[% revision %]" type = 'application/x-javascript' defer></script-->
 	<script>
 		var remotestreaming = "[% "REMOTE_STREAMING" | string %]";
+		var srstrings = { shuffle : [	'[% "SHUFFLE_OFF" | string %]',
+										'[% "SHUFFLE_ON_SONGS" | string %]',
+										'[% "SHUFFLE_ON_ALBUMS" | string %]' ],
+						repeat : [	'[% "REPEAT_OFF" | string %]',
+									'[% "REPEAT_ONE" | string %]',
+									'[% "REPEAT_ALL" | string %]' ] };
 	</script>
 	<script src="[% webroot %]html/status_player.js?r=[% revision %]" type = 'application/x-javascript' defer></script>
 	<script src="[% webroot %]html/status.js?r=[% revision %]" type = 'application/x-javascript' defer></script>
@@ -110,48 +116,32 @@ BLOCK StatusHeader -%]
 END;
 
 BLOCK repeat_settings %]
-	<img id = 'repeatcontrol_0' 
-		src = "[% webroot %]html/images/repeat_off.png" 
-		title ='[% "REPEAT" | string | ucfirst %] Off' 
-		alt ='[% "REPEAT" | string | ucfirst %] Off' 
-		onClick = "Player.controls.evtRepeatShuffle(2, 'repeat');" 
-		style = 'display:[% IF repeat == 0 %]block[% ELSE %]none[% END %];'/>
-	<img id = 'repeatcontrol_2' 
-		src = "[% webroot %]html/images/repeat_on.png" 
-		title ='[% "REPEAT" | string | ucfirst %] Playlist' 
-		alt ='[% "REPEAT" | string | ucfirst %] Playlist' 
-		onClick = "Player.controls.evtRepeatShuffle(1, 'repeat');" 
-		style = 'display:[% IF repeat == 2 %]block[% ELSE %]none[% END %];'/>
-	<img id = 'repeatcontrol_1' 
-		src = "[% webroot %]html/images/repeat_on_1.png" 
-		title ='[% "REPEAT" | string | ucfirst %] Song' 
-		alt ='[% "REPEAT" | string | ucfirst %] Song' 
-		onClick = "Player.controls.evtRepeatShuffle(0, 'repeat');" 
-		style = 'display:[% IF repeat == 1 %]block[% ELSE %]none[% END %];'/>
+	<div id = 'repeatcontrol_content' 
+		style = "background-image: url([% webroot %]html/images/repeat.png); 
+				 width: 25; height: 21; overflow: hidden;
+				 background-position: left [% repeat * 21 %];"
+		title ='[% SWITCH repeat;
+					CASE 0; "REPEAT_OFF" | string;
+					CASE 1; "REPEAT_ONE" | string;
+					CASE 2; "REPEAT_ALL" | string;
+				END	%]' 
+		onClick = "Player.controls.evtRepeatShuffle('toggle', 'repeat');"></div>
 	<div id = 'repeatcontrol_custom' 
 		onClick = "Player.controls.evtRepeatShuffle('custom', 'repeat');" 
 		style = 'display: none; overflow: hidden; width: 32; height: 22;'></div>
 [% END;
 
 BLOCK shuffle_settings %]
-	<img id = 'shufflecontrol_0' 
-		src = "[% webroot %]html/images/shuffle_off.png" 
-		title = '[% "SHUFFLE" | string | ucfirst %] Off' 
-		onClick = "Player.controls.evtRepeatShuffle(1, 'shuffle');" 
-		alt = '[% "SHUFFLE" | string | ucfirst %] Off' 
-		style = 'display:[% IF shuffle == 0 %]block[% ELSE %]none[% END %];'/>
-	<img id = 'shufflecontrol_1' 
-		src = "[% webroot %]html/images/shuffle_on.png" 
-		title = '[% "SHUFFLE" | string | ucfirst %] Song' 
-		onClick = "Player.controls.evtRepeatShuffle(2, 'shuffle');" 
-		alt = '[% "SHUFFLE" | string | ucfirst %] Song' 
-		style = 'display:[% IF shuffle == 1 %]block[% ELSE %]none[% END %];'/>
-	<img id = 'shufflecontrol_2' 
-		src = "[% webroot %]html/images/shuffle_on_disc.png" 
-		title = '[% "SHUFFLE" | string | ucfirst %] Album' 
-		onClick = "Player.controls.evtRepeatShuffle(0, 'shuffle');" 
-		alt = '[% "SHUFFLE" | string | ucfirst %] Album' 
-		style = 'display:[% IF shuffle == 2 %]block[% ELSE %]none[% END %];'/>
+	<div id = 'shufflecontrol_content' 
+		style = "background-image: url([% webroot %]html/images/shuffle.png); 
+				 width: 27; height: 21; overflow: hidden;
+				 background-position: left [% shuffle * 21 %]"
+		title ='[% SWITCH shuffle;
+					CASE 0; "SHUFFLE_OFF" | string;
+					CASE 1; "SHUFFLE_ON_SONGS" | string;
+					CASE 2; "SHUFFLE_ON_ALBUMS" | string;
+				END	%]' 
+		onClick = "Player.controls.evtRepeatShuffle('toggle', 'shuffle');"></div>
 	<div id = 'shufflecontrol_custom' 
 		onClick = "Player.controls.evtRepeatShuffle('custom', 'shuffle');" 
 		style = 'display: none; overflow: hidden; width: 32; height: 22;'></div>
@@ -205,52 +195,64 @@ BLOCK player_controls %]
 	<table border="0" cellspacing="0" cellpadding="0" width = '100%'>
 		<td align = "left" width = "40">
 		
-		<img id = 'powerControlOn' 
-			src = '[% webroot %]html/images/iOffBlue.png' 
+		<div id = 'powerControlOn' 
 			onClick='Player.controls.evtPower(0);' 
-			style = 'display: [% IF myClientState.power %]block[% ELSE %]none[% END %]'
-			title = '[% "ON" | string %]'
-			alt = '[% "ON" | string %]'>
-		<img id = 'powerControlOff' 
-			src = '[% webroot %]html/images/iOffWhite.png' 
+			style = 'display: [% IF myClientState.power %]block[% ELSE %]none[% END %];
+			background-image: url([% webroot %]html/images/NowPlayingSprites.png);
+			background-position: left 150;
+			width: 40; height: 30; overflow: hidden;'
+			title = '[% "ON" | string %]'></div>
+		<div id = 'powerControlOff' 
 			onClick='Player.controls.evtPower(1);'
-			style = 'display: [% IF myClientState.power %]none[% ELSE %]block[% END %]'
-			border = "0" alt = '[% "OFF" | string %]'>
+			style = 'display: [% IF myClientState.power %]none[% ELSE %]block[% END %];
+			background-image: url([% webroot %]html/images/NowPlayingSprites.png);
+			background-position: left 180;
+			width: 40; height: 30; overflow: hidden;'
+			title = '[% "OFF" | string %]'></div>
 		</td>
 
 		<td align ="center"> 
-		<img id = 'playercontrol_prev' 
-			src="[% webroot %]html/images/prevtrack.png" 
+		<div id = 'playercontrol_prev' 
 			onclick="Player.controls.evtPrev();" 
-			alt = [% 'PREVIOUS' | string | ucfirst %]
-			title = [% 'PREVIOUS' | string | ucfirst %]>
+			style = 'background-image: url([% webroot %]html/images/NowPlayingSprites.png);
+			background-position: left 120;
+			width: 31; height: 23; overflow: hidden;'
+			title = [% 'PREVIOUS' | string | ucfirst %]></div>
 		</td>
 
 		<td align ="center">
-		<img id = 'playercontrol_active_play' 
-			src = "[% webroot %]html/images/pause.png" 
+		<div id = 'playercontrol_active_play' 
 			onClick="Player.controls.evtPause();" 
-			style = 'display:[% IF modepause || modestop %]none[% ELSE %]block[% END %];' 
-			alt = [% 'PAUSE' | string | ucfirst %]
-			title = [% 'PAUSE' | string | ucfirst %]>
-		<img id = 'playercontrol_play' 
+			style = 'display:[% IF modepause || modestop %]none[% ELSE %]block[% END %];
+			background-image: url([% webroot %]html/images/NowPlayingSprites.png);
+			background-position: left 30;
+			width: 30; height: 27; overflow: hidden;'
+			title = [% 'PAUSE' | string | ucfirst %]></div>
+		<div id = 'playercontrol_play' 
 			src = "[% webroot %]html/images/play.png" 
 			onclick="Player.controls.evtPlay();" 
-			style = 'display:[% IF modepause || modestop %]block[% ELSE %]none[% END %];' 
-			alt = [% 'PLAY' | string | ucfirst %]
-			title = [% 'PLAY' | string | ucfirst %]>
+			style = 'display:[% IF modepause || modestop %]block[% ELSE %]none[% END %];
+			background-image: url([% webroot %]html/images/NowPlayingSprites.png);
+			background-position: left 60;
+			width: 30; height: 27; overflow: hidden;'
+			title = [% 'PLAY' | string | ucfirst %]></div>
 		</td>
         
 		<td align ="center">
-		<img id = 'playercontrol_next' 
-			src="[% webroot %]html/images/nexttrack.png" 
+		<div id = 'playercontrol_next' 
 			onclick="Player.controls.evtNext();" 
-			alt = [% 'NEXT' | string | ucfirst %]
-			title = [% 'NEXT' | string | ucfirst %]>
+			style = 'background-image: url([% webroot %]html/images/NowPlayingSprites.png);
+			background-position: left 90;
+			width: 31; height: 23; overflow: hidden;'
+			title = [% 'NEXT' | string | ucfirst %]></div>
 		</td>
 		
 		<td align = "right" width = 40>
-		<a title = "Home" href = "[% webroot %]home.html?player=[% playerURI %]"><img src = "[% webroot %]html/images/iHomeBlack.png"></a>
+		<a title = "Home" href = "[% webroot %]home.html?player=[% playerURI %]">
+		<div style = 'background-image: url([% webroot %]html/images/NowPlayingSprites.png);
+			background-position: left 210;
+			width: 40; height: 30; overflow: hidden;'
+			title = [% 'IPENG_BUTTON_HOME' | string | ucfirst %]></div></a>
 		</td>
 
 	</table>

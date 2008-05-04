@@ -643,7 +643,7 @@ div#alphamap {
 	z-index: 11;
 }
 
-div#OSDbg {
+div#OSDbg, div#SWbg {
 	position: absolute;
 	z-index: 100;
 	top: 50;

@@ -27,21 +27,23 @@ checkRescan = function () {
 			$('rescan_left').src = webroot + 'html/images/fillFieldActiveLeft.png';
 			$('rescan_right').src = webroot + 'html/images/fillFieldEmptyRight.png';
 			$('rescan_bg').style.backgroundImage = 'url(' + webroot + 'html/images/fillFieldEmpty.png' + ')';
+			var dummy = true;
 			$H(r2.result).each(function(pair) {
+//alert(pair.key + ' : ' + pair.value);
 				switch (pair.key) {
 					case "rescan": break;
 					case "totaltime": break;
 					default:
+						dummy = false;
 						if (pair.value != 100) {
-							$('rescan_bar').style.width = parseInt(pair.value * 2.82);
-							if (!rescanStrings[pair.key])
-								$('rescan_status').textContent = rescanStrings['importer'];
-							else
-								$('rescan_status').textContent = rescanStrings[pair.key];
+							$('rescan_bar').style.width = parseInt((pair.value >= 0) ? pair.value * 2.82 : 0);
+							$('rescan_status').textContent = rescanStrings[pair.key];
 						}
 					break;
 				}
 			});
+			if (dummy)
+				$('rescan_status').textContent = rescanStrings['importer'];
 			window.setTimeout(checkRescan, 5000);
 		}
 	});

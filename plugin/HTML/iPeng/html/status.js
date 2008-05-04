@@ -582,7 +582,7 @@ var Plugins = {
 				key.html.evalScripts();
 				inhibitSW = false;
 			};
-			sect.appendChild(parent);
+			if (parent.firstChild) sect.appendChild(parent);
 			pidiv.appendChild(sect);
 		};
 	

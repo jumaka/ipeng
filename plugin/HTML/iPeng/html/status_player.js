@@ -243,17 +243,22 @@ var Player = {
 			else if (val.icon.indexOf('fwd') != -1) val.icon = "html/images/ffwd.png";
 			temp.style.backgroundImage = 'url(' + webroot + val.icon + ')';
 			temp.title = val.tooltip;
+			Element.hide(cmd + 'control_content');
 			temp.show();
 		} else {
+			var temp = $(cmd + 'control_content');
 			val = parseInt(val2);
 			Element.hide(cmd + 'control_custom');
+			temp.style.backgroundPosition = "left " + val * 21;
+			temp.title = srstrings[cmd][val];
+			temp.show();
 		}
 		this.status[cmd] = val;
-		for (var i = 0; i < 3; i++)
+/*		for (var i = 0; i < 3; i++)
 			if (i == val)
 				Element.show(cmd + 'control_' + i);
 			else
-				Element.hide(cmd + 'control_' + i);
+				Element.hide(cmd + 'control_' + i);*/
 	},
 	
 	updateInfo : function(loop) {
@@ -298,6 +303,8 @@ var Player = {
 		Playlist.updateIndex();
 		if ($('trackstat_star1'))
 			Player.updateTrackStat();
+		Plugins.enforceRedraw();
+		Plugins.refresh();
 	},
 	
 	updateIndex : function(idx, all, loop, enforce) {
@@ -310,8 +317,6 @@ var Player = {
 				index = parseInt(idx);
 				refreshElement('thissongnum', index + 1);
 				this.updateInfo(loop);
-				Plugins.enforceRedraw();
-				Plugins.refresh();
 			}
 		}
 	},
@@ -465,13 +470,16 @@ var Player = {
 			if (val == "custom")
 				Player.controls.doTrigger(Player.status[cmd].command);
 			else {
-				var sArray = [ 'playlist', cmd, val ];
-				if (cmd == "shuffle")
-					Player.controls.doTrigger(sArray);
-				else		
-					callJSONRPC(sArray, function (r2) {
-						Player.updateRepeatShuffle(val, cmd);
+				var tmp = Player.status[cmd];
+				if (cmd == "shuffle") {
+					tmp = (tmp + 1) % 3;
+					Player.controls.doTrigger([ 'playlist', cmd, tmp ]);
+				} else {
+					tmp = (tmp + 2) % 3;
+					callJSONRPC([ 'playlist', cmd, tmp ], function (r2) {
+						Player.updateRepeatShuffle(tmp, cmd);
 					});
+				}
 			}
 		},
 				

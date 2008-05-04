@@ -11,7 +11,7 @@ var inhibitSW;
 removeSW = function () {
 	if ($('systemWorking')) {
 		Element.hide('systemWorking');
-		Element.hide('OSDbg');
+		Element.hide('SWbg');
 	}
 };
 
@@ -24,8 +24,8 @@ var myGlobalHandlers = {
 					$('spinner').src = webroot + "html/images/spinner_big.gif";
 				}
 				
-				$('OSDbg').style.top = window.pageYOffset + 140;
-				Element.show('OSDbg');
+				$('SWbg').style.top = window.pageYOffset + 140;
+				Element.show('SWbg');
 				$('systemWorking').style.top = window.pageYOffset + 140;
 				Element.show('systemWorking');
 			};
@@ -42,7 +42,7 @@ var myGlobalHandlers = {
 						request.options['onFailure'](request.transport, request.json);
 					}
 				}
-			}, 30*1000
+			}, 60*1000
 		);
 	},
 	onComplete: function() {

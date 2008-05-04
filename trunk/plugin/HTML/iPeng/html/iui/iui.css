@@ -38,7 +38,7 @@ a[selected], a:active {
 
 a[selected="progress"] {
     background-image: url(spinner_blue.gif), url(selection.png) !important;
-    background-position: 96% center, left top !important;
+    background-position: right center, left top !important;
 }
 
 /************************************************************************************************/

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<configuration>
+	<section id="nowplaying">
+		<subsection id="players">
+			<weight>11</weight>
+			<command id="players">
+				<description>NowPlaying control to select player</description>
+				<weight>10</weight>
+				<height>30</height>
+				<html>Player:&lt;select id="sel_players"
+						name="sel_players"
+						style="-webkit-box-sizing: border-box;
+							left: 0; font-size: 15;
+							margin: 0 0 0 11;
+						    min-width: 215; min-height: 30;"
+						onchange="if (this.value!=player) document.location=webroot+statusroot+'?player='+this.value;"&gt;
+					&lt;/select&gt;&lt;script&gt;
+					callJSONRPC(['players','0','255'],function(r2){
+						var s_temp = $('sel_players');
+						while (s_temp.firstChild)
+							s_temp.removeChild(s_temp.firstChild);
+						if (r2.result.count)
+							r2.result.players_loop.each(function(plr){
+								p_temp = document.createElement("option");
+								p_temp.value = escape(plr.playerid);
+								p_temp.textContent = plr.name;
+								if (plr.playerid == playerid) p_temp.selected = true;
+								s_temp.appendChild(p_temp);
+							});
+					});
+					&lt;/script&gt;</html>
+				<type>command</type>
+			</command>
+		</subsection>
+	</section>
+</configuration>

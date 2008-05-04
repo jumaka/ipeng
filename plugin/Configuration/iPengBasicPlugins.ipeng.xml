@@ -1,21 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <configuration>
 	<section id="nowplaying">
-		<subsection id="favorites">
-			<weight>20</weight>
+		<subsection id="ipeng">
+			<description>Deafult iPeng NowPlaying commands</description>
+			<weight>10</weight>
+			<namestring>TRACK</namestring>
 			<command id="favorites">
-				<description>Standalone NowPlaying Link to Add/Remove Favorites</description>
+				<description>NowPlaying Link to Add/Remove Favorites</description>
 				<requireplugins>Favorites</requireplugins>
-				<defaultenabled>0</defaultenabled>
 				<weight>10</weight>
 				<height>30</height>
-				<html>&lt;div id="addToFavorites" style="margin: -3 0 -5 0"
- 					onclick="callJSONRPC(['favorites','add',
+				<html>&lt;img id="addToFavorites" src="html/images/favadd.png" 
+					style="margin: 4 8 -4 8" 
+					onclick="callJSONRPC(['favorites','add',
 						'title:'+Player.status.track.title,'url:'+Player.status.track.url],requestFavorite);"&gt;
-					&lt;img src="html/images/favadd.png" style="margin: 5 10 -5 0"/&gt;Favorites&lt;/div&gt;
-				&lt;div id="removeFromFavorites" style="display:none; margin: -3 0 -5 0"
+				&lt;img id="removeFromFavorites" src="html/images/favdel.png" 
+					style="display:none; margin: 4 8 -4 8" 
 					onclick="callJSONRPC(['favorites','delete','item_id:'+this.favid],requestFavorite);"&gt;
-					&lt;img src="html/images/favdel.png" style="margin: 5 10 -5 0"/&gt;Favorites&lt;/div&gt;
 &lt;script&gt;
 requestFavorite = function() {
 	ajaxRequest(webroot+'plugins/Favorites/index.html',
@@ -35,6 +36,17 @@ requestFavorite = function() {
 requestFavorite();
 				&lt;/script&gt;</html>
 				<type>command</type>
+			</command>
+			<command id="Song Info">
+				<weight>10</weight>
+				<description>NowPlaying Link for Song Info Details</description>
+				<icon>html/images/info.png</icon>
+				<url>songinfo.html?artAtTop=0</url>
+				<type>content</type>
+				<parameters>
+					<id>item</id>
+					<player>player</player>
+				</parameters>
 			</command>
 		</subsection>
 	</section>

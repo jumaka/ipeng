@@ -2,7 +2,7 @@
 <configuration>
 	<section id="nowplaying">
 		<subsection id="ipeng">
-			<description>Deafult iPeng NowPlaying commands</description>
+			<description>Default iPeng NowPlaying commands</description>
 			<weight>10</weight>
 			<namestring>TRACK</namestring>
 			<command id="favorites">
@@ -45,6 +45,22 @@ requestFavorite();
 				<type>content</type>
 				<parameters>
 					<id>item</id>
+					<player>player</player>
+				</parameters>
+			</command>
+		</subsection>
+		<subsection id="multicontrol">
+			<weight>12</weight>
+			<command id="ptest">
+				<description>iPeng Multi-Player control: Control all your players on one page</description>
+				<weight>10</weight>
+				<height>30</height>
+				<name>MultiPlayer Control</name>
+				<icon>html/images/multiplayers.png</icon>
+				<type>content</type>
+				<url>status.html</url>
+				<parameters>
+					<other>multiControl=1</other>
 					<player>player</player>
 				</parameters>
 			</command>

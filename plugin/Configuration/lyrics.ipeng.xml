@@ -11,9 +11,6 @@
 				<icon>plugins/Lyrics/images/icon_30x30_f.png</icon>
 				<height>30</height>
 				<url>plugins/Lyrics/list.html</url>
-				<parameters>
-					<player>player</player>
-				</parameters>
 				<type>content</type>
 			</command>
 		</subsection>

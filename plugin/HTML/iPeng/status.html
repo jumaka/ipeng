@@ -4,6 +4,8 @@ IF ajaxRequest;
 	'<pre>';
 	PROCESS ajaxRequest.txt page = 'status';
 	'</pre>';
+ELSIF multiControl;
+	PROCESS multicontrol.html;
 ELSE;
 pagetitle = BLOCK;
 	playermodel | string; ' : '; "PLAYING" | string;
@@ -229,7 +231,6 @@ BLOCK player_controls %]
 			width: 30; height: 27; overflow: hidden;'
 			title = [% 'PAUSE' | string | ucfirst %]></div>
 		<div id = 'playercontrol_play' 
-			src = "[% webroot %]html/images/play.png" 
 			onclick="Player.controls.evtPlay();" 
 			style = 'display:[% IF modepause || modestop %]block[% ELSE %]none[% END %];
 			background-image: url([% webroot %]html/images/NowPlayingSprites.png);
@@ -264,20 +265,19 @@ BLOCK player_name %]
 
 <div id = "iNowPlayerName">
 [%- USE Clients; players = Clients.get("id");
+'<span id = "playerName">';
 IF players.size > 1;
 	FOREACH playerobj IN players;
-		IF player == playerobj.id -%]
-			<span id = "playerName">
-			[% IF playerobj.name;
+		IF player == playerobj.id;
+			IF playerobj.name;
 				playerobj.name;
 			ELSE;
 				player;
 			END;
-			'</span>';
 		END;
 	END;
 END;
-'</div>';
+'</span>'; '</div>';
 
 END;
 

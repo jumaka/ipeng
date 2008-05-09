@@ -54,6 +54,8 @@ var Player = {
 			if (result.time !== undefined && (result.time != time)) this.updateTime(result.time);
 			if (result.mode !== undefined && (result.mode != mode)) this.updateMode(result.mode);
 			if (result.power !== undefined && (result.power != power)) this.updatePower(result.power);
+			if (result.player_name !== undefined && (result.player_name != player_name))
+				this.updatePlayerName(result.player_name);
 			if (result["mixer volume"] !== undefined && (result["mixer volume"] != volume)) this.updateVolume(result["mixer volume"]);
 			if (result.playlist_cur_index !== undefined && (result.playlist_cur_index != index)) 
 				this.updateIndex(result.playlist_cur_index, result.playlist_tracks, result.playlist_loop[0]);
@@ -108,6 +110,20 @@ var Player = {
 			window.clearInterval(this.prgTimer);
 			this.prgTimer = null;
 		}
+	},
+	
+	updatePlayerName : function (newname) {
+		this.status.player_name = newname;
+		$('playerName').update(newname);
+	},
+	
+	switchPlayer : function (newplayer) {
+//alert(newplayer);
+		if (newplayer == playerid) return;
+		player = escape(newplayer);
+		Player.status.player = newplayer;
+		playerid = newplayer;
+		Player.triggerUpdate(true);
 	},
 	
 	updateBlank : function() {
@@ -387,7 +403,11 @@ var Player = {
 		}
 	},
 	
-	triggerUpdate : function() {
+	triggerUpdate : function(enforce) {
+		if (enforce) {
+			Player.status.timestamp = 0;
+			Plugins.timestamp = 0;
+		}
 		var sArray = [ 'status', '-', 1, infoFewtags ];
 		Player.controls.doExec(sArray);
 		Player.regularTimeout();
@@ -436,9 +456,10 @@ var Player = {
 		
 		evtPlay : function(evt) {
 			var sArray = [ 'play' ];
-			callJSONRPC(sArray, function (r2) {
-				Player.updateMode("play");
-			});			
+			Player.controls.doTrigger(sArray);
+//			callJSONRPC(sArray, function (r2) {
+//				Player.updateMode("play");				
+//			});			
 		},
 		
 		evtPause : function(evt) {
@@ -450,7 +471,7 @@ var Player = {
 
 		evtPrev : function(evt) {
 			var sArray;
-			if (Player.status.time < 10) {
+			if (Player.status.time < prev_threshold) {
 				var sArray = [ 'playlist', 'index', '-1' ];
 				Player.controls.doTrigger(sArray);
 			} else Player.controls.time(0);

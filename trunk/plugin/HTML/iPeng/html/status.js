@@ -13,6 +13,7 @@ var OVMaxstack = 3;
 var maxPlLoop = 20;
 var infoFulltags = 'tags:uBjJKlaedsRxNpg';
 var infoFewtags = 'tags:uBJjKleasxgp';
+var prev_threshold = 10;
 
 
 var Playlist = {

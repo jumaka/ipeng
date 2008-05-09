@@ -1,0 +1,97 @@
+
+<div id = "multicontrol">
+<style>
+.m_topbartextBright {
+	color: white;
+	text-shadow: #666666 0px 1px 1px;
+}
+
+.m_separator {
+	margin-left: 10;
+	margin-right: 10;
+}
+
+.m_text {
+	width : 312;
+	height: 15;
+	margin: 1 0 5 0;
+	text-align: center;
+	overflow-x: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.m_white {
+	color: white;
+}
+
+.multicontainer {
+	position: relative;
+	padding: 3 0 6 0;
+	width: 312;
+}
+
+.m_frame {
+	width: 312;
+	border: 4px solid #c0c0c0;
+	margin: 0 0 2 0;
+	border-bottom: 4px solid #888888;
+	border-right: 4px solid #888888;
+	-webkit-border-radius: 6;
+}
+
+.m_darksquare {
+ 	background-color: rgba(0,0,0,0);
+	background-image: url(html/images/iNowSyncBG.png);
+	background-repeat: repeat-x;
+}
+
+.m_lightsquare {
+	background-image: url(html/images/fullbg_light.png);
+	background-color: white !important;
+}
+
+.m_playertext {
+	font-size: 15;
+	text-shadow: #000 0px 1px 1px;
+	font-weight: bold;
+	padding: 5;
+	z-index: 20;
+	display: block;
+	float: left;
+}
+
+.m_topwrap {
+	height: 34;
+}
+
+.m_topbuttons {
+/*	position: absolute;
+	top: 0;
+	right: 0;*/
+	padding: 2;
+	float: right;
+}
+
+.m_volumeControl {
+	position: relative;
+/*	top: 13;*/
+	margin: 5 0 5 20;
+/*	left: 20;*/
+	height: 22;
+	width: 280px;
+	z-index: 20;
+	font-size: 14;
+}
+
+.m_NPSprites {
+	background-image: url(html/images/NowPlayingSprites.png);
+}
+
+</style>
+</div>
+<script>
+[%
+PROCESS multicontrol.js;
+%]
+</script>

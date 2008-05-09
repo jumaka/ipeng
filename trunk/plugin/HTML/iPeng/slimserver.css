@@ -1057,7 +1057,7 @@ div#iNowPlayerName {
 	z-index: 12;
 }
 
-div#volumeControls {
+div#volumeControls, .volumeControl {
 	position: absolute;
 	top: 13;
 	left: 20;

@@ -425,10 +425,11 @@ function toggleCover() {
 	SF.initScroll();
 }
 
-function PluginCmd(tpe, id, url, params, cli) {
+function PluginCmd(tpe, id, url, params, cli, rF) {
 	this.type = tpe;
 	this.id = id;
 	this.params = params;
+	this.refreshFunction = rF;
 	if (cli) {
 		this.cli = url;
 		this.path = null;
@@ -497,6 +498,13 @@ PluginCmd.prototype.exec = function (refresh) {
 			ajaxUpdate(this.path, this.paramString(), (refresh) ? refreshNothing : toggleMainbody);
 			Plugins.lastCmd = this;
 		break;
+		case "code":
+//alert("code: " + refresh + " : " + this.refreshFunction);
+			if (!refresh) {
+				ajaxUpdate(this.path, this.paramString(), (refresh) ? refreshNothing : toggleMainbody);
+				Plugins.lastCmd = this;
+			} else if (this.refreshFunction) eval(this.refreshFunction);
+		break;
 		case "command":
 		default:
 			if (!refresh)
@@ -554,7 +562,7 @@ var Plugins = {
 			parent.style.maxWidth = "320";
 			if (key.name) parent.title = key.name;
 			if (key.url || key.cli) {
-				Plugins.addCmd(new PluginCmd(key.type, subsect.id + "." + key.id, (key.url) ? key.url : key.cli, key.parameters, !(key.url)));
+				Plugins.addCmd(new PluginCmd(key.type, subsect.id + "." + key.id, (key.url) ? key.url : key.cli, key.parameters, !(key.url), (key.refreshJS) ? key.refreshJS : null));
 				if (key.type) {
 					parent.href="javascript:void(0);";
 					parent.onclick = function () { Plugins.exec(subsect.id + "." + key.id); };

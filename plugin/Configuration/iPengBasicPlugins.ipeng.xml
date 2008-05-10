@@ -57,7 +57,8 @@ requestFavorite();
 				<height>30</height>
 				<name>MultiPlayer Control</name>
 				<icon>html/images/multiplayers.png</icon>
-				<type>content</type>
+				<type>code</type>
+				<refreshJS>mplayer_control.prototype.refresh();</refreshJS>
 				<url>status.html</url>
 				<parameters>
 					<other>multiControl=1</other>

@@ -247,6 +247,7 @@ mplayer_control.prototype.find = function (id) {
 mplayer_control.prototype.tid = null;
 
 mplayer_control.prototype.refresh = function () {
+//alert("refresh");
 	var currentplayers = [];
 	mplayer_control.prototype.all.each(function (plr) { 
 	currentplayers.push(plr.id); });

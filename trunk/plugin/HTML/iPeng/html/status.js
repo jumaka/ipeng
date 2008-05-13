@@ -507,6 +507,7 @@ PluginCmd.prototype.exec = function (refresh) {
 		break;
 		case "command":
 		default:
+//alert("code: " + refresh + " : " + this.refreshFunction);
 			if (!refresh)
 				if (this.cli)
 					callJSONRPC(this.paramString());

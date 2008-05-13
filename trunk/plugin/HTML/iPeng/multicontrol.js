@@ -182,6 +182,7 @@ mplayer_control.prototype.updateOther = function () {
 		callJSONRPC([ 'status', '-', 1, 'tags:al' ], function (r2) {
 			if (r2.result.sync_master && (r2.result.sync_master != a_this.id)) {
 //alert("SM: " + r2.result.sync_master + " id: " + a_this.id);
+				a_this.master = 0;
 				a_this.synced_to = r2.result.sync_master;
 				a_this.topbuttons.appendChild(a_this.e_power_on);
 				a_this.topbuttons.appendChild(a_this.e_power_off);
@@ -194,6 +195,7 @@ mplayer_control.prototype.updateOther = function () {
 				a_this.frame.hide();
 			} else if (a_this.synced_to || a_this.e_sn.visible()) {
 //alert("USM: " + r2.result.sync_master + " id: " + a_this.id);
+				a_this.master = 0;
 				a_this.synced_to = null;
 				a_this.td_power.appendChild(a_this.e_power_on);
 				a_this.td_power.appendChild(a_this.e_power_off);
@@ -206,12 +208,14 @@ mplayer_control.prototype.updateOther = function () {
 				a_this.frame.appendChild(a_this.container);
 				a_this.frame.show();
 			} else if (r2.result.sync_master && (r2.result.sync_master == a_this.id)) {
+				a_this.master = 1;
 				a_this.synced_to = null;
 				a_this.td_sync.appendChild(a_this.e_unsync);
 				a_this.e_unsync.show();
 				a_this.e_sync.hide();
 			}
 			else {
+				a_this.master = 0;
 				a_this.synced_to = null;
 				a_this.e_unsync.hide();
 				a_this.e_sync.show();
@@ -394,9 +398,10 @@ MplayerSync = function(evt) {
 	a_this.all.each(function(plr) {
 		plr.frame.removeEventListener('click', MplayerSync, true);
 		plr.frame.removeClassName('m_lightsquare');
+		if (plr.synced_to) 	plr.container.addClassName('m_darksquare');
 		plr.e_sync_active.hide()
 		plr.e_sync = plr.e_sync_do;
-		if (!plr.synced_to)
+		if (!plr.synced_to && !plr.master)
 			plr.e_sync.show()
 	});
 	
@@ -415,6 +420,7 @@ mplayer_control.prototype.startSync = function () {
 		plr.frame.addEventListener('click', MplayerSync, true);
 		if (plr.id != a_this.id) {
 			plr.frame.addClassName('m_lightsquare');
+			plr.container.removeClassName('m_darksquare');
 		} else {
 			plr.e_sync_do.hide()
 			plr.e_sync_active.show()

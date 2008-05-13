@@ -90,7 +90,7 @@ mplayer_control.prototype.draw = function () {
 	this.e_power_off = new Element('div', { onclick : 'Mplayer(this).evtPower(1)',
 		'class' : 'm_NPSprites',
 		style : 'display: ' + ((this.power || !this.canpoweroff) ? 'none;' : 'block;') + 
-				'background-position: left 180; width: 40; height: 30; overflow: hidden;',
+				'background-position: left 180; width: 40; height: 30; overflow: hidden; float: left;',
 		title : '[% "OFF" | string %]' });
 	this.td_power.appendChild (this.e_power_on);
 	this.td_power.appendChild (this.e_power_off);
@@ -171,6 +171,36 @@ mplayer_control.prototype.updateBasic = function (id, name, power, isplayer, can
 	this.updateOther();
 }
 
+mplayer_control.prototype.addToSync = function (sync_master) {
+	this.master = 0;
+	this.synced_to = sync_master;
+	this.topbuttons.appendChild(this.e_power_on);
+	this.topbuttons.appendChild(this.e_power_off);
+	this.topbuttons.appendChild(this.e_unsync);
+	this.e_unsync.show();
+	this.e_ctrls.hide();
+	this.e_text.hide();
+	this.container.addClassName('m_darksquare');
+	this.find(sync_master).frame.appendChild(this.container);
+	this.frame.hide();
+}
+
+mplayer_control.prototype.removeFromSync = function () {
+	this.master = 0;
+	this.synced_to = null;
+	this.td_power.appendChild(this.e_power_on);
+	this.td_power.appendChild(this.e_power_off);
+	this.e_unsync.hide();
+	this.e_sync.show();
+	this.e_ctrls.show();
+	this.e_text.show();
+	this.e_sn.hide();
+	this.e_volume.show();
+	this.container.removeClassName('m_darksquare');
+	this.frame.appendChild(this.container);
+	this.frame.show();
+}
+
 mplayer_control.prototype.updateOther = function () {
 	var a_this = this;
 	if (this.sn) {
@@ -182,31 +212,10 @@ mplayer_control.prototype.updateOther = function () {
 		callJSONRPC([ 'status', '-', 1, 'tags:al' ], function (r2) {
 			if (r2.result.sync_master && (r2.result.sync_master != a_this.id)) {
 //alert("SM: " + r2.result.sync_master + " id: " + a_this.id);
-				a_this.master = 0;
-				a_this.synced_to = r2.result.sync_master;
-				a_this.topbuttons.appendChild(a_this.e_power_on);
-				a_this.topbuttons.appendChild(a_this.e_power_off);
-				a_this.topbuttons.appendChild(a_this.e_unsync);
-				a_this.e_unsync.show();
-				a_this.e_ctrls.hide();
-				a_this.e_text.hide();
-				a_this.container.addClassName('m_darksquare');
-				a_this.find(r2.result.sync_master).frame.appendChild(a_this.container);
-				a_this.frame.hide();
+				a_this.addToSync(r2.result.sync_master);
 			} else if (a_this.synced_to || a_this.e_sn.visible()) {
 //alert("USM: " + r2.result.sync_master + " id: " + a_this.id);
-				a_this.master = 0;
-				a_this.synced_to = null;
-				a_this.td_power.appendChild(a_this.e_power_on);
-				a_this.td_power.appendChild(a_this.e_power_off);
-				a_this.e_unsync.hide();
-				a_this.e_ctrls.show();
-				a_this.e_text.show();
-				a_this.e_sn.hide();
-				a_this.e_volume.show();
-				a_this.container.removeClassName('m_darksquare');
-				a_this.frame.appendChild(a_this.container);
-				a_this.frame.show();
+				a_this.removeFromSync();
 			} else if (r2.result.sync_master && (r2.result.sync_master == a_this.id)) {
 				a_this.master = 1;
 				a_this.synced_to = null;
@@ -380,9 +389,9 @@ mplayer_control.prototype.disconnectSN = function () {
 mplayer_control.prototype.unSync = function () {
 	var a_this = this;
 	callJSONRPC([ 'sync', '-' ], function (r2) {
-						if (a_this.synced_to)
+					/*	if (a_this.synced_to)
 							a_this.updateOther();
-						else
+						else*/
 							a_this.refresh();
 	}, function (r2) {}, this.id);
 }
@@ -405,9 +414,17 @@ MplayerSync = function(evt) {
 			plr.e_sync.show()
 	});
 	
+	var tosync = mplayer_control.wannaSync;
 	if (a_this.id != mplayer_control.wannaSync.id)
 		callJSONRPC([ 'sync', mplayer_control.wannaSync.id ], function (r2) {
-							a_this.refresh();
+			tosync.addToSync (a_this.id);
+			a_this.td_sync.appendChild(a_this.e_unsync);
+			a_this.e_unsync.show();
+			a_this.e_sync.hide();
+			
+			if (mplayer_control.prototype.tid)
+				window.clearTimeout(mplayer_control.prototype.tid);
+			mplayer_control.prototype.tid = window.setTimeout(mplayer_control.prototype.refresh, 13000);
 		}, function (r2) {}, a_this.id);
 	
 	mplayer_control.wannaSync = null;

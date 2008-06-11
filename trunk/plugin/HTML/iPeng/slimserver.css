@@ -1113,29 +1113,24 @@ div#playlistNow {
 	z-index: 1;
 }
 
-
-@media screen and (min-device-width: 481px) {
-	.xchgdiv {
-		position: absolute;
-		left: 0;
-		display: block;
-		width: 320;
-		margin: -7 0 -4 0;
-		padding: 6 0 -6 0;
-		z-index: 2;
-	}
+.xchgdiv {
+	position: absolute;
+	left: 0;
+	display: block;
+	width: 320;
+	margin: -7 0 -4 0;
+	padding: 6 0 -6 0;
+	z-index: 2;
 }
 
-@media screen and (max-device-width: 480px) {
-	.xchgdiv {
-		position: absolute;
-		left: 0;
-		display: block;
-		width: 320;
-		margin: -24 0 0 0;
-		padding: 6 0 -6 0;
-		z-index: 2;
-	}
+.xchgdiv114 {
+	position: absolute;
+	left: 0;
+	display: block;
+	width: 320;
+	margin: -24 0 0 0;
+	padding: 6 0 -6 0;
+	z-index: 2;
 }
 
 .xchgimg {

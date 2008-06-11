@@ -14,7 +14,7 @@ var maxPlLoop = 20;
 var infoFulltags = 'tags:uBjJKlaedsRxNpg';
 var infoFewtags = 'tags:uBJjKleasxgp';
 var prev_threshold = 10;
-
+var xchgdiv = 'xchgdiv';
 
 var Playlist = {
 	firstitem : -1,
@@ -215,7 +215,7 @@ var Playlist = {
 		var img;
 		
 		if (inum) {
-			linediv.className = 'xchgdiv';
+			linediv.className = xchgdiv;
 			linediv.onclick = function(evt) { Playlist.evtXchg(findAttribute(evt.target, 'item')); };
 			img = document.createElement("img");
 			img.setStyle({ width : '320', height : '1' });
@@ -696,6 +696,9 @@ sense_scroll = function () {
 window.onload= function() {
 //console.log("onLoad");
  	window.scrollTo (2,1);
+ 	if (navigator.userAgent.include('3.0 Mobile'))
+ 		xchgdiv = 'xchgdiv114';
+//alert(navigator.userAgent);
  	Player.browser = Prototype.Browser.MobileSafari;
 	Player.triggerUpdate();
 //	if (Prototype.Browser.MobileSafari)

@@ -43,16 +43,16 @@ BLOCK StatusHeader -%]
 [%- END;
 
 -%]
-<div style = "position: absolute; float: left; left: 0; top: 0; width: 324; z-index: 0"></div>
-<div style = "position: relative; left: 2; width: 320;">
+<!--div style = "position: absolute; float: left; left: 0; top: 0; width: 324; z-index: 0"></div-->
+<div style = "position: relative; left: 0; width: 320;"> <!-- left: 2 -->
 
 	<div id= 'iNowPlayingTopbar'></div>
 	
-	<div style = 'position: absolute; right: 4; top: 17; width: 44; z-index: 14;'>
+	<div style = 'position: absolute; right: 4; top: 17; width: 44; z-index: 91;'>
 	[% i = 0; WHILE i < 4 %]
 		<img id = 'pdote[% i %]' src = "[% webroot %]html/images/pagesdotempty.png" style="float: right[%- 
 			IF (i == 1) || (i == 3); "; display: none"; END; 
-			-%]" onclick="doSwipe([% i %]);"/><img id = 'pdotb[% i %]' src="[% webroot %]html/images/pagesdotblue.png" style = "[%-
+			-%]" onclick="ScrollPage.prototype.doSwipe([% i %]);"/><img id = 'pdotb[% i %]' src="[% webroot %]html/images/pagesdotblue.png" style = "[%-
 			IF i != 1; "display: none; "; END %]float: right"/>
 	[% i = i + 1; END %]
 	</div>
@@ -65,13 +65,15 @@ BLOCK StatusHeader -%]
 		[% INCLUDE song_info_display %]
 	</div>
 	
-	<div id = 'extension' class = 'coversquare darksquare' style = 'display: block; z-index: 12; overflow: scroll;'></div>
-	<div id = 'mainbody' class = 'coversquare' style = 'display: block; z-index: 13; left: -320; overflow: scroll;' onclick = '		if (Player.browser) window.onscroll = sense_scroll;'></div>
-
-	<div id = 'coverart' class = 'coversquare'>
-		[% INCLUDE cover_art_display %]
+	<div id = 'extWrapper' class = 'coversquare darksquare' style = 'display: block; z-index: 12; overflow: scroll; -webkit-transform: translateX(-320px);'>
+		<div id = 'extension'></div>
 	</div>
-	<div id = 'playlistNow' class = 'coversquare' onmousewheel = 'Playlist.evtWheel(event);' onscroll = 'Playlist.evtWheel(event);'> <!-- onscroll is for debugging on firefox -->
+	
+	<div id = 'NPwrapperBody' class = 'coversquare' style = 'display: block; z-index: 13; left: 0; overflow: scroll; -webkit-transform: translateX(-320px);'>
+		<div id = 'NPmainbody'></div>
+	</div>
+
+	<div id = 'playlistNow' class = 'coversquare' style = '-webkit-transform: translateX(320px);' onmousewheel = 'Playlist.evtWheel(event);' onscroll = 'Playlist.evtWheel(event);'> <!-- onscroll is for debugging on firefox -->
 		[% INCLUDE playlist_display %]
 	</div>
 
@@ -83,31 +85,36 @@ BLOCK StatusHeader -%]
 	trackstat = "PLUGIN_TRACKSTAT" | getstring;
 	has_trackstat = (trackstat != "PLUGIN_TRACKSTAT") -%]
 
-	<div id = 'iNowWrapperTop' class = 'iNowOBarTop iNowWrapperClass'>
+	<div id = 'coverart' class = 'coversquare'>
+		[% INCLUDE cover_art_display %]
+		<div id = 'iNowWrapperTop' class = 'iNowOBarTop iNowWrapperClass'>
+		
+			<div id = 'playliststatus'>
+				[% INCLUDE playlist_info_display %]
+			</div>
+			
+			<div id = 'shuffleControl'>
+			 [% INCLUDE shuffle_settings %]
+			</div>
+			
+			<div id = 'repeatControl'>
+			 [% INCLUDE repeat_settings;
+			'</div>';
 	
-		<div id = 'playliststatus'>
-			[% INCLUDE playlist_info_display %]
-		</div>
-		
-		<div id = 'shuffleControl'>
-		 [% INCLUDE shuffle_settings %]
-		</div>
-		
-		<div id = 'repeatControl'>
-		 [% INCLUDE repeat_settings;
+			INCLUDE progress_bar_display;
+			
+			IF has_trackstat; INCLUDE trackstat_info_display; END;
+			
 		'</div>';
-
-		INCLUDE progress_bar_display;
-		
-		IF has_trackstat; INCLUDE trackstat_info_display; END;
-		
-	'</div>';
-
-	%]<div id = 'iNowWrapperBottom' class = 'iNowOBarBottom iNowWrapperClass'>[%
-
-		INCLUDE volume_settings;
 	
+		%]<div id = 'iNowWrapperBottom' class = 'iNowOBarBottom iNowWrapperClass'>[%
+	
+			INCLUDE volume_settings;
+		
+		'</div>';
 	'</div>';
+
+	%]<div id = 'textOSD' class = 'iNowTextInfo' style = 'display: none'></div>[%
 
 '</div>';
 '</body>';
@@ -165,17 +172,17 @@ BLOCK song_info_display %]
 
 BLOCK progress_bar_display %]
 
-<div id = 'progressbar_overlay' onClick = 'Player.controls.evtTime(event);'> 
+<div id = 'progressbar_overlay'> 
 	<div class = "pbar" style = 'text-align: right; position: absolute; left: 0; width: 30; top: 2' nowrap id = 'elapsed'>0:00</div>
 	<div class = "pbar" style = 'text-align: left; position: absolute; right: 0; width: 33; top: 2' nowrap id = 'duration'></div>
 	<img src = '[% webroot %]html/images/VolumeBlueCap.png' style = 'position: absolute; left: 37; top: 5'>
 	<img src = '[% webroot %]html/images/VolumeWhiteMusicFill.png' style = 'position: absolute; left: 42; top: 5; width: 156; height: 9;'>
 	<img src = '[% webroot %]html/images/VolumeWhiteMusicCap.png' style = 'position: absolute; left: 196; top: 5'>
 	<img id="progressBar" name="progressBar" src="[% webroot %]html/images/VolumeBlueFill.png" style = 'position: absolute; left: 40; top: 5; height: 9; width: 1'>
-	<img id = 'progressButton' name='progressButton' src = '[% webroot %]html/images/MusicVolumeKnob.png' style = 'position: absolute; top: 2; height: 19; width: 17; left: 34;' >
+	<img id = 'progressButton' name='progressButton' src = '[% webroot %]html/images/MusicVolumeKnobBig.png' style = 'position: absolute; top: -2; height: 27; width: 25; left: 30;' >
 </div>
-
 [% END;
+# old: h 19 w 17 top 2 left 34  onClick = 'Player.controls.evtTime(event);
 
 BLOCK trackstat_info_display %]
 
@@ -282,13 +289,13 @@ END;
 END;
 
 BLOCK volume_settings %]
-<div id = 'volumeControls' onClick = 'Player.controls.evtVolume(event);'>
+<div id = 'volumeControls'>
 	[% IF isplayer %]
 		<img src = '[% webroot %]html/images/VolumeBlueCap.png' style = 'position: absolute; left: 4; top: 5'>
 	<img src = '[% webroot %]html/images/VolumeWhiteMusicFill.png' style = 'position: absolute; left: 9; top: 5; width: 262; height: 9;'>
 	<img src = '[% webroot %]html/images/VolumeWhiteMusicCap.png' style = 'position: absolute; left: 271; top: 5'>
 	<img id="volumeBar" src="[% webroot %]html/images/VolumeBlueFill.png" style = 'position: absolute; left: 9; top: 5; height: 9; width: 1'>
-	<img id = 'volumeButton' src = '[% webroot %]html/images/MusicVolumeKnob.png' style = 'position: absolute; top: 0; left: 0;' >
+	<img id = 'volumeButton' src = '[% webroot %]html/images/MusicVolumeKnobBig.png' style = 'position: absolute; top: -5; left: -5;' >
 	[% ELSE;
 		'<span>'; "IPENG_NO_VOLUME_CTRL" | string; '</span>';
 	END;

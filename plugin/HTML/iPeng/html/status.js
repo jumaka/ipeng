@@ -3,6 +3,8 @@ var url = 'status.html';
 var scrollHeight = 320;
 var _progressBarWidth = 156;
 var _volumeBarWidth = 262;
+var _progressBarOffset = 82;
+var _volumeBarOffset = 29;
 
 var overlaysON = false;
 var coverON = true;
@@ -15,6 +17,8 @@ var infoFulltags = 'tags:uBjJKlaedsRxNpg';
 var infoFewtags = 'tags:uBJjKleasxgp';
 var prev_threshold = 10;
 var xchgdiv = 'xchgdiv';
+
+var scrollFactor = 10;
 
 var Playlist = {
 	firstitem : -1,
@@ -59,7 +63,7 @@ var Playlist = {
 			if (!snaptarget) return;
 			snaptarget.scrollIntoView(snapup);
 			window.scrollTo(2, 1);
-			if (snapup) 
+			if (snapup)
 				win.scrollTop -= 76;
 			else
 				win.scrollTop += 76;
@@ -341,7 +345,13 @@ var Playlist = {
 
 function findAttribute(el, attr) {
  	var el = el;
-	Element.extend(el);
+	el = Element.extend(el);
+	while (el.hasAttribute === undefined) {
+		el = Element.extend(el.parentNode);
+		if (!el) return null;
+	}
+//console.log("el: " + el);
+	if (el.hasAttribute === undefined) el = el.up();
 	while (el)
 		if (el.hasAttribute(attr)) return el.getAttribute(attr);
 		else el = el.up();
@@ -372,58 +382,125 @@ function toggleOverlays() {
 	}
 }
 
-function ScrollField(scElem, swid, ison, act) {
+function ScrollPage(scElem, stackpos, ipos, act, pEl) {
 	this.element = scElem;
-	this.width = swid;
-	this.ON = ison;
-	this.timer = null;
+//console.log("initSP: " + stackpos + ".:." + pEl + ".:." + scElem);
+	this.elPage = (pEl) ? pEl : this.element;
+	scElem.setAttribute("scrollPage", stackpos);
+	this.stackpos = stackpos;
+	this.array[stackpos] = this;
+	this.pos = ipos;
 	this.action = act;
+	this.posY = 0;
+	this.istop = (ipos) ? false : true;
 }
 
-ScrollField.prototype.initScroll = function() {
-	var theone = this;
- 	doScroll();
-	this.timer = setInterval(doScroll, 0);
-
-	function doScroll() {
-		 	if (theone.width > 64) {
-				theone.width = theone.width - 64;
-			} else {
-				clearInterval(theone.timer);
-				theone.width = 0;
-				if (theone.ON)
-					if (theone.action)
-						theone.action();
-			}
-			if (theone.ON) {
-				theone.element.style.left = -theone.width;
-			} else {
-				theone.element.style.left = theone.width - 320;
-			}
-			if (!theone.width)
-			 	delete theone;
-	}
-}
-
-function toggleCover() {
-	if (coverON) {
-	 	coverON = false;
-	 	OVstack = -1;
-		$("playlistNow").style.display = "block";
-		if (overlaysON) {
-			toggleOverlays();
-			storeOverlays = true;
-		} else {
-			storeOverlays = false;
-		}
+ScrollPage.prototype.vScroll = function (ndY, immed) {
+	if (this.elPage.scrollHeight <= 320) return;
+	if (!immed) {
+		this.posY = this.posY + ndY;
+		this.posY = max(this.posY, 320 - this.elPage.scrollHeight);
+		this.posY = min(this.posY, 0);
+		this.elPage.style.webkitTransitionDuration = "0.5s";
+		this.elPage.style.webkitTransform = "translateY(" + this.posY + "px)";
 	} else {
-		coverON = true;
-		OVstack = 0;
+		this.elPage.style.webkitTransitionDuration = "0s";
+		this.elPage.style.webkitTransform = "translateY(" + (this.posY + ndY) + "px)";
 	}
-	
-	var SF = new ScrollField($("coverart"), 320, coverON, function () {	if (storeOverlays) toggleOverlays(); });
-	SF.initScroll();
+//console.log("scrollY: " + this.posY + ".dy:" + ndY + ".sH:" + this.elPage.scrollHeight);
 }
+
+ScrollPage.prototype.vScrollTo = function (newY) {
+	if (this.elPage.scrollHeight <= 320) return;
+	this.posY = newY;
+	this.posY = max(this.posY, 320 - this.elPage.scrollHeight);
+	this.posY = min(this.posY, 0);
+	this.elPage.style.webkitTransitionDuration = "0.5s";
+	this.elPage.style.webkitTransform = "translateY(" + this.posY + "px)";
+}
+
+ScrollPage.prototype.scrollTo = function (newX, inhibit, immed) {
+	var ttop = 0;
+	var newX = newX;
+	if (!inhibit)
+		for (var last = 0; last < this.array.length; last++)
+			if (this.array[last].istop && (abs(last - this.stackpos) > 1)) {
+//console.log("last:" + last + ".sp:" + this.stackpos);
+				this.array[last].scrollTo((last > this.stackpos) ? -320 : 320, true);
+			}
+	if (this.pos == newX) return;
+	if (!this.initial && this.action)
+		this.action();
+	if (immed || (abs (this.pos - newX) < 32))
+		this.element.style.webkitTransitionDuration = "0s";
+	else
+		this.element.style.webkitTransitionDuration = "0.5s";
+	
+	this.element.style.webkitTransform = "translateX(" + newX + "px)";
+
+//console.log("pos: " + newX + ". sp:" + this.stackpos);
+	if (newX == 0) {
+		this.istop = true;
+		for (var last = 0; last < this.array.length; last++)
+			if (this.stackpos != last)
+				this.array[last].istop = false;
+	}
+
+	if (inhibit) {
+		this.pos = newX;
+		return;
+	}
+	var otherone = null;
+	var thirdone = null;
+	var idec = newX;
+	if (!newX) idec = this.pos;
+	if (idec > 0) {
+		otherone = this.array[this.stackpos + 1];
+		if (this.stackpos)
+			thirdone = this.array[this.stackpos - 1];
+	}
+	else if (this.stackpos) {
+		otherone = this.array[this.stackpos - 1];
+		thirdone = this.array[this.stackpos + 1];
+	}
+	if (otherone)
+		otherone.scrollTo (((idec > 0) ? -320 : 320) + newX, true);
+	if (thirdone)
+		thirdone.scrollTo ((idec > 0) ? 320 : -320, true, true);
+	this.pos = newX;
+}
+
+ScrollPage.prototype.fixDot = function (val) {
+	if (this.istop || val) {
+		Element.show("pdotb" + this.stackpos);
+		Element.hide("pdote" + this.stackpos);
+	} else {
+		Element.show("pdote" + this.stackpos);
+		Element.hide("pdotb" + this.stackpos);
+	}
+}
+
+ScrollPage.prototype.fixDots = function () {
+	for (var last = 0; last < ScrollPage.prototype.array.length; last++)
+		ScrollPage.prototype.array[last].fixDot();
+}
+
+ScrollPage.prototype.find = function (sp) {
+	if (sp <= this.array.length)
+		return this.array[sp];
+	else
+		return null;
+}
+
+ScrollPage.prototype.doSwipe = function (sp) {
+	var temp = ScrollPage.prototype.find(sp);
+	if (temp) {
+		temp.scrollTo(0);
+		window.setTimeout(ScrollPage.prototype.fixDots, 500);
+	}
+}
+
+ScrollPage.prototype.array = new Array;
 
 function PluginCmd(tpe, id, url, params, cli, rF) {
 	this.type = tpe;
@@ -495,13 +572,13 @@ PluginCmd.prototype.exec = function (refresh) {
 	switch (this.type) {
 		case "content":
 //alert("p: " + this.path + " pS: " + this.paramString());
-			ajaxUpdate(this.path, this.paramString(), (refresh) ? refreshNothing : toggleMainbody);
+			ajaxUpdateDiv('NPmainbody', this.path, this.paramString(), (refresh) ? refreshNothing : toggleMainbody);
 			Plugins.lastCmd = this;
 		break;
 		case "code":
 //alert("code: " + refresh + " : " + this.refreshFunction);
 			if (!refresh) {
-				ajaxUpdate(this.path, this.paramString(), (refresh) ? refreshNothing : toggleMainbody);
+				ajaxUpdateDiv('NPmainbody', this.path, this.paramString(), (refresh) ? refreshNothing : toggleMainbody);
 				Plugins.lastCmd = this;
 			} else if (this.refreshFunction) eval(this.refreshFunction);
 		break;
@@ -624,74 +701,15 @@ var Plugins = {
 
 mbON = false;
 function toggleMainbody(nodot) {
- 	mbON = !mbON;
- 	if (mbON) {
-		OVstack = 2;
-		if (OVMaxstack < 4)
-			OVMaxstack++;
-	} else OVstack = 1;
-		
-	var SF = new ScrollField($("mainbody"), 320, mbON);
-	SF.initScroll();
-	if (!nodot && OVstack == 2)
-		for (var last = 0; last < OVMaxstack; last++)
-			if (last == 3) {
-				Element.hide("pdote" + last);
-				Element.show("pdotb" + last);
-			} else {
-				Element.hide("pdotb" + last);
-				Element.show("pdote" + last);
-			}
+	if (ScrollPage.prototype.array.length < 4) {
+		ScrollController.addMBody();
+		Element.hide("pdotb3");
+		Element.show("pdote3");
+	}	
+	ScrollPage.prototype.doSwipe(3)
 }
 
 fsOvON = false;
-function toggleFSOverlay() {
- 	fsOvON = !fsOvON;
- 	if (fsOvON) OVstack = 1; else OVstack = 0;
-		
-	var SF = new ScrollField($("extension"), 320, fsOvON, Plugins.display);
-	SF.initScroll();
-}
-
-
-function doSwipe(page) {
-	if ((page < 0) || (page >= OVMaxstack)) return;
-	if (page == OVstack + 1) return;
-	var first; var last;
-	if (page > OVstack + 1) {
-		first = page;
-		last = OVstack + 1;
-	} else {
-		first = OVstack + 1;
-		last = page;
-	}
-	switch (first) {
-		case 3: 
-			toggleMainbody(true);
-		case 2:
-			if (last < 2) toggleFSOverlay();
-		case 1: 
-			if (last < 1) toggleCover();
-	}
-	OVstack = page -1;
-	for (last = 0; last < OVMaxstack; last++)
-		if ((page) == last) {
-		 	Element.hide("pdote" + last);
-			Element.show("pdotb" + last);
-		} else {
-		 	Element.hide("pdotb" + last);
-			Element.show("pdote" + last);
-		}
-}
-
-sense_scroll = function () {
-//console.log(window.pageXOffset);
-		if (window.pageXOffset == 0)
-			doSwipe(OVstack + 2);
-		if (window.pageXOffset == 4)
-			doSwipe(OVstack);
-		window.scrollTo (2, 1);
- }
 
 window.onload= function() {
 //console.log("onLoad");
@@ -700,9 +718,9 @@ window.onload= function() {
  		xchgdiv = 'xchgdiv114';
 //alert(navigator.userAgent);
  	Player.browser = Prototype.Browser.MobileSafari;
+ 	Player.init();
 	Player.triggerUpdate();
-//	if (Prototype.Browser.MobileSafari)
-//		window.onscroll = sense_scroll;
+	ScrollController.init();
 }
 
 

@@ -405,7 +405,7 @@ var Player = {
 				time += add;
 			refreshElement('elapsed', timeStr(time));
 			if (Player.progressCtrl)
-				Player.progressCtrl.setVolume(time * progStep);
+				Player.progressCtrl.setVolume(time * progStep, false, true);
 //			$("progressBar").style.width = parseInt(time * progStep);
 //			$("progressButton").style.left = parseInt(time * progStep + 29);
 		}
@@ -802,7 +802,7 @@ VolumeBarCtrl.prototype.handleEvent = function (event) {
 	event.preventDefault();
 }
 
-VolumeBarCtrl.prototype.setVolume = function (vol, internal) {
+VolumeBarCtrl.prototype.setVolume = function (vol, internal, inhibit) {
 	if (this.inchg && !internal) return;
 	var intPos = parseInt((vol * this.width) / 100);
 	this.volume = vol;
@@ -815,7 +815,7 @@ VolumeBarCtrl.prototype.setVolume = function (vol, internal) {
 		if (this.formatCB)
 			this.text.update(this.formatCB(vol));
 		else this.text.update(parseInt(vol));
-	if (this.callback)
+	if (this.callback && !inhibit)
 		StaticTimer.trigger (this.callback, vol, true, 10);
 }
 

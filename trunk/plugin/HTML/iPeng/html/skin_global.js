@@ -14,6 +14,8 @@ function max(a, b) { return (a > b) ? a : b; }
 
 function min(a, b) { return (a < b) ? a : b; }
 
+function abs(a) { return (a < 0) ? -a : a; }
+
 function chooseAlbumOrderBy(value, option, artwork) {
 	var oderByUrl;
 	if (!artwork && artwork != 0) {

@@ -645,23 +645,23 @@ div#alphamap {
 
 div#OSDbg, div#SWbg {
 	position: absolute;
-	z-index: 100;
-	top: 50;
+	z-index: 99;
+	top: 150;
 	left: 18;
 	width: 284;
 	height: 111;
 	border: 0;
-	padding: 0;
+	padding: 25 0 0 120;
 	margin: 0;
+	font-size: 48;
 	background-image: url(html/images/OSDBackground.png);
 	background-repeat: no-repeat;
-	z-index: 99;
 }
 
 div#OSD, div#systemWorking {
 	position: absolute;
 	z-index: 100;
-	top: 50;
+	top: 150;
 	left: 18;
 	width: 284;
 	height: 111;
@@ -711,6 +711,7 @@ div#closeAlbumInfo {
 .thinborder {
 	border: 1px solid white;
 }
+
 div.settingSection .groupHead, .settingSection .prefHead {
         /* home menu list header */
         background-color: #c5c5c5;
@@ -887,13 +888,20 @@ div#FullBG {
 	color: #cfcfcf;
 	font-size: 17;
 	font-weight: bold;
+
+	-webkit-transition-property: -webkit-transform;
+	-webkit-transition-timing-function: ease-out;
+	-webkit-transition-duration: 0.5s;
+
+	-webkit-transform: translateX(0px) translateZ(1px) translateY(0px);
 }
 
 .darksquare {
  	background-color: rgba(0,0,0,0) !important;
 	background-image: url(html/images/fullbg.png);
 	background-repeat: repeat-x;
-	left: -320;	
+	-webkit-transform: translateX(-320px);
+/*	left: -320;	*/
 }
 
 div#iNowPlayingTopbar {
@@ -912,7 +920,7 @@ div#iNowPlayingTopbar {
 	height: 43;	/* 44- padding-top */
 	width: 320;
 	overflow: hidden;
-	z-index: 10;	
+	z-index: 90;	
 }
 
 div#streaminfo {
@@ -929,11 +937,25 @@ div#streaminfo {
 	overflow: hidden;
 	padding: 0;
 	border: 0;
-	z-index: 12;
+	z-index: 92;
 }
 
 div#coverart, div#radioart, div#emptyplayer {
 	z-index: 5;
+}
+
+.iNowTextInfo {
+	position: absolute;
+	z-index: 99;
+	top: 160;
+	left: 105;
+	width: 110;
+	height: 80;
+	padding: 15 0 0 0;
+	font-size: 48;
+	text-align: center;
+	background-image: url(html/images/textBG.png);
+	background-repeat: no-repeat;
 }
 
 div#iNowBottombar {
@@ -948,7 +970,7 @@ div#iNowBottombar {
 	height: 43;	/* 51- padding-top */
 	width: 320;
 	overflow: hidden;
-	z-index: 10;	
+	z-index: 20;	
 }
 
 
@@ -973,7 +995,7 @@ div#iNowBottombar {
 	background-position: top;
 	background-color: none;
 	position: absolute;
-	top: 44;
+	top: 0; /*44*/
 	left: 0;
 	width: 320;
 	height: 48;
@@ -983,7 +1005,7 @@ div#iNowBottombar {
 	background-image: url(html/images/NowPlayingBottomOverlay.png);
 	background-color: none;
 	position: absolute;
-	top: 316;
+	top: 272; /*316*/
 	left: 0;
 	width: 320;
 	height: 48;
@@ -1207,7 +1229,7 @@ div#iPengName {
 	position: absolute; 
 	left: 4; 
 	top: 4; 
-	z-index: 16;
+	z-index: 91;
 }
 
 .iButton, input.iButton

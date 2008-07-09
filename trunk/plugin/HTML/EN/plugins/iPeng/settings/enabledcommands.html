@@ -11,13 +11,15 @@
 		[%- FOREACH command IN pluginiPengCommands %]
 			[% IF command.group != lastgroup %]
 				<tr>
-					<td colspan="2"><br><strong>[% command.group %]</strong></td>
+					<td colspan="3"><br><strong>[% command.group %]</strong></td>
 				</tr>
 			[% END %]
 			<tr>
 				[%- commandid = "command_" _ command.id %]
 				<td><input type="checkbox" name="[% commandid | uri %]" id="[% commandid | uri %]" value="1" [% command.enabled ? "checked" : "" %] onclick="changeNumSelected(this)">
-				<label for="[% commandid %]">[% command.name | html %]</label></td><td>[% IF command.description %][% command.description %]<br>[% END %]([% command.id %])<br><br></td>
+				<label for="[% commandid %]">[% command.name | html %]</label></td>
+				<td>[% IF command.icon %]<img src="/iPeng/[% command.icon %]">[% END %]</td>
+				<td>[% IF command.description %][% command.description %]<br>[% END %]([% command.id %])<br><br></td>
 			</tr>
 			[% lastgroup = command.group %]
 		[%- END %]

@@ -88,6 +88,12 @@ sub initCommands {
 				if(exists $sections->{$subSectionKey}->{'description'}) {
 					$webmenu{'description'} = $sections->{$subSectionKey}->{'description'};
 				}
+				if(exists $sections->{$subSectionKey}->{'icon'}) {
+					$webmenu{'icon'} = $sections->{$subSectionKey}->{'icon'};
+				}
+				if(exists $sections->{$subSectionKey}->{'selectedicon'}) {
+					$webmenu{'selectedicon'} = $sections->{$subSectionKey}->{'selectedicon'};
+				}
 				push @commandsResult,\%webmenu;
 			}
 		}
@@ -131,6 +137,12 @@ sub initCommands {
 					}
 					if(exists $commands->{$commandKey}->{'description'}) {
 						$webmenu{'description'} = $commands->{$commandKey}->{'description'};
+					}
+					if(exists $commands->{$commandKey}->{'icon'}) {
+						$webmenu{'icon'} = $commands->{$commandKey}->{'icon'};
+					}
+					if(exists $commands->{$commandKey}->{'selectedicon'}) {
+						$webmenu{'selectedicon'} = $commands->{$commandKey}->{'selectedicon'};
 					}
 					push @commandsResult,\%webmenu;
 				}

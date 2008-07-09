@@ -14,7 +14,11 @@
 							left: 0; font-size: 15;
 							margin: 3 0 0 11;
 						    min-width: 215; min-height: 30;"
-						onchange="if (this.value!=playerid) Player.switchPlayer(this.value);"&gt;
+						onchange="if (this.value!=playerid) Player.switchPlayer(this.value);"
+						ontouchstart="event.stopPropagation();"
+						ontouchmove="event.stopPropagation();"
+						ontouchend="event.stopPropagation();"
+						&gt;
 					&lt;/select&gt;&lt;script&gt;
 					callJSONRPC(['players','0','255'],function(r2){
 						var s_temp = $('sel_players');

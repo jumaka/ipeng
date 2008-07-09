@@ -368,6 +368,45 @@ sub checkDefaults {
 	}
 }
 
+sub getAdditionalLinks {
+	my $section = shift;
+	my $max = shift;
+
+	my @result = ();
+	
+	if(defined($section) && exists $Slim::Web::Pages::additionalLinks{$section}) {
+		my $additionalLinks = $Slim::Web::Pages::additionalLinks{$section};
+		for my $link (keys %$additionalLinks) {
+			my %element = (
+				'id' => $link,
+				'title' => Slim::Utils::Strings::getString($link),
+				'category' => $section,
+				'url' => $additionalLinks->{$link},
+				'rank' => $serverPrefs->get("rank-$link") || 0,
+			);
+			if(exists $Slim::Web::Pages::additionalLinks{icons}->{$link}) {
+				$element{'icon'} = $Slim::Web::Pages::additionalLinks{icons}->{$link};
+			}
+			push @result,\%element;
+		}
+		@result = sort {
+			( 
+				$b->{'rank'} <=> $a->{'rank'}
+			)
+			|| 
+			(
+				lc( $a->{'title'} ) cmp lc( $b->{'title'} )
+			)
+		} @result;
+	}
+
+	# If max is defined, we only return the item up to the number of items requested
+	if(defined($max)) {
+		@result = splice(@result,0,$max);
+	}
+	return \@result;
+}
+
 sub getCommands {
 	my $client = shift;
 	my $section = shift;

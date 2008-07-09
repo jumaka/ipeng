@@ -1,4 +1,4 @@
-[% page = "PLUGIN_IPENG" %]s
+[% page = "PLUGIN_IPENG" %]
 [% PROCESS settings/header.html %]
 
 [% PROCESS plugins/iPeng/settings/subpage_chooser.html %]
@@ -35,12 +35,14 @@
 			[% IF !command.subsection %]
 				[% IF command.group != lastgroup %]
 					<tr>
-						<td colspan="2"><br><strong>[% command.group %]</strong></td>
+						<td colspan="3"><br><strong>[% command.group %]</strong></td>
 					</tr>
 				[% END %]
 				<tr>
 					[%- commandid = "command_" _ command.id _ "_position" %]
-					<td><label for="[% commandid %]">[% command.name | html %]</label></td><td><input type="text" class="stdedit" name="[% commandid | uri %]" id="[% commandid | uri %]" value="[% command.position %]" size="2">&nbsp;</td><td>[% IF command.description %][% command.description %]<br>[% END %]([% command.id %])<br><br></td>
+					<td><label for="[% commandid %]">[% command.name | html %]</label></td><td><input type="text" class="stdedit" name="[% commandid | uri %]" id="[% commandid | uri %]" value="[% command.position %]" size="2">&nbsp;</td>
+					<td>[% IF command.icon %]<img src="/iPeng/[% command.icon %]">[% END %]</td>
+					<td>[% IF command.description %][% command.description %]<br>[% END %]([% command.id %])<br><br></td>
 				</tr>
 				[% lastgroup = command.group %]
 			[% END %]

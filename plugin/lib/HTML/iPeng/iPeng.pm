@@ -31,4 +31,12 @@ sub commands {
 	return Plugins::iPeng::Plugin::getCommands(undef,$section,$subsection,$max);
 }
 
+sub additionalLinks {
+	my $self = shift;
+	my $section = shift;
+	my $max = shift;
+	
+	return Plugins::iPeng::Plugin::getAdditionalLinks($section,$max);
+}
+
 1;

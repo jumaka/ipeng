@@ -98,6 +98,12 @@ sub initCommands {
 				if(exists $commands->{$commandKey}->{'description'}) {
 					$webmenu{'description'} = $commands->{$commandKey}->{'description'};
 				}
+				if(exists $commands->{$commandKey}->{'icon'}) {
+					$webmenu{'icon'} = $commands->{$commandKey}->{'icon'};
+				}
+				if(exists $commands->{$commandKey}->{'selectedicon'}) {
+					$webmenu{'selectedicon'} = $commands->{$commandKey}->{'selectedicon'};
+				}
 				push @commandsResult,\%webmenu;
 			}
 		}

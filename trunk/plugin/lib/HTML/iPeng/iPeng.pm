@@ -39,4 +39,12 @@ sub additionalLinks {
 	return Plugins::iPeng::Plugin::getAdditionalLinks($section,$max);
 }
 
+sub icons {
+	my $self = shift;
+	my $icon = shift;
+	
+	return Plugins::iPeng::Plugin::getIcons($icon);
+}
+
+
 1;

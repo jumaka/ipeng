@@ -350,6 +350,7 @@ sub _readConfigurationFromFiles {
 
 sub postinitPlugin {
 	Slim::Control::Request::addDispatch(['ipeng','commands','_type'], [1, 1, 1, \&jsonHandler]);
+	Slim::Control::Request::addDispatch(['ipeng','icons','_icon'], [1, 1, 1, \&jsonIconsHandler]);
 	Slim::Control::Request::addDispatch(['ipeng','status'], [1, 1, 0, \&jsonStatusHandler]);
 }
 
@@ -405,6 +406,20 @@ sub getAdditionalLinks {
 		@result = splice(@result,0,$max);
 	}
 	return \@result;
+}
+
+sub getIcons {
+	my $icon = shift;
+
+	my @result = ();
+	
+	if(defined($icon) && exists $Slim::Web::Pages::additionalLinks{icons}->{$icon}) {
+		return $Slim::Web::Pages::additionalLinks{icons}->{$icon};
+	}elsif(!defined($icon)) {
+		return $Slim::Web::Pages::additionalLinks{icons};
+	}else {
+		return undef;
+	}
 }
 
 sub getCommands {
@@ -571,6 +586,46 @@ sub jsonHandler {
 
 	$request->setStatusDone();
 	$log->debug("Exiting jsonHandler\n");
+}
+
+sub jsonIconsHandler {
+	$log->debug("Entering jsonIconsHandler\n");
+	my $request = shift;
+	my $client = $request->client();
+
+	if (!$request->isQuery([['ipeng'],['icons']])) {
+		$log->warn("Incorrect command\n");
+		$request->setStatusBadDispatch();
+		$log->debug("Exiting jsonIconsHandler\n");
+		return;
+	}
+	if(!defined $client) {
+		$log->warn("Client required\n");
+		$request->setStatusNeedsClient();
+		$log->debug("Exiting jsonIconsHandler\n");
+		return;
+	}
+
+	$log->debug("Executing CLI icons command\n");
+
+	my $menuResult = getIcons($request->getParam('_icon'));
+
+	if($request->getParam('_icon')) {
+		$request->addResult('icon',$menuResult);
+	}else {
+		$request->addResult('count',scalar(keys %$menuResult));
+
+		# Add the array of sub sections as a subsections_loop
+		my $cnt = 0;
+		foreach my $key (keys %$menuResult) {
+	
+			$request->addResultLoop('icons_loop',$cnt,$key,$menuResult->{$key});
+			$cnt++;
+		}
+	}
+
+	$request->setStatusDone();
+	$log->debug("Exiting jsonIconsHandler\n");
 }
 
 sub _sortByPosition {

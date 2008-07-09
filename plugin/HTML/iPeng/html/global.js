@@ -110,6 +110,10 @@ function ajaxRequest(thisurl,params, action) {
 // request and update with new list html, requires a 'mainbody' div defined in the document
 // templates should use the ajaxUpdate param to block headers and footers.
 function ajaxUpdate(url, params, action, actionparam) {
+	return ajaxUpdateDiv('mainbody', url, params, action, actionparam);
+}
+
+function ajaxUpdateDiv(div, url, params, action, actionparam) {
 console.log("start ajaxUpdate." + url + "." + params);
 	var params = params;
 	var phash = '';
@@ -118,7 +122,7 @@ console.log("start ajaxUpdate." + url + "." + params);
 		phash = params.substr(poshash);
 		params = params.substr(0, poshash);
 	}
-	new Ajax.Updater( { success: 'mainbody' }, url, {
+	new Ajax.Updater( { success: div }, url, {
 		method: 'post',
 		postBody: params + '&ajaxUpdate=1&player=' + player,
 		evalScripts: true,

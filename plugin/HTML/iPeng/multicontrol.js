@@ -262,8 +262,7 @@ mplayer_control.prototype.tid = null;
 mplayer_control.prototype.refresh = function () {
 //alert("refresh");
 	var currentplayers = [];
-	mplayer_control.prototype.all.each(function (plr) { 
-	currentplayers.push(plr.id); });
+	mplayer_control.prototype.all.each(function (plr) { currentplayers.push(plr.id); });
 	callJSONRPC(['serverstatus', 0, 255 ], function (r2) {
 		if (r2.result['player count'])
 			r2.result.players_loop.each(function(plr) {

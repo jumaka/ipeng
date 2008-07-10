@@ -17,6 +17,7 @@ var infoFulltags = 'tags:uBjJKlaedsRxNpg';
 var infoFewtags = 'tags:uBJjKleasxgp';
 var prev_threshold = 10;
 var xchgdiv = 'xchgdiv';
+var _rowHeight = 38;
 
 var scrollFactor = 10;
 
@@ -27,20 +28,24 @@ var Playlist = {
 	storescroll : false,
 	scrolling : false,
 	snaptime : 0,
-	snaptarget : null,
+	snaptarget : -1,
 	snapup : true,
 	rows : null,
 	table : null,
 	win : null,
+	page : null,
+	numrows : 0,
 	
 	init : function() {
 	 	with (this) {
 			table = $('playlisttableNow');
 			win = $('playlistNow');
 			rows = table.rows;
+			numrows = table.rows.length;
 			firstitem = -1;
 			lastitem = -2;
 			playing = -1;
+			page = ScrollPage.prototype.find(0);
 		}
 	},
 	
@@ -52,22 +57,38 @@ var Playlist = {
 		window.setTimeout(Playlist.resetScroll, 1000);
 	},
 	
+	scrollPos : function(row) {
+		if (!this.page) return 0;
+		return row * _rowHeight + this.page.posY;
+	},
+	
+	testViewport : function() {
+		with (this) {
+			if (page)
+				if (-page.posY > rows.length * _rowHeight - 320) {
+					page.vScrollTo(-rows.length * _rowHeight + 320);
+console.log("tVp");
+				}
+		}
+	},
+	
 	setSnap : function() { this.snaptime = new Date().getTime(); },
 	
 	testSnap : function(enf) {
 		with (this) {
-//alert("st:" + snaptime + " enf:" + enf + " starget:" + snaptarget + " up:" + snapup);
+//console.log("snaptarget:" + snaptime + " enf:" + enf + " starget:" + snaptarget + " up:" + snapup + ".time:" + (new Date().getTime()));
+			testViewport();
 			if (!snaptime && !enf) return;
 			if (snaptime && (new Date().getTime() - snaptime < 20000)) return;
 			snaptime = 0;
-			if (!snaptarget) return;
-			snaptarget.scrollIntoView(snapup);
-			window.scrollTo(2, 1);
-			if (snapup)
-				win.scrollTop -= 76;
-			else
-				win.scrollTop += 76;
-			snaptime = 0;
+			if (snaptarget == -1) return;
+			
+			var temp = (((snapup) ? 2 : 5) - snaptarget) * _rowHeight;
+			temp = min(-firstitem * _rowHeight, temp);
+			temp = max(320 - ((1 + lastitem) * _rowHeight), temp);
+			if (!page) return 0;
+			page.vScrollTo(temp);
+//console.log("st done:" + temp + ".sH:" + table.scrollHeight);			
 		}
 	},
 	
@@ -79,10 +100,11 @@ var Playlist = {
 	update : function(ufirst, ulast) {
 		var ufirst = ufirst;
 		var ulast = ulast;
+		var i;
 		
 	 	if (!this.table)
 	 		this.init();
-//alert("ud " + this.table + ".fi." + this.firstitem + ".li." + this.lastitem + ".plf." + Player.status.pl_first + ".pll." + Player.status.pl_last + ".r." + this.rows + ".uf." + ufirst + ".ul." + ulast);
+//console.log(".fi." + this.firstitem + ".li." + this.lastitem + ".plf." + Player.status.pl_first + ".pll." + Player.status.pl_last + ".uf." + ufirst + ".ul." + ulast + ".rl:" + this.table.rows.length + '.pt:' + Player.status.tracks);
 		with (Player.status) {
 			if (pl_first < 0 || pl_last < 0 || pl_last < pl_first) {
 				while (this.table.rows.length) {
@@ -93,61 +115,31 @@ var Playlist = {
 			}
 			ufirst = max(ufirst, pl_first);
 			ulast = min(ulast, pl_last);
+			while (this.table.rows.length > tracks)
+				this.table.removeChild(this.table.rows[tracks]);
+			this.testViewport();
+			while (this.table.rows.length < tracks)
+				this.addEmptyRow();
+			this.numrows = this.table.rows.length;
 		}
 		with (this) {
-			var i;
-			var scrollitem = ufirst;
-			var scrolltop = true;
-			if (ulast == firstitem - 1)
-				scrollitem = ulast;
-			else if (ufirst == lastitem + 1)
-				scrolltop = false;
-
-			if (ulast < firstitem - 1 || ufirst > lastitem + 1)
-				for (i = firstitem; i <= lastitem; i++)
-					table.removeChild(rows[0]);
-
-			if (ufirst < firstitem)
-				for (i = min(ulast, firstitem - 1); i >= ufirst; i--)
-					addRow(i);
-			else if (firstitem < Player.status.pl_first && firstitem > 0)
-				for (i = firstitem; i < Player.status.pl_first; i++)
-					table.removeChild(rows[0]);
-
-			if (lastitem > 0)
-				for (i = max(firstitem, ufirst); i <= min(ulast, lastitem); i++)
-					updateRow(i - max(firstitem, Player.status.pl_first));
-
-			var newfirst = min(max(firstitem, Player.status.pl_first), ufirst);
-				
-			for (i = max(lastitem + 1, ufirst); i <= ulast; i++)
-				addRow(i);
+			for (i = ufirst; i <= ulast; i++)
+				updateRow(i);
 			
-			if (Player.status.pl_last > firstitem - 1) {
-				var endl = Player.status.pl_last - newfirst;
-				for (i = Player.status.pl_last + 1; i <= lastitem; i++)
-					table.removeChild(rows[endl]);
-			}
-				
-			firstitem = newfirst;
+			firstitem = min(max(firstitem, Player.status.pl_first), ufirst);
 			lastitem = max(min(lastitem, Player.status.pl_last), ulast);
-			if (scrolling) 
-				if (scrolltop)
-					win.scrollTop = (scrollitem - firstitem) * 38;
-				else
-					win.scrollTop += 38;
 			updateIndex();
 		}
 	},
 	
 	updateIndex : function() {
 	 	with (this) {
-//alert("idx:" + Player.status.index + " pl:" + playing + " fi:" + firstitem); 
+//console.log("idx:" + Player.status.index + " pl:" + playing + " fi:" + firstitem); 
 			if (Player.status.index == playing) return;
 			var therow;
 			var tmp;
-			if (playing != -1) {
-				therow = rows[playing - firstitem];
+			if (playing != -1 && playing < rows.length) {
+				therow = rows[playing];
 				Element.extend(therow);
 				var cname = ((playing) % 2) ? 'odd' : 'even';
 				therow.className = cname;
@@ -165,7 +157,8 @@ var Playlist = {
 				return;
 			}
 			playing = Player.status.index;
-			therow = rows[playing - firstitem];
+			if (playing >= rows.length) return;
+			therow = rows[playing];
 			Element.extend(therow);
 			therow.className = 'selectedRow';
 			therow.down('td', 0).className = 'selectedRow';
@@ -175,14 +168,15 @@ var Playlist = {
 			tmp.down('img').src = webroot + "html/images/x_blue_none.png";
 			therow.down('td', 3).setStyle({ borderLeft : 'none' }).className = 'selectedRow';
 			
-			tmp = therow.viewportOffset().top;
-			if (tmp < 120) { //44
-				setSnaptarget(therow, true);
+			tmp = scrollPos(playing);
+			if (tmp < 57) { //44 120
+				setSnaptarget(playing, true);
 				testSnap(true);
 			} else if (tmp > 240) {  //310
-				setSnaptarget(therow, storescroll);
+				setSnaptarget(playing, storescroll);
 				testSnap(true);
-			} setSnaptarget(therow, true);
+			} setSnaptarget(playing, true);
+console.log("ScrollPos:" + tmp + "sts:" + storescroll);
 		}
 	},
 	
@@ -190,85 +184,61 @@ var Playlist = {
 	
 	updateRow: function(idx) {
 	 	with (this) {
-		 	if (idx < 0 || idx > (lastitem - firstitem) || rows == null ||
-			 	idx > Player.status.pl_last - Player.status.pl_first) return;
+		 	if (idx < 0 || idx > (numrows - 1) || rows == null ||
+			 	idx > Player.status.pl_last) return;
 		 	var newrow = rows[idx];
-		 	var srcrow = Player.status.alltracks[idx];
-		 	newrow.setAttribute('item', Player.status.pl_first + idx);
-		 	newrow.down('td', 0).update(Player.status.pl_first + idx + 1);
+		 	var srcrow = Player.status.alltracks[idx - Player.status.pl_first];
+//		 	newrow.setAttribute('item', idx);
+//		 	newrow.down('td', 0).update(idx + 1);
 			var stitle = truncTitle(srcrow.title);
 		 	newrow.down('td', 1).update(stitle).setAttribute('title', "Play: " + stitle);
 		 	newrow.down('td', 2).setAttribute('title', "Delete: " + stitle);
 		 	newrow.down('td', 3).update(timeStr(srcrow.duration));
+//console.log("uR:" + idx + ".nR:" + numrows + "sTitle" + srcrow.title);
 		}
 	},
 	
-	addRow : function(inum) {
-		with (Player.status) {
-			if (inum < pl_first || inum > pl_last || 
-				//inum < this.firstitem || inum > this.lastitem ||
-				!alltracks[inum - pl_first]) return; }
-		var srcrow = Player.status.alltracks[inum - Player.status.pl_first];	
+	addEmptyRow : function() {
 		var newrow = document.createElement("tr");
+		var inum = this.rows.length;
+//console.log("emptyRow:" + inum);
 		var classname = (inum % 2) ? 'odd' : 'even';
-		
 		newrow.className = classname;
-		newrow.style.height = 38;
+		newrow.style.height = _rowHeight;
+		newrow.setStyle({ borderBottom : '1px solid #333333' });
 		newrow.setAttribute('item', inum);
-		var linediv = document.createElement("div");
-		var img;
-		
-		if (inum) {
-			linediv.className = xchgdiv;
-			linediv.onclick = function(evt) { Playlist.evtXchg(findAttribute(evt.target, 'item')); };
-			img = document.createElement("img");
-			img.setStyle({ width : '320', height : '1' });
-			img.src = webroot + 'html/images/between_line.png';
-			linediv.appendChild(img);
-			img = document.createElement("img");
-			img.className = 'xchgimg';
-			img.src = webroot + 'html/images/between2.png';
-			linediv.appendChild(img);
-			linediv.title = 'Swap tracks';
-		}
-		newrow.appendChild(linediv);
-		
+
 		var td = document.createElement("td");
 		td.className = classname;
 		td.setStyle({ width : '30', paddingLeft : '4' }).update(inum + 1);
 		newrow.appendChild(td);
 		
-		var stitle = this.truncTitle(srcrow.title);
 		td = document.createElement("td");
 		td.className = classname;
-		td.setStyle({ borderLeft : '1px solid #333333', padding : '0 4 0 4' }).update(stitle);
+		td.setStyle({ borderLeft : '1px solid #333333', padding : '0 4 0 4' });
 		td.onclick = function(evt) { Player.controls.evtIndex(findAttribute(evt.target, 'item')); };
-		td.title = 'Play: ' + stitle;
 		newrow.appendChild(td);
 
 		td = document.createElement("td");
 		td.className = classname;
-		td.setStyle({ padding : '4 8 4 4' });
-		img = document.createElement("img");
+//		td.setStyle({ padding : '4 8 4 4' });
+//		td.setStyle({ paddingRight : '8' });		
+		var img = document.createElement("img");
 		img.className = 'delimg';
 		img.src = webroot + 'html/images/x_grey.png';
+//		img.setStyle({ margin : '2 2 2 2' });
+		img.setStyle({ marginRight : '8' });		
 		img.onclick = function(evt) { Playlist.evtDelete(findAttribute(evt.target, 'item')); };
-		img.title = 'Delete: ' + stitle;
 		td.appendChild(img);
 		newrow.appendChild(td);
 		
 		td = document.createElement("td");
 		td.className = classname;
 		td.setStyle({ borderLeft : '1px solid #333333', paddingRight : '2', width: '40', textAlign : 'right' });
-		td.update(timeStr(srcrow.duration));
 		newrow.appendChild(td);
-		
-		if (inum < this.firstitem) {
-			this.table.insertBefore(newrow, this.rows[0]);
-			this.rows = this.table.rows;
-		} else
-			this.table.appendChild(newrow);
-	},
+
+		this.table.appendChild(newrow);
+	},	
 	
 	evtDelete : function(inum) {
 		var inum = parseInt(inum);
@@ -330,15 +300,19 @@ var Playlist = {
 		}, function (r2) { Player.resetInhibit(); });
 	},
 	
+	evtScroll : function(newY) {
+		Playlist.setSnap();
+	},
+	
 	evtWheel : function(evt) {
 		this.setSnap();
 		if (this.scrolling) return;
 		if ((evt.wheelDelta < 0) && ((this.win.scrollHeight - this.win.scrollTop - scrollHeight) < 80)) {
 			this.blockScroll();
-			Player.populatePL (true, this.lastitem + 1);
+			Player.populatePL (true, true, this.lastitem + 1);
 		} else if ((evt.wheelDelta > 0) && (this.win.scrollTop < 80)) {
 			this.blockScroll();
-			Player.populatePL (true, this.firstitem - 1);
+			Player.populatePL (true, true, this.firstitem - 1);
 		}
 	}
 };
@@ -382,15 +356,16 @@ function toggleOverlays() {
 	}
 }
 
-function ScrollPage(scElem, stackpos, ipos, act, pEl) {
+function ScrollPage(scElem, stackpos, ipos, act, pEl, snf) {
 	this.element = scElem;
-//console.log("initSP: " + stackpos + ".:." + pEl + ".:." + scElem);
+//console.log("initSP: " + stackpos + ".:." + pEl + ".:." + scElem + ".snf:" + snf);
 	this.elPage = (pEl) ? pEl : this.element;
 	scElem.setAttribute("scrollPage", stackpos);
 	this.stackpos = stackpos;
 	this.array[stackpos] = this;
 	this.pos = ipos;
 	this.action = act;
+	this.scrollnotify = snf;
 	this.posY = 0;
 	this.istop = (ipos) ? false : true;
 }
@@ -403,6 +378,8 @@ ScrollPage.prototype.vScroll = function (ndY, immed) {
 		this.posY = min(this.posY, 0);
 		this.elPage.style.webkitTransitionDuration = "0.5s";
 		this.elPage.style.webkitTransform = "translateY(" + this.posY + "px)";
+		if (this.scrollnotify)
+			this.scrollnotify(this.posY);
 	} else {
 		this.elPage.style.webkitTransitionDuration = "0s";
 		this.elPage.style.webkitTransform = "translateY(" + (this.posY + ndY) + "px)";
@@ -411,12 +388,19 @@ ScrollPage.prototype.vScroll = function (ndY, immed) {
 }
 
 ScrollPage.prototype.vScrollTo = function (newY) {
-	if (this.elPage.scrollHeight <= 320) return;
+	if (this.elPage.scrollHeight <= 320) {
+		this.posY = 0;
+		this.elPage.style.webkitTransitionDuration = "0s";
+		this.elPage.style.webkitTransform = "translateY(" + this.posY + "px)";
+		return;
+	}
 	this.posY = newY;
 	this.posY = max(this.posY, 320 - this.elPage.scrollHeight);
 	this.posY = min(this.posY, 0);
 	this.elPage.style.webkitTransitionDuration = "0.5s";
 	this.elPage.style.webkitTransform = "translateY(" + this.posY + "px)";
+	if (this.scrollnotify)
+		this.scrollnotify(this.posY);
 }
 
 ScrollPage.prototype.scrollTo = function (newX, inhibit, immed) {
@@ -705,7 +689,7 @@ function toggleMainbody(nodot) {
 		ScrollController.addMBody();
 		Element.hide("pdotb3");
 		Element.show("pdote3");
-	}	
+	} else ScrollPage.prototype.array[3].vScrollTo(0);
 	ScrollPage.prototype.doSwipe(3)
 }
 
@@ -714,8 +698,8 @@ fsOvON = false;
 window.onload= function() {
 //console.log("onLoad");
  	window.scrollTo (2,1);
- 	if (navigator.userAgent.include('3.0 Mobile'))
- 		xchgdiv = 'xchgdiv114';
+// 	if (navigator.userAgent.include('3.0 Mobile'))
+// 		xchgdiv = 'xchgdiv114';
 //alert(navigator.userAgent);
  	Player.browser = Prototype.Browser.MobileSafari;
  	Player.init();

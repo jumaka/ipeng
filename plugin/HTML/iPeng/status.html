@@ -31,12 +31,12 @@ BLOCK StatusHeader -%]
 	<!--script src="[% webroot %]html/skin_global.js?r=[% revision %]" type = 'application/x-javascript' defer></script-->
 	<script>
 		var remotestreaming = "[% "REMOTE_STREAMING" | string %]";
-		var srstrings = { shuffle : [	'[% "SHUFFLE_OFF" | string %]',
-										'[% "SHUFFLE_ON_SONGS" | string %]',
-										'[% "SHUFFLE_ON_ALBUMS" | string %]' ],
-						repeat : [	'[% "REPEAT_OFF" | string %]',
-									'[% "REPEAT_ONE" | string %]',
-									'[% "REPEAT_ALL" | string %]' ] };
+		var srstrings = { shuffle : [	"[% "SHUFFLE_OFF" | string %]",
+										"[% "SHUFFLE_ON_SONGS" | string %]",
+										"[% "SHUFFLE_ON_ALBUMS" | string %]" ],
+						repeat : [	"[% "REPEAT_OFF" | string %]",
+									"[% "REPEAT_ONE" | string %]",
+									"[% "REPEAT_ALL" | string %]" ] };
 	</script>
 	<script src="[% webroot %]html/status_player.js?r=[% revision %]" type = 'application/x-javascript' defer></script>
 	<script src="[% webroot %]html/status.js?r=[% revision %]" type = 'application/x-javascript' defer></script>
@@ -73,7 +73,7 @@ BLOCK StatusHeader -%]
 		<div id = 'NPmainbody'></div>
 	</div>
 
-	<div id = 'playlistNow' class = 'coversquare' style = '-webkit-transform: translateX(320px);' onmousewheel = 'Playlist.evtWheel(event);' onscroll = 'Playlist.evtWheel(event);'> <!-- onscroll is for debugging on firefox -->
+	<div id = 'playlistNow' class = 'coversquare' style = '-webkit-transform: translateX(320px);'> <!--  onmousewheel = 'Playlist.evtWheel(event);' onscroll = 'Playlist.evtWheel(event);' onscroll is for debugging on firefox -->
 		[% INCLUDE playlist_display %]
 	</div>
 

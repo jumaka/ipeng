@@ -5,7 +5,7 @@ mplayer_control = function (id, name, power, isplayer, canpoweroff, sn) {
 	this.isplayer = isplayer;
 	this.canpoweroff = canpoweroff;
 	this.master = 0;
-	this.volume = 00;
+	this.volume = 0;
 	this.mode = null;
 	this.power = power;
 	this.sn = sn;
@@ -13,6 +13,7 @@ mplayer_control = function (id, name, power, isplayer, canpoweroff, sn) {
 	this.repeat = null;
 	this.displaystate = 0;	// full display;
 	this.synced_to = null;
+	this.volCtrl = null;
 	
 	this.container = null;
 	this.e_name = null;
@@ -38,7 +39,7 @@ mplayer_control.prototype.draw = function () {
 	temp.appendChild(this.topbuttons);
 	this.container.appendChild(temp);
 		
-	this.e_volume = new Element ('div', { 'class' : 'm_volumeControl', onclick : 'Mplayer(this).evtVolume(event);'});
+	this.e_volume = new Element ('div', { 'class' : 'm_volumeControl' });
 	this.e_novolume = new Element ('span', 
 		{ 'class' : 'm_text topbartextNow m_topbartextBright',
 		  style : 'display: ' + ((this.isplayer) ? 'none;' : 'block;') }
@@ -60,11 +61,12 @@ mplayer_control.prototype.draw = function () {
 		style : 'position: absolute; left: 9; top: 5; width: 1; height: 9;' });
 	this.e_volume_bar.appendChild(this.e_volumeBar);
 	this.e_volumeButton = new Element('img', { 
-		src : webroot + 'html/images/MusicVolumeKnob.png',
-		style : 'position: absolute; left: 0; top: 0' });
+		src : webroot + 'html/images/MusicVolumeKnobBig.png',
+		style : 'position: absolute; left: -5; top: -5' });
 	this.e_volume_bar.appendChild(this.e_volumeButton);
 	this.e_volume.appendChild(this.e_volume_bar);	
 	this.container.appendChild(this.e_volume);
+	this.volCtrl = new VolumeBarCtrl(this.e_volumeButton, this.e_volumeBar, null, this.volume, this.setVolume, this); 
 
 	this.e_text = new Element ('div', { 'class' : 'm_text topbartextNow' });
 	this.track = new Element ('span', { 'class' : 'm_separator' });
@@ -121,7 +123,7 @@ mplayer_control.prototype.draw = function () {
 		title : '[% "NEXT" | string %]' });
 	temp.appendChild (this.e_next);
 	this.td_sync = new Element ('td', { align : 'right', style : 'width: 40;' });
-	tr.appendChild(this.td_sync);
+
 	this.e_sync_do = new Element('img', {  onclick : 'Mplayer(this).startSync()',
 		src : webroot + 'html/images/sync.png',
 		style : 'display: block; float: right;' });
@@ -130,6 +132,8 @@ mplayer_control.prototype.draw = function () {
 	this.e_sync_active = new Element('img', { src : webroot + 'html/images/sync_active.png',
 		style : 'display: none; float: right;' });
 	this.td_sync.appendChild (this.e_sync_active);
+	tr.appendChild(this.td_sync);
+
 	this.e_unsync = new Element('img', { onclick : 'Mplayer(this).unSync()',
 		src : webroot + 'html/images/unsync2.png',
 		style : 'display: none; float: right;' });
@@ -308,10 +312,9 @@ mplayer_control.prototype.refresh = function () {
 mplayer_control.prototype.updateVolume = function (vol) {
 	var vol = (vol < 0) ? -vol : vol;
 	if (vol == this.volume) return;
-	this.volume = vol;
-	var intPos = parseInt((vol * _volumeBarWidth) / 100);
-	this.e_volumeBar.style.width = intPos;
-	this.e_volumeButton.style.left = intPos;
+	this.volume = parseInt(vol);
+	if (this.volCtrl)
+		this.volCtrl.setVolume(vol);
 }
 
 mplayer_control.prototype.evtVolume = function (evt) {
@@ -322,6 +325,17 @@ mplayer_control.prototype.evtVolume = function (evt) {
 	if (level > 100) level = 100;
 	callJSONRPC([ 'mixer', 'volume', level ], function (r2) {
 		a_this.updateVolume(level);
+	}, function (r2) {}, this.id);
+}
+
+mplayer_control.prototype.setVolume = function (vol, inhibit) {
+	if (!this.isplayer) return;
+	var a_this = this;
+	var vol = parseInt(vol);
+console.log("mpCB:" + vol + ".ih:" + inhibit);
+	callJSONRPC([ 'mixer', 'volume', vol ], function (r2) {
+		if (!inhibit)
+			a_this.updateVolume(vol);
 	}, function (r2) {}, this.id);
 }
 

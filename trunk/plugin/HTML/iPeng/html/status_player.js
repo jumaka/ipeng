@@ -38,6 +38,7 @@ var Player = {
 	browser: false,
 	volumeCtrl : null,
 	progressCtrl : null,
+	pMTID : null,
 	
 	emptyTrack : {
 		artwork_url : webroot + 'html/images/empty.png',
@@ -199,12 +200,12 @@ var Player = {
 			}
 	},
 
-	populatePL : function(add, idx) {
+	populatePL : function(add, hasidx, idx) {
 		var pstart;
 		var pnum;
 		var add = (add) ? add : false;
 		with (this.status) {
-			var idx = (idx) ? idx : index;
+			var idx = (hasidx) ? idx : index;
 			if (!alltracks || (pl_first - idx) >= maxPlLoop || (idx - pl_last) >= maxPlLoop)
 				add = false;
 			if (add) {
@@ -245,8 +246,19 @@ var Player = {
 				Player.updateInfo();
 				Playlist.update(firstnew, lastnew);
 			}
+			if (!Player.pMTID)
+				Player.pMTID = window.setTimeout(Player.popMore, 3000);
 			Playlist.resetScroll();
 		}, function (r2) { Playlist.resetScroll() }, playerid, true);
+	},
+	
+	popMore : function () {
+		Player.pMTID = null;
+console.log("popMore:" + Player.status.tracks + ".lst:" + Player.status.pl_last + ".first:" + Player.status.pl_first);
+		if (Player.status.pl_last < Player.status.tracks - 1)
+			Player.populatePL(true, true, Player.status.pl_last + 1);
+		else if (Player.status.pl_first > 0)
+			Player.populatePL(true, true, Player.status.pl_first - 1);
 	},
 	
 	updateRepeatShuffle : function(val2, cmd, custom) {
@@ -357,10 +369,6 @@ var Player = {
 		this.status.volume = parseInt(vol);
 		if (this.volumeCtrl)
 			this.volumeCtrl.setVolume(vol);
-/*		var intPos = parseInt((vol * _volumeBarWidth) / 100);
-		
-		$("volumeBar").style.width = intPos;
-		$("volumeButton").style.left = intPos;*/
 	},
 	
 	updateDuration : function(dur) {
@@ -425,9 +433,9 @@ var Player = {
 	
 	init : function() {
 		this.volumeCtrl = new VolumeBarCtrl($('volumeButton'), $('volumeBar'), $('textOSD'),
-											this.status.volume, this.controls.volume); 
+											this.status.volume, this.controls.volume, this); 
 		this.progressCtrl = new VolumeBarCtrl($('progressButton'), $('progressBar'), $('textOSD'),
-											this.status.time, this.controls.timeRel, 
+											this.status.time, this.controls.timeRel, this,
 											_progressBarWidth, _progressBarOffset, 
 											this.controls.formatTimePercent); 
 	},
@@ -559,7 +567,7 @@ var ScrollController = {
 	
 	
 	interactionStart : function(evt) {
-console.log("start " + evt.touches[0].screenX + ".id:" + evt.touches[0].identifier);
+//console.log("start " + evt.touches[0].screenX + ".id:" + evt.touches[0].identifier);
 //var op = this.page;
 		if (this.Tstarted) return;
 //console.log("start proc");
@@ -688,12 +696,12 @@ console.log("start " + evt.touches[0].screenX + ".id:" + evt.touches[0].identifi
 	
 	init : function() {
 		this.addBox($('coverart'), 1, 0, null);
-		this.addBox($('playlistNow'), 0, 320, null, $('playlisttableNow'));
+		this.addBox($('playlistNow'), 0, 320, null, $('playlisttableNow'), Playlist.evtScroll);
 		this.addBox($('extWrapper'), 2, -320, null, $('extension'));
 	},
 	
-	addBox : function(element, stack, pos, act, pEl) {
-		new ScrollPage(element, stack, pos, act, pEl);
+	addBox : function(element, stack, pos, act, pEl, snf) {
+		new ScrollPage(element, stack, pos, act, pEl, snf);
 		element.addEventListener('touchstart', this, false);
 		element.addEventListener('touchmove', this, false);
 		element.addEventListener('touchend', this, false);
@@ -759,7 +767,7 @@ handleEvent : function (event) {
 
 };
 
-function VolumeBarCtrl(knob, left, text, vol, callback, width, offset, formatCB) {
+function VolumeBarCtrl(knob, left, text, vol, callback, cbobject, width, offset, formatCB) {
 	this.knob = knob;
 	this.left = left;
 	this.text = text;
@@ -767,6 +775,7 @@ function VolumeBarCtrl(knob, left, text, vol, callback, width, offset, formatCB)
 	this.offset = (offset) ? offset : _volumeBarOffset;
 	this.volume = vol;
 	this.callback = callback;
+	this.target = cbobject;
 	this.cbtid = null;
 	this.inchg = false;
 	this.formatCB = (formatCB) ? formatCB : null;
@@ -779,10 +788,12 @@ VolumeBarCtrl.prototype.handleEvent = function (event) {
 	switch (event.type) {
 		case 'touchstart' :
 			this.inchg = true;
-			if (this.formatCB)
-				this.text.update(this.formatCB(this.volume));
-			else this.text.update(this.volume);
-			this.text.show();
+			if (this.text) {
+				if (this.formatCB)
+					this.text.update(this.formatCB.call(this.target, this.volume));
+				else this.text.update(this.volume);
+				this.text.show();
+			}
 			break;
 		case 'touchmove' :
 			var level = (event.touches[0].clientX - this.offset) * 100 / this.width;
@@ -792,10 +803,12 @@ VolumeBarCtrl.prototype.handleEvent = function (event) {
 			this.setVolume(level, true);
 			break;
 		case 'touchend' :
-			this.text.update("");
-			this.text.hide();
+			if (this.text) {
+				this.text.update("");
+				this.text.hide();
+			}
 			this.inchg = false;
-			if (this.callback) this.callback(this.volume);
+			if (this.callback) this.callback.call(this.target, this.volume);
 			break;
 	}
 	event.stopPropagation();
@@ -806,29 +819,31 @@ VolumeBarCtrl.prototype.setVolume = function (vol, internal, inhibit) {
 	if (this.inchg && !internal) return;
 	var intPos = parseInt((vol * this.width) / 100);
 	this.volume = vol;
-//console.log("vol:" + vol + ".initPos:" + initPos + ".width:" + this.width + ".off:" + this.offset);	
+//console.log("vol:" + vol + ".initPos:" + intPos + ".width:" + this.width + ".off:" + this.offset);	
 //	this.left.style.width = intPos;
 	this.left.style.webkitTransform = "scaleX(" + intPos + ")";
 	this.knob.style.webkitTransform = "translateX(" + intPos + "px)";
 //	this.knob.style.left = intPos;
-	if (this.inchg)
+	if (this.inchg && this.text)
 		if (this.formatCB)
-			this.text.update(this.formatCB(vol));
+			this.text.update(this.formatCB.call(this.target, vol));
 		else this.text.update(parseInt(vol));
 	if (this.callback && !inhibit)
-		StaticTimer.trigger (this.callback, vol, true, 10);
+		StaticTimer.trigger (this.callback, this.target, vol, true, 10);
 }
 
 var StaticTimer = {
 	tid : null,
 	callback : null,
+	obj : null,
 	val1 : 0,
 	val2 : 0,
 	
-	trigger : function (cb, v1, v2, to) {
+	trigger : function (cb, obj, v1, v2, to) {
 		this.callback = cb;
 		this.val1 = v1;
 		this.val2 = v1;
+		this.obj = obj;
 		if (!this.tid)
 			this.tid = window.setTimeout(StaticTimer.execute, to);
 	},
@@ -836,6 +851,6 @@ var StaticTimer = {
 	execute : function () {
 		StaticTimer.tid = null;
 		if (StaticTimer.callback)
-			StaticTimer.callback (StaticTimer.val1, StaticTimer.val2);
+			StaticTimer.callback.call (StaticTimer.obj, StaticTimer.val1, StaticTimer.val2);
 	}
 };

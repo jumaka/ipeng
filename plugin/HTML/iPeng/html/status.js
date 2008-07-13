@@ -19,7 +19,7 @@ var prev_threshold = 10;
 var xchgdiv = 'xchgdiv';
 var _rowHeight = 38;
 
-var scrollFactor = 10;
+var scrollFactor = 1.5;
 
 var Playlist = {
 	firstitem : -1,
@@ -30,6 +30,7 @@ var Playlist = {
 	snaptime : 0,
 	snaptarget : -1,
 	snapup : true,
+	snapinhibid : false,
 	rows : null,
 	table : null,
 	win : null,
@@ -45,8 +46,18 @@ var Playlist = {
 			firstitem = -1;
 			lastitem = -2;
 			playing = -1;
+			snapinhibit = false;
 			page = ScrollPage.prototype.find(0);
+			DnD.init();
 		}
+	},
+	
+	preventSnap : function () {
+		this.snapinhibit = true;
+	},
+	
+	allowSnap : function () {
+		this.snapinhibit = false;
 	},
 	
 	resetScroll : function() { this.scrolling = false },
@@ -67,7 +78,6 @@ var Playlist = {
 			if (page)
 				if (-page.posY > rows.length * _rowHeight - 320) {
 					page.vScrollTo(-rows.length * _rowHeight + 320);
-console.log("tVp");
 				}
 		}
 	},
@@ -78,7 +88,7 @@ console.log("tVp");
 		with (this) {
 //console.log("snaptarget:" + snaptime + " enf:" + enf + " starget:" + snaptarget + " up:" + snapup + ".time:" + (new Date().getTime()));
 			testViewport();
-			if (!snaptime && !enf) return;
+			if ((!snaptime && !enf) || snapinhibit) return;
 			if (snaptime && (new Date().getTime() - snaptime < 20000)) return;
 			snaptime = 0;
 			if (snaptarget == -1) return;
@@ -104,7 +114,7 @@ console.log("tVp");
 		
 	 	if (!this.table)
 	 		this.init();
-//console.log(".fi." + this.firstitem + ".li." + this.lastitem + ".plf." + Player.status.pl_first + ".pll." + Player.status.pl_last + ".uf." + ufirst + ".ul." + ulast + ".rl:" + this.table.rows.length + '.pt:' + Player.status.tracks);
+console.log(".fi." + this.firstitem + ".li." + this.lastitem + ".plf." + Player.status.pl_first + ".pll." + Player.status.pl_last + ".uf." + ufirst + ".ul." + ulast + ".rl:" + this.table.rows.length + '.pt:' + Player.status.tracks);
 		with (Player.status) {
 			if (pl_first < 0 || pl_last < 0 || pl_last < pl_first) {
 				while (this.table.rows.length) {
@@ -116,7 +126,7 @@ console.log("tVp");
 			ufirst = max(ufirst, pl_first);
 			ulast = min(ulast, pl_last);
 			while (this.table.rows.length > tracks)
-				this.table.removeChild(this.table.rows[tracks]);
+				this.table.removeChild(this.table.rows[this.table.rows.length - 1]);
 			this.testViewport();
 			while (this.table.rows.length < tracks)
 				this.addEmptyRow();
@@ -143,12 +153,12 @@ console.log("tVp");
 				Element.extend(therow);
 				var cname = ((playing) % 2) ? 'odd' : 'even';
 				therow.className = cname;
-				therow.down('td', 0).className = cname;
-				therow.down('td', 1).setStyle({ borderLeft : '1px solid #333333' }).className = cname;
+//				therow.down('td', 0).className = cname;
+				therow.down('td', 1).setStyle({ borderLeft : '1px solid #333333' });//.className = cname;
 				tmp = therow.down('td', 2);
-				tmp.className = cname;
+//				tmp.className = cname;
 				tmp.down('img').src = webroot + "html/images/x_grey.png";
-				therow.down('td', 3).setStyle({ borderLeft : '1px solid #333333' }).className = cname;
+				therow.down('td', 3).setStyle({ borderLeft : '1px solid #333333' });//.className = cname;
 				storescroll = false;
 			}
 			if (Player.status.index < firstitem || Player.status.index > lastitem) {
@@ -161,12 +171,12 @@ console.log("tVp");
 			therow = rows[playing];
 			Element.extend(therow);
 			therow.className = 'selectedRow';
-			therow.down('td', 0).className = 'selectedRow';
-			therow.down('td', 1).setStyle({ borderLeft : 'none' }).className = 'selectedRow';
+//			therow.down('td', 0).className = 'selectedRow';
+			therow.down('td', 1).setStyle({ borderLeft : 'none' });//.className = 'selectedRow';
 			tmp = therow.down('td', 2);
-			tmp.className = 'selectedRow';
+//			tmp.className = 'selectedRow';
 			tmp.down('img').src = webroot + "html/images/x_blue_none.png";
-			therow.down('td', 3).setStyle({ borderLeft : 'none' }).className = 'selectedRow';
+			therow.down('td', 3).setStyle({ borderLeft : 'none' });//.className = 'selectedRow';
 			
 			tmp = scrollPos(playing);
 			if (tmp < 57) { //44 120
@@ -176,13 +186,13 @@ console.log("tVp");
 				setSnaptarget(playing, storescroll);
 				testSnap(true);
 			} setSnaptarget(playing, true);
-console.log("ScrollPos:" + tmp + "sts:" + storescroll);
+//console.log("ScrollPos:" + tmp + "sts:" + storescroll);
 		}
 	},
 	
 	truncTitle : function(tl) { return (tl.length > 40) ? tl.substring(0,38) + '...' : tl; },
 	
-	updateRow: function(idx) {
+	updateRow: function(idx, udIndex) {
 	 	with (this) {
 		 	if (idx < 0 || idx > (numrows - 1) || rows == null ||
 			 	idx > Player.status.pl_last) return;
@@ -191,10 +201,18 @@ console.log("ScrollPos:" + tmp + "sts:" + storescroll);
 //		 	newrow.setAttribute('item', idx);
 //		 	newrow.down('td', 0).update(idx + 1);
 			var stitle = truncTitle(srcrow.title);
-		 	newrow.down('td', 1).update(stitle).setAttribute('title', "Play: " + stitle);
-		 	newrow.down('td', 2).setAttribute('title', "Delete: " + stitle);
-		 	newrow.down('td', 3).update(timeStr(srcrow.duration));
-//console.log("uR:" + idx + ".nR:" + numrows + "sTitle" + srcrow.title);
+			if (udIndex) {
+			 	newrow.className = (idx % 2) ? 'odd' : 'even';
+				newrow.style.webkitTransitionDuration = "0s";
+				newrow.style.webkitTransform = 'translateY(0px)';
+			 	newrow.setAttribute('item', idx);
+			 	newrow.down('td', 0).update(idx + 1);
+			 } else {
+				newrow.down('td', 1).update(stitle).setAttribute('title', "Play: " + stitle);
+				newrow.down('td', 2).setAttribute('title', "Delete: " + stitle);
+				newrow.down('td', 3).update(timeStr(srcrow.duration));
+			 }
+//console.log("uR:" + idx + ".nR:" + numrows + "sTitle" + stitle + ".nR:" + newrow + ".tC:" + newrow.down('td', 1).textContent);
 		}
 	},
 	
@@ -207,33 +225,36 @@ console.log("ScrollPos:" + tmp + "sts:" + storescroll);
 		newrow.style.height = _rowHeight;
 		newrow.setStyle({ borderBottom : '1px solid #333333' });
 		newrow.setAttribute('item', inum);
+		newrow.addEventListener('touchstart', this, false);
+		newrow.addEventListener('touchmove', this, false);
+		newrow.addEventListener('touchend', this, false);
 
 		var td = document.createElement("td");
-		td.className = classname;
+//		td.className = classname;
 		td.setStyle({ width : '30', paddingLeft : '4' }).update(inum + 1);
 		newrow.appendChild(td);
 		
 		td = document.createElement("td");
-		td.className = classname;
+//		td.className = classname;
 		td.setStyle({ borderLeft : '1px solid #333333', padding : '0 4 0 4' });
 		td.onclick = function(evt) { Player.controls.evtIndex(findAttribute(evt.target, 'item')); };
 		newrow.appendChild(td);
 
 		td = document.createElement("td");
-		td.className = classname;
+//		td.className = classname;
 //		td.setStyle({ padding : '4 8 4 4' });
+		td.setStyle({ padding : '0 4 0 0', margin : '0' });
 //		td.setStyle({ paddingRight : '8' });		
 		var img = document.createElement("img");
 		img.className = 'delimg';
 		img.src = webroot + 'html/images/x_grey.png';
 //		img.setStyle({ margin : '2 2 2 2' });
-		img.setStyle({ marginRight : '8' });		
 		img.onclick = function(evt) { Playlist.evtDelete(findAttribute(evt.target, 'item')); };
 		td.appendChild(img);
 		newrow.appendChild(td);
 		
 		td = document.createElement("td");
-		td.className = classname;
+//		td.className = classname;
 		td.setStyle({ borderLeft : '1px solid #333333', paddingRight : '2', width: '40', textAlign : 'right' });
 		newrow.appendChild(td);
 
@@ -248,46 +269,22 @@ console.log("ScrollPos:" + tmp + "sts:" + storescroll);
 		callJSONRPC(sArray, function (r2) {
 		 	with (Player.status) {
 			 	alltracks.splice(inum - pl_first, 1);
+			 	Playlist.table.removeChild(Playlist.rows[inum]);
 			 	pl_last--;
 			 	tracks--;
+			 	Playlist.lastitem--;
 			 	if (index > inum) index--;
 			 	for (var i = inum - pl_first; i <= pl_last - pl_first; i++) {
-			 		alltracks[i]["playlist index"]--; }
-			 	Playlist.update(inum, min(pl_last, Playlist.lastitem));
+			 		alltracks[i]["playlist index"]--;
+			 		Playlist.updateRow(i, true);
+			 	}
+//			 	Playlist.update(inum, min(pl_last, Playlist.lastitem));
 			 	Playlist.updateIndex();
 			}
 			Playlist.cleanupChange(inum, true);
 		}, function (r2) { Player.resetInhibit(); });
 	},
 
-	evtXchg : function(inum) {
-		var inum = parseInt(inum);
-		if (inum < 1 || inum > Player.status.tracks) return;
-		Player.addInhibit(false);
-		var sArray = [ 'playlist', 'move', inum, inum - 1 ];
-		callJSONRPC(sArray, function (r2) {
-		 	with (Player.status) {
-		 		oldrow = alltracks[inum];
-		 		newrow = alltracks[inum - 1];
-				oldrow["playlist index"]--;
-				newrow["playlist index"]++;
-		 		alltracks[inum - 1] = oldrow;
-		 		alltracks[inum] = newrow;
-				Playlist.updateRow(inum - Playlist.firstitem);
-				Playlist.updateRow(inum - Playlist.firstitem - 1);
-				if (inum == index) {
-					index--;
-					inum--;
-					Playlist.updateIndex();
-				} else if (inum == index + 1) {
-					index++;
-					Playlist.updateIndex();
-				}
-			 	Playlist.cleanupChange(inum, false);
-		 	}
-		}, function (r2) { Player.resetInhibit(false); });		
-	},
-	
 	cleanupChange : function(inum, refresh) {
 		var sArray = [ 'status', '-', 1, infoFewtags ];
 		callJSONRPC(sArray, function (r2) {
@@ -304,17 +301,263 @@ console.log("ScrollPos:" + tmp + "sts:" + storescroll);
 		Playlist.setSnap();
 	},
 	
-	evtWheel : function(evt) {
-		this.setSnap();
-		if (this.scrolling) return;
-		if ((evt.wheelDelta < 0) && ((this.win.scrollHeight - this.win.scrollTop - scrollHeight) < 80)) {
-			this.blockScroll();
-			Player.populatePL (true, true, this.lastitem + 1);
-		} else if ((evt.wheelDelta > 0) && (this.win.scrollTop < 80)) {
-			this.blockScroll();
-			Player.populatePL (true, true, this.firstitem - 1);
+	handleEvent : function (event) {
+		switch (event.type) {
+			case 'touchstart' :
+				this.DnD.item = parseInt(findAttribute(event.target, 'item'));
+				this.DnD.element = this.rows[this.DnD.item];
+				Element.extend(this.DnD.element);
+				this.DnD.TID = window.setTimeout(this.DnD.start, 1500);
+				this.DnD.startY = event.touches[0].screenY;
+				this.DnD.scroll0 = this.page.posY;
+				this.preventSnap();
+				this.DnD.element.addClassName('depressed');
+console.log("init:" + this.DnD.item);
+//				event.stopPropagation();
+//				event.preventDefault();
+				break;
+			case 'touchmove' :
+				this.DnD.element.removeClassName('depressed');
+				if (this.DnD.TID)
+					this.DnD.cancel();
+				if (this.DnD.enabled)
+					this.DnD.move(event);
+				break;
+			case 'touchend' :
+				this.DnD.element.removeClassName('depressed');
+				if (this.DnD.TID)
+					this.DnD.cancel();
+				if (this.DnD.enabled)
+					this.DnD.finish(event);
+				this.allowSnap();
+				break;
+			case 'webkitTransitionEnd':
+				this.DnD.finishTrans();
+				break;
 		}
+//		event.stopPropagation();
+//		event.preventDefault();
+	},
+
+	DnD : {
+		TID : null,
+		shadow : null,
+		item : -1,
+		element : null,
+		enabled : false,
+		posY : 0,
+		startY : 0,
+		scroll0 : 0,
+		lastPos : 0,
+		offset : 0,
+		lastSnap : -1,
+		snapdir : 0,
+		lastevent : null,
+		inTransition : false,
+		
+		init : function() {
+			with (this) {
+				enabled = false;
+				TID = null;
+				shadow = $('PLEshadow');
+				element = null;
+				posY = 0;
+				startY = 0;
+				scroll0 = 0;
+				lastPos = 0;
+				snapdir = 0;
+				item = -1;
+				offset = 0;
+				lastSnap = -1;
+				lastevent = null;
+				inTransition = false;
+			}
+		},
+		
+		finish : function(event) {
+			window.removeEventListener('touchmove', Playlist, false);
+			window.removeEventListener('touchend', Playlist, false);
+			this.shadow.hide();
+			this.element.removeClassName('elevated');
+			
+			var target;
+			if (this.lastSnap == -1)
+				target = this.item;
+			else {
+				target = this.lastSnap;
+				if ((target == this.item - 1) && (this.snapdir == 1))
+					target++;
+				else if ((target == this.item + 1) && (this.snapdir == 2))
+					target--;
+			}
+console.log ("target:" + target + ".ti:" + this.item + ".sD:" + this.snapdir);
+			
+//			var target = (this.lastPos - this.offset) / _rowHeight;
+			var ti = this.item;
+//			if (target < this.item) target++;
+//			target = parseInt(target);
+			target = max (0, target);
+			target = min (Playlist.numrows, target);
+//console.log("target:" + target);
+
+			var sArray = [ 'playlist', 'move', this.item, target ];
+			var row;
+			if (target >= Player.status.pl_first && target <= Player.status.pl_last &&
+				ti > Player.status.pl_first && ti <= Player.status.pl_last)
+				Player.addInhibit(false);
+			else {
+				for (var i = min(ti, target); i <= max(ti, target); i++) {
+						row = Playlist.rows[i];
+						row.style.webkitTransitionDuration = "0";
+						row.style.webkitTransform = 'translateY(0px)';
+				}
+				callJSONRPC(sArray, function (r2) { Player.triggerUpdate(); });
+				this.lastSnap = -1;
+				return;
+			}
+
+			callJSONRPC(sArray, function (r2) {
+				with (Player.status) {
+//console.log("ti:" + ti + ".target:" + target + ".pf:" + pl_first);
+					var row = alltracks[ti];
+				 	alltracks.splice(ti - pl_first, 1);
+				 	alltracks.splice(target - pl_first, 0, row);
+				 	row = Playlist.rows[ti];
+				 	if (target >= Playlist.numrows)
+				 		Playlist.table.appendChild(row);
+				 	else
+				 		Playlist.table.insertBefore(row, Playlist.rows[(target > ti) ? target + 1 : target]);
+				 	var fi = min(ti, target);
+				 	var li = max(ti, target);
+				 	for (var i = fi; i <= li; i++) {
+				 		alltracks[i - pl_first]["playlist index"] = i;
+				 		row = Playlist.rows[i];
+/*					 	row.setAttribute('item', i);
+					 	row.down('td', 0).update(i + 1);
+						row.style.webkitTransitionDuration = "0s";
+						row.style.webkitTransform = 'translateY(0px)';*/
+						Playlist.updateRow(i, true);
+					}
+					if (ti == index)
+						index = target;
+					else if (index > ti && index <= target)
+						index--;
+					else if (index < ti && index >= target)
+						index ++;
+						
+					Playlist.updateIndex();
+					Playlist.cleanupChange(ti, false);
+				}
+				this.lastSnap = -1;
+			}, function (r2) { Player.resetInhibit(false); });		
+		},
+		
+		finishTrans : function() {
+			Playlist.page.elPage.removeEventListener('webkitTransitionEnd', Playlist, false);
+			this.inTransition = false;
+			this.move(this.lastevent);
+		},
+		
+		move : function (event) {
+			this.lastevent = event;
+			if (!this.inTransition) {
+				var delta = 0;
+				var eY = event.touches[0].screenY;
+				if (eY < 45)
+					delta = (eY < 25) ? (-2 * _rowHeight) : -_rowHeight;
+				else if (eY > 365)
+					delta = (eY > 390) ? (2* _rowHeight) : _rowHeight;
+				if (delta) {
+//console.log("scroll");
+					this.inTransition = true;
+					Playlist.page.elPage.addEventListener('webkitTransitionEnd', Playlist, false);
+					Playlist.page.vScroll(-delta, false, "0.2s");
+					this.element.style.webkitTransitionDuration = "0.2s";
+				} else
+					this.element.style.webkitTransitionDuration = "0";
+					
+				this.element.style.webkitTransform = 'translateZ(1px) translateX(-1px) translateY(' + 
+														(event.touches[0].screenY - this.startY -
+														Playlist.page.posY + this.scroll0 + delta) + 'px)';
+	
+				var abspos = event.touches[0].screenY - 45 - Playlist.page.posY;
+				if (abspos > this.lastPos) {
+					var olditem = parseInt((this.lastPos - this.offset) / _rowHeight);
+					var newitem = parseInt((abspos - this.offset) / _rowHeight);
+					if (newitem >= this.item) newitem++;
+					if (olditem >= this.item) olditem++;
+					for (var i = olditem; i < newitem; i++) {
+						var theitem = Playlist.rows[i];
+						if (i != this.item) {
+							theitem.style.webkitTransitionDuration = "0.2s";
+							this.lastSnap = i;
+							this.snapdir = 1;
+						}
+						if (i < this.item)
+							theitem.style.webkitTransform = 'translateY(0px)';
+						else if (i > this.item)
+							theitem.style.webkitTransform = 'translateY(-' + _rowHeight + 'px)';
+					}
+				} else {
+					var olditem = parseInt((this.lastPos - this.offset) / _rowHeight);
+					var newitem = parseInt((abspos - this.offset) / _rowHeight);
+					if (abspos < this.offset) newitem--;
+					if (newitem >= this.item) newitem++;
+					if (olditem >= this.item) olditem++;
+					for (var i = olditem; i > newitem; i--) {
+						var theitem = Playlist.rows[i];
+						if (i != this.item) {
+							theitem.style.webkitTransitionDuration = "0.2s";
+							this.lastSnap = i;
+							this.snapdir = 2;
+						}
+						if (i < this.item)
+							theitem.style.webkitTransform = 'translateY(' + _rowHeight + 'px)';
+						else if (i > this.item)
+							theitem.style.webkitTransform = 'translateY(0px)';
+					}
+				}
+				this.lastPos = abspos;
+			}
+			event.stopPropagation();
+			event.preventDefault();
+//console.log("move:" + event.touches[0].screenY + ".start:" + this.startY + ".s0:" + this.scroll0 + ".pY" + Playlist.page.posY);
+		},
+		
+		start : function() {
+			window.addEventListener('touchmove', Playlist, false);
+			window.addEventListener('touchend', Playlist, false);
+			with (Playlist.DnD) {
+//console.log("startDnD:" + enabled + ".dsw:" + shadow + ".deDo:" + element.down('td', 1));
+				element.removeClassName('depressed');
+				lastSnap = -1;
+				snapdir = 0;
+				TID = null;
+				element.addClassName('PLelevated');
+				shadow.show();
+//				shadow.style.webkitTransform = 'translateY(' + (item * _rowHeight - 18) + 'px)'; // workaround to fixup initial display
+				element.down('td', 1).appendChild(shadow);
+				shadow.style.webkitTransform = 'translateY(-18px)';
+				element.style.webkitTransitionDuration = "0";
+				element.style.webkitTransform = 'translateX(-1px) translateY(-1px)';
+				enabled = true;
+				lastPos = startY - 45 - scroll0;
+				offset = lastPos - item * _rowHeight;
+			}
+		},
+		
+		cancel : function () {
+			window.clearTimeout(this.TID);
+//console.log("cancel");
+			this.item = -1;
+			this.element = null;
+			this.TID = null;
+			this.enabled = false;
+			Playlist.allowSnap();
+		}
+
 	}
+	
 };
 
 function findAttribute(el, attr) {
@@ -370,34 +613,40 @@ function ScrollPage(scElem, stackpos, ipos, act, pEl, snf) {
 	this.istop = (ipos) ? false : true;
 }
 
-ScrollPage.prototype.vScroll = function (ndY, immed) {
+ScrollPage.prototype.vScroll = function (ndY, immed, tme) {
 	if (this.elPage.scrollHeight <= 320) return;
 	if (!immed) {
 		this.posY = this.posY + ndY;
 		this.posY = max(this.posY, 320 - this.elPage.scrollHeight);
 		this.posY = min(this.posY, 0);
-		this.elPage.style.webkitTransitionDuration = "0.5s";
+//		var tdel = parseInt(Math.sqrt(abs(ndY) / 320) * 5) / 10;
+//		this.elPage.webkitTransitionDelay = "-0.2s";
+		if (tme)
+			this.elPage.style.webkitTransitionDuration = tme;
+		else
+			this.elPage.style.webkitTransitionDuration = (ndY > 1500) ? "1.5s" : "1.0s";
+console.log("ndY:" + ndY + ".tme:" + tme);
 		this.elPage.style.webkitTransform = "translateY(" + this.posY + "px)";
 		if (this.scrollnotify)
 			this.scrollnotify(this.posY);
 	} else {
-		this.elPage.style.webkitTransitionDuration = "0s";
-		this.elPage.style.webkitTransform = "translateY(" + (this.posY + ndY) + "px)";
+		this.elPage.style.webkitTransitionDuration = "0";
+		this.elPage.style.webkitTransform = "translateY(" + (this.posY + ndY) + "px)";		
 	}
 //console.log("scrollY: " + this.posY + ".dy:" + ndY + ".sH:" + this.elPage.scrollHeight);
 }
 
-ScrollPage.prototype.vScrollTo = function (newY) {
+ScrollPage.prototype.vScrollTo = function (newY, tme) {
 	if (this.elPage.scrollHeight <= 320) {
 		this.posY = 0;
-		this.elPage.style.webkitTransitionDuration = "0s";
+		this.elPage.style.webkitTransitionDuration = "0";
 		this.elPage.style.webkitTransform = "translateY(" + this.posY + "px)";
 		return;
 	}
 	this.posY = newY;
 	this.posY = max(this.posY, 320 - this.elPage.scrollHeight);
 	this.posY = min(this.posY, 0);
-	this.elPage.style.webkitTransitionDuration = "0.5s";
+	this.elPage.style.webkitTransitionDuration = (tme) ? tme : "0.5s";
 	this.elPage.style.webkitTransform = "translateY(" + this.posY + "px)";
 	if (this.scrollnotify)
 		this.scrollnotify(this.posY);
@@ -411,16 +660,19 @@ ScrollPage.prototype.scrollTo = function (newX, inhibit, immed) {
 			if (this.array[last].istop && (abs(last - this.stackpos) > 1)) {
 //console.log("last:" + last + ".sp:" + this.stackpos);
 				this.array[last].scrollTo((last > this.stackpos) ? -320 : 320, true);
+				this.array[last].element.hide();
 			}
 	if (this.pos == newX) return;
 	if (!this.initial && this.action)
 		this.action();
+	this.element.show();
 	if (immed || (abs (this.pos - newX) < 32))
 		this.element.style.webkitTransitionDuration = "0s";
 	else
 		this.element.style.webkitTransitionDuration = "0.5s";
-	
+
 	this.element.style.webkitTransform = "translateX(" + newX + "px)";
+	
 
 //console.log("pos: " + newX + ". sp:" + this.stackpos);
 	if (newX == 0) {
@@ -705,6 +957,7 @@ window.onload= function() {
  	Player.init();
 	Player.triggerUpdate();
 	ScrollController.init();
+	globalOnload();
 }
 
 

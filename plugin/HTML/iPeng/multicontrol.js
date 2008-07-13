@@ -126,17 +126,17 @@ mplayer_control.prototype.draw = function () {
 
 	this.e_sync_do = new Element('img', {  onclick : 'Mplayer(this).startSync()',
 		src : webroot + 'html/images/sync.png',
-		style : 'display: block; float: right;' });
+		style : 'display: block; float: right; 	-webkit-transform: translateZ(2px);' });
 	this.e_sync = this.e_sync_do;
 	this.td_sync.appendChild (this.e_sync_do);
 	this.e_sync_active = new Element('img', { src : webroot + 'html/images/sync_active.png',
-		style : 'display: none; float: right;' });
+		style : 'display: none; float: right; -webkit-transform: translateZ(2px);' });
 	this.td_sync.appendChild (this.e_sync_active);
 	tr.appendChild(this.td_sync);
 
 	this.e_unsync = new Element('img', { onclick : 'Mplayer(this).unSync()',
 		src : webroot + 'html/images/unsync2.png',
-		style : 'display: none; float: right;' });
+		style : 'display: none; float: right; -webkit-transform: translateZ(1px);' });
 	this.topbuttons.appendChild (this.e_unsync);
 	this.e_sn = new Element('img', { onclick : 'Mplayer(this).disconnectSN()',
 		src : webroot + 'html/images/NetOn.png',

@@ -3,13 +3,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
       <head>
 	[%- IF (thispage == 'songinfo') || (thispage == 'artwork') || ( orientation == 1 && (levelName == 'album' || levelName == 'age')) %]
-	<meta name="viewport" content="width=480; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;"/>
+	<meta name="viewport" content="width=480; initial-scale=1.0; minimum-scale=1.0; maximum-scale=1.0; user-scalable=0;"/>
 	[%- page_vertical = 0;
 	ELSIF (thispage == 'statusnot') %]
 	<meta name="viewport" content="width=324; initial-scale=1.0; minimum-scale=1.0; maximum-scale=1.0; user-scalable=0;"/>
 	[%- page_vertical = 1;
 	ELSE %]
-	<meta name="viewport" content="width=320; initial-scale=1.0; minimum-scale=1.0; user-scalable=0;"/>
+	<meta name="viewport" content="width=320; initial-scale=1.0; minimum-scale=1.0; maximum-scale=1.0; user-scalable=0;"/>
 	[%- page_vertical = 1;
 	END %]
 	<link rel="apple-touch-icon" href="[% webroot %]html/images/apple-touch-icon.png"/>

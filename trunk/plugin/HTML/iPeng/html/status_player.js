@@ -254,7 +254,7 @@ var Player = {
 	
 	popMore : function () {
 		Player.pMTID = null;
-console.log("popMore:" + Player.status.tracks + ".lst:" + Player.status.pl_last + ".first:" + Player.status.pl_first);
+//console.log("popMore:" + Player.status.tracks + ".lst:" + Player.status.pl_last + ".first:" + Player.status.pl_first);
 		if (Player.status.pl_last < Player.status.tracks - 1)
 			Player.populatePL(true, true, Player.status.pl_last + 1);
 		else if (Player.status.pl_first > 0)
@@ -563,6 +563,7 @@ var ScrollController = {
 	hasmoved : false,
 	target : null,
 	Tstarted : false,
+	startTime : null,
 	direction : 0,		//null, 1: x, 2: y
 	
 	
@@ -572,6 +573,7 @@ var ScrollController = {
 		if (this.Tstarted) return;
 //console.log("start proc");
 		this.Tstarted = true;
+		this.startTime = new Date().getTime();
 		this.page = ScrollPage.prototype.find(findAttribute(evt.touches[0].target, "scrollPage"));
 //console.log("oldpage:" + ((op) ? op.stackpos : "null") + " .new:" + ((this.page) ? this.page.stackpos : "null"));
 		this.startX = evt.touches[0].screenX;
@@ -619,7 +621,8 @@ var ScrollController = {
 			this.finishX(evt);
 		else if (this.direction == 2)
 			this.finishY(evt);
-		else this.finishClick(evt);
+		else if ((new Date().getTime() - this.startTime) < 1900)
+			this.finishClick(evt);
 //		this.duplicateEvent(evt, 0, 0);
 		evt.preventDefault();
 	},
@@ -636,7 +639,8 @@ var ScrollController = {
 //		evt.stopPropagation();
 		var diff = evt.touches[0].screenY - this.startY;
 		this.posY = this.startY;
-		this.duplicateEvent(evt, 0, diff);
+//		this.duplicateEvent(evt, 0, diff);
+		evt.preventDefault();
 	},
 	
 	moveY : function(evt) {
@@ -649,13 +653,13 @@ var ScrollController = {
 	},
 	
 	finishX : function(evt) {
-		if (evt.changedTouches.item(0))
+/*		if (evt.changedTouches.item(0))
 			if (this.posX != evt.changedTouches[0].screenX) {
 				this.dx = evt.changedTouches[0].screenX - this.posX;
 				this.posX = evt.changedTouches[0].posX;
 				if (this.page)
 					this.page.scrollTo(this.posX - this.startX);
-			}
+			}*/
 		if (!this.page) return;
 		if ((this.posX - this.startX) > 130 || this.dx > 10) {
 			if (this.page.array[this.page.stackpos + 1])
@@ -672,16 +676,17 @@ var ScrollController = {
 	},
 	
 	finishY : function(evt) {
-		if (evt.changedTouches.item(0))
+/*		if (evt.changedTouches.item(0))
 			if (this.posY != evt.changedTouches[0].screenY) {
 				this.dy = evt.changedTouches[0].screenY - this.posY;
 				this.posY = evt.changedTouches[0].posY;
 				if (this.page)
 					this.page.scrollTo(this.posY - this.startY);
-			}
+			}*/
 		if (!this.page) return;
+//console.log("dy:" + this.dy + ".delta:" + scrollFactor * this.dy * parseInt(Math.sqrt(abs(this.dy))));
 		if (abs(this.dy) > 5)
-			this.page.vScroll(this.posY - this.startY + this.dy * abs(this.dy));//scrollFactor);
+			this.page.vScroll(this.posY - this.startY + this.dy * abs(this.dy) * scrollFactor);//scrollFactor);
 		else
 			this.page.vScroll(this.posY - this.startY);
 	},
@@ -705,7 +710,7 @@ var ScrollController = {
 		element.addEventListener('touchstart', this, false);
 		element.addEventListener('touchmove', this, false);
 		element.addEventListener('touchend', this, false);
-		element.addEventListener('webkitTransitionEnd', this, false);
+//		element.addEventListener('webkitTransitionEnd', this, false);
 	},
 	
 	addMBody : function() {

@@ -44,11 +44,11 @@ BLOCK StatusHeader -%]
 
 -%]
 <!--div style = "position: absolute; float: left; left: 0; top: 0; width: 324; z-index: 0"></div-->
-<div style = "position: relative; left: 0; width: 320;"> <!-- left: 2 -->
+<div id = "NowPlaying" style = "position: relative; left: 0; width: 320;"> <!-- left: 2 -->
 
 	<div id= 'iNowPlayingTopbar'></div>
 	
-	<div style = 'position: absolute; right: 4; top: 17; width: 44; z-index: 91;'>
+	<div style = 'position: absolute; right: 4; top: 17; width: 44; z-index: 91; -webkit-transform: translateZ(2px);'>
 	[% i = 0; WHILE i < 4 %]
 		<img id = 'pdote[% i %]' src = "[% webroot %]html/images/pagesdotempty.png" style="float: right[%- 
 			IF (i == 1) || (i == 3); "; display: none"; END; 
@@ -57,7 +57,7 @@ BLOCK StatusHeader -%]
 	[% i = i + 1; END %]
 	</div>
 
-	<div class = 'iTopHomeDiv' onClick='returnToViewPage();'>
+	<div class = 'iTopHomeDiv' style = '-webkit-transform: translateZ(2px);' onClick='returnToViewPage();'>
 		<span class="blackLeft iButton" style = "color: white; padding: 6; padding-left: 0; padding-right: 4; text-align: center;"><img src = "[% webroot %]html/images/left.png"'></span>
 	</div>
 
@@ -65,21 +65,16 @@ BLOCK StatusHeader -%]
 		[% INCLUDE song_info_display %]
 	</div>
 	
-	<div id = 'extWrapper' class = 'coversquare darksquare' style = 'display: block; z-index: 12; overflow: scroll; -webkit-transform: translateX(-320px);'>
+	<div id = 'extWrapper' class = 'coversquare darksquare' style = 'display: block; z-index: 1; overflow: scroll; -webkit-transform: translateX(-320px);'>
 		<div id = 'extension'></div>
 	</div>
 	
-	<div id = 'NPwrapperBody' class = 'coversquare' style = 'display: block; z-index: 13; left: 0; overflow: scroll; -webkit-transform: translateX(-320px);'>
+	<div id = 'NPwrapperBody' class = 'coversquare' style = 'display: block; z-index: 1; left: 0; overflow: scroll; -webkit-transform: translateX(-320px);'>
 		<div id = 'NPmainbody'></div>
 	</div>
 
 	<div id = 'playlistNow' class = 'coversquare' style = '-webkit-transform: translateX(320px);'> <!--  onmousewheel = 'Playlist.evtWheel(event);' onscroll = 'Playlist.evtWheel(event);' onscroll is for debugging on firefox -->
-		[% INCLUDE playlist_display %]
-	</div>
-
-	<div id = 'iNowBottombar'>
-		[% INCLUDE player_controls;
-		INCLUDE player_name;
+		[% INCLUDE playlist_display;
 	'</div>';
 
 	trackstat = "PLUGIN_TRACKSTAT" | getstring;
@@ -113,8 +108,16 @@ BLOCK StatusHeader -%]
 		
 		'</div>';
 	'</div>';
+	
+	%]<div id = 'iNowBottombar'>[%
+		INCLUDE player_controls;
+		INCLUDE player_name;
+	'</div>';
 
-	%]<div id = 'textOSD' class = 'iNowTextInfo' style = 'display: none'></div>[%
+
+
+	%]<div id = 'textOSD' class = 'iNowTextInfo' style = 'display: none; -webkit-transform: translateZ(1px)'></div>
+	<div id = "PLEshadow" class = "PLShadowElement" style = "display: none"></div>[%
 
 '</div>';
 '</body>';
@@ -304,6 +307,6 @@ END;
 
 
 BLOCK playlist_display %]
-<table id = 'playlisttableNow' width = '100%' cellspacing = '0' cellpadding = "0" style = "font-weight: bold; border-collapse: collapse;"></table>
+<table id = 'playlisttableNow' width = '100%' cellspacing = '0' cellpadding = "0" style = "font-weight: bold; border-collapse: collapse; -webkit-transition-timing-function: cubic-bezier(0.1,1.0,0.58,1.0);"></table>
 [% END %]
 

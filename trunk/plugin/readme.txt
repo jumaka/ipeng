@@ -1,4 +1,4 @@
-This is iPeng v0.4, an iPhone/iTouch plugin/skin for SqueezeCenter/SlimServer
+This is iPeng v0.5, an iPhone/iTouch plugin/skin for SqueezeCenter/SlimServer
 Copyright 2007, 2008, Joerg Schwieder, Erland Isaksson WWW.PENGUINLOVESMUSIC.COM
 
 License

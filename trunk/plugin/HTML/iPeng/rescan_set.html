@@ -10,6 +10,7 @@ rescanStrings = { 	cleanup1 : '[% 'CLEANUP1_PROGRESS' | string %]',
 					itunes_playlists : '[% 'ITUNES_PLAYLISTS_PROGRESS' | string %]',
 					mergeva : '[% 'MERGEVA_PROGRESS' | string %]',
 					musicmagic : '[% 'MUSICMAGIC_PROGRESS' | string %]',
+					musicip : '[% 'MUSICIP_PROGRESS' | string %]',
 					importer : '[% 'IMPORTER_PROGRESS' | string %]',
 					artwork : '[% 'ARTWORK_PROGRESS' | string %]',					
 					playlist : '[% 'PLAYLIST_PROGRESS' | string %]' };
@@ -34,10 +35,13 @@ checkRescan = function () {
 					case "rescan": break;
 					case "totaltime": break;
 					default:
-						dummy = false;
 						if (pair.value != 100) {
 							$('rescan_bar').style.width = parseInt((pair.value >= 0) ? pair.value * 2.82 : 0);
-							$('rescan_status').textContent = rescanStrings[pair.key];
+							if (rescanStrings[pair.key]) {
+								$('rescan_status').textContent = rescanStrings[pair.key];
+								dummy = false;
+							} else
+console.log ("unknown key:" + pair.key);
 						}
 					break;
 				}

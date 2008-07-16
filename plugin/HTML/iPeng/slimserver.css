@@ -889,7 +889,7 @@ div#FullBG {
 	font-size: 17;
 	font-weight: bold;
 
-/*	-webkit-transition-property: -webkit-transform;*/
+	-webkit-transition-property: -webkit-transform;
 /*	-webkit-transition-timing-function: cubic-bezier(0.1,1.0,0.58,1.0); */
 	-webkit-transform-style: flat;
 	-webkit-transition-timing-function: ease-out; 
@@ -924,6 +924,7 @@ div#iNowPlayingTopbar {
 	width: 320;
 	overflow: hidden;
 	z-index: 90;	
+	-webkit-transform-style: flat;
 	-webkit-transform: translateZ(2px);
 }
 
@@ -961,6 +962,7 @@ div#coverart, div#radioart, div#emptyplayer {
 	text-align: center;
 	background-image: url(html/images/textBG.png);
 	background-repeat: no-repeat;
+	-webkit-transform: translateZ(1px);
 }
 
 div#iNowBottombar {
@@ -976,6 +978,8 @@ div#iNowBottombar {
 	width: 320;
 	overflow: hidden;
 	z-index: 20;	
+	-webkit-transform-style: flat;
+	-webkit-transform: translateZ(1px);
 }
 
 
@@ -983,6 +987,8 @@ div#iNowBottombar {
 	opacity: 0.9;
 	z-index: 2;
 	display: none;
+	-webkit-transform-style: flat;
+	-webkit-transform: translateZ(1px);
 }
 
 .iNowWrapperClass {
@@ -993,6 +999,8 @@ div#iNowBottombar {
 	border: 0;	
 	overflow: hidden;
 	display: none;
+	-webkit-transform-style: flat;
+	-webkit-transform: translateZ(1px);
 }
 
 .iNowOBarTop {
@@ -1110,6 +1118,7 @@ div#trackstat_display {
 	overflow-x: hidden;
 	overflow-y: visible;
     -webkit-box-sizing: border-box;
+	-webkit-transform: translateZ(2px);
 }
 
 .NPPRow {
@@ -1180,6 +1189,8 @@ tr.even, td.even, div.even {
 .depressed {
 	background-color: #002f7c !important;
 	background-image: url(html/images/darkselection38.png) !important;
+    background-repeat: repeat-x;
+    background-position: left bottom;
 	opacity: 1 !important;
 	-webkit-transition-duration: 0;
 	-webkit-transform: translateZ(1px) !important;

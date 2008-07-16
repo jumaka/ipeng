@@ -44,7 +44,7 @@ BLOCK StatusHeader -%]
 
 -%]
 <!--div style = "position: absolute; float: left; left: 0; top: 0; width: 324; z-index: 0"></div-->
-<div id = "NowPlaying" style = "position: relative; left: 0; width: 320;"> <!-- left: 2 -->
+<div id = "NowPlaying" style = "position: relative; left: 0; width: 320; -webkit-transform-style: flat;"> <!-- left: 2 -->
 
 	<div id= 'iNowPlayingTopbar'></div>
 	
@@ -140,12 +140,15 @@ BLOCK repeat_settings %]
 		onClick = "Player.controls.evtRepeatShuffle('toggle', 'repeat');"></div>
 	<div id = 'repeatcontrol_custom' 
 		onClick = "Player.controls.evtRepeatShuffle('custom', 'repeat');" 
-		style = 'display: none; overflow: hidden; width: 32; height: 22;'></div>
+		style = 'display: none; overflow: hidden;
+				 width: 32; height: 22;
+				 background-repeat: no-repeat;
+				 -webkit-transform: translateZ(3px);'></div>
 [% END;
 
 BLOCK shuffle_settings %]
 	<div id = 'shufflecontrol_content' 
-		style = "background-image: url([% webroot %]html/images/shuffle.png); 
+		style = "background-image: url([% webroot %]html/images/shuffle.png);
 				 width: 27; height: 21; overflow: hidden;
 				 background-position: left [% shuffle * 21 %]"
 		title ='[% SWITCH shuffle;
@@ -156,7 +159,10 @@ BLOCK shuffle_settings %]
 		onClick = "Player.controls.evtRepeatShuffle('toggle', 'shuffle');"></div>
 	<div id = 'shufflecontrol_custom' 
 		onClick = "Player.controls.evtRepeatShuffle('custom', 'shuffle');" 
-		style = 'display: none; overflow: hidden; width: 32; height: 22;'></div>
+		style = 'display: none; overflow: hidden;
+				 width: 32; height: 22;
+				 -webkit-transform: translateZ(3px);
+				 background-repeat: no-repeat;'></div>
 [% END;
 
 BLOCK cover_art_display %]

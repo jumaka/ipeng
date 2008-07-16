@@ -317,14 +317,16 @@ console.log("init:" + this.DnD.item);
 //				event.preventDefault();
 				break;
 			case 'touchmove' :
-				this.DnD.element.removeClassName('depressed');
+				if (this.DnD.element)
+					this.DnD.element.removeClassName('depressed');
 				if (this.DnD.TID)
 					this.DnD.cancel();
 				if (this.DnD.enabled)
 					this.DnD.move(event);
 				break;
 			case 'touchend' :
-				this.DnD.element.removeClassName('depressed');
+				if (this.DnD.element)
+					this.DnD.element.removeClassName('depressed');
 				if (this.DnD.TID)
 					this.DnD.cancel();
 				if (this.DnD.enabled)
@@ -385,12 +387,12 @@ console.log("init:" + this.DnD.item);
 				target = this.item;
 			else {
 				target = this.lastSnap;
-				if ((target == this.item - 1) && (this.snapdir == 1))
+				if ((target < this.item) && (this.snapdir == 1))
 					target++;
-				else if ((target == this.item + 1) && (this.snapdir == 2))
+				else if ((target > this.item) && (this.snapdir == 2))
 					target--;
 			}
-console.log ("target:" + target + ".ti:" + this.item + ".sD:" + this.snapdir);
+//console.log ("target:" + target + ".ti:" + this.item + ".sD:" + this.snapdir);
 			
 //			var target = (this.lastPos - this.offset) / _rowHeight;
 			var ti = this.item;
@@ -463,6 +465,7 @@ console.log ("target:" + target + ".ti:" + this.item + ".sD:" + this.snapdir);
 			if (!this.inTransition) {
 				var delta = 0;
 				var eY = event.touches[0].screenY;
+//console.log("inside:" + eY);
 				if (eY < 45)
 					delta = (eY < 25) ? (-2 * _rowHeight) : -_rowHeight;
 				else if (eY > 365)
@@ -521,7 +524,8 @@ console.log ("target:" + target + ".ti:" + this.item + ".sD:" + this.snapdir);
 			}
 			event.stopPropagation();
 			event.preventDefault();
-//console.log("move:" + event.touches[0].screenY + ".start:" + this.startY + ".s0:" + this.scroll0 + ".pY" + Playlist.page.posY);
+//console.log("move:" + event.touches[0].screenY + ".start:" + this.startY + ".s0:" + this.scroll0 + ".pY" + Playlist.page.posY + ".lSnap:" + this.lastSnap);
+//console.log("pos:" + abspos + ".lP:" + this.lastPos + ".sD:" + this.snapdir);
 		},
 		
 		start : function() {
@@ -957,7 +961,7 @@ window.onload= function() {
  	Player.init();
 	Player.triggerUpdate();
 	ScrollController.init();
-	globalOnload();
+//	globalOnload();
 }
 
 

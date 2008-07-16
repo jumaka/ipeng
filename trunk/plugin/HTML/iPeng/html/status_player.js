@@ -710,7 +710,7 @@ var ScrollController = {
 		element.addEventListener('touchstart', this, false);
 		element.addEventListener('touchmove', this, false);
 		element.addEventListener('touchend', this, false);
-//		element.addEventListener('webkitTransitionEnd', this, false);
+		element.addEventListener('webkitTransitionEnd', this, false);
 	},
 	
 	addMBody : function() {

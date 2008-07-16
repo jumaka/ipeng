@@ -47,7 +47,7 @@ var Playlist = {
 			lastitem = -2;
 			playing = -1;
 			snapinhibit = false;
-			page = ScrollPage.prototype.find(0);
+			page = NowPlayingStack.find(0);
 			DnD.init();
 		}
 	},
@@ -603,18 +603,20 @@ function toggleOverlays() {
 	}
 }
 
-function ScrollPage(scElem, stackpos, ipos, act, pEl, snf) {
+function ScrollPage(scElem, ctrl, stackpos, parent, ipos, act, pEl, snf) {
 	this.element = scElem;
 //console.log("initSP: " + stackpos + ".:." + pEl + ".:." + scElem + ".snf:" + snf);
 	this.elPage = (pEl) ? pEl : this.element;
 	scElem.setAttribute("scrollPage", stackpos);
 	this.stackpos = stackpos;
-	this.array[stackpos] = this;
+	this.Control = ctrl;
+	this.Control.addPage(this, stackpos);
 	this.pos = ipos;
 	this.action = act;
 	this.scrollnotify = snf;
 	this.posY = 0;
 	this.istop = (ipos) ? false : true;
+	this.parent = parent;
 }
 
 ScrollPage.prototype.vScroll = function (ndY, immed, tme) {
@@ -629,7 +631,7 @@ ScrollPage.prototype.vScroll = function (ndY, immed, tme) {
 			this.elPage.style.webkitTransitionDuration = tme;
 		else
 			this.elPage.style.webkitTransitionDuration = (ndY > 1500) ? "1.5s" : "1.0s";
-console.log("ndY:" + ndY + ".tme:" + tme);
+//console.log("ndY:" + ndY + ".tme:" + tme);
 		this.elPage.style.webkitTransform = "translateY(" + this.posY + "px)";
 		if (this.scrollnotify)
 			this.scrollnotify(this.posY);
@@ -657,90 +659,118 @@ ScrollPage.prototype.vScrollTo = function (newY, tme) {
 }
 
 ScrollPage.prototype.scrollTo = function (newX, inhibit, immed) {
-	var ttop = 0;
-	var newX = newX;
-	if (!inhibit)
-		for (var last = 0; last < this.array.length; last++)
-			if (this.array[last].istop && (abs(last - this.stackpos) > 1)) {
-//console.log("last:" + last + ".sp:" + this.stackpos);
-				this.array[last].scrollTo((last > this.stackpos) ? -320 : 320, true);
-				this.array[last].element.hide();
-			}
-	if (this.pos == newX) return;
-	if (!this.initial && this.action)
-		this.action();
-	this.element.show();
-	if (immed || (abs (this.pos - newX) < 32))
-		this.element.style.webkitTransitionDuration = "0s";
-	else
-		this.element.style.webkitTransitionDuration = "0.5s";
+	return this.Control.scrollTo(this, newX, inhibit, immed);
+}
 
-	this.element.style.webkitTransform = "translateX(" + newX + "px)";
+
+//ScrollPage.prototype.array = new Array;
+
+var NowPlayingStack = {
+	stack : [],
+	maxstack : 0,
+
+	addPage : function (page, id) {
+		this.stack[id] = page;
+		this.maxstack = this.stack.length;
+	},
 	
+	find : function (id) {
+		return this.stack[id];
+	},
+	
+	left : function (id) {
+		if (id < this.maxstack - 1)
+			return this.stack[id + 1];
+	},
+	
+	right : function (page) {
+		if (id > 0)
+			return this.stack[id - 1];
+	},
 
-//console.log("pos: " + newX + ". sp:" + this.stackpos);
-	if (newX == 0) {
-		this.istop = true;
-		for (var last = 0; last < this.array.length; last++)
-			if (this.stackpos != last)
-				this.array[last].istop = false;
+	scrollTo: function (page, newX, inhibit, immed) {
+console.log("scrollTo:" + page.stackpos + ".nX:" + newX + ".ih:" + inhibit + ".im:" + immed);
+		var ttop = 0;
+		var newX = newX;
+		if (!inhibit)
+			for (var last = 0; last < this.maxstack; last++)
+				if (this.stack[last].istop && (abs(last - page.stackpos) > 1)) {
+console.log("last:" + last + ".sp:" + this.stackpos);
+					this.scrollTo(this.stack[last], (last > page.stackpos) ? -320 : 320, true);
+					this.stack[last].element.hide();
+				}
+		if (page.pos == newX) return true;
+		if (!page.initial && page.action)
+			page.action();
+		page.element.show();
+		if (immed || (abs (page.pos - newX) < 32))
+			page.element.style.webkitTransitionDuration = "0s";
+		else
+			page.element.style.webkitTransitionDuration = "0.5s";
+	
+		page.element.style.webkitTransform = "translateX(" + newX + "px)";
+		
+	
+	//console.log("pos: " + newX + ". sp:" + this.stackpos);
+		if (newX == 0) {
+			page.istop = true;
+			for (var last = 0; last < this.maxstack; last++)
+				if (page.stackpos != last)
+					this.stack[last].istop = false;
+		}
+	
+		if (inhibit) {
+			page.pos = newX;
+			return true;
+		}
+		var otherone = null;
+		var thirdone = null;
+		var idec = newX;
+		if (!newX) idec = page.pos;
+		if (idec > 0) {
+			otherone = this.stack[page.stackpos + 1];
+			if (page.stackpos)
+				thirdone = this.stack[page.stackpos - 1];
+		}
+		else if (page.stackpos) {
+			otherone = this.stack[page.stackpos - 1];
+			thirdone = this.stack[page.stackpos + 1];
+		}
+		if (otherone)
+			otherone.scrollTo (((idec > 0) ? -320 : 320) + newX, true);
+		if (thirdone)
+			thirdone.scrollTo ((idec > 0) ? 320 : -320, true, true);
+		page.pos = newX;
+		return true;
+	},
+
+	fixDots : function () {
+		var temp;
+		for (var last = 0; last < NowPlayingStack.maxstack; last++)
+			if (NowPlayingStack.stack[last].istop) {
+				temp = last;
+				Element.show("pdotb" + NowPlayingStack.stack[last].stackpos);
+				Element.hide("pdote" + NowPlayingStack.stack[last].stackpos);
+			} else {
+				Element.show("pdote" + NowPlayingStack.stack[last].stackpos);
+				Element.hide("pdotb" + NowPlayingStack.stack[last].stackpos);
+			}
+		for (var last = 0; last < NowPlayingStack.maxstack; last++)
+			if (abs(last - temp) > 1)
+				NowPlayingStack.stack[last].element.hide();
+			else 
+				NowPlayingStack.stack[last].element.show();
+	},
+
+	doSwipe : function (sp) {
+		var temp = this.find(sp);
+console.log("doSwipe:" + sp + ".page:" + temp);
+		if (temp) {
+			temp.scrollTo(0);
+			window.setTimeout(NowPlayingStack.fixDots, 500);
+		}
 	}
-
-	if (inhibit) {
-		this.pos = newX;
-		return;
-	}
-	var otherone = null;
-	var thirdone = null;
-	var idec = newX;
-	if (!newX) idec = this.pos;
-	if (idec > 0) {
-		otherone = this.array[this.stackpos + 1];
-		if (this.stackpos)
-			thirdone = this.array[this.stackpos - 1];
-	}
-	else if (this.stackpos) {
-		otherone = this.array[this.stackpos - 1];
-		thirdone = this.array[this.stackpos + 1];
-	}
-	if (otherone)
-		otherone.scrollTo (((idec > 0) ? -320 : 320) + newX, true);
-	if (thirdone)
-		thirdone.scrollTo ((idec > 0) ? 320 : -320, true, true);
-	this.pos = newX;
-}
-
-ScrollPage.prototype.fixDot = function (val) {
-	if (this.istop || val) {
-		Element.show("pdotb" + this.stackpos);
-		Element.hide("pdote" + this.stackpos);
-	} else {
-		Element.show("pdote" + this.stackpos);
-		Element.hide("pdotb" + this.stackpos);
-	}
-}
-
-ScrollPage.prototype.fixDots = function () {
-	for (var last = 0; last < ScrollPage.prototype.array.length; last++)
-		ScrollPage.prototype.array[last].fixDot();
-}
-
-ScrollPage.prototype.find = function (sp) {
-	if (sp <= this.array.length)
-		return this.array[sp];
-	else
-		return null;
-}
-
-ScrollPage.prototype.doSwipe = function (sp) {
-	var temp = ScrollPage.prototype.find(sp);
-	if (temp) {
-		temp.scrollTo(0);
-		window.setTimeout(ScrollPage.prototype.fixDots, 500);
-	}
-}
-
-ScrollPage.prototype.array = new Array;
+};
 
 function PluginCmd(tpe, id, url, params, cli, rF) {
 	this.type = tpe;
@@ -941,19 +971,19 @@ var Plugins = {
 
 mbON = false;
 function toggleMainbody(nodot) {
-	if (ScrollPage.prototype.array.length < 4) {
+	if (NowPlayingStack.maxstack < 4) {
 		ScrollController.addMBody();
 		Element.hide("pdotb3");
 		Element.show("pdote3");
-	} else ScrollPage.prototype.array[3].vScrollTo(0);
-	ScrollPage.prototype.doSwipe(3)
+	} else NowPlayingStack.find(3).vScrollTo(0);
+	NowPlayingStack.doSwipe(3)
 }
 
 fsOvON = false;
 
 window.onload= function() {
 //console.log("onLoad");
- 	window.scrollTo (2,1);
+ 	window.scrollTo (0,1);
 // 	if (navigator.userAgent.include('3.0 Mobile'))
 // 		xchgdiv = 'xchgdiv114';
 //alert(navigator.userAgent);

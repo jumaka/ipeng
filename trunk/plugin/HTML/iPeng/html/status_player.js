@@ -40,6 +40,25 @@ var Player = {
 	progressCtrl : null,
 	pMTID : null,
 	
+	quickUpdate : {
+		TID : null,
+		time : null,
+		
+		trigger : function () {
+			var temp = new Date().getTime();
+			if (Player.quickUpdate.time)
+				if (temp - Player.quickUpdate.time > 10000)
+					Player.triggerUpdate();
+			Player.quickUpdate.time = temp;
+		},
+		
+		start : function () {
+			if (this.TID)
+				window.clearInterval(TID);
+			this.TID = window.setInterval(Player.quickUpdate.trigger, 1000);
+		}
+	},
+	
 	emptyTrack : {
 		artwork_url : webroot + 'html/images/empty.png',
 		artist : " ",
@@ -113,7 +132,7 @@ var Player = {
 			this.prgTimer = null;
 		}
 	},
-	
+		
 	updatePlayerName : function (newname) {
 		this.status.player_name = newname;
 		$('playerName').update(newname);
@@ -427,6 +446,7 @@ var Player = {
 		var sArray = [ 'status', '-', 1, infoFewtags ];
 		Player.controls.doExec(sArray);
 		Player.regularTimeout();
+		Player.quickUpdate.start();
 		Playlist.testSnap(false);
 //		Player.progressTimer();
 	},
@@ -574,7 +594,10 @@ var ScrollController = {
 //console.log("start proc");
 		this.Tstarted = true;
 		this.startTime = new Date().getTime();
-		this.page = ScrollPage.prototype.find(findAttribute(evt.touches[0].target, "scrollPage"));
+		var sp = findAttribute(evt.touches[0].target, "scrollPage");
+		this.page = NowPlayingStack.find(sp);
+//		if (!this.page)
+//			this.page = HomeStack.find(sp);
 //console.log("oldpage:" + ((op) ? op.stackpos : "null") + " .new:" + ((this.page) ? this.page.stackpos : "null"));
 		this.startX = evt.touches[0].screenX;
 		this.startY = evt.touches[0].screenY;
@@ -621,7 +644,7 @@ var ScrollController = {
 			this.finishX(evt);
 		else if (this.direction == 2)
 			this.finishY(evt);
-		else if ((new Date().getTime() - this.startTime) < 1900)
+		else if ((new Date().getTime() - this.startTime) < 1400)
 			this.finishClick(evt);
 //		this.duplicateEvent(evt, 0, 0);
 		evt.preventDefault();
@@ -629,11 +652,12 @@ var ScrollController = {
 	
 	transitionDone : function(evt) {
 		if (this.direction == 1)
-			ScrollPage.prototype.fixDots();
+			NowPlayingStack.fixDots();
 	},
 	
 	moveX : function(evt) {
 //console.log("moveX" + (this.posX - this.startX) + ".pg:" + this.page);
+//console.log("mXkeys:" + Object.values(this.page));
 		if (this.page)
 			this.page.scrollTo(this.posX - this.startX);
 //		evt.stopPropagation();
@@ -662,7 +686,8 @@ var ScrollController = {
 			}*/
 		if (!this.page) return;
 		if ((this.posX - this.startX) > 130 || this.dx > 10) {
-			if (this.page.array[this.page.stackpos + 1])
+//			if (this.page.array[this.page.stackpos + 1])
+			if (this.page.Control.left(this.page.stackpos))
 				this.page.scrollTo(320);
 			else
 				this.page.scrollTo(0);
@@ -706,7 +731,7 @@ var ScrollController = {
 	},
 	
 	addBox : function(element, stack, pos, act, pEl, snf) {
-		new ScrollPage(element, stack, pos, act, pEl, snf);
+		new ScrollPage(element, NowPlayingStack, stack, null, pos, act, pEl, snf);
 		element.addEventListener('touchstart', this, false);
 		element.addEventListener('touchmove', this, false);
 		element.addEventListener('touchend', this, false);
@@ -725,16 +750,22 @@ var ScrollController = {
 											 evt.touches[0].screenY - yd)) 
 					: new TouchList;
 		var tT = (evt.targetTouches.item(0)) ? 
-					document.createTouchList(document.createTouch(evt.view, evt.targetTouches[0].target,
-											 evt.targetTouches[0].identifier, evt.targetTouches[0].pageX - xd,
-											 evt.targetTouches[0].pageY - yd, evt.targetTouches[0].screenX - xd,
-											 evt.targetTouches[0].screenY - yd)) 
+					document.createTouchList(document.createTouch(evt.view,
+											evt.targetTouches[0].target,
+											evt.targetTouches[0].identifier,
+											evt.targetTouches[0].pageX - xd,
+											evt.targetTouches[0].pageY - yd,
+											evt.targetTouches[0].screenX - xd,
+											evt.targetTouches[0].screenY - yd)) 
 					: new TouchList;
 		var cT = (evt.changedTouches.item(0)) ?
-					document.createTouchList(document.createTouch(evt.view, evt.changedTouches[0].target,
-											 evt.changedTouches[0].identifier, evt.changedTouches[0].pageX - xd,
-											 evt.changedTouches[0].pageY - yd, evt.changedTouches[0].screenX - xd,
-											 evt.changedTouches[0].screenY - yd))
+					document.createTouchList(document.createTouch(evt.view,
+											evt.changedTouches[0].target,
+											evt.changedTouches[0].identifier,
+											evt.changedTouches[0].pageX - xd,
+											evt.changedTouches[0].pageY - yd,
+											evt.changedTouches[0].screenX - xd,
+											evt.changedTouches[0].screenY - yd))
 					: new TouchList;
 		evt.preventDefault();
 //		evt.stopPropagation();

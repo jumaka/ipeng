@@ -52,7 +52,7 @@ BLOCK StatusHeader -%]
 	[% i = 0; WHILE i < 4 %]
 		<img id = 'pdote[% i %]' src = "[% webroot %]html/images/pagesdotempty.png" style="float: right[%- 
 			IF (i == 1) || (i == 3); "; display: none"; END; 
-			-%]" onclick="ScrollPage.prototype.doSwipe([% i %]);"/><img id = 'pdotb[% i %]' src="[% webroot %]html/images/pagesdotblue.png" style = "[%-
+			-%]" onclick="NowPlayingStack.doSwipe([% i %]);"/><img id = 'pdotb[% i %]' src="[% webroot %]html/images/pagesdotblue.png" style = "[%-
 			IF i != 1; "display: none; "; END %]float: right"/>
 	[% i = i + 1; END %]
 	</div>

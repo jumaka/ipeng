@@ -1,0 +1,96 @@
+
+<div id = "playbackctrl">
+<style>
+embed, object{ 
+	position: relative;
+	z-index: 15;
+	width: 320px;
+	height: 45px;
+	float: left; 
+	-webkit-box-sizing: border-box;
+	-webkit-transform: translateZ(1px);
+}
+
+.pcdiv {
+	width : 320;
+	min-height: 45;
+	-webkit-transform: translateZ(1px);
+}
+
+.pcline {
+	position: relative;
+	width: 320;
+	min-height: 40;
+/*	font-size: */
+	border-bottom: 1px solid #333333;
+/*	float: left;*/
+	-webkit-box-sizing: border-box;
+}
+
+.pcnum {
+	max-width: 30;
+	min-width: 30;
+	padding-left: 3;
+	float: left;
+	-webkit-box-sizing: border-box;
+	overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.pctext {
+	max-width: 240;
+	min-width: 240;
+	padding: 10 10 10 10;
+	float: left;
+	border-left: 1px solid #333333;
+	-webkit-box-sizing: border-box;
+	overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.pctime {
+	max-width: 50;
+	min-width: 50;
+	padding-right: 3;
+	border-left: 1px solid #333333;
+	float: left;
+	-webkit-box-sizing: border-box;
+	overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    text-align: right;
+}
+
+.pcdepressed {
+	background-color: #002f7c !important;
+	background-image: url(html/images/darkselection38.png) !important;
+    background-repeat: repeat-x;
+    background-position: left bottom;
+	opacity: 1 !important;
+}
+
+.pceven {
+	background-color: #181818; /*d0d0d0;*/
+	color: white;		/*#eeeeee;*/
+	padding-top: 10px;
+	padding-bottom: 10px;
+	opacity: 0.75;
+	-webkit-transform: translateZ(1px);
+}
+
+.pcodd {
+	background-color: none; /* black; */
+	color: #f0f0f0;		/*#e6e6e6;*/
+	padding-top: 10px;
+	padding-bottom: 10px;
+	opacity: 0.75;
+	-webkit-transform: translateZ(1px);
+}
+
+</style>
+</div>
+<script>
+[% PROCESS playbackctrl.js; %]
+</script>

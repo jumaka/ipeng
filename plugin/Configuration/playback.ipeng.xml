@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<configuration>
+	<section id="nowplaying">
+		<subsection id="playback">
+			<weight>20</weight>
+			<command id="PlaybackControl">
+				<description>iPeng iPhone Local Playback Control. Play songs from playlist on your iPhone/iPod</description>
+				<weight>18</weight>
+				<height>30</height>
+				<name>iPeng Local Playback</name>
+				<!--icon>html/images/QTAudio.png</icon-->
+				<icon>html/images/ipodice.png</icon>
+				<type>code</type>
+				<refreshJS>PlaybackControl.prototype.init();</refreshJS>
+				<url>status.html</url>
+				<parameters>
+					<other>playbackControl=1</other>
+					<player>player</player>
+				</parameters>
+			</command>
+		</subsection>
+	</section>
+</configuration>

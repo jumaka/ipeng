@@ -1,5 +1,6 @@
 PlaybackControl = function() {
 	this.currentTrack = -1;
+	this.highlight = -1;
 	this.url = null;
 	this.firsttrack = -1;
 	this.lasttrack = -1;
@@ -32,8 +33,10 @@ PlaybackControl.prototype.doInit = function(isnew) {
 					  scale : 'tofit' });
 		var file = new Element('embed', {
 					src : '/music/' + Player.status.track.id + '/download.mp3',
-					id: 'pcmovie',
+//					QTNEXT1 : '/music/' + (Player.status.track.id + 1) + '/download.mp3',
+					id: 'pcmovie', name: 'pcmovie',
 					width : '320', height : '45',
+					hidden : 'true',
 					postdomevents : 'true',
 	//				autoplay : 'true',
 					bgcolor : "black",
@@ -45,6 +48,7 @@ PlaybackControl.prototype.doInit = function(isnew) {
 		this.pbctrl.appendChild(pdiv);
 		
 		this.currentTrack = Player.status.index;
+		this.highlight = Player.status.index;
 		
 		QTobj.addEventListener('qt_ended', this, false);
 		
@@ -65,22 +69,29 @@ PlaybackControl.prototype.doInit = function(isnew) {
 			irow++;
 			var rclass = (i % 2) ? " pcodd" : " pceven";
 			if (irow > this.lasttrack) {
-				line = new Element('div' , { 'class' : 'pcline', id : 'pc' + i, item : i, itemid : row.id });
-				pdiv = new Element('div', { 'class' : 'pcnum' + rclass}).update(i + 1);
+				line = new Element('div' , { 'class' : 'pcline' + rclass, id : 'pc' + i, item : i, itemid : row.id });
+				
+				if (i == this.highlight)
+					line.addClassName('pcselected');
+				pdiv = new Element('div', { 'class' : 'pcnum'}).update(i + 1);
 	
 				line.addEventListener('touchstart', this, false);
 				line.addEventListener('touchmove', this, false);
 				line.addEventListener('touchend', this, false);
 				line.appendChild(pdiv);
 				line.addEventListener('click', this, false);
-				pdiv = new Element('div', { 'class' : 'pctext' + rclass}).update(row.title);
+				pdiv = new Element('div', { 'class' : 'pctext' }).update(row.title);
 				line.appendChild(pdiv);
-				pdiv = new Element('div', { 'class' : 'pctime' + rclass}).update(timeStr(row.duration));
+				pdiv = new Element('div', { 'class' : 'pctime' }).update(timeStr(row.duration));
 				line.appendChild(pdiv);
 				$('playbackctrl').appendChild(line);
 				this.lasttrack++;
 			} else {
 				line = $('pc' + i);
+				if (i == this.highlight)
+					line.addClassName('pcselected');
+				else
+					line.removeClassName('pcselected');
 				if (line && (line.getAttribute('itemid') != row.id)) {
 					line.setAttribute('itemid', row.id);
 					line.down('div', 2).update(row.title);
@@ -119,6 +130,7 @@ console.log('event:' + event.type);
 		case 'click' :
 			var temp = findAttribute(event.target, "item");
 			if (temp) {
+				this.fixupHighlight(temp);
 				this.currentTrack = temp;
 				this.playTrack(temp);
 			}
@@ -149,6 +161,16 @@ console.log("TransEnd:" + $('NPwrapperBody').style.webkitTransform);
 	}
 }
 
+PlaybackControl.prototype.fixupHighlight = function (num) {
+	if (this.highlight != num) {
+		var line = $('pc' + this.highlight);
+		if (line) line.removeClassName('pcselected');
+		line = $('pc' + num);
+		if (line) line.addClassName('pcselected');
+		this.highlight = num;
+	}
+}
+
 PlaybackControl.prototype.playDelayed = function () {
 //	PlaybackControl.prototype.instance.playTrack(PlaybackControl.prototype.instance.currentTrack);
 		var newEvt = document.createEvent('MouseEvents');
@@ -164,8 +186,8 @@ PlaybackControl.prototype.playTrack = function (num) {
 	var movie = $('pcmovie');
 	if (row) {
 console.log('/music/' + row.id + '/download.mp3' + "..title:" + row.title);
-		QT.SetURL('/music/' + row.id + '/download.mp3');
 		movie.SetURL('/music/' + row.id + '/download.mp3');
+		QT.SetURL('/music/' + row.id + '/download.mp3');
 		movie.Play();
 //		document.pcqt.SetMovieName(row.title);
 //		this.url = '/music/' + row.id + '/download.mp3'

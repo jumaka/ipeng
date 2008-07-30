@@ -79,6 +79,15 @@ function getStatusData(params, action) {
 	ajaxRequest(url, params, action);
 }
 
+function goToStatus(goStatus) {
+	if (goStatus)
+		document.location = webroot + statusroot + '?' + 'player=' + player;
+}
+
+function goToStatus2(args) {
+	document.location = webroot + statusroot + '?' + 'player=' + player;
+}
+
 function ajaxRequest(thisurl,params, action) {
 	var requesttype = 'post';
 
@@ -114,7 +123,6 @@ function ajaxUpdate(url, params, action, actionparam) {
 }
 
 function ajaxUpdateDiv(div, url, params, action, actionparam) {
-console.log("start ajaxUpdate." + url + "." + params);
 	var params = params;
 	var phash = '';
 	var poshash = params.indexOf("#")

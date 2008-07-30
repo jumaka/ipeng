@@ -96,8 +96,11 @@ function updateOrientation () {
 }
 </script>
 
+[% IF !iPengUpdate %]
 <div style = "position: relative; height:[% IF page_vertical; '44'; ELSE; '25'; END %]; border: 0; padding: 0;">&nbsp;</div>  <!-- spacer to keeps margins from collapsing on safari -->
-[%- IF !page_vertical -%]
+[%- 
+END;
+IF !page_vertical -%]
 <div id = 'albumInfo' style="display:none;">
 	<div id = 'closeAlbumInfo'>
 		<img src = "[% webroot %]html/images/cancel.png" onClick = "javascript:hideAlbumInfo();"></div>

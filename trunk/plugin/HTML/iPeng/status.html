@@ -23,22 +23,30 @@ PROCESS iHeaderVert.html thispage = 'status' noShowBar = 1;
 '<!-- status.html -->';
 
 BLOCK StatusHeader -%]
+	<style type="text/css" media="screen">@import "[% webroot%]html/iui/iPiui.css";</style>
 	<script type="text/javascript">[% PROCESS html/vars.js %]</script>
 	<script src="[% webroot %]html/prototype1.js?r=[% revision %]" type = 'text/javascript' defer></script>
 	<script src="[% webroot %]html/prototype2.js?r=[% revision %]" type = 'text/javascript' defer></script>
 	<script src="[% webroot %]html/prototype3.js?r=[% revision %]" type = 'text/javascript' defer></script>
 	<script src="[% webroot %]html/prototype4.js?r=[% revision %]" type = 'text/javascript' defer></script>
 	<script src="[% webroot %]html/prototype5.js?r=[% revision %]" type = 'text/javascript' defer></script>
+	<script type="application/x-javascript" src="html/iui/iPiui.js" defer></script>
 	<script src="[% webroot %]html/global.js?r=[% revision %]" type = 'application/x-javascript' defer></script>
 	<!--script src="[% webroot %]html/skin_global.js?r=[% revision %]" type = 'application/x-javascript' defer></script-->
-	<script>
+	<script type="text/javascript"> // need some inline code...
+		var Pi = 3.14159265;
+		var bottombarTop = 368;
+		var topbarHeight = -4; // should be 44, consider this to be a bug in MS, but MS expands every div to at least 100% height...
+	
 		var remotestreaming = "[% "REMOTE_STREAMING" | string %]";
-		var srstrings = { shuffle : [	"[% "SHUFFLE_OFF" | string %]",
+/*		var srstrings = { shuffle : [	"[% "SHUFFLE_OFF" | string %]",
 										"[% "SHUFFLE_ON_SONGS" | string %]",
 										"[% "SHUFFLE_ON_ALBUMS" | string %]" ],
 						repeat : [	"[% "REPEAT_OFF" | string %]",
 									"[% "REPEAT_ONE" | string %]",
-									"[% "REPEAT_ALL" | string %]" ] };
+									"[% "REPEAT_ALL" | string %]" ] };*/
+		var pagetype = '[% IF home; 'home'; ELSE; 'status'; END %]';
+		var homepage = '[% IF page; page; ELSE; ''; END %]';
 	</script>
 	<script src="[% webroot %]html/status_player.js?r=[% revision %]" type = 'application/x-javascript' defer></script>
 	<script src="[% webroot %]html/status.js?r=[% revision %]" type = 'application/x-javascript' defer></script>
@@ -46,7 +54,12 @@ BLOCK StatusHeader -%]
 
 -%]
 <!--div style = "position: absolute; float: left; left: 0; top: 0; width: 324; z-index: 0"></div-->
-<div id = "NowPlaying" style = "position: relative; left: 0; width: 320;"> <!-- left: 2 -->
+<div id = "NowPlaying" style = "position: absolute; left: 0; width: 320; height: 416; overflow: hidden;
+								-webkit-transition-duration: 0.5s; -webkit-transform-style: flat;
+								-webkit-transition-property: -webkit-transform;
+								display: [% IF home; 'none;'; ELSE; 'block;'; END %]
+								-webkit-transform: translateX([% IF home; '320'; ELSE; '0'; END %]px);">
+								<!-- left: 2 -->
 
 	<div id= 'iNowPlayingTopbar'></div>
 	
@@ -54,13 +67,15 @@ BLOCK StatusHeader -%]
 	[% i = 0; WHILE i < 4 %]
 		<img id = 'pdote[% i %]' src = "[% webroot %]html/images/pagesdotempty.png" style="float: right[%- 
 			IF (i == 1) || (i == 3); "; display: none"; END; 
-			-%]" onclick="ScrollPage.prototype.doSwipe([% i %]);"/><img id = 'pdotb[% i %]' src="[% webroot %]html/images/pagesdotblue.png" style = "[%-
+			-%]" onclick="NowPlayingStack.doSwipe([% i %]);"/><img id = 'pdotb[% i %]' src="[% webroot %]html/images/pagesdotblue.png" style = "[%-
 			IF i != 1; "display: none; "; END %]float: right"/>
 	[% i = i + 1; END %]
 	</div>
 
-	<div class = 'iTopHomeDiv' style = '-webkit-transform: translateZ(2px);' onClick='returnToViewPage();'>
-		<span class="blackLeft iButton" style = "color: white; padding: 6; padding-left: 0; padding-right: 4; text-align: center;"><img src = "[% webroot %]html/images/left.png"'></span>
+	<div class = 'iTopHomeDiv blackLeft iButton' style = '-webkit-transform: translateZ(2px); padding: 6 4 6 0;
+	text-align: center;'
+				onClick='NowPlayingStack.swipeIn(false); HomeScreenStack.swipeIn(true);'>
+		<img src = "[% webroot %]html/images/left.png">
 	</div>
 
 	<div id = 'streaminfo' style = 'display: block;'>
@@ -111,7 +126,13 @@ BLOCK StatusHeader -%]
 		'</div>';
 	'</div>';
 	
-	%]<div id = 'iNowBottombar'>[%
+	%]<div id = 'iNowBottombarBG' class = "iNowBottombar" 
+			style = "-webkit-transform: rotateX(180deg);
+					background-position: left bottom;
+					background-image: none; z-index: 19">
+	</div>
+	<div id = 'iNowBottombar' class = "iNowBottombar">
+	[%
 		INCLUDE player_controls;
 		INCLUDE player_name;
 	'</div>';
@@ -121,6 +142,61 @@ BLOCK StatusHeader -%]
 	%]<div id = 'textOSD' class = 'iNowTextInfo' style = 'display: none; -webkit-transform: translateZ(1px)'></div>
 	<div id = "PLEshadow" class = "PLShadowElement" style = "display: none"></div>[%
 
+'</div>';
+
+# Home starts here
+
+%]<div id = 'HomeScreen' style = "position: absolute; left: 0; width: 320; height: 416;
+								overflow: hidden;
+								background-color: lightblue;
+								color: black;
+								background-position: left 45px;
+								background-image: url(html/images/bgfield_big.jpg);
+								display: [% IF home; 'block;'; ELSE; 'none;'; END %]
+								-webkit-transition-duration: 0.5s; -webkit-transform-style: flat;
+								-webkit-transition-property: -webkit-transform;
+								-webkit-transform: translateX([% IF home; '0'; ELSE; '-320'; END %]px);">
+
+[%-
+PROCESS homeTopbar;
+
+PROCESS browseDatabase;
+PROCESS browseRadio;
+PROCESS browseSettings;
+#PROCESS alarmSet;
+-%]
+
+<div id = "HomeMain" class = "MenuPage" 
+	 title = "[% 'IPENG_BUTTON_HOME' | string %]" selected='true'>
+	<div class = "MainMenuRow">
+		<a href="#Database">
+			<img class = "MainMenuPic" src = "[% webroot %]html/images/music1.png" style = 'margin: -7 0 0 0'> 
+			<span class = 'MainMenuText'>[% 'IPENG_BROWSE_LIBRARY' | string %]</span>
+		</a>
+	</div>
+	<div class = "MainMenuRow">
+		<a href="[% webroot %]plugins/Favorites/index.html?" target="_self">
+			<img class = "MainMenuPic" src = "[% webroot %]html/images/redheart_shadow.png" style = 'margin: 0 0 0 0'> 
+			<span class = 'MainMenuText'>[% 'FAVORITES' | string %]</span>
+		</a>
+	</div>
+	<div class = "MainMenuRow">
+		<a href="#Radio">
+			<img class = "MainMenuPic" src = "[% webroot %]html/images/radio2_sm.png" style = 'margin: -7 0 0 0;'>
+			<span class = 'MainMenuText'>[% 'RADIO' | string %]</span>
+		</a>
+	</div>
+	<div class = "MainMenuRow" style = "margin-top: 20;">
+		<a href="#browseSettings">
+			<img class = "MainMenuPic" src = "[% webroot %]html/images/extensionitem.png"> 
+			<span class = 'MainMenuText'>[% "PLUGINS" | string %]</span>
+		</a>
+	</div>
+
+	<div id = "iPengName" class = "iPengName">iPeng v0.5 (C) 2007, 2008 J. Schwieder, E. Isaksson</div>
+</div>
+
+[% PROCESS iFooterVert.html selectedButton = 'Home' context = 'home' classFooter = " selected = 'true' style='position: absolute; left: 0; top: 367' ";
 '</div>';
 '</body>';
 '</html>';
@@ -142,12 +218,15 @@ BLOCK repeat_settings %]
 		onClick = "Player.controls.evtRepeatShuffle('toggle', 'repeat');"></div>
 	<div id = 'repeatcontrol_custom' 
 		onClick = "Player.controls.evtRepeatShuffle('custom', 'repeat');" 
-		style = 'display: none; overflow: hidden; width: 32; height: 22;'></div>
+		style = 'display: none; overflow: hidden;
+				 width: 32; height: 22;
+				 background-repeat: no-repeat;
+				 -webkit-transform: translateZ(3px);'></div>
 [% END;
 
 BLOCK shuffle_settings %]
 	<div id = 'shufflecontrol_content' 
-		style = "background-image: url([% webroot %]html/images/shuffle.png); 
+		style = "background-image: url([% webroot %]html/images/shuffle.png);
 				 width: 27; height: 21; overflow: hidden;
 				 background-position: left [% shuffle * 21 %]"
 		title ='[% SWITCH shuffle;
@@ -158,7 +237,10 @@ BLOCK shuffle_settings %]
 		onClick = "Player.controls.evtRepeatShuffle('toggle', 'shuffle');"></div>
 	<div id = 'shufflecontrol_custom' 
 		onClick = "Player.controls.evtRepeatShuffle('custom', 'shuffle');" 
-		style = 'display: none; overflow: hidden; width: 32; height: 22;'></div>
+		style = 'display: none; overflow: hidden;
+				 width: 32; height: 22;
+				 -webkit-transform: translateZ(3px);
+				 background-repeat: no-repeat;'></div>
 [% END;
 
 BLOCK cover_art_display %]
@@ -310,5 +392,277 @@ END;
 
 BLOCK playlist_display %]
 <table id = 'playlisttableNow' width = '100%' cellspacing = '0' cellpadding = "0" style = "font-weight: bold; border-collapse: collapse; -webkit-transition-timing-function: cubic-bezier(0.1,1.0,0.58,1.0);"></table>
-[% END %]
+[% END;
 
+
+BLOCK homeTopbar %]
+	<div id = 'topbar_vert'>
+		<div class="coolioButton" 
+			 onClick = 'NowPlayingStack.swipeIn(true); HomeScreenStack.swipeIn(false);'>
+			<img src = "[% webroot %]html/images/coolioicon.png">
+		</div>
+		
+		<a id = "backButton1" class = "backButton" href="#" style = "-webkit-transform: translateX(320px); opacity: 0;"></a>
+		<div id = "pageTitle1" class = "pageTitle" 
+			 style = "-webkit-transform: translateX(320px); opacity: 0;"></div>
+		<a id = "backButton2" class = "backButton" href="#" style = "-webkit-transform: translateX(320px); opacity: 0;"></a>
+		<div id = "pageTitle2" class = "pageTitle" 
+			 style = "-webkit-transform: translateX(320px); opacity: 0;"></div>
+	</div>
+[% END;
+
+
+
+BLOCK browseDatabase;
+browseCategories = { BROWSE_BY_ALBUM = { icon = 'html/images/iAlbumWhite.png', text = 'ALBUMS' }, 
+					 BROWSE_BY_ARTIST = { icon = 'html/images/iArtistWhite.png', text = 'ARTIST' },
+					 BROWSE_BY_GENRE = { icon = 'html/images/iGenreWhite.png', text = 'GENRES' },
+					 BROWSE_MUSIC_FOLDER = { icon = 'html/images/iFolderWhite2.png', text = 'SETUP_AUDIODIR' },
+					 BROWSE_BY_YEAR = { icon = 'html/images/iTimeWhite.png', text = 'BROWSE_BY_YEAR' },
+					 BROWSE_NEW_MUSIC = { icon = 'html/images/iNewWhite.png', text = 'BROWSE_NEW_MUSIC' }, 
+					 SAVED_PLAYLISTS = { icon = 'html/images/iPlaylistWhite.png', text = 'PLAYLISTS' }, 
+						 #PLUGIN_CUSTOMBROWSE = { icon = additionalLinks.icons.${'PLUGIN_CUSTOMBROWSE'}.replace('.png', "_40x30_f.png"), text = 'PLUGIN_CUSTOMBROWSE' } 
+};
+
+browseMoreCategories = { FAVORITES = { icon = 'iFavoritesWhite.png', text = 'FAVORITES' }, 
+						 PLUGIN_RANDOMPLAY = { icon = 'iRandomWhite.png', text = 'PLUGIN_RANDOMPLAY' } };
+						 
+#temp = 'PLUGIN_IPENG_CUSTOM_BROWSE_MORE' | string;
+
+browseMoreExclude = [ 'PLUGIN_IPENG_CUSTOM_BROWSE_MORE' ];
+					 
+-%]
+
+<div id = "Database" class = "MenuPage panel" title = "[% 'IPENG_BROWSE_LIBRARY' | string %]" style = 'width: 320'>
+
+<ul style = "font-size: 110%; margin-bottom: 8; margin-top: 0;">
+[%- 
+USE iPeng;
+links = iPeng.additionalLinks('browse');
+FOREACH key = links;
+	IF browseCategories.${key.id}; %]
+		<li class = "biggerLine">
+		<a href="[% webroot; key.url %]&iPengUpdate=1">
+		<img src="[% webroot; browseCategories.${key.id}.icon %]" width="40" height="30" class = "paddedPic">
+		<span class="secondary">[% browseCategories.${key.id}.text | string %]</span></a>
+		</li>
+	[%- END;
+END;
+
+'</ul>';
+
+orderByList = {
+	'album.titlesort'                                     => 'ALBUM',
+	'album.year,album.titlesort'                          => 'SORT_YEARALBUM',
+	'album.year,contributor.namesort,album.titlesort'     => 'SORT_YEARARTISTALBUM',
+	'contributor.namesort,album.titlesort'                => 'SORT_ARTISTALBUM',
+	'contributor.namesort,album.year,album.titlesort'     => 'SORT_ARTISTYEARALBUM',
+	'genre.namesort,album.titlesort'                      => 'SORT_GENREALBUM',
+	'genre.namesort,contributor.namesort,album.titlesort' => 'SORT_GENREARTISTALBUM',
+} -%]
+
+<!--label for="orderBy" class="backgroundtext">[% "SORT_BY" | string %]</label-->[%# 'ALBUMS' | string %]
+<div class="backgroundtext" style = "float: left; padding-top: 0; margin: 8 0 0 3; width: 120" wrap>[% "IPENG_ALBUMSORT" | string %]</div>
+<select class = "selectItems" name="orderBy" onChange="setAlbumOrderBy(selectedIndex,options[selectedIndex].value)">
+[% FOREACH orderType = orderByList.keys.sort %]
+	<option [% IF orderType == orderBy %]selected[% END %] value="[% orderType %]">[% orderByList.$orderType | string %]</option>
+[% END;
+'</select>';
+'<br>';
+'<br>';
+
+-%]
+<ul  style = "font-size: 110%; margin: 0 0 8 0; ">
+[%- FOREACH key = links;
+	IF browseMoreCategories.${key.id}; %]
+		<li class = "biggerLine">
+		<a href="[% webroot %][% key.url %]" target="_self">
+		<img src="[% webroot %]html/images/[% browseMoreCategories.${key.id}.icon %]" width="40" height="30" class = "paddedPic">
+		<span class="secondary">[% browseMoreCategories.${key.id}.text | string %]</span></a>
+		</li>
+	[%- END;
+END -%]
+
+	<!-- SEARCH -->
+	<li class = "biggerLine">
+	<a href="[% webroot %]search.html?" target="_self">
+	<img src="[% webroot %]html/images/iSearchWhite.png" width="40" height="30" class = "paddedPic">
+	<span class="secondary">[% 'SEARCH' | string %]</span></a>
+	</li>
+[%- 
+links = iPeng.additionalLinks('browseiPeng');
+FOREACH key = links;
+	temp = key.id | string; 
+	IF !browseCategories.keys.grep(key.id).size && !browseMoreCategories.keys.grep(key.id).size && !browseMoreExclude.grep(key.id).size && !browseMoreExclude.grep(temp).size -%]
+		<li class = "biggerLine">
+		<a href="[% webroot %][% key.url %]" target="_self">
+		[%- IF key.icon -%]
+			<img src="[% webroot %][% key.icon.replace('.png', "_40x30_f.png") %]" width="40" height="30" class = "paddedPic">
+		[%- ELSE -%]
+			<img src="[% webroot %]html/images/blank.png" width="40" height="30" class = "paddedPic">
+		[%- END -%]		
+		<span class="secondary">[% key.title %]</span></a>
+		</li>
+	[%- END;
+END;
+FOREACH key = iPeng.additionalLinks('searchiPeng');
+	IF key.id != "SEARCHMUSIC" -%]
+		<li class = "biggerLine">
+		<a href="[% webroot %][% link.value %]" target="_self">
+		[%- IF key.icon -%]
+			<img src="[% webroot %][% key.icon.replace('.png', "_40x30_f.png") %]" width="40" height="30" class = "paddedPic">
+		[%- ELSE -%]
+			<img src="[% webroot %]html/images/blank.png" width="40" height="30" class = "paddedPic">
+		[%- END -%]		
+		<span class="secondary">[% key.title %]</span></a>
+		</li>
+	[% END;
+END;
+'</ul>';
+'</div>';
+
+END;
+
+
+
+BLOCK browseRadio %]
+<form id = "Radio" class = "MenuPage panel" name="tune" method="get" action="status.html" target = "_self" title = '[% "RADIO" | string %]' style = 'background: none; width: 320'>
+[% PROCESS tune_in_form; %]
+<ul style = "margin-left: 0;">
+	[% 
+	linkHash = iPeng.additionalLinks('radios');
+	temp = iPeng.additionalLinks('radio');
+	IF temp;
+		linkHash = linkHash.merge(temp);
+	END;
+	FOREACH key = linkHash %]
+		<li class = "biggerLine">
+			<a href="[% webroot; key.url %]" [% IF key.url.grep("LastFM").size %]target="_iPeng"[% END %]>
+			<img src="[% webroot; key.icon.replace('.png', "_30x30_f.png") %]" width="30" class = "radioPic">
+			<span class="secondary" style = "font-size: 90%">[% key.title %]</span></a>
+		</li>
+	[% END;
+'</ul>';
+
+linkHash = iPeng.additionalLinks('music_services');
+IF linkHash;
+	'<span class = "backgroundtext">'; 'MUSIC_SERVICES' | string; '</span>';
+	'<ul>';
+	FOREACH key = linkHash %]
+		<li class = "biggerLine">
+			<a href="[% webroot; key.url %]">
+			<img src="[% webroot; key.icon.replace('.png', "_30x30_f.png") %]" width="30" class = "radioPic">
+			<span class="secondary" style = "font-size: 90%">[% key.title %]</span></a>
+		</li>
+	[%- END;
+	links = iPeng.additionalLinks('radios');
+	hasPD = 0;
+	FOREACH key = links;
+		IF key.id == 'PLUGIN_PANDORA_MODULE_NAME';
+			hasPD = key;
+		END;
+	END;
+	IF hasPD; %]
+		<li class = "biggerLine">
+			<a href="[% webroot; hasPD.url %]">
+			<span class="secondary" style = "font-size: 90%">[% hasPD.title;
+			'</span></a>';
+		'</li>';
+	END;
+	'</ul>';
+END;
+'</form>';
+END;
+
+BLOCK tune_in_form %]
+    <input type="hidden" name="p0" value="playlist">
+    <input type="hidden" name="p1" value="play">
+    <input type="hidden" name="player" value="[% player %]">
+    <fieldset style = "margin-bottom: 8">
+        <div class="row">
+            <label>[% 'RADIO_TUNEIN_RADIOURL' | string %]</label>
+            <input autosave="radiourl" name="p2"/>
+        </div>
+    </fieldset>
+    <a class="iButton silver" onclick = 'document.forms["Radio"].submit();'
+			style = "
+				 margin: 0 11 11 0;
+				 padding: 0px;
+				 width: 278;
+				 height: 30px;
+				 text-align: center;
+				 font-size: 15;
+			">[% "RADIO_TUNEIN_CHOOSE" | string; '</a>';
+END;
+
+
+BLOCK browseSettings %]
+<div id = "browseSettings" class = "MenuPage panel" title = "[% 'SETTINGS' | string %]">
+<ul  style = "font-size: 110%; margin-bottom: 8;">
+
+	<li class = "biggerLine">
+	<a href="[% webroot %]home.html?runAlarm=1"><!-- target="_onload:localOnload();"-->
+	<img src="[% webroot %]html/images/iAlarmWhite.png" width="40" height="32" class = "paddedPic">
+	<span class="secondary">[% 'ALARM' | string | truncate(20) %]</span></a>
+	</li>
+	<li class = "biggerLine">
+	<a href="[% webroot %]home.html?runSleep=1"><!-- target="_onload:sleep.init();"-->
+	<img src="[% webroot %]html/images/iSleepWhite.png" width="40" height="30" class = "paddedPic">
+	<span class="secondary">[% 'SLEEP' | string | truncate(20) %]</span></a>
+	</li>
+	<li class = "biggerLine">
+	<a href="[% webroot %]home.html?runRescan=1">
+	<img src="[% webroot %]html/images/iRescanWhite.png" width="40" height="30" class = "paddedPic">
+	<span class="secondary">[% 'IPENG_RESCAN' | string | truncate(20) %]</span></a>
+	</li>
+[%
+links = iPeng.additionalLinks('puginsiPeng');
+FOREACH link = links %]
+	<li class = "biggerLine">
+	<a href="[% webroot; link.url %]" target="_self">
+	[% IF link.icon %]
+		<img src="[% webroot; link.icon.replace('.png', "_40x30_f.png") %]" height="30" class = "paddedPic">
+	[% END %]		
+	<span class="secondary">[% link.title %]</span></a>
+	</li>
+[% END;
+
+knownPlugins = { PLUGIN_NOALBUMREVIEW = 0,
+				 PLUGIN_NOBIOGRAPHY = 0,
+				 PLUGIN_LYRICS_MODULE_NAME = 0 };
+
+links = iPeng.additionalLinks('pugins');
+FOREACH link = links;
+	IF knownPlugins.keys.grep(link.id).size %]
+		<li class = "biggerLine">
+		<a href="[% webroot; link.url %]" target="_self">
+		[%- IF link.icon %]
+			<img src="[% webroot; link.icon.replace('.png', "_40x30_f.png") %]" height="30" class = "paddedPic">
+		[% END -%]
+		<span class="secondary">[% link.title %]</span></a>
+		</li>
+	[% END;
+END;
+
+
+%]
+	<!-- SERVER SETTINGS -->
+	<li class = "biggerLine">
+	<a href="[% webroot %]settings/server/basic.html" target="_self">
+	<!--img src="html/images/blank.png" width="40" height="30" style = "margin: 0; position: relative; float: left; top: -5;" alt = 'server settings'>-->
+	<span class="secondary">[% 'SERVER_SETTINGS' | string | truncate(22) %]</span></a>
+	</li>
+
+	<!-- PLAYER SETTINGS -->
+	<li class = "biggerLine">
+	<a href="[% webroot %]settings/player/basic.html?player=[% playerURI %]&playerid=[% playerURI %]" target="_self">
+	<!--img src="html/images/blank.png" width="40" height="30" style = "margin: 0; position: relative; float: left; top: -5;" alt = 'player settings'>-->
+	<span class="secondary">[% 'PLAYER_SETTINGS' | string | truncate(22) %]</span></a>
+[%
+	'</li>';
+'</ul>';
+'</div>';
+END;
+
+
+-%]

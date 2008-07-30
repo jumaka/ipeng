@@ -16,7 +16,6 @@ var maxPlLoop = 20;
 var infoFulltags = 'tags:uBjJKlaedsRxNpg';
 var infoFewtags = 'tags:uBJjKleasxgp';
 var prev_threshold = 10;
-var xchgdiv = 'xchgdiv';
 var _rowHeight = 38;
 
 var scrollFactor = 1.5;
@@ -114,7 +113,7 @@ var Playlist = {
 		
 	 	if (!this.table)
 	 		this.init();
-console.log(".fi." + this.firstitem + ".li." + this.lastitem + ".plf." + Player.status.pl_first + ".pll." + Player.status.pl_last + ".uf." + ufirst + ".ul." + ulast + ".rl:" + this.table.rows.length + '.pt:' + Player.status.tracks);
+//console.log(".fi." + this.firstitem + ".li." + this.lastitem + ".plf." + Player.status.pl_first + ".pll." + Player.status.pl_last + ".uf." + ufirst + ".ul." + ulast + ".rl:" + this.table.rows.length + '.pt:' + Player.status.tracks);
 		with (Player.status) {
 			if (pl_first < 0 || pl_last < 0 || pl_last < pl_first) {
 				while (this.table.rows.length) {
@@ -312,7 +311,7 @@ console.log(".fi." + this.firstitem + ".li." + this.lastitem + ".plf." + Player.
 				this.DnD.scroll0 = this.page.posY;
 				this.preventSnap();
 				this.DnD.element.addClassName('depressed');
-console.log("init:" + this.DnD.item);
+//console.log("init:" + this.DnD.item);
 //				event.stopPropagation();
 //				event.preventDefault();
 				break;
@@ -578,6 +577,13 @@ function findAttribute(el, attr) {
 		else el = el.up();
 }
 
+function findParent(node, localName)
+{
+    while (node && (node.nodeType != 1 || node.localName.toLowerCase() != localName))
+        node = node.parentNode;
+    return node;
+}
+
 function timeStr(seconds) {
 	if (!seconds) return "--:--";
 	var s = parseInt(seconds % 60);
@@ -619,11 +625,19 @@ function ScrollPage(scElem, ctrl, stackpos, parent, ipos, act, pEl, snf) {
 	this.parent = parent;
 }
 
+ScrollPage.prototype.reclaim = function (newElement, newpEl) {
+	this.element = newElement;
+	this.elPage = (newpEl) ? newpEl : this.element;
+	newElement.setAttribute("scrollPage", this.stackpos);
+	this.posY = 0;
+}
+
 ScrollPage.prototype.vScroll = function (ndY, immed, tme) {
-	if (this.elPage.scrollHeight <= 320) return;
+//console.log("vScroll" + this.elPage.scrollHeight + ".Cont:" + this.Control.pageHeight);
+	if (this.elPage.scrollHeight <= this.Control.pageHeight) return;
 	if (!immed) {
 		this.posY = this.posY + ndY;
-		this.posY = max(this.posY, 320 - this.elPage.scrollHeight);
+		this.posY = max(this.posY, this.Control.pageHeight - this.elPage.scrollHeight);
 		this.posY = min(this.posY, 0);
 //		var tdel = parseInt(Math.sqrt(abs(ndY) / 320) * 5) / 10;
 //		this.elPage.webkitTransitionDelay = "-0.2s";
@@ -643,14 +657,15 @@ ScrollPage.prototype.vScroll = function (ndY, immed, tme) {
 }
 
 ScrollPage.prototype.vScrollTo = function (newY, tme) {
-	if (this.elPage.scrollHeight <= 320) {
+//console.log("vScrollTo" + this.elPage.scrollHeight + ".Cont:" + this.Control.pageHeight);
+	if (this.elPage.scrollHeight <= this.Control.pageHeight) {
 		this.posY = 0;
 		this.elPage.style.webkitTransitionDuration = "0";
 		this.elPage.style.webkitTransform = "translateY(" + this.posY + "px)";
 		return;
 	}
 	this.posY = newY;
-	this.posY = max(this.posY, 320 - this.elPage.scrollHeight);
+	this.posY = max(this.posY, this.Control.pageHeight - this.elPage.scrollHeight);
 	this.posY = min(this.posY, 0);
 	this.elPage.style.webkitTransitionDuration = (tme) ? tme : "0.5s";
 	this.elPage.style.webkitTransform = "translateY(" + this.posY + "px)";
@@ -668,6 +683,9 @@ ScrollPage.prototype.scrollTo = function (newX, inhibit, immed) {
 var NowPlayingStack = {
 	stack : [],
 	maxstack : 0,
+	swipeTarget : 0,
+	element : null,
+	pageHeight : 320,
 
 	addPage : function (page, id) {
 		this.stack[id] = page;
@@ -689,13 +707,13 @@ var NowPlayingStack = {
 	},
 
 	scrollTo: function (page, newX, inhibit, immed) {
-console.log("scrollTo:" + page.stackpos + ".nX:" + newX + ".ih:" + inhibit + ".im:" + immed);
+//console.log("scrollTo:" + page.stackpos + ".nX:" + newX + ".ih:" + inhibit + ".im:" + immed);
 		var ttop = 0;
 		var newX = newX;
 		if (!inhibit)
 			for (var last = 0; last < this.maxstack; last++)
 				if (this.stack[last].istop && (abs(last - page.stackpos) > 1)) {
-console.log("last:" + last + ".sp:" + this.stackpos);
+//console.log("last:" + last + ".sp:" + this.stackpos);
 					this.scrollTo(this.stack[last], (last > page.stackpos) ? -320 : 320, true);
 					this.stack[last].element.hide();
 				}
@@ -764,13 +782,128 @@ console.log("last:" + last + ".sp:" + this.stackpos);
 
 	doSwipe : function (sp) {
 		var temp = this.find(sp);
-console.log("doSwipe:" + sp + ".page:" + temp);
+//console.log("doSwipe:" + sp + ".page:" + temp);
 		if (temp) {
 			temp.scrollTo(0);
 			window.setTimeout(NowPlayingStack.fixDots, 500);
 		}
+	},
+	
+	swipeIn : function (flag) {
+		NowPlayingStack.element.show();
+		this.swipeTarget = (flag) ? 'translateX(0px)' : 'translateX(320px)';
+		window.setTimeout(NowPlayingStack.doSwipeStack, 10);
+	},
+	
+	doSwipeStack : function () {
+		NowPlayingStack.element.style.webkitTransform = NowPlayingStack.swipeTarget;
+	},
+	
+	handleEvent : function(event) {
+		switch (event.type) {
+			case 'webkitTransitionEnd' :
+				if (this.element.style.webkitTransform != "translateX(0px)")
+					this.element.hide();
+			break;
+		}
+	},
+	
+	init : function (event) {
+		this.element = $('NowPlaying');
+		this.element.addEventListener('webkitTransitionEnd', this, false);		
 	}
 };
+
+
+
+var HomeScreenStack = {
+	swipeTarget : 0,
+	element : null,
+	stack : [],
+	pageHeight : 323,
+
+	swipeIn : function (flag) {
+		this.element.show();
+		this.swipeTarget = (flag) ? 'translateX(0px)' : 'translateX(-320px)';
+		window.setTimeout(HomeScreenStack.doSwipeStack, 10);
+	},
+	
+	doSwipeStack : function () {
+		HomeScreenStack.element.style.webkitTransform = HomeScreenStack.swipeTarget;
+	},
+	
+	handleEvent : function(event) {
+		switch (event.type) {
+			case 'webkitTransitionEnd' :
+//console.log("etID:" + event.target.id);
+				if (event.target.id) {
+					if (event.target.id == "HomeScreen") {
+						if (!this.element.style.webkitTransform.include("translateX(0px)"))
+							this.element.hide();
+						return;
+					}
+/*					if (event.target.id.substr(0, 10) == "backButton") {
+						if (event.target.style.opacity == 0) {
+							event.target.style.webkitTransitionProperty = "none";
+							event.target.style.webkitTransform = "translateX(320px)";
+						}
+						return;
+					}
+					if (event.target.id.substr(0, 9) == "pageTitle") {
+						if (event.target.style.opacity == 0) {
+							event.target.style.webkitTransitionProperty = "none";
+							event.target.style.webkitTransform = "translateX(320px)";
+						}
+						return;
+					}*/
+				}
+				var temp = event.target.style.webkitTransform;
+//console.log("eTwT:" + event.target.id + ".:." + temp); 
+				if (temp.include('translateX') && !temp.include("translateX(0px)"))
+					event.target.removeAttribute("selected");
+//$H(event).each(function(pair) {console.log("eT:" + pair.key + ".:." + pair.value);});
+			break;
+		}
+	},
+
+	init : function () {
+		this.element = $('HomeScreen');
+		this.element.addEventListener('webkitTransitionEnd', this, false);		
+	},
+	
+	find : function (id) {
+		var foundit = null;
+		this.stack.each(function(key) {
+			if (key.element.id == id) {
+				foundit = key;
+				throw $break;
+			}
+		});
+		return foundit;
+	},
+
+	addPage : function (page, sp) {
+		var temp = this.find(sp);
+		if (!temp)
+			this.stack.push(page);
+		else {}			// split stack and insert page here!!!
+	},
+	
+	addConditional : function (page) {
+		var oldpage = this.find(page.id);
+		if (page.hasAttribute("scrollPage") && oldpage.element == page)
+			return;
+		if (oldpage)
+			oldpage.reclaim(page);
+		else
+			new ScrollPage(page, HomeScreenStack, page.id);
+		page.addEventListener('touchstart', ScrollController, false);
+		page.addEventListener('touchmove', ScrollController, false);
+		page.addEventListener('touchend', ScrollController, false);
+		page.addEventListener('webkitTransitionEnd', this, false);
+	}
+};
+
 
 function PluginCmd(tpe, id, url, params, cli, rF) {
 	this.type = tpe;
@@ -868,6 +1001,7 @@ var Plugins = {
 	
 	lastCmd : null,
 	extID : null,
+	firsttime : 2,
 	timestamp : null,
 	
 	findCmd : function(key) {
@@ -888,6 +1022,14 @@ var Plugins = {
 	validateLastCmd : function () {	if (!this.findCmd(this.lastCmd.id)) this.lastCmd = null; },
 	
 	checkTimestamp : function () {
+		if (this.firsttime) {
+			this.firsttime--;
+			if (!this.firsttime)
+				window.setTimeout(Plugins.checkTimestamp, 2000);
+			return;
+//console.log("delay plugins");
+		}
+//console.log("refresh plugins");
 		callJSONRPC( ['ipeng', 'status' ], function (r2) {
 			if (r2.result.timestamp != Plugins.timestamp)
 				window.setTimeout(Plugins.display, 100);
@@ -944,7 +1086,7 @@ var Plugins = {
 		};
 	
 		if (!Plugins.extID) Plugins.extID = $('extension');
-//alert(Plugins.extID + ".this:" + this + ".PI:" + Plugins);
+console.log(Plugins.extID + ".this:" + this + ".PI:" + Plugins);
 		var sArray = [ 'ipeng', 'commands', 'nowplaying' ];
 		callJSONRPC(sArray, function (r2) {
 			if (r2.result.timestamp == Plugins.timestamp) return;
@@ -981,17 +1123,40 @@ function toggleMainbody(nodot) {
 
 fsOvON = false;
 
+/* override for internal use */
+
+function goToStatus(goStatus) {
+console.log("goToStatus");
+	if (goStatus) {
+		Player.triggerUpdate();
+		NowPlayingStack.swipeIn(true);
+		HomeScreenStack.swipeIn(false);
+	}
+}
+
+function goToStatus2(args) {
+console.log("goToStatus2");
+	Player.triggerUpdate();
+	NowPlayingStack.swipeIn(true);
+	HomeScreenStack.swipeIn(false);
+}
+
+
 window.onload= function() {
 //console.log("onLoad");
  	window.scrollTo (0,1);
-// 	if (navigator.userAgent.include('3.0 Mobile'))
-// 		xchgdiv = 'xchgdiv114';
 //alert(navigator.userAgent);
  	Player.browser = Prototype.Browser.MobileSafari;
  	Player.init();
 	Player.triggerUpdate();
+	NowPlayingStack.init();
+	HomeScreenStack.init();
 	ScrollController.init();
-//	globalOnload();
+	globalOnload();
+/*	callJSONRPC(['getstring',
+				'MUSICIP_PROGRESS,IPENG_WEEKDAY_SEL,MUSTBEINVALID,SLEEPING_IN_X_MINUTES'], function(r2) {
+		$H(r2.result).each(function(pair){ console.log(pair.key + ":" + pair.value); });
+	});*/
 }
 
 

@@ -1,5 +1,5 @@
 
-<div id="alarmSet" title = "[% 'ALARM' | string %]" style = "width: 320">
+<div id="alarmSet" title = "[% 'ALARM' | string %]" class = "MenuPage">
 
 <script type="text/javascript"> // need some inline code, again...
 
@@ -299,7 +299,7 @@ Playlists = function() {
 	this.update();
 }
 
-Playlist = function (name, id, url) {
+APlaylist = function (name, id, url) {
 	this.name = name;
 	this.id = id;
 	this.url = url;
@@ -317,7 +317,7 @@ Playlists.prototype.update = function() {
  		var cnt = 0;
 		r2.result.playlists_loop.each(function(key) {
 			if (key.id) {
-			 	var temp = new Playlist(key.playlist, key.id, key.url);
+			 	var temp = new APlaylist(key.playlist, key.id, key.url);
 				tb.array.push(temp);
 				
 				cnt++;
@@ -395,22 +395,38 @@ updateFade = function () {
 }
 
 a_editHere = -1;
-var _volumeBarWidth = 262;
+//var _volumeBarWidth = 262;
 var e_inhibit = false;
 
-setAVolume = function (vol) {
-	var intPos = parseInt((vol * _volumeBarWidth) / 100);
-	$("volumeBar").style.width = intPos;
-	$("volumeButton").style.left = intPos;
-	$("e_volume").setAttribute('volume', vol); 
+alarmVolumeC = function () {
+	this.volume = 0;
+	this.Ctrl = null;
 }
 
-evtAVolume = function (evt) {
+alarmVolumeC.prototype.init = function () {
+	this.Ctrl = new VolumeBarCtrl($(alvolumeButton), $(alvolumeBar), null, 0, this.setVolume, this); 
+}
+
+myAVolume = new alarmVolumeC();
+
+alarmVolumeC.prototype.setVolume = function (vol, inhibit) {
+	this.volume = parseInt(vol);
+	if (!inhibit)
+		if (this.Ctrl)
+			this.Ctrl.setVolume(vol);
+/*	var intPos = parseInt((vol * _volumeBarWidth) / 100);
+	$("alvolumeBar").style.width = intPos;
+	$("alvolumeButton").style.left = intPos;
+	$("e_volume").setAttribute('volume', vol); */
+}
+
+/*evtAVolume = function (evt) {
+console.log("evtAVolume..." + evt.clientX);
 	var level = parseInt((evt.clientX - 29) * 100 / _volumeBarWidth);
 	if (level < 0) level = 0;
 	if (level > 100) level = 100;
 	setAVolume(level);
-}
+}*/
 
 closeAEdit = function (cancel) {
 	var cancel = (cancel) ? cancel : false;
@@ -426,7 +442,8 @@ closeAEdit = function (cancel) {
 	$('a_title' + id).style.top = 12;
 	
 	if (!cancel) {
-	 	var tvol = $("e_volume").getAttribute('volume');
+//	 	var tvol = $("e_volume").getAttribute('volume');
+		var tvol = parseInt(myAVolume.volume);
 	 	var ttime = $('e_minutes').value * 60 + $('e_hours').value * 3600;
 	 	var tid = $('a_playlist' + id).getAttribute("plid");
 	 	var turl;
@@ -476,7 +493,7 @@ startAEdit = function (id) {
 	tPL.removeAttribute("target");
 	setASelectedPL(thealarm.playlist_id);
 	$('a_title' + id).style.top = 6;
-	setAVolume(thealarm.volume);
+	myAVolume.setVolume(thealarm.volume);
 	var temp = parseInt(thealarm.time / 3600);
 	$('a_h' + temp).selected = true;
 	temp = parseInt((thealarm.time % 3600) / 60);
@@ -515,6 +532,7 @@ cancelAAdd = function () {
 }
 
 startAAdd = function () {
+console.log("startAAdd....");
  	if (e_inhibit) return;
 	e_inhibit = true;
 	if (a_editHere >= 0) closeAEdit();
@@ -566,6 +584,7 @@ Element.showRow = function(id, div) {
 localOnload = function () {
 	Clock.prototype.drawall();
  	myAlarms.update();
+ 	myAVolume.init();
 }
 
 </script>
@@ -684,13 +703,13 @@ localOnload = function () {
 	<div id = "a_moreedit" style = "display: none">
 		<div id = "e_volume" 
 			 style =  "position: relative; top: 11; left: 20; height: 22; width: 280px;" 
-			 volume = "0"
-			 onClick = 'evtAVolume(event);'>
+			 volume = "0">
+			 <!--onClick = 'evtAVolume(event);'-->
 			<img src = '[% webroot %]html/images/VolumeBlueCap.png' style = 'position: absolute; left: 4; top: 5'>
 			<img src = '[% webroot %]html/images/VolumeWhiteMusicFill.png' style = 'position: absolute; left: 9; top: 5; width: 262; height: 9;'>
 			<img src = '[% webroot %]html/images/VolumeWhiteMusicCap.png' style = 'position: absolute; left: 271; top: 5'>
-			<img id="volumeBar" src="[% webroot %]html/images/VolumeBlueFill.png" style = 'position: absolute; left: 9; top: 5; height: 9; width: 1'>
-			<img id = 'volumeButton' src = '[% webroot %]html/images/MusicVolumeKnob.png' style = 'position: absolute; top: 0; left: 0;' >
+			<img id="alvolumeBar" src="[% webroot %]html/images/VolumeBlueFill.png" style = 'position: absolute; left: 9; top: 5; height: 9; width: 1'>
+			<img id = 'alvolumeButton' src = '[% webroot %]html/images/MusicVolumeKnob.png' style = 'position: absolute; top: 0; left: 0;' >
 		</div>
 		<a class="iButton silver" 
 		   href = "javascript:closeAEdit(false);"
@@ -721,6 +740,9 @@ localOnload = function () {
 				 color: white;
 			">[% 'CANCEL' | string %]</a>
 	</div>
-	<div style = "height: 48"></div>
 <script>localOnload();</script>
+</div>
+
+<div id = "playlists" class = "MenuPage panel" title = "[% 'PLAYLISTS' | string %]">
+	<ul id = "a_playlists" style = "margin: 0 0 8 0" selectrow = "0"></ul>
 </div>

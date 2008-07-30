@@ -1,7 +1,7 @@
 
 function globalOnload() {
 //	refreshLibraryInfo();
-	window.onscroll = hideBrowserBar;
+//	window.onscroll = hideBrowserBar;
 	window.scrollBy (0,1);
 }
 
@@ -113,22 +113,22 @@ function resize(src,width) {
 }
 
 function toggleGalleryView(artwork) {
-	var thisdoc = document;
-	if (thisdoc.location.pathname != '') {
-		myString = new String(thisdoc.location.href);
+	var thisdoc = document.location;
+	if (thisdoc.pathname != '') {
+		myString = new String(thisdoc.href);
 		if (artwork) {
 			setCookie( 'SqueezeCenter-albumView', "1" );
-			if (thisdoc.location.href.indexOf('start') == -1) {
-				thisdoc.location=thisdoc.location.href+"&artwork=1";
+			if (thisdoc.href.indexOf('start') == -1) {
+				document.location=thisdoc.href+"&artwork=1";
 			} else {
-				myString = new String(thisdoc.location.href);
+				myString = new String(thisdoc.href);
 				var rExp = /\&start=/gi;
-				thisdoc.location=myString.replace(rExp, "&artwork=1&start=");
+				document.location=myString.replace(rExp, "&artwork=1&start=");
 			}
 		} else {
 			setCookie( 'SqueezeCenter-albumView', "" );
 			var rExp = /\&artwork=1/gi;
-			thisdoc.location=myString.replace(rExp, "");
+			document.location=myString.replace(rExp, "");
 		}
 	}
 }
@@ -250,15 +250,6 @@ function addItem(args, goStatus) {
 	else
 		getStatusData(args, goToStatus2);
 	inhibitSW = false;
-}
-
-function goToStatus(goStatus) {
-	if (goStatus)
-		document.location = webroot + statusroot + '?' + 'player=' + player;
-}
-
-function goToStatus2(args) {
-	document.location = webroot + statusroot + '?' + 'player=' + player;
 }
 
 function addPlayItem(args) {

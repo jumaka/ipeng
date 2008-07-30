@@ -10,6 +10,9 @@ body {
 	width: 320px;
 	overflow-y: visible;
 	overflow-x: hidden;
+	-webkit-touch-callout: none;
+    -webkit-user-select: none;
+	-webkit-text-size-adjust: none;
 }
 
 div {
@@ -73,7 +76,7 @@ label {
 	font-weight:bold;
 	text-shadow: #ffffff 0px 1px 1px;
 	background-color: #81b1e6;
-	background-image: url(html/images/bgfield.png); /*clockbg.png*/
+	background-image: url(html/images/clockbg.png); /*bgfield clockbg.png*/
 	background-repeat: repeat-x;
 	background-position: top left;
 	border-bottom: 1px solid #888888;
@@ -87,7 +90,7 @@ label {
 	font-weight:bold;
 	text-shadow: #ffffff 0px 1px 1px;
 	background-color: #81b1e6;
-	background-image: url(html/images/bgs20.png), url(html/images/bgfield.png); /*clockbg.png*/
+	background-image: url(html/images/bgs20.png), url(html/images/clockbg.png); /*bgfield clockbg.png*/
 	background-repeat: repeat, repeat-x;
 	background-position: top left, top left;
 	border-top: 1px solid #888888;
@@ -127,6 +130,7 @@ li.selectedli {
 	border-color: rgb(172,172,172);
 	
 	-webkit-border-radius: 8px;
+	-webkit-transform: translate(0px, 0px);
 }
 
 div#browsedbList, div#innerSettingsBlock {
@@ -145,6 +149,7 @@ div#browsedbList, div#innerSettingsBlock {
 	border-style:solid;
 	border-color: rgb(172,172,172);
 	overflow: hidden ! important;
+	-webkit-transform: translate(0px, 0px);
 }
 
 div#currentPlaylistControl {
@@ -164,6 +169,7 @@ div#currentPlaylistControl {
 	border-bottom: 1px solid #888888;
 	overflow: hidden ! important;
 	background-image: url(html/images/bgfield.png);
+	-webkit-transform: translate(0px, 0px);
 }
 
 .embedItem, table.embedItem, tr.embedItem, td.embedItem, li {	
@@ -175,6 +181,7 @@ div#currentPlaylistControl {
 	border-top-color:rgb(217,217,217);
 
 	padding: 10 16 12 10;
+/*	-webkit-transform: translate(0px, 0px);*/
 }
 
 
@@ -191,26 +198,26 @@ div#currentPlaylistControl {
 }
 
 .paddedPic {
-	margin: 0;
+	margin: 0 15 0 3;
 	position: relative; 
 	float: left; 
 	top: -2;
 }
 
 .radioPic {
-	margin: 0;
+	margin: 2 12 0 3;
 	position: relative;
 	float: left;
 	top: -3;
-	padding: 2 5 2 5;
 }
 
 .secondary
 {
-	margin-left: 0px;
-	padding-top: 10px;
-	padding-bottom: 12px;
-	margin-right:10px;	  
+	display: block;
+	margin: 0 10 0 10;
+	overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .backgroundtext {
@@ -412,6 +419,7 @@ div#pagecontainer {
 	width: 480px;
 	overflow-y: visible;
 	overflow-x: hidden;
+	-webkit-transform: translate(0px, 0px);
 }
 
 div#pagecontainer_vert {
@@ -424,6 +432,8 @@ div#pagecontainer_vert {
 	background-color: white;
 	overflow-y: visible;
 	overflow-x: hidden;
+	-webkit-transform: translate(0px, 0px);
+	z-index: 1;
 }
 
 div#innerSanctum {
@@ -656,6 +666,7 @@ div#OSDbg, div#SWbg {
 	font-size: 48;
 	background-image: url(html/images/OSDBackground.png);
 	background-repeat: no-repeat;
+	-webkit-transform: translate(0px, 0px);
 }
 
 div#OSD, div#systemWorking {
@@ -674,6 +685,7 @@ div#OSD, div#systemWorking {
 	border: none;
 	text-align: -webkit-center;
 	vertical-align: -webkit-baseline-middle;
+	-webkit-transform: translate(0px, 0px);
 }
 
 img#spinner {
@@ -965,16 +977,17 @@ div#coverart, div#radioart, div#emptyplayer {
 	-webkit-transform: translateZ(1px);
 }
 
-div#iNowBottombar {
+.iNowBottombar {
 	position: absolute;
-	background-image: url(html/images/iNowBottombar.png);
+/*	background-image: url(html/images/iNowBottombar.png);*/
+	background-image: url(html/images/iNowBottomBarOverlay.png);
 	text-align: center;
 	padding-top: 8;
 	border: 0;
-	border-top: 1px solid black;
+/*	border-top: 1px solid black;*/
 	top: 364;
 	left: 0;
-	height: 43;	/* 51- padding-top */
+	height: 45;	/* 52- padding-top */
 	width: 320;
 	overflow: hidden;
 	z-index: 20;	
@@ -1155,13 +1168,13 @@ div#playlistNow {
 	float: right;
 }
 
-tr.even, td.even, div.even {
+.even {
 	background-color: #181818; /*d0d0d0;*/
 	color: white;		/*#eeeeee;*/
 	padding-top: 10px;
 	padding-bottom: 10px;
 	opacity: 0.75;
-	-webkit-transform: translateZ(1px);
+	-webkit-transform: translate(0px, 0px, 1px);
 }
 
 .PLShadowElement {
@@ -1193,23 +1206,23 @@ tr.even, td.even, div.even {
     background-position: left bottom;
 	opacity: 1 !important;
 	-webkit-transition-duration: 0;
-	-webkit-transform: translateZ(1px) !important;
+	-webkit-transform: translate(0px, 0px, 1px) !important;
 }
 
-tr.odd, td.odd, div.odd {
+.odd {
 	background-color: none; /* black; */
 	color: #f0f0f0;		/*#e6e6e6;*/
 	padding-top: 10px;
 	padding-bottom: 10px;
 	opacity: 0.75;
-	-webkit-transform: translateZ(1px);
+	-webkit-transform: translate(0px, 0px, 1px);
 }
 
 .black {
 	background-color: black !important;
 }
 
-tr.selectedRow, td.selectedRow, div.selectedRow, selectedRow {
+.selectedRow {
     background-color: #194fdb;
 	background-image: url(html/images/selection38.png);
     background-repeat: repeat-x;
@@ -1231,7 +1244,7 @@ tr.selectedRow, td.selectedRow, div.selectedRow, selectedRow {
 div#iPengName {
 	position: absolute !important;
 	/*top: 354 !important;*/
-	bottom: 52 !important;
+	bottom: 1 !important;
 	left: 0 !important;
 	width: 320;
 	height: 10 !important;
@@ -1244,6 +1257,7 @@ div#iPengName {
 	font-weight: bold !important;
 	background: none !important;
 	z-index: 12 !important;
+	overflow: hidden;
 }
 
 .iTopHomeDiv {
@@ -1374,6 +1388,104 @@ div#iPengName {
 	-webkit-border-image: url(html/images/rightButton.png) 0 12 0 5;
 }
 
+
+/* SongInfo */
+
+.songInfoTitle {
+	display: block;
+	padding: 8 0 3 0;
+	color: #b0b0b0;
+	font-size: 14;
+}
+
+.songInfoText {
+	color: white;
+	font-size: 17;
+}
+
+.songInfoText > a {
+	color: white !important;
+ 	font-style: italic;
+}
+
+
+/* Main Menu */
+
+.MenuPage {
+    display: none;
+	position: absolute;
+	top: 44;
+	min-height: 323;
+	width: 320;
+	overflow: hidden;
+	-webkit-transform: translate(0px, 0px, 1px);
+	-webkit-transform-style: flat;
+}
+
+.MenuPage[selected="true"] {
+    display: block;
+}
+
+.MainMenuRow {
+	position: relative;
+	background-image: url(html/images/row1.png), url(html/images/listArrow.png); /*url(html/images/chevron.png);*/
+	background-repeat: repeat-x, no-repeat;
+	background-position: left top, right center;
+	width: 320;
+	height: 64;
+	margin: 8 0 0 0;
+	padding: 15 5 0 10;
+	font-size: 25px;
+	color: black;
+	font-weight: bold;
+/*	font-family: Helvetica;*/
+ 	font-style: italic;
+    -webkit-box-sizing: border-box;
+	vertical-align: -webkit-baseline-middle;
+	-webkit-transform: translate(0px, 0px);
+}
+
+.MainMenuRow > a {
+	display: block;
+    margin: -15px -5px -8px -10px;
+    padding: 15px 5px 8px 10px;
+    text-decoration: none;
+    color: inherit;
+    background: none;
+    -webkit-box-sizing: border-box;
+    height: 64;
+}
+
+.MainMenuRow > a[selected], .MainMenuRow > a:active {
+	display: block;
+    margin: -15px -5px -8px -10px;
+    padding: 15px 5px 8px 10px;
+    text-decoration: none;
+    color: inherit;
+    background-color: #194fdb !important;
+    background-image: url(html/iui/listArrowSel.png), url(html/iui/selection.png) !important;
+    background-repeat: no-repeat, repeat-x !important;
+    background-position: right center, left top !important;
+    color: #FFFFFF !important;
+    -webkit-box-sizing: border-box;
+    height: 64;
+}
+
+.MainMenuPic {
+	vertical-align: -webkit-baseline-middle;
+	margin: 0 0 0 5;
+	max-width: 40;
+	-webkit-transform: translate(0px, 0px);
+}
+
+.MainMenuText {
+	position: absolute;
+	vertical-align: -webkit-baseline-middle;
+	left: 60;
+	margin: 5 0 0 0;
+	-webkit-transform: translate(0px, 0px);
+}
+
 div#topbar {
 	position: absolute;
 	background-image: url(html/images/topframe.png);
@@ -1394,39 +1506,95 @@ div#topbar {
 div#topbar_vert {
 	position: absolute;
 	background-image: url(html/images/button-bar.png);
+	background-color: #3755c3;
 	color: white;
 	text-shadow: #666666 0px -1px -1px;
 	font-size: 20;
 	font-weight: bold;
 	text-align: center;
-	padding-top: 9;
+/*	padding-top: 9;*/
 	border: 0;
-	border-bottom: 1px solid black;
-/*	background-color: #333333;*/
+	border-bottom: 1px solid rgb(45, 54, 66);
 	top: 0;
 	left: 0;
-	height: 34;	/* 43 - 9 */
+	height: 43;	/* 43 - 9 */
 	width: 320;
 	overflow: hidden;
 	z-index: 10;
 }
 
-
-/* SongInfo */
-
-.songInfoTitle {
-	display: block;
-	padding: 8 0 3 0;
-	color: #b0b0b0;
-	font-size: 14;
+.backButton {
+	position: absolute;
+	z-index: 12;
+	font-size: 12px;
+	font-weight: bold;
+	text-align: center;
+	color: white ! important;
+	text-shadow: rgba(0, 0, 0, .6) 0px -1px 0px;
+	-webkit-border-image : url('html/images/backButton.png') 0 5 0 13;
+	border-width : 0 5px 0 12px;
+	padding-top: 7px;
+	padding-right: 4px;
+	/* base metrics used to ensure a minumum size and specify a max size that can be used to trim the contents */
+	min-width: 35px;
+	max-width: 60px;
+	height: 23px; 
+	/* enfore trimming if the label is too long */
+	white-space : nowrap;
+	overflow : hidden;
+	text-overflow: ellipsis;
+	top: 7;
+	left: 4;
+	-webkit-transition-property : none;
+	-webkit-transition-duration : 0.5s, 0.5s;
+	-webkit-transform: translateX(0px);
+	opacity: 0;
 }
 
-.songInfoText {
+.backButton:active {
+  -webkit-border-image : url('html/images/backButtonPressed.png') 0 5 0 13;
+}
+
+.coolioButton {
+	border-width: 0 12px 0 5px;
 	color: white;
-	font-size: 17;
+	text-shadow: #000 0px 1px 1px;
+	-webkit-border-image: url('html/images/rightButton.png') 0 12 0 5;
+	max-width: 43;
+	padding: 0 10 0 8;
+	text-align: right;
+	z-index: 12;
+	line-height: 29px;
+	position: absolute;
+	right: 4;
+	top: 7;
 }
 
-.songInfoText > a {
-	color: white !important;
- 	font-style: italic;
+.coolioButton:active {
+  -webkit-border-image : url('html/images/rightButtonPressed.png') 0 12 0 5;
 }
+
+.pageTitle {
+	position: absolute;
+	/* base metrics */
+	height: 31px;
+	margin-top: 4px;
+	/* the titles should be displayed below the button so that they don't receive touches */
+	z-index: 10;
+	/* set up the font appearance */
+	font-size: 16pt;
+	font-weight: bold;
+	color: white;
+	text-shadow: rgba(0, 0, 0, .6) 0px -1px 0px;
+	/* enfore trimming if the label is too long */
+	white-space : nowrap;
+	overflow : hidden;
+	text-overflow: ellipsis;
+	top: 6;
+	right: 64;
+	width: 170;
+	-webkit-transition-property : none;
+	-webkit-transition-duration : 0.5s, 0.5s;
+	-webkit-transform: translateX(0px);
+}
+

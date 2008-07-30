@@ -1,5 +1,5 @@
 
-<div id = "rescanLibrary" class = "panel" title = "[% 'IPENG_RESCAN' | string %]" style = "width: 320;">
+<div id = "rescanLibrary" title = "[% 'IPENG_RESCAN' | string %]" class="MenuPage panel">
 <script type="text/javascript">
 
 rescanStrings = { 	cleanup1 : '[% 'CLEANUP1_PROGRESS' | string %]',
@@ -56,7 +56,7 @@ console.log ("unknown key:" + pair.key);
 </script>
 
 <span class = "backgroundtext">[% 'SETUP_RESCAN_DESC' | string %]</span><br>&nbsp;
-    <a class="iButton silver" 
+    <div class="iButton silver" 
     		onclick = 'changeOSD("[% 'IPENG_RESCAN_STARTED' | string %]"); callJSONRPC([ "rescan" ], checkRescan); showAdded();'
     		target = "none"
 			style = "
@@ -66,7 +66,7 @@ console.log ("unknown key:" + pair.key);
 				 height: 30px;
 				 text-align: center;
 				 font-size: 15;
-			">[% "SETUP_RESCAN_BUTTON" | string %]</a>
+			">[% "SETUP_RESCAN_BUTTON" | string %]</div>
 <br><span class = "backgroundtext">[% 'SETUP_WIPEDB' | string %]</span><br>&nbsp;
     <a class="iButton red" 
     		onclick = 'if (!confirm("[% 'IPENG_WIPE_CONFIRM' | string %]")) return;changeOSD("[% 'IPENG_WIPE_STARTED' | string %]"); callJSONRPC([ "wipecache" ], checkRescan); showAdded();'
@@ -96,12 +96,11 @@ console.log ("unknown key:" + pair.key);
 				position: absolute; left: 8; top: 0;
 				padding: 7; text-align:center;
 				width: 282; height: 31">
-<span id = "rescan_status" style = "text-shadow: rgba(255, 255, 255, 0.4) 0px -1px 0;"
+<span id = "rescan_status" style = "color: black; text-shadow: rgba(255, 255, 255, 0.4) 0px -1px 0;"
 >[% 'COMPLETE' | string %]</span>
 </div>
 <img id = "rescan_right" src = "[% webroot %]html/images/fillFieldNoneRight.png" style = "float: right">
 </div>
-<div style = "height: 48"></div>
 <script>checkRescan();</script>
 </div>
 

@@ -51,7 +51,7 @@ requestFavorite();
 		</subsection>
 		<subsection id="multicontrol">
 			<weight>12</weight>
-			<command id="ptest">
+			<command id="MultiPlayerControl">
 				<description>iPeng Multi-Player control: Control all your players on one page</description>
 				<weight>10</weight>
 				<height>30</height>

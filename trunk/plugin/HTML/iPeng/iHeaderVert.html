@@ -1,4 +1,20 @@
 <!-- iHeaderVert.html -->
+[% IF iPengUpdate %]
+<div id = "[% title || pagetitle | uri %]" title = "[% title || pagetitle %]" class = "MenuPage">
+	[% IF pageHeaderScripts;
+		pageHeaderScripts;
+	ELSE %]
+		<script type = 'application/x-javascript'>
+		[% IF thispage == 'search';
+			PROCESS search.js;
+		ELSIF (thispage == 'artwork') || (orientation == 1 && (levelName == 'album' || levelName == 'age'));
+			PROCESS artwork.js;
+		ELSE;
+			PROCESS browse.js;
+		END;
+		'</script>';
+	END;
+ELSE; %]
 
 <html xmlns="http://www.w3.org/1999/xhtml">
       <head>
@@ -61,7 +77,7 @@ a:hover, a:visited, a:active, a:link {
 [% END %]
 
 [% IF !noShowBar %]
-	<div id = 'topbar[% IF page_vertical %]_vert[% END %]'>
+	<div id = 'topbar[% IF page_vertical %]_vert[% END %]' style = 'padding-top: 9; height: 34'>
 		<span id = "title"
 		[%- IF page_vertical;
 			IF title.length > 15 -%]
@@ -99,4 +115,5 @@ a:hover, a:visited, a:active, a:link {
 	</div>
 [% END %]
 
+[% END %]
 <!-- /Element iHeaderVert.html -->

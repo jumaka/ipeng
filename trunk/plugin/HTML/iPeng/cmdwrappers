@@ -117,7 +117,7 @@ END;
 BLOCK moveuplink;
 IF !loop.first %]
 	<div style = "position: absolute; left: 0;">
-		<a [% content %] style = "position: absolute; left: 0; display: block; width: 100%; margin: -17 0 -8 -0; padding: 8 0 8 0">
+		<a [% content %] style = "position: absolute; left: 0; display: block; width: 100%; margin: -16 0 -8 -0; padding: 8 0 8 0">
 		<img style = "width: 320; height: 1;" src = "[% webroot %]html/images/between_line_light.png">
 		<img style = "position: relative; top: -6; left: 38; z-index: 1; padding: 0;" src = "[% webroot %]html/images/between_light.png">
 	</div></a> [%# a/div order intentionally wrong!!!! %]

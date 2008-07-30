@@ -54,7 +54,7 @@ var Player = {
 		
 		start : function () {
 			if (this.TID)
-				window.clearInterval(TID);
+				window.clearInterval(this.TID);
 			this.TID = window.setInterval(Player.quickUpdate.trigger, 1000);
 		}
 	},
@@ -281,6 +281,7 @@ var Player = {
 	},
 	
 	updateRepeatShuffle : function(val2, cmd, custom) {
+//console.log("uR/S:" + cmd + ".custom:" + custom + ".val2:" + val2);
 		var val;
 		if (custom) {
 			val = val2;
@@ -300,7 +301,7 @@ var Player = {
 			val = parseInt(val2);
 			Element.hide(cmd + 'control_custom');
 			temp.style.backgroundPosition = "left " + val * 21;
-			temp.title = srstrings[cmd][val];
+//			temp.title = srstrings[cmd][val];
 			temp.show();
 		}
 		this.status[cmd] = val;
@@ -318,16 +319,29 @@ var Player = {
 				refreshElement('songtitle', track.title);
 				refreshElement('album', track.album || " ");
 				refreshElement('artist', track.artist || remotestreaming);
+				var cap;
+				var docap = true;
 				if (track.coverart)
-					$('coverartpath').src = '/music/' + track.id + '/cover_320x320_f.jpg';
+					cap = '/music/' + track.id + '/cover_320x320_f.jpg';
 				else if (track.artwork_track_id)
-					$('coverartpath').src = '/music/' + track.artwork_track_id + '/cover_320x320_f.jpg';
-				else if (track.artwork_url)
-					$('coverartpath').src = track.artwork_url;
-				else if (track.remote)
-					$('coverartpath').src = webroot + 'html/images/radio256.png';
+					cap = '/music/' + track.artwork_track_id + '/cover_320x320_f.jpg';
+				else if (track.artwork_url) {
+					cap = track.artwork_url;
+					docap = false;
+				}
+				else if (track.remote) {
+					cap = webroot + 'html/images/radio256_320x320_f.png';
+					docap = false;
+				}
+				else {
+					cap = webroot + 'html/images/cover_320x320_f.png';
+					docap = false;
+				}
+				$('coverartpath').src = cap;
+				if (docap)
+					$('iNowBottombarBG').style.backgroundImage = 'url(' + cap + ')';
 				else
-					$('coverartpath').src = webroot + 'html/images/cover.png';
+					$('iNowBottombarBG').style.backgroundImage = 'url(html/images/iNowBBarTD.png)';
 				if (track.buttons) {
 					if (track.buttons.shuffle) Player.updateRepeatShuffle(track.buttons.shuffle, 'shuffle', true);
 					if (track.buttons.repeat) Player.updateRepeatShuffle(track.buttons.repeat, 'repeat', true);
@@ -533,6 +547,7 @@ var Player = {
 		},
 				
 		evtRepeatShuffle : function(val, cmd) {
+//console.log ("R/S:" + cmd + ".:." + val + ".repeat:" + Player.status.repeat + ".shuffle:" + Player.status.shuffle);
 			if (val == "custom")
 				Player.controls.doTrigger(Player.status[cmd].command);
 			else {
@@ -596,6 +611,8 @@ var ScrollController = {
 		this.startTime = new Date().getTime();
 		var sp = findAttribute(evt.touches[0].target, "scrollPage");
 		this.page = NowPlayingStack.find(sp);
+		if (this.page == null)
+		this.page = HomeScreenStack.find(sp);
 //		if (!this.page)
 //			this.page = HomeStack.find(sp);
 //console.log("oldpage:" + ((op) ? op.stackpos : "null") + " .new:" + ((this.page) ? this.page.stackpos : "null"));
@@ -711,7 +728,7 @@ var ScrollController = {
 		if (!this.page) return;
 //console.log("dy:" + this.dy + ".delta:" + scrollFactor * this.dy * parseInt(Math.sqrt(abs(this.dy))));
 		if (abs(this.dy) > 5)
-			this.page.vScroll(this.posY - this.startY + this.dy * abs(this.dy) * scrollFactor);//scrollFactor);
+			this.page.vScroll(parseInt(this.posY - this.startY + this.dy * abs(this.dy) * scrollFactor));//scrollFactor);
 		else
 			this.page.vScroll(this.posY - this.startY);
 	},
@@ -787,9 +804,25 @@ handleEvent : function (event) {
   // dispatch the event to the right method based on the type
 		switch (event.type) {
 			case 'touchstart' :
+				if (findParent(event.touches[0].target, "select")) {
+					event.stopPropagation();
+					return;
+				}
+/*				var link = findParent(event.touches[0].target, "a");
+console.log("start link:" + link);
+				if (link) {
+					link.setAttribute("active", "true");
+					link.setAttribute("selected", "true");
+				}*/
 				this.interactionStart(event);
 				break;
 			case 'touchmove' :
+/*				var link = findParent(event.touches[0].target, "a");
+console.log("stop link:" + link);
+				if (link) {
+					link.removeAttribute("active");
+					link.removeAttribute("selected");
+				}*/
 				this.interactionMove(event);
 				break;
 			case 'touchend' :

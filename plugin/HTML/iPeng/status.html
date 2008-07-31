@@ -175,8 +175,8 @@ PROCESS browseSettings;
 		</a>
 	</div>
 	<div class = "MainMenuRow">
-		<a href="[% webroot %]plugins/Favorites/index.html?" target="_self">
-			<img class = "MainMenuPic" src = "[% webroot %]html/images/redheart_shadow.png" style = 'margin: 0 0 0 0'> 
+		<a href="[% webroot %]plugins/Favorites/index.html?" target="_iPeng">
+			<img class = "MainMenuPic" src = "[% webroot %]html/images/redheart_shadow.png" style = 'margin: 2 0 0 0'> 
 			<span class = 'MainMenuText'>[% 'FAVORITES' | string %]</span>
 		</a>
 	</div>
@@ -188,7 +188,7 @@ PROCESS browseSettings;
 	</div>
 	<div class = "MainMenuRow" style = "margin-top: 20;">
 		<a href="#browseSettings">
-			<img class = "MainMenuPic" src = "[% webroot %]html/images/extensionitem.png"> 
+			<img class = "MainMenuPic" src = "[% webroot %]html/images/extensionItem.png"> 
 			<span class = 'MainMenuText'>[% "PLUGINS" | string %]</span>
 		</a>
 	</div>
@@ -476,7 +476,7 @@ orderByList = {
 [%- FOREACH key = links;
 	IF browseMoreCategories.${key.id}; %]
 		<li class = "biggerLine">
-		<a href="[% webroot %][% key.url %]" target="_self">
+		<a href="[% webroot %][% key.url %]" target="_iPeng">
 		<img src="[% webroot %]html/images/[% browseMoreCategories.${key.id}.icon %]" width="40" height="30" class = "paddedPic">
 		<span class="secondary">[% browseMoreCategories.${key.id}.text | string %]</span></a>
 		</li>
@@ -485,7 +485,7 @@ END -%]
 
 	<!-- SEARCH -->
 	<li class = "biggerLine">
-	<a href="[% webroot %]search.html?" target="_self">
+	<a href="[% webroot %]search.html?" target="_iPeng">
 	<img src="[% webroot %]html/images/iSearchWhite.png" width="40" height="30" class = "paddedPic">
 	<span class="secondary">[% 'SEARCH' | string %]</span></a>
 	</li>
@@ -495,7 +495,7 @@ FOREACH key = links;
 	temp = key.id | string; 
 	IF !browseCategories.keys.grep(key.id).size && !browseMoreCategories.keys.grep(key.id).size && !browseMoreExclude.grep(key.id).size && !browseMoreExclude.grep(temp).size -%]
 		<li class = "biggerLine">
-		<a href="[% webroot %][% key.url %]" target="_self">
+		<a href="[% webroot %][% key.url %]" target="_iPeng">
 		[%- IF key.icon -%]
 			<img src="[% webroot %][% key.icon.replace('.png', "_40x30_f.png") %]" width="40" height="30" class = "paddedPic">
 		[%- ELSE -%]
@@ -508,7 +508,7 @@ END;
 FOREACH key = iPeng.additionalLinks('searchiPeng');
 	IF key.id != "SEARCHMUSIC" -%]
 		<li class = "biggerLine">
-		<a href="[% webroot %][% link.value %]" target="_self">
+		<a href="[% webroot %][% link.value %]" target="_iPeng">
 		[%- IF key.icon -%]
 			<img src="[% webroot %][% key.icon.replace('.png', "_40x30_f.png") %]" width="40" height="30" class = "paddedPic">
 		[%- ELSE -%]
@@ -526,7 +526,7 @@ END;
 
 
 BLOCK browseRadio %]
-<form id = "Radio" class = "MenuPage panel" name="tune" method="get" action="status.html" target = "_self" title = '[% "RADIO" | string %]' style = 'background: none; width: 320'>
+<form id = "Radio" class = "MenuPage panel" name="tune" method="get" action="status.html" target = "_iPeng" title = '[% "RADIO" | string %]' style = 'background: none; width: 320'>
 [% PROCESS tune_in_form; %]
 <ul style = "margin-left: 0;">
 	[% 
@@ -616,10 +616,10 @@ BLOCK browseSettings %]
 	<span class="secondary">[% 'IPENG_RESCAN' | string | truncate(20) %]</span></a>
 	</li>
 [%
-links = iPeng.additionalLinks('puginsiPeng');
+links = iPeng.additionalLinks('pluginsiPeng');
 FOREACH link = links %]
 	<li class = "biggerLine">
-	<a href="[% webroot; link.url %]" target="_self">
+	<a href="[% webroot; link.url %]" target="_iPeng">
 	[% IF link.icon %]
 		<img src="[% webroot; link.icon.replace('.png', "_40x30_f.png") %]" height="30" class = "paddedPic">
 	[% END %]		
@@ -635,7 +635,7 @@ links = iPeng.additionalLinks('pugins');
 FOREACH link = links;
 	IF knownPlugins.keys.grep(link.id).size %]
 		<li class = "biggerLine">
-		<a href="[% webroot; link.url %]" target="_self">
+		<a href="[% webroot; link.url %]">
 		[%- IF link.icon %]
 			<img src="[% webroot; link.icon.replace('.png', "_40x30_f.png") %]" height="30" class = "paddedPic">
 		[% END -%]
@@ -648,14 +648,14 @@ END;
 %]
 	<!-- SERVER SETTINGS -->
 	<li class = "biggerLine">
-	<a href="[% webroot %]settings/server/basic.html" target="_self">
+	<a href="[% webroot %]settings/server/basic.html" target="_iPeng">
 	<!--img src="html/images/blank.png" width="40" height="30" style = "margin: 0; position: relative; float: left; top: -5;" alt = 'server settings'>-->
 	<span class="secondary">[% 'SERVER_SETTINGS' | string | truncate(22) %]</span></a>
 	</li>
 
 	<!-- PLAYER SETTINGS -->
 	<li class = "biggerLine">
-	<a href="[% webroot %]settings/player/basic.html?player=[% playerURI %]&playerid=[% playerURI %]" target="_self">
+	<a href="[% webroot %]settings/player/basic.html?&playerid=[% playerURI %]" target="_iPeng">
 	<!--img src="html/images/blank.png" width="40" height="30" style = "margin: 0; position: relative; float: left; top: -5;" alt = 'player settings'>-->
 	<span class="secondary">[% 'PLAYER_SETTINGS' | string | truncate(22) %]</span></a>
 [%

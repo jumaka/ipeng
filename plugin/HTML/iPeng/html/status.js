@@ -565,12 +565,13 @@ var Playlist = {
 
 function findAttribute(el, attr) {
  	var el = el;
+//console.log("el: " + el);
 	el = Element.extend(el);
+	if (!el) return null;
 	while (el.hasAttribute === undefined) {
 		el = Element.extend(el.parentNode);
 		if (!el) return null;
 	}
-//console.log("el: " + el);
 	if (el.hasAttribute === undefined) el = el.up();
 	while (el)
 		if (el.hasAttribute(attr)) return el.getAttribute(attr);
@@ -1126,7 +1127,6 @@ fsOvON = false;
 /* override for internal use */
 
 function goToStatus(goStatus) {
-console.log("goToStatus");
 	if (goStatus) {
 		Player.triggerUpdate();
 		NowPlayingStack.swipeIn(true);
@@ -1135,10 +1135,40 @@ console.log("goToStatus");
 }
 
 function goToStatus2(args) {
-console.log("goToStatus2");
 	Player.triggerUpdate();
 	NowPlayingStack.swipeIn(true);
 	HomeScreenStack.swipeIn(false);
+}
+
+function scrollToTop(el) { 
+	var sp = findAttribute(el, "scrollPage");
+	var target = HomeScreenStack.find(sp);
+	if (!target) target = NowPlayingStack.find(sp);
+	if (target)	target.vScrollTo(0, 1);
+}
+
+function scrollToBottom(el) { 
+	var sp = findAttribute(el, "scrollPage");
+	var target = HomeScreenStack.find(sp);
+	if (!target) target = NowPlayingStack.find(sp);
+	if (target) target.vScrollTo(-target.element.scrollHeight + target.Control.pageHeight, 1);
+}
+
+function scrollToHash(hash, el) {
+	var el = el ? el : document.body;
+	Element.extend(el);
+	var sp = findAttribute(el, "scrollPage");
+	var target = HomeScreenStack.find(sp);
+	if (!target) target = NowPlayingStack.find(sp);
+	if (!target && el) target = HomeScreenStack.find(el.id);
+	if (!target) return;
+	sp = el.down('[title="' + hash + '"]');
+	var offset = sp.offsetTop;
+	var cc = el.getElementsByClassName('currentPlaylistControl');
+	if (cc[0])
+		if (cc[0].visible()) offset += 48;
+//console.log("hash:" + hash + ".el:" + el + ".sp:" + sp.offsetTop);
+	target.vScrollTo(-offset, 0.5);
 }
 
 

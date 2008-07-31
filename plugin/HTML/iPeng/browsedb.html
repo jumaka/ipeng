@@ -107,10 +107,16 @@ IF !page_vertical -%]
 	<div id = 'trackInfo'></div>
 </div>
 [%- END -%]
-<div id = "mainbody">
+<div id = "[% levelName %]mainbody">
 [%- PROCESS storeReturnPageLevel;
 
 END;	# -- !ajaxUpdate
+
+
+containerid = 'pagecontainer';
+IF page_vertical;
+	containerid = containerid _ '_vert';
+END;
 
 has_pagebar = 0;
 IF (browse_items.max > 10) && pageinfo.alphamap && ((pageinfo.totalpages > 1) || (pageinfo.totalalphapages != 1));
@@ -125,12 +131,7 @@ IF has_pagebar;
 END;
 	
 
-containerid = 'pagecontainer';
-IF page_vertical;
-	containerid = containerid _ '_vert';
-END;
-
--%]<div id = '[% containerid %]' 
+-%]<div id = '[% levelName; containerid %]' class = '[% containerid %]'
 	 style = "min-height: [% IF orientation == 1; '213'; ELSE; '285'; END %]">
 	<!-- keep buttons at bottom -->[%-
 

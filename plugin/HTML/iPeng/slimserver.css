@@ -133,7 +133,7 @@ li.selectedli {
 	-webkit-transform: translate(0px, 0px);
 }
 
-div#browsedbList, div#innerSettingsBlock {
+div#browsedbList, .browsedbList, div#innerSettingsBlock {
 	padding: 0;	   
 	margin: 0px;
 	
@@ -152,7 +152,7 @@ div#browsedbList, div#innerSettingsBlock {
 	-webkit-transform: translate(0px, 0px);
 }
 
-div#currentPlaylistControl {
+.currentPlaylistControl {
 	padding: 0;	   
 	margin 0px;
 	
@@ -292,6 +292,7 @@ a.tapblock[selected], a.tapblock:active {
     color: #FFFFFF !important;
     padding: 7px 8px 7px 0px;
     margin: -0px -8px -0px -0px;
+	-webkit-transform: translate(0px, 0px);
 }
 
 a.tapblockFull[selected], a.tapblockFull:active {
@@ -302,6 +303,7 @@ a.tapblockFull[selected], a.tapblockFull:active {
     color: #FFFFFF !important;
 	margin: -10px -10px -10px -10px;
 	padding: 10px 10px 10px 10px;
+	-webkit-transform: translate(0px, 0px);
 }
 
 a.tapblockHalf[selected], a.tapblockHalf:active {
@@ -312,6 +314,7 @@ a.tapblockHalf[selected], a.tapblockHalf:active {
     color: #FFFFFF !important;
 	margin: -6px -8px -0px -0px;
 	padding: 2px 8px 3px 0px;
+	-webkit-transform: translate(0px, 0px);
 }
 
 
@@ -414,7 +417,7 @@ td.listing {
 	padding-bottom: 8px;
 }
 
-div#pagecontainer {
+div#pagecontainer, .pagecontainer {
 	position: relative;
 	width: 480px;
 	overflow-y: visible;
@@ -422,7 +425,7 @@ div#pagecontainer {
 	-webkit-transform: translate(0px, 0px);
 }
 
-div#pagecontainer_vert {
+div#pagecontainer_vert, .pagecontainer_vert {
 	position: relative;
 	width: 320px;
 	top: 0; 
@@ -639,7 +642,7 @@ div#crumblist_vert, .crumblist_vert {
 	background: white;
 }
 
-div#alphamap {
+.alphamap {
 	position: absolute;
 	left: 300px;
 /*	left: 0;*/

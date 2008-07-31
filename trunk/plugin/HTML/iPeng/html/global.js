@@ -79,6 +79,12 @@ function getStatusData(params, action) {
 	ajaxRequest(url, params, action);
 }
 
+function scrollToTop() { window.scrollTo(0, 1); }
+
+function scrollToBottom(el) { window.scrollTo(0,el.scrollHeight); }
+
+function scrollToHash(hash) { document.location = '#' + hash }
+
 function goToStatus(goStatus) {
 	if (goStatus)
 		document.location = webroot + statusroot + '?' + 'player=' + player;
@@ -127,7 +133,7 @@ function ajaxUpdateDiv(div, url, params, action, actionparam) {
 	var phash = '';
 	var poshash = params.indexOf("#")
 	if (poshash > 0) {
-		phash = params.substr(poshash);
+		phash = params.substr(poshash + 1);
 		params = params.substr(0, poshash);
 	}
 	new Ajax.Updater( { success: div }, url, {
@@ -140,7 +146,7 @@ function ajaxUpdateDiv(div, url, params, action, actionparam) {
 			if (action)
 				action(actionparam);
 			if (phash)
-				document.location=phash;
+				scrollToHash(phash, $(div));
 		}
 	} );
 }

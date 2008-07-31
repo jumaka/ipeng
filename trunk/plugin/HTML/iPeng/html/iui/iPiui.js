@@ -284,26 +284,6 @@ function cancelDialog(form)
     form.removeAttribute("selected");
 }
 
-function pushout(page, backwards, offset, axis) {
-    page.style.webkitTransitionDuration = "0s";
-	if (axis != "y")
-        page.style.webkitTransform = 
-        		"translateX(" + (backwards ? '-320px' : '320px') + ") " + offset;
-	var pageTitle = $("pageTitle" + ((currentTitles == "1") ? "2" : "1"));
-	if (pageTitle) {
-		pageTitle.style.webkitTransitionProperty = "none";
-		pageTitle.style.webkitTransform = (backwards) ? "translateX(0px)" : "translateX(320px)";
-	}	
-    var backButton = $("backButton" + ((currentTitles == "1") ? "2" : "1"));
-    if (backButton) {
-        var prevPage = $(pageHistory[pageHistory.length-1]);
-		backButton.style.webkitTransitionProperty = "none";
-        if (prevPage && !page.getAttribute("hideBackButton"))
-            backButton.style.display = "inline";
-		backButton.style.webkitTransform = (backwards) ? "translateX(0px)" : "translateX(320px)";
-    }
-}
-
 function updatePage(page, fromPage, backwards)
 {
     if (!page.id)
@@ -366,8 +346,25 @@ console.log("slidePages:" + fromPage.id + ".:." + toPage.id + ".:." + backwards)
     var toOffset = Yexp.exec(toPage.style.webkitTransform);
     toOffset = toOffset ? toOffset[0] : "";
     var axis = (backwards ? fromPage : toPage).getAttribute("axis");
-	pushout(toPage, backwards, toOffset, axis);
-    
+
+    toPage.style.webkitTransitionDuration = "0s";
+	if (axis != "y")
+        toPage.style.webkitTransform = 
+        		"translateX(" + (backwards ? '-320px' : '320px') + ") " + toOffset;
+	var toPageTitle = $("pageTitle" + ((currentTitles == "1") ? "2" : "1"));
+	if (toPageTitle) {
+		toPageTitle.style.webkitTransitionProperty = "none";
+		toPageTitle.style.webkitTransform = (backwards) ? "translateX(0px)" : "translateX(320px)";
+	}	
+    var backButton = $("backButton" + ((currentTitles == "1") ? "2" : "1"));
+    if (backButton) {
+        var prevPage = $(pageHistory[pageHistory.length-1]);
+		backButton.style.webkitTransitionProperty = "none";
+        if (prevPage && !toPage.getAttribute("hideBackButton"))
+            backButton.style.display = "inline";
+		backButton.style.webkitTransform = (backwards) ? "translateX(0px)" : "translateX(320px)";
+    }
+
     var fromOffset = Yexp.exec(fromPage.style.webkitTransform);
     fromOffset = fromOffset ? fromOffset[0] : "";
     
@@ -375,11 +372,11 @@ console.log("slidePages:" + fromPage.id + ".:." + toPage.id + ".:." + backwards)
 	if (axis == "y")
         (backwards ? fromPage : toPage).style.webkitTransform = "translateY(100%)";
 
-/*	var btop = toPage.scrollHeight + topbarHeight;
-	btop = (btop < bottombarTop) ? bottombarTop : btop;
-	if ($('bottombar'))
-		$('bottombar').style.top = btop;*/
 
+    setTimeout(pushIn, 0, fromPage, toPage, backwards, fromOffset, toOffset, axis);
+}
+    
+function pushIn(fromPage, toPage, backwards, fromOffset, toOffset, axis) {
     scrollTo(0, 1);
     clearInterval(checkTimer);
     

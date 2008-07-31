@@ -1,6 +1,6 @@
 <!-- iHeaderVert.html -->
 [% IF iPengUpdate %]
-<div id = "[% title || pagetitle | uri %]" title = "[% title || pagetitle %]" class = "MenuPage">
+<div id = "[% "id"; levelName || title || pagetitle | uri %]" title = "[% title || pagetitle %]" class = "MenuPage">
 	[% IF pageHeaderScripts;
 		pageHeaderScripts;
 	ELSE %]

@@ -47,6 +47,7 @@ BLOCK StatusHeader -%]
 									"[% "REPEAT_ALL" | string %]" ] };*/
 		var pagetype = '[% IF home; 'home'; ELSE; 'status'; END %]';
 		var homepage = '[% IF page; page; ELSE; ''; END %]';
+		var iPengUpdate = true;
 	</script>
 	<script src="[% webroot %]html/status_player.js?r=[% revision %]" type = 'application/x-javascript' defer></script>
 	<script src="[% webroot %]html/status.js?r=[% revision %]" type = 'application/x-javascript' defer></script>
@@ -167,7 +168,9 @@ PROCESS browseSettings;
 -%]
 
 <div id = "HomeMain" class = "MenuPage" 
-	 title = "[% 'IPENG_BUTTON_HOME' | string %]" selected='true'>
+	 title = "[% 'IPENG_BUTTON_HOME' | string %]" 
+	 style = "-webkit-transform: translateX(0px);"
+	 selected='true'>
 	<div class = "MainMenuRow">
 		<a href="#Database">
 			<img class = "MainMenuPic" src = "[% webroot %]html/images/music1.png" style = 'margin: -7 0 0 0'> 

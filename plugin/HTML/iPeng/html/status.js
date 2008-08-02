@@ -1,6 +1,7 @@
 var url = 'status.html';
 
 var scrollHeight = 320;
+var scrollFactor = 10000;
 var _progressBarWidth = 156;
 var _volumeBarWidth = 262;
 var _progressBarOffset = 82;
@@ -17,8 +18,6 @@ var infoFulltags = 'tags:uBjJKlaedsRxNpg';
 var infoFewtags = 'tags:uBJjKleasxgp';
 var prev_threshold = 10;
 var _rowHeight = 38;
-
-var scrollFactor = 1.5;
 
 var Playlist = {
 	firstitem : -1,
@@ -637,14 +636,16 @@ ScrollPage.prototype.vScroll = function (ndY, immed, tme) {
 //console.log("vScroll" + this.elPage.scrollHeight + ".Cont:" + this.Control.pageHeight);
 	if (this.elPage.scrollHeight <= this.Control.pageHeight) return;
 	if (!immed) {
+		var oldY = this.posY;
 		this.posY = this.posY + ndY;
 		this.posY = max(this.posY, this.Control.pageHeight - this.elPage.scrollHeight);
 		this.posY = min(this.posY, 0);
 //		var tdel = parseInt(Math.sqrt(abs(ndY) / 320) * 5) / 10;
 //		this.elPage.webkitTransitionDelay = "-0.2s";
-		if (tme)
+		if (tme) {
+			var tme = Math.round(10 * tme * (this.posY - oldY) / ndY) / 10;
 			this.elPage.style.webkitTransitionDuration = tme;
-		else
+		} else
 			this.elPage.style.webkitTransitionDuration = (ndY > 1500) ? "1.5s" : "1.0s";
 //console.log("ndY:" + ndY + ".tme:" + tme);
 		this.elPage.style.webkitTransform = "translateY(" + this.posY + "px)";
@@ -685,6 +686,7 @@ var NowPlayingStack = {
 	stack : [],
 	maxstack : 0,
 	swipeTarget : 0,
+	visible : false,
 	element : null,
 	pageHeight : 320,
 
@@ -793,6 +795,7 @@ var NowPlayingStack = {
 	swipeIn : function (flag) {
 		NowPlayingStack.element.show();
 		this.swipeTarget = (flag) ? 'translateX(0px)' : 'translateX(320px)';
+		this.visible = flag;
 		window.setTimeout(NowPlayingStack.doSwipeStack, 10);
 	},
 	
@@ -821,11 +824,13 @@ var HomeScreenStack = {
 	swipeTarget : 0,
 	element : null,
 	stack : [],
+	visible : false,
 	pageHeight : 323,
 
 	swipeIn : function (flag) {
 		this.element.show();
 		this.swipeTarget = (flag) ? 'translateX(0px)' : 'translateX(-320px)';
+		this.visible = flag;
 		window.setTimeout(HomeScreenStack.doSwipeStack, 10);
 	},
 	

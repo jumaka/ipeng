@@ -7,6 +7,7 @@
 // appear whenever an ajax request is in progress. Look at Nokia770/pageheader.html for
 // an example
 var inhibitSW;
+var iPengUpdate = false;
 
 removeSW = function () {
 	if ($('systemWorking')) {

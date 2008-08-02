@@ -93,10 +93,12 @@ window.iui =
                 }
                 else
                 {
-                    var frag = document.createElement("div");
+                    var frag = new Element("div");
                     frag.innerHTML = req.responseText;
-                    iui.insertPages(frag.childNodes);
-	            	req.responseText.evalScripts();
+//                    iui.insertPages(frag.childNodes);
+					docParent.appendChild(frag);
+	    	        iui.showPage(frag.down('div'));
+	           		req.responseText.evalScripts();
                 }
                 if (cb)
                     setTimeout(cb, (delay) ? delay : 2000, true);
@@ -347,10 +349,14 @@ console.log("slidePages:" + fromPage.id + ".:." + toPage.id + ".:." + backwards)
     toOffset = toOffset ? toOffset[0] : "";
     var axis = (backwards ? fromPage : toPage).getAttribute("axis");
 
-    toPage.style.webkitTransitionDuration = "0s";
+//    toPage.style.webkitTransitionDuration = "0s";
+	toPage.style.webkitTransitionProperty = "none";
 	if (axis != "y")
         toPage.style.webkitTransform = 
         		"translateX(" + (backwards ? '-320px' : '320px') + ") " + toOffset;
+    toPage.style.webkitTransitionDuration = "0.5s";
+	toPage.style.webkitTransitionProperty = "-webkit-transform, opacity";
+
 	var toPageTitle = $("pageTitle" + ((currentTitles == "1") ? "2" : "1"));
 	if (toPageTitle) {
 		toPageTitle.style.webkitTransitionProperty = "none";
@@ -368,9 +374,13 @@ console.log("slidePages:" + fromPage.id + ".:." + toPage.id + ".:." + backwards)
     var fromOffset = Yexp.exec(fromPage.style.webkitTransform);
     fromOffset = fromOffset ? fromOffset[0] : "";
     
-    fromPage.style.webkitTransitionDuration = "0s";
+	fromPage.style.webkitTransitionProperty = "none";
+//    fromPage.style.webkitTransitionDuration = "0s";
 	if (axis == "y")
         (backwards ? fromPage : toPage).style.webkitTransform = "translateY(100%)";
+	fromPage.style.webkitTransitionProperty = "-webkit-transform, opacity";
+    fromPage.style.webkitTransitionDuration = "0.5s";
+    toPage.setAttribute("selected", "true");
 
 
     setTimeout(pushIn, 0, fromPage, toPage, backwards, fromOffset, toOffset, axis);
@@ -380,10 +390,6 @@ function pushIn(fromPage, toPage, backwards, fromOffset, toOffset, axis) {
     scrollTo(0, 1);
     clearInterval(checkTimer);
     
-    toPage.setAttribute("selected", "true");
-    fromPage.style.webkitTransitionDuration = "0.5s";
-    toPage.style.webkitTransitionDuration = "0.5s";
-
     if (axis == "y")
 		(backwards ? fromPage : toPage).style.webkitTransition = "translateY(0%)";
     else {

@@ -1,6 +1,7 @@
 [%- FILTER null %]
 [% 
 playerURI = player | uri;
+IF iPengUpdate; target = "iPeng"; END;
 albumHRef = "href=\"${webroot}browsedb.html?hierarchy=album,track&amp;level=1&amp;album.id=$itemobj.album.id\"";
 yearHRef = "href=\"${webroot}browsedb.html?hierarchy=year,album,track&amp;level=1&amp;year.id=$itemobj.year\"";
 songinfoHRef = "href=\"${webroot}songinfo.html?item=$itemobj.id\"";
@@ -18,25 +19,25 @@ hasPagebar = (pageinfo && pageinfo.totalpages > 1 && pageinfo.totalalphapages !=
 
 [%# href for home page %]
 [% BLOCK homeLink; homeString = "HOME" | string -%]
-	[% "<a href=\"${webroot}home.html?player=$playerURI\"" ; IF target; "target=\""; target; "\""; END; ">" %]
+	[% "<a href=\"${webroot}home.html?\"" ; IF target; "target=\""; target; "\""; END; ">" %]
 	[% IF img; "<img src=\"${webroot}html/images/";img;"\" >";ELSE; homeString; END;"</a>" -%]
 [%- END %]
 
 [%# href for save playlist command %]
 [% BLOCK savePlaylistLink; saveString = "SAVE" | string -%]
-       [% "<a href=\"${webroot}edit_playlist.html?player=$playerURI&amp;saveCurrentPlaylist=1\" target=\"";target or 'browser';"\" >" %]
+       [% "<a href=\"${webroot}edit_playlist.html?saveCurrentPlaylist=1\" target=\"";target or 'browser';"\" >" %]
        [% IF img; "<img alt=\"";saveString;"\" src=\"${webroot}html/images/";img;"\" >";ELSE; saveString; END;"</a>" -%]
 [%- END %] 
 
 [%#href for downloading the current playlist %]
 [% BLOCK downloadPlaylistLink; downloadString = "DOWNLOAD" | string -%]
-	[% IF playlist_items %][% "<a href=\"status.m3u?player=$playerURI\" target=\"";$target or 'playlist';"\">" %]
+	[% IF playlist_items %][% "<a href=\"status.m3u?\" target=\""; target or 'playlist';"\">" %]
 	[% IF img; "<img alt=\"";downloadString;"\" src=\"${webroot}html/images/";img;"\" >";ELSE; downloadString; END;"</a>" -%][%- END %]
 [%- END %]
 
 [%# href for clear current playlist command %]
 [% BLOCK clearPlaylistLink; clearString = "CLEAR" | string -%]
-	[% "<a href=\"javascript:void(0);\" onClick = \"clearCurrentPlaylist();\">" %]
+	[% "<a href=\"javascript:void(0);\" onClick = \"clearCurrentPlaylist(\'"; levelName; "\');\">" %]
 	[% IF img; "<img alt=\"";clearString;"\" src=\"${webroot}html/images/";img;"\" >";ELSE; clearString; END;"</a>" -%]
 [%- END %]
 
@@ -107,7 +108,7 @@ href="[% webroot %][% statusroot %]?[%
 		PROCESS cmdRemoteURLQuery;
 	ELSE;
 		PROCESS cmdLocalQuery;
-	END; %]&amp;player=[% playerURI %]"
+	END; %]&amp;"
 [%- END %]
 
 [%# ajaxCmdHRef supplies only the URL args necessary for an add/play/insert/remove 

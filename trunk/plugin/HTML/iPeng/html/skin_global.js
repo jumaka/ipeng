@@ -411,10 +411,12 @@ function clearCurrentPlaylist(prefix) {
 
 function showPlaylistControl(prefix) {
 	var prefix = prefix ? prefix : '';
+	var offset = (iPengUpdate) ? 4 : 48;
 console.log("showPl:" + prefix + ".:." + $(prefix + 'currentPlaylistControl'));
 	if ($(prefix + 'currentPlaylistControl')) {
 		if ($(prefix + 'alphamap')) {
-			$(prefix + 'alphamap').style.top = $(prefix + 'currentPlaylistControl').cumulativeOffset()[1] + 48;
+			$(prefix + 'alphamap').style.top = 
+				$(prefix + 'currentPlaylistControl').up().cumulativeOffset()[1] + offset;
 		}
 		Element.show(prefix + 'currentPlaylistControl');
 	}
@@ -424,14 +426,16 @@ console.log("cumul:" +  $(prefix + 'currentPlaylistControl').cumulativeOffset()[
 function hidePlaylistControl(prefix) {
 console.log("hidePl:" + prefix);
 	var prefix = prefix ? prefix : '';
+	var offset = (iPengUpdate) ? 44 : 0;
 	if ($(prefix + 'currentPlaylistControl')) {
 		if ($(prefix + 'alphamap')) {
-			$(prefix + 'alphamap').style.top = $(prefix + 'currentPlaylistControl').cumulativeOffset()[1];
+console.log("hide here:" +  $(prefix + 'currentPlaylistControl').cumulativeOffset()[1] + "iPu:" + iPengUpdate);
+			$(prefix + 'alphamap').style.top = $(prefix + 'currentPlaylistControl').up().cumulativeOffset()[1] - offset;
 //		 		$(prefix + 'alphamap').style.top = parseInt($(prefix + 'alphamap').getStyle('top')) - 48;
 		}
 		Element.hide(prefix + 'currentPlaylistControl');
 	}
-console.log("cumul:" +  $(prefix + 'currentPlaylistControl').cumulativeOffset()[1]);
+console.log("cumul:" +  $(prefix + 'currentPlaylistControl').cumulativeOffset()[1] + "iPu:" + iPengUpdate);
 }
 
 function evaluatePlaylist(prefix) {

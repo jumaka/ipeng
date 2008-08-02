@@ -1421,8 +1421,11 @@ div#iPengName {
 	min-height: 323;
 	width: 320;
 	overflow: hidden;
-	-webkit-transform: translate(0px, 0px, 1px);
+	-webkit-transform: translateX(320px) translateY(0px);
 	-webkit-transform-style: flat;
+	-webkit-transition-property: -webkit-transform, opacity;
+	-webkit-transition-duration: 0.5s;
+	-webkit-transition-timing-function: ease-out; 
 }
 
 .MenuPage[selected="true"] {

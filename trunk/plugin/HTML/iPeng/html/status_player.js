@@ -55,7 +55,7 @@ var Player = {
 		start : function () {
 			if (this.TID)
 				window.clearInterval(this.TID);
-			this.TID = window.setInterval(Player.quickUpdate.trigger, 1000);
+			this.TID = window.setInterval(Player.quickUpdate.trigger, 2000);
 		}
 	},
 	
@@ -444,6 +444,7 @@ var Player = {
 		with (Player.status) {
 			if (add && mode =="play")
 				time += add;
+			if (!NowPlayingStack.visible) return;
 			refreshElement('elapsed', timeStr(time));
 			if (Player.progressCtrl)
 				Player.progressCtrl.setVolume(time * progStep, false, true);
@@ -599,6 +600,7 @@ var ScrollController = {
 	target : null,
 	Tstarted : false,
 	startTime : null,
+	moveTime : null,
 	direction : 0,		//null, 1: x, 2: y
 	
 	
@@ -627,6 +629,7 @@ var ScrollController = {
 		this.hasmoved = false;
 		this.idStart = evt.touches[0].identifier;
 //		this.duplicateEvent(evt, 0, 0);
+//		this.moveY(evt); //stop moving
 		evt.preventDefault();
 	},
 	
@@ -638,6 +641,7 @@ var ScrollController = {
 		this.posX = evt.touches[0].screenX;
 		this.posY = evt.touches[0].screenY;
 		this.hasmoved = true;
+		this.moveTime = new Date().getTime();
 		if (!this.direction)
 			if (abs(this.posX - this.startX) > abs(this.posY - this.startY)) {
 				if (abs(this.posX - this.startX) > 0)
@@ -726,11 +730,24 @@ var ScrollController = {
 					this.page.scrollTo(this.posY - this.startY);
 			}*/
 		if (!this.page) return;
-//console.log("dy:" + this.dy + ".delta:" + scrollFactor * this.dy * parseInt(Math.sqrt(abs(this.dy))));
-		if (abs(this.dy) > 5)
-			this.page.vScroll(parseInt(this.posY - this.startY + this.dy * abs(this.dy) * scrollFactor));//scrollFactor);
-		else
-			this.page.vScroll(this.posY - this.startY);
+		var endtime = new Date().getTime();
+		var delta = this.posY - this.startY;
+		var deltat = endtime - this.startTime;
+		var ddeltat = endtime - this.moveTime;
+		var dt = 0.1;
+		var dv = 1;
+		if (abs(this.dy) > 5) {
+//			delta += parseInt(this.dy * Math.sqrt(abs(delta)) * scrollFactor / (deltat * Math.sqrt(deltat)));
+//			dt = Math.round(abs(delta) * (deltat) / 15000) / 10;
+//			delta += parseInt(this.dy * Math.sqrt(abs(this.dy)) * scrollFactor);
+//		var dt = Math.round(Math.sqrt(abs(delta))) / 20;
+//		var dt = 30 / Math.sqrt(abs(this.dy));
+			dv = 2 * (abs(this.dy) / ddeltat) + (abs(delta) / deltat);
+			delta += parseInt(delta * dv * 3);
+			dt = min(Math.round(8 * abs(dv)) / 10, 3.5);
+		}
+console.log("dy:" + this.dy + ".dges:" + (this.posY - this.startY) + ".mTime:" + (endtime - this.moveTime) + ".tges:" + (endtime - this.startTime) + ".delta:" + delta + ".dt:" + dt);
+		this.page.vScroll(delta, false, dt);
 	},
 	
 	finishClick : function(evt) {

@@ -1,0 +1,66 @@
+<!-- XM Radio Plugin; Classic Skin   -->
+[% pagetitle = "PLUGIN_XMRADIO" | string %]
+[% pageicon = 'RADIO' %]
+[% pageHeaderScripts = BLOCK %]
+<style type="text/css" media="screen">@import "[% webroot%]html/iui/iPiui.css";</style>
+<script TYPE="text/javascript">[% PROCESS html/vars.js %]</script>
+
+<script language="JavaScript">
+  function LoadXMIndex() {
+  [% IF loggedin %]
+  document.tuneForm.station.focus();
+  [% END %]
+//  document.location.replace("[% webroot %][% statusroot %]?player=[% player | uri %]&amp;start=[% start %]&amp;refresh=1");
+  }
+</script>
+[% END %]
+[% bodyscript = 'onload="LoadXMIndex();globalOnload();"' %]
+[% statusroot = 'status_header.html' %]
+[%- pwd_list = BLOCK -%]/
+<a href="index.html?player=[% player | uri %]">[% "PLUGIN_XMRADIO" | string %]</a>
+[% END -%]
+[%- pageHeaderInfo = BLOCK %]
+[% xmmessage %]
+[% END -%]
+[% PROCESS pageheader.html %]
+<div class="homeMenuSection panel" style = "padding: 9">
+[% PROCESS storeReturnPage -%]
+  <div>BROWSE</div>
+  <ul>
+    [% IF loggedin %]
+    <li class = "biggerLine"><a href="browse.html?type=preset&player=[% player | uri %]">[% "PLUGIN_XMRADIO_BROWSE_PRESETS" | string %]</a></li>
+    <li class = "biggerLine"><a href="browse.html?type=genre&player=[% player | uri %]">[% "PLUGIN_XMRADIO_BROWSE_GENRES" | string %]</a></li>
+    <li class = "biggerLine"><a href="browse.html?type=station&genre=&player=[% player | uri %]">[% "PLUGIN_XMRADIO_BROWSE_STATIONS" | string %]</a></li>
+    [% ELSE %]
+    <li><span style="color:#cccccc">[% "PLUGIN_XMRADIO_BROWSE_PRESETS" | string %]</span></li>
+    <li><span style="color:#cccccc">[% "PLUGIN_XMRADIO_BROWSE_GENRES" | string %]</span></li>
+    <li><span style="color:#cccccc">[% "PLUGIN_XMRADIO_BROWSE_STATIONS" | string %]</span></li>
+    [% END %]
+  </ul>
+</div>
+<div class="homeMenuSection panel" style = "padding: 9">
+  <div>TUNE STATION</div>
+</div>
+[% IF playmessage %]
+<div><b>[% playmessage %]</b></div>
+[% END %]
+<div style="margin-left:16px; margin-right:16px;">
+  <form id="tuneForm" name="tuneForm" method="GET" action="tune.html">
+    <input type="text" [% UNLESS loggedin %]disabled="true"[% END %] class="stdedit" name="station" value="[% value %]" size=10 AUTOCOMPLETE="OFF">
+    <input name="submit" type="submit" [% UNLESS loggedin %]disabled="true"[% END %] class="stdclick" value=[% "PLAY" | string %]>
+    <input type="hidden" value="direct" name="tune">
+    <input type="hidden" value="[% player %]" name="player">
+  </form>
+</div>
+<div class="homeMenuSection panel" style = "padding:9px">
+  <div>ACCOUNT</div>
+  <ul>
+    [% IF loggedin %]
+    <li><a href="loginout.html?action=out&player=[% player | uri %]">[% "PLUGIN_XMRADIO_LOGOUT" | string %]</a></li>
+    [% ELSE %]
+    <li><a href="loginout.html?action=in&player=[% player | uri %]">[% "PLUGIN_XMRADIO_LOGIN" | string %]</a></li>
+    [% END %]
+  </ul>
+</div>
+[% selectedButton = 'XMRadio' %]
+[% PROCESS pagefooter.html %]

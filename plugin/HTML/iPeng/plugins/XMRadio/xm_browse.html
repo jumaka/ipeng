@@ -1,0 +1,105 @@
+<!-- XM Radio Plugin; Classic Skin   -->
+[% pagetitle = "PLUGIN_XMRADIO" | string %]
+[% pageicon = 'RADIO' %]
+[%
+IF pwd_list;
+	item = pwd_list.max;
+	i_string = pwd_list.$item;
+	IF (i_title = i_string.match('>(.*)<'));
+		pagetitle = i_title.0;
+	END;
+	IF pwd_list.max > 0;
+		item = pwd_list.max - 1;
+		i_string = pwd_list.$item;
+		IF (i_title = i_string.match('href *= *(["\'].*["\'])'));
+			goHomeURI = i_title.0;
+			IF (i_title = i_string.match('>(.*)<'));
+				homeString = i_title.0;
+			ELSE;
+				homeString = "SETUP_WIZARD_PREVIOUS" | getstring;
+			END;
+		END;
+	END;
+END;
+%]
+[% pageHeaderScripts = BLOCK %]
+<script TYPE="text/javascript">[% PROCESS html/vars.js %]</script>
+<script language="JavaScript">
+  function LoadXMBrowse() {
+      parent.frames[1].location.replace("[% webroot %][% statusroot %]?player=[% player | uri %]&amp;start=[% start %]&amp;refresh=1");
+  }
+</script>
+[% END %]
+[%# bodyscript = 'onload="LoadXMBrowse()"' %]
+[% statusroot = 'status_header.html' %]
+[%- pageHeaderInfo = BLOCK %]
+    [% xmmessage %]
+    [% IF playmessage %]<b>[% playmessage %]</b>[% END %]
+[% END -%]
+[% PROCESS pageheader.html %]
+[% PROCESS storeReturnPage -%]
+[%- BLOCK genrelink %]
+    <a href="browse.html?type=station&genre=[% genrename | uri %]&player=[% player | uri %]">[% genrename | html %]</a>
+[% END -%]
+[%- BLOCK genrejustlink %]
+    browse.html?type=station&genre=[% genrename | uri %]&player=[% player | uri %]
+[% END -%]
+[%- BLOCK genrenolink %]
+    [% genrename | html %]
+[% END -%]
+[%- BLOCK stationlink %]
+    <a href="info.html?station=[% stationnumber %]&itype=[% itype %]&igenre=[% igenre | uri %]&player=[% player | uri %]">[% stationname %] ([% stationnumber %])</a>
+[% END -%]
+[%- BLOCK stationnolink %]
+    [% stationname %] ([% stationnumber %])
+[% END -%]
+[%- BLOCK playref %]
+href="tune.html?action=[% playaction %]&station=[% stationnumber %]&type=[% type | uri %]&genre=[% genre | uri %]&tune=list&player=[% player | uri %]"
+[% END -%]
+[%- BLOCK textref %]
+tune.html?action=[% playaction %]&station=[% stationnumber %]&type=[% type | uri %]&genre=[% genre | uri %]&tune=list&player=[% player | uri %]
+[% END -%]
+[% BLOCK arrowitem;
+	WRAPPER descendlink;
+		'href="'; textlink; '"';
+	END;
+END %]
+[% WRAPPER contentcontainer %]
+[% odd = 1 %]
+[% IF genre_items %]
+    [% FOREACH item = genre_items %]
+       	[% textlink = PROCESS genrejustlink genrename=item.genrename %]
+        [%- WRAPPER contentitem
+        				rightcontrols = 'arrowitem'
+        				lineclass = 'itemtext Wrap' %]
+            [% PROCESS genrenolink 
+							genrename=item.genrename %]
+        [% END %]
+        [% odd = (not odd) %]
+    [% END %]
+[% ELSIF station_items %]
+    [% FOREACH item = station_items %]
+        [% BLOCK xmplaycontrols %]
+            [%# WRAPPER playlink noTarget=1 %]
+                [%# PROCESS playref playaction='play' %]
+            [%# END %]
+            [% WRAPPER addlink noTarget=1 %]
+                [% PROCESS playref playaction='add' %]
+            [% END %]
+        [% END %]
+		[% textlink = PROCESS textref stationnumber=item.stationnumber playaction='play' %]
+        [%- WRAPPER contentitem 
+            		fixedwidth = 245
+            		lineclass = 'itemtext Wrap'
+        			rightcontrols = 'xmplaycontrols' %]
+            [% PROCESS stationnolink
+                       stationname=item.stationname
+                       stationnumber=item.stationnumber %]
+        [% END %]
+        [% odd = (not odd) %]
+    [% END %]
+[% ELSE %]
+[% END %]
+[% END %]
+[% selectedButton = 'XMRadio' %]
+[% PROCESS pagefooter.html %]

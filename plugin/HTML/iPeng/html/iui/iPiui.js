@@ -10,7 +10,7 @@
 
 var slideSpeed = 12;
 var slideInterval = 1;
-var bottombarTop = (bottombarTop) ? bottombarTop : 369;
+var bottombarTop = (bottombarTop) ? bottombarTop : 368;
 var topbarHeight = (topbarHeight) ? topbarHeight : -4;
 var docParent = null;
 var docStack = null;
@@ -33,7 +33,7 @@ window.iui =
     {
         if (page)
         {
-        	HomeScreenStack.addConditional(page);
+//        	HomeScreenStack.addConditional(page);
             if (currentDialog)
             {
                 currentDialog.removeAttribute("selected");
@@ -95,9 +95,9 @@ window.iui =
                 {
                     var frag = new Element("div");
                     frag.innerHTML = req.responseText;
-//                    iui.insertPages(frag.childNodes);
-					docParent.appendChild(frag);
-	    	        iui.showPage(frag.down('div'));
+                    iui.insertPages(frag.childNodes);
+//					docParent.appendChild(frag);
+//	    	        iui.showPage(frag.down('div'));
 	           		req.responseText.evalScripts();
                 }
                 if (cb)
@@ -127,6 +127,7 @@ window.iui =
         var targetPage;
         for (var i = 0; i < nodes.length; ++i)
         {
+//console.log("node" + i);
             var child = nodes[i];
             if (child.nodeType == 1)
             {
@@ -158,7 +159,7 @@ window.iui =
             if (child.nodeType == 1 && child.getAttribute("selected") == "true")
                 return child;
         }    
-    }    
+    }
 };
 
 // *************************************************************************************************
@@ -166,8 +167,9 @@ window.iui =
 addEventListener("load", function(event)
 {
 //    var page = iui.getSelectedPage();
-	docParent = $('HomeScreen');
-	var page = $('HomeMain');
+//	docParent = $('HomeScreen');
+	docParent = document.body;
+	var page = $('main');
     if (page)
         iui.showPage(page);
 
@@ -350,6 +352,7 @@ console.log("slidePages:" + fromPage.id + ".:." + toPage.id + ".:." + backwards)
     var axis = (backwards ? fromPage : toPage).getAttribute("axis");
 
 //    toPage.style.webkitTransitionDuration = "0s";
+    toPage.setAttribute("selected", "true");
 	toPage.style.webkitTransitionProperty = "none";
 	if (axis != "y")
         toPage.style.webkitTransform = 
@@ -382,6 +385,10 @@ console.log("slidePages:" + fromPage.id + ".:." + toPage.id + ".:." + backwards)
     fromPage.style.webkitTransitionDuration = "0.5s";
     toPage.setAttribute("selected", "true");
 
+	var btop = toPage.scrollHeight + topbarHeight;
+	btop = (btop < bottombarTop) ? bottombarTop : btop;
+	if ($('bottombar'))
+		$('bottombar').style.top = btop;
 
     setTimeout(pushIn, 0, fromPage, toPage, backwards, fromOffset, toOffset, axis);
 }
@@ -399,10 +406,18 @@ function pushIn(fromPage, toPage, backwards, fromOffset, toOffset, axis) {
     }
 //	if (!toPage.hasClassName("dialog"))
 //		fromPage.removeAttribute("selected");
+	if (!toPage.hasClassName("dialog"))
+		fromPage.addEventListener('webkitTransitionEnd', transitionEvent, false);
 
 	checkTimer = setInterval(checkOrientAndLocation, 300);
 	updatePage(toPage, fromPage, backwards);
 //	setTimeout(updatePage, 0, toPage, fromPage);
+}
+
+function transitionEvent(event) {
+	var temp = event.target.style.webkitTransform;
+	if (temp.include('translateX') && !temp.include("translateX(0px)"))
+			event.target.removeAttribute("selected");
 }
 
 function preloadImages()

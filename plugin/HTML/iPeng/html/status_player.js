@@ -48,7 +48,7 @@ var Player = {
 			var temp = new Date().getTime();
 			if (Player.quickUpdate.time)
 				if (temp - Player.quickUpdate.time > 10000)
-					Player.triggerUpdate();
+					window.setTimeout(Player.triggerUpdate, 2000);
 			Player.quickUpdate.time = temp;
 		},
 		
@@ -132,7 +132,7 @@ var Player = {
 			this.prgTimer = null;
 		}
 	},
-		
+	
 	updatePlayerName : function (newname) {
 		this.status.player_name = newname;
 		$('playerName').update(newname);
@@ -281,7 +281,6 @@ var Player = {
 	},
 	
 	updateRepeatShuffle : function(val2, cmd, custom) {
-//console.log("uR/S:" + cmd + ".custom:" + custom + ".val2:" + val2);
 		var val;
 		if (custom) {
 			val = val2;
@@ -444,7 +443,6 @@ var Player = {
 		with (Player.status) {
 			if (add && mode =="play")
 				time += add;
-			if (!NowPlayingStack.visible) return;
 			refreshElement('elapsed', timeStr(time));
 			if (Player.progressCtrl)
 				Player.progressCtrl.setVolume(time * progStep, false, true);
@@ -548,7 +546,6 @@ var Player = {
 		},
 				
 		evtRepeatShuffle : function(val, cmd) {
-//console.log ("R/S:" + cmd + ".:." + val + ".repeat:" + Player.status.repeat + ".shuffle:" + Player.status.shuffle);
 			if (val == "custom")
 				Player.controls.doTrigger(Player.status[cmd].command);
 			else {
@@ -600,7 +597,6 @@ var ScrollController = {
 	target : null,
 	Tstarted : false,
 	startTime : null,
-	moveTime : null,
 	direction : 0,		//null, 1: x, 2: y
 	
 	
@@ -611,12 +607,7 @@ var ScrollController = {
 //console.log("start proc");
 		this.Tstarted = true;
 		this.startTime = new Date().getTime();
-		var sp = findAttribute(evt.touches[0].target, "scrollPage");
-		this.page = NowPlayingStack.find(sp);
-		if (this.page == null)
-		this.page = HomeScreenStack.find(sp);
-//		if (!this.page)
-//			this.page = HomeStack.find(sp);
+		this.page = ScrollPage.prototype.find(findAttribute(evt.touches[0].target, "scrollPage"));
 //console.log("oldpage:" + ((op) ? op.stackpos : "null") + " .new:" + ((this.page) ? this.page.stackpos : "null"));
 		this.startX = evt.touches[0].screenX;
 		this.startY = evt.touches[0].screenY;
@@ -629,7 +620,6 @@ var ScrollController = {
 		this.hasmoved = false;
 		this.idStart = evt.touches[0].identifier;
 //		this.duplicateEvent(evt, 0, 0);
-//		this.moveY(evt); //stop moving
 		evt.preventDefault();
 	},
 	
@@ -641,7 +631,6 @@ var ScrollController = {
 		this.posX = evt.touches[0].screenX;
 		this.posY = evt.touches[0].screenY;
 		this.hasmoved = true;
-		this.moveTime = new Date().getTime();
 		if (!this.direction)
 			if (abs(this.posX - this.startX) > abs(this.posY - this.startY)) {
 				if (abs(this.posX - this.startX) > 0)
@@ -665,7 +654,7 @@ var ScrollController = {
 			this.finishX(evt);
 		else if (this.direction == 2)
 			this.finishY(evt);
-		else if ((new Date().getTime() - this.startTime) < 1400)
+		else if ((new Date().getTime() - this.startTime) < 1900)
 			this.finishClick(evt);
 //		this.duplicateEvent(evt, 0, 0);
 		evt.preventDefault();
@@ -673,12 +662,11 @@ var ScrollController = {
 	
 	transitionDone : function(evt) {
 		if (this.direction == 1)
-			NowPlayingStack.fixDots();
+			ScrollPage.prototype.fixDots();
 	},
 	
 	moveX : function(evt) {
 //console.log("moveX" + (this.posX - this.startX) + ".pg:" + this.page);
-//console.log("mXkeys:" + Object.values(this.page));
 		if (this.page)
 			this.page.scrollTo(this.posX - this.startX);
 //		evt.stopPropagation();
@@ -707,8 +695,7 @@ var ScrollController = {
 			}*/
 		if (!this.page) return;
 		if ((this.posX - this.startX) > 130 || this.dx > 10) {
-//			if (this.page.array[this.page.stackpos + 1])
-			if (this.page.Control.left(this.page.stackpos))
+			if (this.page.array[this.page.stackpos + 1])
 				this.page.scrollTo(320);
 			else
 				this.page.scrollTo(0);
@@ -730,24 +717,11 @@ var ScrollController = {
 					this.page.scrollTo(this.posY - this.startY);
 			}*/
 		if (!this.page) return;
-		var endtime = new Date().getTime();
-		var delta = this.posY - this.startY;
-		var deltat = endtime - this.startTime;
-		var ddeltat = endtime - this.moveTime;
-		var dt = 0.1;
-		var dv = 1;
-		if (abs(this.dy) > 5) {
-//			delta += parseInt(this.dy * Math.sqrt(abs(delta)) * scrollFactor / (deltat * Math.sqrt(deltat)));
-//			dt = Math.round(abs(delta) * (deltat) / 15000) / 10;
-//			delta += parseInt(this.dy * Math.sqrt(abs(this.dy)) * scrollFactor);
-//		var dt = Math.round(Math.sqrt(abs(delta))) / 20;
-//		var dt = 30 / Math.sqrt(abs(this.dy));
-			dv = 2 * (abs(this.dy) / ddeltat) + (abs(delta) / deltat);
-			delta += parseInt(delta * dv * 3);
-			dt = min(Math.round(8 * abs(dv)) / 10, 3.5);
-		}
-console.log("dy:" + this.dy + ".dges:" + (this.posY - this.startY) + ".mTime:" + (endtime - this.moveTime) + ".tges:" + (endtime - this.startTime) + ".delta:" + delta + ".dt:" + dt);
-		this.page.vScroll(delta, false, dt);
+//console.log("dy:" + this.dy + ".delta:" + scrollFactor * this.dy * parseInt(Math.sqrt(abs(this.dy))));
+		if (abs(this.dy) > 5)
+			this.page.vScroll(this.posY - this.startY + this.dy * abs(this.dy) * scrollFactor);//scrollFactor);
+		else
+			this.page.vScroll(this.posY - this.startY);
 	},
 	
 	finishClick : function(evt) {
@@ -765,11 +739,11 @@ console.log("dy:" + this.dy + ".dges:" + (this.posY - this.startY) + ".mTime:" +
 	},
 	
 	addBox : function(element, stack, pos, act, pEl, snf) {
-		new ScrollPage(element, NowPlayingStack, stack, null, pos, act, pEl, snf);
+		new ScrollPage(element, stack, pos, act, pEl, snf);
 		element.addEventListener('touchstart', this, false);
 		element.addEventListener('touchmove', this, false);
 		element.addEventListener('touchend', this, false);
-		element.addEventListener('webkitTransitionEnd', this, false);
+//		element.addEventListener('webkitTransitionEnd', this, false);
 	},
 	
 	addMBody : function() {
@@ -784,22 +758,16 @@ console.log("dy:" + this.dy + ".dges:" + (this.posY - this.startY) + ".mTime:" +
 											 evt.touches[0].screenY - yd)) 
 					: new TouchList;
 		var tT = (evt.targetTouches.item(0)) ? 
-					document.createTouchList(document.createTouch(evt.view,
-											evt.targetTouches[0].target,
-											evt.targetTouches[0].identifier,
-											evt.targetTouches[0].pageX - xd,
-											evt.targetTouches[0].pageY - yd,
-											evt.targetTouches[0].screenX - xd,
-											evt.targetTouches[0].screenY - yd)) 
+					document.createTouchList(document.createTouch(evt.view, evt.targetTouches[0].target,
+											 evt.targetTouches[0].identifier, evt.targetTouches[0].pageX - xd,
+											 evt.targetTouches[0].pageY - yd, evt.targetTouches[0].screenX - xd,
+											 evt.targetTouches[0].screenY - yd)) 
 					: new TouchList;
 		var cT = (evt.changedTouches.item(0)) ?
-					document.createTouchList(document.createTouch(evt.view,
-											evt.changedTouches[0].target,
-											evt.changedTouches[0].identifier,
-											evt.changedTouches[0].pageX - xd,
-											evt.changedTouches[0].pageY - yd,
-											evt.changedTouches[0].screenX - xd,
-											evt.changedTouches[0].screenY - yd))
+					document.createTouchList(document.createTouch(evt.view, evt.changedTouches[0].target,
+											 evt.changedTouches[0].identifier, evt.changedTouches[0].pageX - xd,
+											 evt.changedTouches[0].pageY - yd, evt.changedTouches[0].screenX - xd,
+											 evt.changedTouches[0].screenY - yd))
 					: new TouchList;
 		evt.preventDefault();
 //		evt.stopPropagation();
@@ -821,25 +789,9 @@ handleEvent : function (event) {
   // dispatch the event to the right method based on the type
 		switch (event.type) {
 			case 'touchstart' :
-				if (findParent(event.touches[0].target, "select")) {
-					event.stopPropagation();
-					return;
-				}
-/*				var link = findParent(event.touches[0].target, "a");
-console.log("start link:" + link);
-				if (link) {
-					link.setAttribute("active", "true");
-					link.setAttribute("selected", "true");
-				}*/
 				this.interactionStart(event);
 				break;
 			case 'touchmove' :
-/*				var link = findParent(event.touches[0].target, "a");
-console.log("stop link:" + link);
-				if (link) {
-					link.removeAttribute("active");
-					link.removeAttribute("selected");
-				}*/
 				this.interactionMove(event);
 				break;
 			case 'touchend' :

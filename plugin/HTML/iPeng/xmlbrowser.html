@@ -22,9 +22,9 @@ END;
 omitList = [ 'SHOUTcast Internet Radio - ' ];
 
 pwd_list = [];
-	FOREACH crumb IN crumb;
+	FOREACH cri IN crumb;
 		crumbItem = BLOCK %]
-			<a href="[% path %]?[% searchquery %]player=[% playerURI %]&amp;index=[% crumb.index %]">[% crumb.name %]</a>
+			<a href="[% path %]?[% searchquery %]player=[% playerURI %]&amp;index=[% cri.index %]">[% cri.name %]</a>
 		[% END;
 		pwd_list.push(crumbItem);
 	END;
@@ -265,7 +265,17 @@ END;
 	'</div>';
 IF NOT ajaxUpdate;
 	'</div>  <!-- mainbody -->';
-	PROCESS iFooterVert.html selectedButton = 'Radio' classFooter = " selected = 'true' class = 'toolbar' ";
+	selectedButton = 'Radio';
+	IF crumb;
+		str_pc = 'PLUGIN_PODCAST' | getstring;
+#		str_fav = 'FAVORITES' | getstring;
+#		str_pl = 'PLAYLISTS' | getstring;
+		str_ti = 'TRACKINFO' | getstring;
+		IF crumb.0.name == str_pc; selectedButton = 'Podcast';
+		ELSIF crumb.0.name == str_ti; selectedButton = 'Trackinfo';
+		END;
+	END;
+	PROCESS iFooterVert.html classFooter = " selected = 'true' class = 'toolbar' ";
 END;
 %]
 

@@ -117,7 +117,7 @@ END;
 BLOCK moveuplink;
 IF !loop.first %]
 	<div style = "position: absolute; left: 0;">
-		<a [% content %] style = "position: absolute; left: 0; display: block; width: 100%; margin: -16 0 -8 -0; padding: 8 0 8 0">
+		<a [% content %] style = "position: absolute; left: 0; display: block; width: 100%; margin: -17 0 -8 -0; padding: 8 0 8 0">
 		<img style = "width: 320; height: 1;" src = "[% webroot %]html/images/between_line_light.png">
 		<img style = "position: relative; top: -6; left: 38; z-index: 1; padding: 0;" src = "[% webroot %]html/images/between_light.png">
 	</div></a> [%# a/div order intentionally wrong!!!! %]
@@ -142,7 +142,7 @@ END;
 BLOCK scanwarning;
 '<b>'; "NOTE" | string; '</b> '; "SCAN_WARNING" | string;
 	IF audiodir;
-		"SCAN_CLICK" | string; %]<a href="browsetree.html?level=0">[% "HERE" | string; '</a>.';
+		"SCAN_CLICK" | string; %]<a href="browsetree.html?level=0&player=[% playerURI %]">[% "HERE" | string; '</a>.';
 	END;
 END;
 
@@ -162,22 +162,22 @@ BLOCK playlistclearctrl %]
 END;
 
 BLOCK playlistCTRLcontainer %]
-<div id='[% levelName %]currentPlaylistControl' class = 'currentPlaylistControl' style = 'display: none'>
+<div id='currentPlaylistControl' style = 'display: none'>
 	<table width = '320' class = 'noborder listNoAlbum' cellspacing = "0" border = "collapse">
 	[% WRAPPER contentitem rightcontrols='playlistsavectrl' leftcontrols='playlistclearctrl' map_vertical=0 %]
 		<span class="listFullTitle">[% "CURRENT_PLAYLIST" | string %]</span><br>
-		<span id="[% levelName %]curr_playlistname" class="listFullArtist">&nbsp;</span>
+		<span id="curr_playlistname" class="listFullArtist">&nbsp;</span>
 	[% END;
 	'</table>';
 '</div>';
 END;
 
 BLOCK activatePLcontainer;
-'<script>evaluatePlaylist("'; levelName; '");</script>';
+'<script>evaluatePlaylist();</script>';
 END;
 
 BLOCK activatePLcontaiener;
-'<script>evaluatePlaylist("'; levelName; '");</script>';
+'<script>evaluatePlaylist();</script>';
 END;
 
 BLOCK storeReturnPageLevel;
@@ -214,7 +214,7 @@ item | replace('^\s*/','');
 END;
 
 BLOCK contentcontainer %]
-<div id="[% levelName; listid or containerid or 'browsedbList' %]" class = "[% listid or containerid or 'browsedbList' %]" style="min-height: [% containerheight || '323px' %]">
+<div id="[% listid or containerid or 'browsedbList' %]" style="min-height: [% containerheight || '323px' %]">
 [% IF !omitPCTRL;
 	PROCESS playlistCTRLcontainer;
 END %]
@@ -263,12 +263,12 @@ END %]
 
 [% BLOCK contentanchor %]
 	<tr>
-		<td class = "listHeader" title = "[% content | trim | uri %]" colspan = 3 [% IF firstrow %]style = "top: 0; border-top: none"[% END %]>
+		<td class = "listHeader" colspan = 3 [% IF firstrow %]style = "top: 0; border-top: none"[% END %]>
 			[%- IF !noanchor -%]
 				<a name = "[% content | trim %]"></a>
 			[%- END;
 			;content;
-			IF anchorcontrols && !iPengUpdate; PROCESS $anchorcontrols; END;
+			IF anchorcontrols; PROCESS $anchorcontrols; END;
 		'</td>';
 	'</tr>';
 END;
@@ -284,25 +284,25 @@ END;
 BLOCK AjaxOnClickPlay -%]
 'changeOSD("[% IF itemobj.title == ''; "ALL_SONGS" | string; 
 	ELSE; itemobj.title FILTER html FILTER replace('\'', '&#39;'); END;
-" "; "NOW_PLAYING" | string %]"); addItem("[% PROCESS ajaxCmdHRef cmdType='play' %]", true);evaluatePlaylist("[% levelName %]");' [%-
+" "; "NOW_PLAYING" | string %]"); addItem("[% PROCESS ajaxCmdHRef cmdType='play' %]", true);' [%-
 END;
 
 BLOCK JSONOnClickPlay -%]
 'changeOSD("[% IF itemobj.title == ''; "ALL_SONGS" | string;
 	ELSE; itemobj.title FILTER html FILTER replace('\'', '&#39;'); END;
-" "; "NOW_PLAYING" | string %]"); addPlayItem("[% PROCESS JSONCmdHRef cmdType='play' %]");evaluatePlaylist("[% levelName %]");'	[%-
+" "; "NOW_PLAYING" | string %]"); addPlayItem("[% PROCESS JSONCmdHRef cmdType='play' %]");'	[%-
 END;
 
 BLOCK AjaxOnClickPlaySwitch -%]
 'changeOSD("[% IF itemobj.title == ''; "ALL_SONGS" | string;
 	ELSE; itemobj.title FILTER html FILTER replace('\'', '&#39;'); END;
-" "; "NOW_PLAYING" | string %]"); addItemLoad("[% PROCESS JSONCmdHRef cmdType='play' %]", 0, true);evaluatePlaylist("[% levelName %]");'
+" "; "NOW_PLAYING" | string %]"); addItemLoad("[% PROCESS JSONCmdHRef cmdType='play' %]", 0, true);'
 [%- END;
 
 BLOCK AjaxOnClickPlayFromSwitch -%]
 'changeOSD("[% IF itemobj.title == ''; "ALL_SONGS" | string;
 ELSE; itemobj.title FILTER html FILTER replace('\'', '&#39;'); END;
-" "; "NOW_PLAYING" | string %]"); addItemLoad("[% PROCESS JSONCmdHRef cmdType='play' %]", [% (loop.index - 1) %], true);evaluatePlaylist("[% levelName %]");' [%-
+" "; "NOW_PLAYING" | string %]"); addItemLoad("[% PROCESS JSONCmdHRef cmdType='play' %]", [% (loop.index - 1) %], true);' [%-
 END;
 
 BLOCK AjaxOnClickPlayFromSwitchNMod -%]
@@ -313,8 +313,7 @@ IF (itemobj.title != '') && (browse_items.0.itemobj.title == '');
 	-%]addItemLoad("[%-
 	INCLUDE JSONCmdHRef cmdType='play' itemobj=browse_items.0.itemobj attributes=browse_items.0.attributes %]", [% (loop.index - 1) %], true);[%-
 ELSE; 
-	-%]addItemLoad("[% PROCESS JSONCmdHRef cmdType='play' %]", 0, true);[%
-END %]evaluatePlaylist("[% levelName %]");' [%-
+	-%]addItemLoad("[% PROCESS JSONCmdHRef cmdType='play' %]", 0, true);[% END %]' [%-
 END;
 
 BLOCK AjaxOnClickPlayFrom -%]
@@ -325,8 +324,7 @@ IF (itemobj.title != '') && (browse_items.0.itemobj.title == '');
 	-%]addItemLoad("[%-
 	INCLUDE JSONCmdHRef cmdType='play' itemobj=browse_items.0.itemobj attributes=browse_items.0.attributes %]", [% (loop.index - 1) %], false);[%-
 ELSE; 
-	-%]addItemLoad("[% PROCESS JSONCmdHRef cmdType='play' %]", 0, false);[%
-END %]evaluatePlaylist("[% levelName %]");'	
+	-%]addItemLoad("[% PROCESS JSONCmdHRef cmdType='play' %]", 0, false);[% END %]'	
 [%- END;
 
 BLOCK AjaxBrowseCtrlAdd -%]
@@ -335,7 +333,7 @@ BLOCK AjaxBrowseCtrlAdd -%]
 IF itemobj.title == ''; "ALL_SONGS" | string;
 ELSE; itemobj.title FILTER html FILTER replace('\'','&#39;'); END 
 -%]"); addItem("[%-
-PROCESS ajaxCmdHRef cmdType='add' %]"); evaluatePlaylist("[% levelName %]");' border=0 alt='[% "ADD_TO_PLAYLIST" | string %]' title='[% "ADD_TO_PLAYLIST" | string %]'>
+PROCESS ajaxCmdHRef cmdType='add' %]"); evaluatePlaylist();' border=0 alt='[% "ADD_TO_PLAYLIST" | string %]' title='[% "ADD_TO_PLAYLIST" | string %]'>
 [%- END;
 
 BLOCK AjaxBrowseCtrlPlay -%]
@@ -343,7 +341,7 @@ BLOCK AjaxBrowseCtrlPlay -%]
 -%] onClick = 'changeOSD("[% IF itemobj.title == ''; "ALL_SONGS" | string;
 ELSE; itemobj.title FILTER html FILTER replace('\'', '&#39;'); END;
 " "; "NOW_PLAYING" | string %]"); addItem("[%-
-PROCESS ajaxCmdHRef cmdType='play' %]", true);evaluatePlaylist("[% levelName %]");' border=0 alt='Play Now' title='Play Now'>
+PROCESS ajaxCmdHRef cmdType='play' %]", true);' border=0 alt='Play Now' title='Play Now'>
 [%- END;
 
 BLOCK browsecontrols_abbr %]
@@ -548,12 +546,12 @@ END;
 
 
 BLOCK expandAlphamap %]
-<script>expandAlphamap('[% listid or containerid or 'browsedbList' %]', '[% levelName %]');</script>
+<script>expandAlphamap('[% listid or containerid or 'browsedbList' %]');</script>
 [% END;
 
 BLOCK top_pagebar;
 	IF map_vertical %]
-		<div id = '[% levelName %]alphamap' class = 'alphamap'[% IF !page_vertical %] style = 'left: 455px; top: 25;'[% END %]>
+		<div id = 'alphamap'[% IF !page_vertical %] style = 'left: 455px; top: 25;'[% END %]>
 	[% ELSE %]
 		<div class = 'crumblist[% IF page_vertical %]_vert[% END %]'>
 	[% END;
@@ -578,15 +576,12 @@ END;
 
 BLOCK loadpage;
 	IF browseAjax -%]
-		<a href="javascript:ajaxUpdateDiv('[% levelName %]mainbody', '[% pageinfo.path %]', '[% pageinfo.otherparams | html; 
+		<a href="javascript:ajaxUpdate('[% pageinfo.path %]', '[% pageinfo.otherparams | html; 
 			IF artwork == 2; "&amp;artwork=2"; END;
 			"&amp;start="; goStart; goHash %]', storeReturns, '[% pageinfo.path %]?[% pageinfo.otherparams | html;
 			IF artwork == 2; "&amp;artwork=2"; END;
 			"&amp;start="; goStart; goHash; '\'';
-			IF goTop;
-				-%],scrollToTop($('[% levelName; containerid or listid or "browsedbList" %]'))[%-
-			END %]);" [% addStyle %]
-			target = "_self">
+			IF goTop; ",scrollToTop()"; END %]);" [% addStyle %]>
 	[%- ELSE -%]
 		<a href="[% pageinfo.path %]?[% pageinfo.otherparams | html; "&amp;start="; goStart; goHash %]" [% addStyle %]>
 	[%- END;
@@ -607,7 +602,7 @@ BLOCK pagebar;
 			<table cellspacing = "0" cellpadding = "0" border = "0" width = "100%">
 			<td border = "0" padding = "0">&nbsp;</td>
 		[%- ELSE -%]
-			<table id = '[% levelName %]alphatable' cellspacing = "0" cellpadding = "0" border = "0" height = "100%">
+			<table id = 'alphatable' cellspacing = "0" cellpadding = "0" border = "0" height = "100%">
 		[%- END;
 		
 		IF !mapSize; mapSize = pageinfo.alphamap.keys.max; END;
@@ -629,7 +624,7 @@ BLOCK pagebar;
 				addStyle = 'style="color: #888888;"';
 				PROCESS loadpage;
 			ELSE -%]
-				<a href = "javascript:scrollToHash('[% alphakey | uri %]', $('[% levelName; containerid or listid or "browsedbList" %]'));" style="color: #888888;" target='_self'>
+				<a href = "#[% alphakey | uri %]" style="color: #888888;">
 			[%- END;
 			IF curpage; "<b>"; END; 
 			alphakey | html;
@@ -672,11 +667,8 @@ END %]
 <table width="100%">
 	<tr>
 		<td align = "left" width = "40">
-			<img src = "[% webroot %]html/images/top[% IF page_vertical %]_black[% END %].png" 
-				style = "border : 0; width : 40; height : 25;"
-				 onclick="scrollToTop($('[% levelName; containerid or listid or "browsedbList" %]'))"
-				 title = '[% "MOVEUP" | string %]'
-				 alt = '[% "MOVEUP" | string %]'>
+			<a href = "javascript:window.scrollTo (0,1)" title = '[% "MOVEUP" | string %]'>
+			<img src = "[% webroot %]html/images/top[% IF page_vertical %]_black[% END %].png" border = "0" width = "40" height = "25" alt = '[% "MOVEUP" | string %]'></a>
 		</td>
 
 		<td align="right">
@@ -689,7 +681,7 @@ END %]
 				goStart = pageinfo.alphamap.item(alphakey);
 				thepage = PROCESS loadpage addStyle = "" goHash = '' goTop=1;
 				IF curpage && (pageinfo.alphamap.item(alphakey) != pageinfo.startitem) -%]
-					&nbsp;&nbsp;[% thepage %]<img src = '[% webroot %]html/images/ffw[% IF page_vertical %]_black[% END %].png' alt="[% "NEXT" | string %]"></a> &nbsp;
+					&nbsp;&nbsp;[% thepage %]<img src = '[% webroot %]html/images/ffw[% IF page_vertical %]_black[% END %].png' alt=[% "NEXT" | string %]></a> &nbsp;
 				[% END;
 				curpage = (pageinfo.alphamap.item(alphakey) == pageinfo.startitem);
 			END -%]
@@ -708,17 +700,13 @@ END %]
 END;
 
 BLOCK cmdToTop %]
-	<img src = "[% webroot %]html/images/totop.png" 
-		 title = '[% "MOVEUP" | string %]'
-		 onclick="scrollToTop($('[% levelName; containerid or listid or "browsedbList" %]'))"
-		 alt = '[% "MOVEUP" | string %]'>
+	<a href = "javascript:window.scrollTo(0,1)" title = '[% "MOVEUP" | string %]'>
+	<img src = "[% webroot %]html/images/totop.png" alt = '[% "MOVEUP" | string %]'></a>
 [% END;
 
 BLOCK cmdToBottom %]
-	<img src = "[% webroot %]html/images/tobottom.png"
-		 title = '[% "MOVEDOWN" | string %]'
-		 onclick="scrollToBottom($('[% levelName; containerid or listid or "browsedbList" %]'))"
-		 alt = '[% "MOVEDOWN" | string %]'>
+	<a href = "javascript:window.scrollTo(0,$('[% containerid or listid or "browsedbList" %]').scrollHeight)" title = '[% "MOVEDOWN" | string %]'>
+	<img src = "[% webroot %]html/images/tobottom.png" alt = '[% "MOVEDOWN" | string %]'></a>
 [% END;
 
 BLOCK pagebarheader %]

@@ -1,23 +1,4 @@
 <!-- iHeaderVert.html -->
-[% IF iPengUpdate %]
-<div id = "[% "id"; levelName || title || pagetitle | uri %]" title = "[% title || pagetitle %]" class = "MenuPage">
-	<script type = 'application/x-javascript'>
-		iPengUpdate = true;
-	</script>
-	[% IF pageHeaderScripts;
-		pageHeaderScripts;
-	ELSE %]
-		<script type = 'application/x-javascript'>
-		[% IF thispage == 'search';
-			PROCESS search.js;
-		ELSIF (thispage == 'artwork') || (orientation == 1 && (levelName == 'album' || levelName == 'age'));
-			PROCESS artwork.js;
-		ELSE;
-			PROCESS browse.js;
-		END;
-		'</script>';
-	END;
-ELSE; %]
 
 <html xmlns="http://www.w3.org/1999/xhtml">
       <head>
@@ -49,11 +30,11 @@ ELSE; %]
 		<script src="[% webroot %]html/skin_global.js?r=[% revision %]" type = 'application/x-javascript' defer></script>
 		<script type = 'application/x-javascript'>
 		[% IF thispage == 'search';
-			PROCESS search.js;
+			PROCESS html/search.js;
 		ELSIF (thispage == 'artwork') || (orientation == 1 && (levelName == 'album' || levelName == 'age'));
-			PROCESS artwork.js;
+			PROCESS html/artwork.js;
 		ELSE;
-			PROCESS browse.js;
+			PROCESS html/browse.js;
 		END %]
 		</script>
 	[% END %]
@@ -118,5 +99,4 @@ a:hover, a:visited, a:active, a:link {
 	</div>
 [% END %]
 
-[% END %]
 <!-- /Element iHeaderVert.html -->

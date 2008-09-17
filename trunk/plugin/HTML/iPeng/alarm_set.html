@@ -21,8 +21,7 @@
 				   '[% 'ALARM_DAY3' | string %]',
 				   '[% 'ALARM_DAY4' | string %]',
 				   '[% 'ALARM_DAY5' | string %]',
-				   '[% 'ALARM_DAY6' | string %]',
-				   '[% 'ALARM_DAY7' | string %]' ];
+				   '[% 'ALARM_DAY6' | string %]' ];
 	
 // Alarm
 
@@ -200,7 +199,7 @@ console.log("Alarms.update");
 		}
 	}
  
-	var sArray = ['alarms', '0', '8', 'filter:defined'];
+	var sArray = ['alarms', '0', '8', 'filter:all'];
 	callJSONRPC (sArray, function (r2) {
 	 	var a_visible = [];
 		if (r2.result.count == 8)
@@ -404,7 +403,7 @@ alarmVolumeC = function () {
 }
 
 alarmVolumeC.prototype.init = function () {
-	this.Ctrl = new VolumeBarCtrl($(alvolumeButton), $(alvolumeBar), null, 0, this.setVolume, this); 
+	this.Ctrl = new VolumeBarCtrl($('alvolumeButton'), $('alvolumeBar'), null, 0, this.setVolume, this); 
 }
 
 myAVolume = new alarmVolumeC();

@@ -7,7 +7,6 @@
 // appear whenever an ajax request is in progress. Look at Nokia770/pageheader.html for
 // an example
 var inhibitSW;
-var iPengUpdate = false;
 
 removeSW = function () {
 	if ($('systemWorking')) {
@@ -80,21 +79,6 @@ function getStatusData(params, action) {
 	ajaxRequest(url, params, action);
 }
 
-function scrollToTop() { window.scrollTo(0, 1); }
-
-function scrollToBottom(el) { window.scrollTo(0,el.scrollHeight); }
-
-function scrollToHash(hash) { document.location = '#' + hash }
-
-function goToStatus(goStatus) {
-	if (goStatus)
-		document.location = webroot + statusroot + '?' + 'player=' + player;
-}
-
-function goToStatus2(args) {
-	document.location = webroot + statusroot + '?' + 'player=' + player;
-}
-
 function ajaxRequest(thisurl,params, action) {
 	var requesttype = 'post';
 
@@ -130,11 +114,12 @@ function ajaxUpdate(url, params, action, actionparam) {
 }
 
 function ajaxUpdateDiv(div, url, params, action, actionparam) {
+console.log("start ajaxUpdate." + url + "." + params);
 	var params = params;
 	var phash = '';
 	var poshash = params.indexOf("#")
 	if (poshash > 0) {
-		phash = params.substr(poshash + 1);
+		phash = params.substr(poshash);
 		params = params.substr(0, poshash);
 	}
 	new Ajax.Updater( { success: div }, url, {
@@ -147,7 +132,7 @@ function ajaxUpdateDiv(div, url, params, action, actionparam) {
 			if (action)
 				action(actionparam);
 			if (phash)
-				scrollToHash(phash, $(div));
+				document.location=phash;
 		}
 	} );
 }

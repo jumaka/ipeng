@@ -68,7 +68,7 @@ mplayer_control.prototype.draw = function () {
 	this.container.appendChild(this.e_volume);
 	this.volCtrl = new VolumeBarCtrl(this.e_volumeButton, this.e_volumeBar, null, this.volume, this.setVolume, this); 
 
-	this.e_text = new Element ('div', { 'class' : 'm_text topbartextNow' });
+/*	this.e_text = new Element ('div', { 'class' : 'm_text topbartextNow' });
 	this.track = new Element ('span', { 'class' : 'm_separator' });
 	this.title = new Element ('span', { 'class' : 'm_topbartextBright m_separator' });
 	this.artist = new Element ('span', { 'class' : 'm_separator' });
@@ -77,9 +77,9 @@ mplayer_control.prototype.draw = function () {
 	this.e_text.appendChild(this.title);
 	this.e_text.appendChild(this.artist);
 	this.e_text.appendChild(this.album);
-	this.container.appendChild(this.e_text);
+	this.container.appendChild(this.e_text);*/
 	
-	this.e_ctrls = new Element ('table', { width : '312', cellspacing : '0', cellpadding : '0' });
+	this.e_ctrls = new Element ('table', { width : '314', cellspacing : '0', cellpadding : '0' });
 	var tr = new Element ('tr');
 	this.e_ctrls.appendChild(tr);
 	this.td_power = new Element ('td', { align : 'left', width : '40' });
@@ -183,7 +183,7 @@ mplayer_control.prototype.addToSync = function (sync_master) {
 	this.topbuttons.appendChild(this.e_unsync);
 	this.e_unsync.show();
 	this.e_ctrls.hide();
-	this.e_text.hide();
+//	this.e_text.hide();
 	this.container.addClassName('m_darksquare');
 	this.find(sync_master).frame.appendChild(this.container);
 	this.frame.hide();
@@ -197,7 +197,7 @@ mplayer_control.prototype.removeFromSync = function () {
 	this.e_unsync.hide();
 	this.e_sync.show();
 	this.e_ctrls.show();
-	this.e_text.show();
+//	this.e_text.show();
 	this.e_sn.hide();
 	this.e_volume.show();
 	this.container.removeClassName('m_darksquare');
@@ -210,7 +210,7 @@ mplayer_control.prototype.updateOther = function () {
 	if (this.sn) {
 		this.e_sn.show();
 		this.e_ctrls.hide();
-		this.e_text.hide();
+//		this.e_text.hide();
 		this.e_volume.hide();
 	} else {
 		callJSONRPC([ 'status', '-', 1, 'tags:al' ], function (r2) {
@@ -236,7 +236,7 @@ mplayer_control.prototype.updateOther = function () {
 			
 			if (r2.result.mode !== undefined) a_this.updateMode(r2.result.mode);
 
-			var temp = parseInt(r2.result.playlist_cur_index) + 1;
+/*			var temp = parseInt(r2.result.playlist_cur_index) + 1;
 			a_this.track.update(temp + ' / ' + r2.result.playlist_tracks);
 			if (r2.result.playlist_loop) {
 				if (r2.result.playlist_loop[0].title)
@@ -244,8 +244,8 @@ mplayer_control.prototype.updateOther = function () {
 				if (r2.result.playlist_loop[0].artist)
 					a_this.artist.update(r2.result.playlist_loop[0].artist);
 				if (r2.result.playlist_loop[0].album)
-					a_this.album.update(r2.result.playlist_loop[0].album);					
-			}
+					a_this.album.update(r2.result.playlist_loop[0].album);
+			}*/
 			
 			a_this.updateVolume((r2.result['mixer volume'] !== undefined) ? parseInt(r2.result['mixer volume']) : a_this.volume);
 			

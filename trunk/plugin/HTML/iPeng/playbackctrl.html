@@ -30,7 +30,7 @@ embed, object{
 .pcnum {
 	max-width: 30;
 	min-width: 30;
-	padding: 10 0 10 3;
+	padding-left: 3;
 	float: left;
 	-webkit-box-sizing: border-box;
 	overflow: hidden;
@@ -53,7 +53,7 @@ embed, object{
 .pctime {
 	max-width: 50;
 	min-width: 50;
-	padding: 10 3 10 0;
+	padding-right: 3;
 	border-left: 1px solid #333333;
 	float: left;
 	-webkit-box-sizing: border-box;
@@ -71,18 +71,11 @@ embed, object{
 	opacity: 1 !important;
 }
 
-.pcselected {
-    background-color: #194fdb !important;
-	background-image: url(html/images/selection38.png);
-    background-repeat: repeat-x;
-    background-position: left top;
-	color: white;
-	opacity: 1 !important;
-}
-
 .pceven {
 	background-color: #181818; /*d0d0d0;*/
 	color: white;		/*#eeeeee;*/
+	padding-top: 10px;
+	padding-bottom: 10px;
 	opacity: 0.75;
 	-webkit-transform: translateZ(1px);
 }
@@ -90,6 +83,8 @@ embed, object{
 .pcodd {
 	background-color: none; /* black; */
 	color: #f0f0f0;		/*#e6e6e6;*/
+	padding-top: 10px;
+	padding-bottom: 10px;
 	opacity: 0.75;
 	-webkit-transform: translateZ(1px);
 }

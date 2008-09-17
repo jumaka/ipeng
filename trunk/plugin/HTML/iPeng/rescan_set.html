@@ -1,5 +1,5 @@
 
-<div id = "rescanLibrary" title = "[% 'IPENG_RESCAN' | string %]" class="MenuPage panel">
+<div id = "rescanLibrary" class = "MenuPage panel" title = "[% 'IPENG_RESCAN' | string %]" style = "width: 320;">
 <script type="text/javascript">
 
 rescanStrings = { 	cleanup1 : '[% 'CLEANUP1_PROGRESS' | string %]',
@@ -10,7 +10,6 @@ rescanStrings = { 	cleanup1 : '[% 'CLEANUP1_PROGRESS' | string %]',
 					itunes_playlists : '[% 'ITUNES_PLAYLISTS_PROGRESS' | string %]',
 					mergeva : '[% 'MERGEVA_PROGRESS' | string %]',
 					musicmagic : '[% 'MUSICMAGIC_PROGRESS' | string %]',
-					musicip : '[% 'MUSICIP_PROGRESS' | string %]',
 					importer : '[% 'IMPORTER_PROGRESS' | string %]',
 					artwork : '[% 'ARTWORK_PROGRESS' | string %]',					
 					playlist : '[% 'PLAYLIST_PROGRESS' | string %]' };
@@ -35,13 +34,10 @@ checkRescan = function () {
 					case "rescan": break;
 					case "totaltime": break;
 					default:
+						dummy = false;
 						if (pair.value != 100) {
 							$('rescan_bar').style.width = parseInt((pair.value >= 0) ? pair.value * 2.82 : 0);
-							if (rescanStrings[pair.key]) {
-								$('rescan_status').textContent = rescanStrings[pair.key];
-								dummy = false;
-							} else
-console.log ("unknown key:" + pair.key);
+							$('rescan_status').textContent = rescanStrings[pair.key];
 						}
 					break;
 				}
@@ -56,7 +52,7 @@ console.log ("unknown key:" + pair.key);
 </script>
 
 <span class = "backgroundtext">[% 'SETUP_RESCAN_DESC' | string %]</span><br>&nbsp;
-    <div class="iButton silver" 
+    <a class="iButton silver" 
     		onclick = 'changeOSD("[% 'IPENG_RESCAN_STARTED' | string %]"); callJSONRPC([ "rescan" ], checkRescan); showAdded();'
     		target = "none"
 			style = "
@@ -66,7 +62,7 @@ console.log ("unknown key:" + pair.key);
 				 height: 30px;
 				 text-align: center;
 				 font-size: 15;
-			">[% "SETUP_RESCAN_BUTTON" | string %]</div>
+			">[% "SETUP_RESCAN_BUTTON" | string %]</a>
 <br><span class = "backgroundtext">[% 'SETUP_WIPEDB' | string %]</span><br>&nbsp;
     <a class="iButton red" 
     		onclick = 'if (!confirm("[% 'IPENG_WIPE_CONFIRM' | string %]")) return;changeOSD("[% 'IPENG_WIPE_STARTED' | string %]"); callJSONRPC([ "wipecache" ], checkRescan); showAdded();'
@@ -96,11 +92,12 @@ console.log ("unknown key:" + pair.key);
 				position: absolute; left: 8; top: 0;
 				padding: 7; text-align:center;
 				width: 282; height: 31">
-<span id = "rescan_status" style = "color: black; text-shadow: rgba(255, 255, 255, 0.4) 0px -1px 0;"
+<span id = "rescan_status" style = "text-shadow: rgba(255, 255, 255, 0.4) 0px -1px 0;"
 >[% 'COMPLETE' | string %]</span>
 </div>
 <img id = "rescan_right" src = "[% webroot %]html/images/fillFieldNoneRight.png" style = "float: right">
 </div>
+<div style = "height: 48"></div>
 <script>checkRescan();</script>
 </div>
 

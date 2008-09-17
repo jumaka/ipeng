@@ -132,6 +132,19 @@
 					<playerURI>player</playerURI>
 				</parameters>
 			</command>
+			<command id="Podcast">
+				<description>Toolbar Icon: Podcast</description>
+				<weight>25</weight>
+				<defaultenabled>0</defaultenabled>
+				<namestring>PLUGIN_PODCAST</namestring>
+				<requireplugins>Podcast</requireplugins>
+				<icon>html/images/iPodcastTrans.png</icon>
+				<selectedicon>html/images/iPodcastTransSelected.png</selectedicon>
+				<url>plugins/Podcast/index.html?</url> 
+				<parameters>
+					<playerURI>player</playerURI>
+				</parameters>
+			</command>
 			<command id="LastFM">
 				<description>Toolbar Icon: LastFM</description>
 				<weight>25</weight>
@@ -141,6 +154,19 @@
 				<icon>plugins/LastFM/html/images/lastfmTrans.png</icon>
 				<selectedicon>plugins/LastFM/html/images/lastfmTransSelected.png</selectedicon>
 				<url>plugins/LastFM/index.html?</url> 
+				<parameters>
+					<playerURI>player</playerURI>
+				</parameters>
+			</command>
+			<command id="XMRadio">
+				<description>Toolbar Icon: XM Radio</description>
+				<weight>25</weight>
+				<defaultenabled>0</defaultenabled>
+				<name>XM Radio</name>
+				<requireplugins>XMRadio</requireplugins>
+				<icon>plugins/XMRadio/html/images/XMTrans.png</icon>
+				<selectedicon>plugins/XMRadio/html/images/XMTransSelected.png</selectedicon>
+				<url>plugins/XMRadio/index.html?autologin=1</url> 
 				<parameters>
 					<playerURI>player</playerURI>
 				</parameters>

@@ -766,7 +766,7 @@ PluginCmd.prototype.paramString = function() {
 	function addKeyValue(key, value) {
 //alert(cli + " p: " + params + " k: " + key + " v: " + value);
 		if (cli)
-			params.push(key + (value) ? ':' + value : '');
+			params.push(key + ((value) ? ':' + value : ''));
 		else
 			params += "&" + key + ((value) ? "=" + value : '');
 	};

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<configuration>
+	<section id="nowplaying">
+		<subsection id="volume">
+			<description>Volume up/down commands</description>
+			<weight>10</weight>
+			<command id="VolumeDown">
+				<description>Volume DOWN command for NowwPlaying Screen</description>
+				<weight>1</weight>
+				<width>40</width>
+				<icon>html/images/tobottom.png</icon>
+				<type>command</type>
+				<cli>button</cli>
+				<parameters>
+					<other0>volume_down</other0>
+				</parameters>
+			</command>
+			<command id="VolumeText">
+				<weight>2</weight>
+				<width>240</width>
+				<namestring>VOLUME</namestring>
+			</command>
+			<command id="VolumeUp">
+				<description>Volume UP command for NowwPlaying Screen</description>
+				<weight>3</weight>
+				<width>40</width>
+				<icon>html/images/totop.png</icon>
+				<type>command</type>
+				<cli>button</cli>
+				<parameters>
+					<other0>volume_up</other0>
+				</parameters>
+			</command>
+		</subsection>
+	</section>
+</configuration>

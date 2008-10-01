@@ -171,6 +171,19 @@
 					<playerURI>player</playerURI>
 				</parameters>
 			</command>
+			<command id="Pandora">
+				<description>Toolbar Icon: Pandora</description>
+				<weight>25</weight>
+				<defaultenabled>0</defaultenabled>
+				<name>Pandora</name>
+				<requireplugins>Pandora</requireplugins>
+				<icon>plugins/Pandora/html/images/PandoraTrans.png</icon>
+				<selectedicon>plugins/Pandora/html/images/PandoraTransSelected.png</selectedicon>
+				<url>plugins/Pandora/index.html?</url> 
+				<parameters>
+					<playerURI>player</playerURI>
+				</parameters>
+			</command>
 			<command id="Power">
 				<description>Toolbar Icon: Power</description>
 				<defaultenabled>0</defaultenabled>

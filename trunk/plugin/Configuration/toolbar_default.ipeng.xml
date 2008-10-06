@@ -179,7 +179,7 @@
 				<requireplugins>Pandora</requireplugins>
 				<icon>plugins/Pandora/html/images/PandoraTrans.png</icon>
 				<selectedicon>plugins/Pandora/html/images/PandoraTransSelected.png</selectedicon>
-				<url>plugins/Pandora/index.html?</url> 
+				<url>plugins/pandora/index.html?</url> 
 				<parameters>
 					<playerURI>player</playerURI>
 				</parameters>

@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+
+<extensions>
+	<plugins>
+		<plugin name="iPeng" version="0.5.3" minTarget="7.0a" maxTarget="7+">
+			<title lang="EN">iPeng</title>
+			<desc lang="EN">
+			A Skin optimized for iPhone and iPod touch. Not intended to replace any main skin for PC/MAC. See manual at http://penguinlovesmusic.com
+			</desc>
+			<url>http://penguinlovesmusic.de/wp-content/uploads/2008/10/ipeng053.zip</url>
+			<sha>b094138938ed2f0c5f8de42e6f7fbf2d850515a4</sha>
+			<link>http://penguinlovesmusic.com</link>
+		</plugin>
+	</plugins>
+</extensions>
+

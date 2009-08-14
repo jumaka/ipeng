@@ -195,7 +195,7 @@ BLOCK progress_bar_display %]
 	<img src = '[% webroot %]html/images/VolumeBlueCap.png' style = 'position: absolute; left: 37; top: 5'>
 	<img src = '[% webroot %]html/images/VolumeWhiteMusicFill.png' style = 'position: absolute; left: 42; top: 5; width: 156; height: 9;'>
 	<img src = '[% webroot %]html/images/VolumeWhiteMusicCap.png' style = 'position: absolute; left: 196; top: 5'>
-	<img id="progressBar" name="progressBar" src="[% webroot %]html/images/VolumeBlueFill.png" style = 'position: absolute; left: 40; top: 5; height: 9; width: 1'>
+	<img id="progressBar" name="progressBar" src="[% webroot %]html/images/VolumeBlueFill.png" style = 'position: absolute; left: 40; top: 5; height: 9; width: 1; -webkit-transform-origin: 0 0;'>
 	<img id = 'progressButton' name='progressButton' src = '[% webroot %]html/images/MusicVolumeKnobBig.png' style = 'position: absolute; top: -2; height: 27; width: 25; left: 30;' >
 </div>
 [% END;
@@ -312,7 +312,7 @@ BLOCK volume_settings %]
 		<img src = '[% webroot %]html/images/VolumeBlueCap.png' style = 'position: absolute; left: 4; top: 5'>
 	<img src = '[% webroot %]html/images/VolumeWhiteMusicFill.png' style = 'position: absolute; left: 9; top: 5; width: 262; height: 9;'>
 	<img src = '[% webroot %]html/images/VolumeWhiteMusicCap.png' style = 'position: absolute; left: 271; top: 5'>
-	<img id="volumeBar" src="[% webroot %]html/images/VolumeBlueFill.png" style = 'position: absolute; left: 9; top: 5; height: 9; width: 1'>
+	<img id="volumeBar" src="[% webroot %]html/images/VolumeBlueFill.png" style = 'position: absolute; left: 9; top: 5; height: 9; width: 1; -webkit-transform-origin: 0 0;'>
 	<img id = 'volumeButton' src = '[% webroot %]html/images/MusicVolumeKnobBig.png' style = 'position: absolute; top: -5; left: -5;' >
 	[% ELSE;
 		'<span>'; "IPENG_NO_VOLUME_CTRL" | string; '</span>';

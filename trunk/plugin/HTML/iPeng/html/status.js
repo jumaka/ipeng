@@ -114,7 +114,7 @@ var Playlist = {
 		
 	 	if (!this.table)
 	 		this.init();
-console.log(".fi." + this.firstitem + ".li." + this.lastitem + ".plf." + Player.status.pl_first + ".pll." + Player.status.pl_last + ".uf." + ufirst + ".ul." + ulast + ".rl:" + this.table.rows.length + '.pt:' + Player.status.tracks);
+/*console.log(".fi." + this.firstitem + ".li." + this.lastitem + ".plf." + Player.status.pl_first + ".pll." + Player.status.pl_last + ".uf." + ufirst + ".ul." + ulast + ".rl:" + this.table.rows.length + '.pt:' + Player.status.tracks);*/
 		with (Player.status) {
 			if (pl_first < 0 || pl_last < 0 || pl_last < pl_first) {
 				while (this.table.rows.length) {

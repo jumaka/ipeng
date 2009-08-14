@@ -1262,7 +1262,7 @@ tr.even, td.even, div.even {
 	padding-top: 10px;
 	padding-bottom: 10px;
 	opacity: 0.75;
-	-webkit-transform: translateZ(1px);
+/*	-webkit-transform: translateZ(1px);*/
 }
 
 .PLShadowElement {
@@ -1301,7 +1301,7 @@ tr.odd, td.odd, div.odd {
 	padding-top: 10px;
 	padding-bottom: 10px;
 	opacity: 0.75;
-	-webkit-transform: translateZ(1px);
+/*	-webkit-transform: translateZ(1px);*/
 }
 
 .black {

@@ -2,7 +2,7 @@
 
 <extensions>
 	<plugins>
-		<plugin name="iPeng" version="0.5.4" minTarget="7.0a" maxTarget="7+">
+		<plugin name="iPeng" version="0.5.4" minTarget="7.0a" maxTarget="7.5+">
 			<title lang="EN">iPeng</title>
 			<desc lang="EN">A Skin optimized for iPhone and iPod touch. Not intended to replace any main skin for PC/MAC. See manual at http://penguinlovesmusic.com</desc>
 			<creator>Joerg Schwieder</creator>

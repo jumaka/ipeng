@@ -11,6 +11,14 @@
 			<sha>295a4d8e324a664fe5abd766e66ec85d371477b6</sha>
 			<link>http://penguinlovesmusic.com</link>
 		</plugin>
+    <plugin name="YouTube" version="0.10" minTarget="7.5" maxTarget="7.*">
+      <title lang="EN">YouTube</title>
+      <desc lang="EN">Play audio from YouTube videos.  WARNING: this plugin will use more network bandwidth than other streaming services as the entire video is being streamed even though only the audio is played.</desc>
+      <creator>Triode</creator>
+      <email>triode1@btinternet.com</email>
+      <url>http://penguinlovesmusic.de/wp-content/uploads/2011/05/YouTube-v0.11.zip</url>
+      <sha>c371d6fdad92e426cdf94482ea0c5740a098b838</sha>
+      </plugin>
 	</plugins>
 </extensions>
 

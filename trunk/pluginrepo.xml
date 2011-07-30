@@ -14,8 +14,8 @@
     <plugin name="YouTube" version="0.11" minTarget="7.5" maxTarget="7.*">
       <title lang="EN">YouTube</title>
       <desc lang="EN">Play audio from YouTube videos.  WARNING: this plugin will use more network bandwidth than other streaming services as the entire video is being streamed even though only the audio is played.</desc>
-      <url>http://penguinlovesmusic.de/wp-content/uploads/2011/05/YouTube-v0.11.zip</url>
-      <sha>c371d6fdad92e426cdf94482ea0c5740a098b838</sha>
+      <url>http://penguinlovesmusic.de/wp-content/uploads/2011/05/YouTube-v0.12.zip</url>
+      <sha>909b889259622de7b8454a71490cd2829a42fac8</sha>
       </plugin>
 	</plugins>
 </extensions>

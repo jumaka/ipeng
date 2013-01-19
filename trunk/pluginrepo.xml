@@ -11,12 +11,12 @@
 			<sha>295a4d8e324a664fe5abd766e66ec85d371477b6</sha>
 			<link>http://penguinlovesmusic.com</link>
 		</plugin>
-    <plugin name="YouTube" version="0.15" minTarget="7.5" maxTarget="7.*">
+    <plugin name="YouTube" version="0.16" minTarget="7.5" maxTarget="7.*">
       <title lang="EN">YouTube</title>
       <desc lang="EN">Play audio from YouTube videos.  WARNING: this plugin will use more network bandwidth than other streaming services as the entire video is being streamed even though only the audio is played.</desc>
-      <changes lang="EN">06-Oct-2012: (1) Fixed Errors.</changes>
-      <url>http://penguinlovesmusic.de/wp-content/uploads/2012/10/YouTube-v0.15.zip</url>
-      <sha>1dbed46b810d8905fb1356739484f733d4f7b113</sha>
+      <changes lang="EN">19-Jan-2013: (1) Fixed Errors.</changes>
+      <url>http://penguinlovesmusic.de/wp-content/uploads/2013/01/YouTube-v0.16.zip</url>
+      <sha>3dcb4af7d8ba5f7d323f65eb34f5724c4f290e65</sha>
       </plugin>
 	</plugins>
 </extensions>

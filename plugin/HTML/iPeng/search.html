@@ -25,36 +25,36 @@
 	<form id="searchForm" name="searchForm" method="GET" action="search.html">
 		<input type="search" autosave="search" id="query" name="query" size="40" autocomplete="off" 
 			style = "-webkit-border-radius:10px; 
-					 height: 32; 
-					 width: 298;
-					 margin: 11 0 0 11;
-					 padding: 8;
-					 font-size: 15;
+					 height: 32px; 
+					 width: 298px;
+					 margin: 11px 0 0 11px;
+					 padding: 8px;
+					 font-size: 15px;
 					 color: dark blue;
-					 border-width: 1;" />
+					 border-width: 1px;" />
 
 [% ELSE %]
 
 	<form id="searchForm" name="searchForm" method="GET" action="search.html">
 		<input type="search" autosave="search" id="query" name="query" size="40" value="[% query %]"
 			style = "-webkit-border-radius:10px; 
-					 height: 32; 
-					 width: 298;
-					 margin: 11 0 0 11;
-					 padding: 5 8 8 8;
-					 font-size: 15;
+					 height: 32px; 
+					 width: 298px;
+					 margin: 11px 0 0 11px;
+					 padding: 5px 8px 8px 8px;
+					 font-size: 15px;
 					 color: dark blue;
-					 border-width: 1;" />
+					 border-width: 1px;" />
 
 [% END %]
 
 		<a class="iButton silver" 
-			style = "margin: 11 0 0 11;
+			style = "margin: 11px 0 0 11px;
 					 padding: 0px;
-					 width: 278;
+					 width: 278px;
 					 height: 32px;
 					 text-align: center;
-					 font-size: 15;" onclick='document.forms["searchForm"].submit();'>[% "SEARCH" | string %]</a><p>
+					 font-size: 15px;" onclick='document.forms["searchForm"].submit();'>[% "SEARCH" | string %]</a><p>
 		<input type="hidden" value="1" name="manualSearch">
 		<input type="hidden" value="[% player %]" name="player">
 	</form>

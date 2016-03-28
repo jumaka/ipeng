@@ -2,22 +2,15 @@
 
 <extensions>
 	<plugins>
-		<plugin name="iPeng" version="0.5.4" minTarget="7.0a" maxTarget="7.5+">
+		<plugin name="iPeng" version="0.6.0" minTarget="7.0a" maxTarget="7.*">
 			<title lang="EN">iPeng</title>
-			<desc lang="EN">A Skin optimized for iPhone and iPod touch. Not intended to replace any main skin for PC/MAC. See manual at http://penguinlovesmusic.com</desc>
+			<desc lang="EN">A Skin optimized for small form factor touch devices. Not intended to replace any main skin for PC/MAC. See manual at http://penguinlovesmusic.com</desc>
 			<creator>Joerg Schwieder</creator>
 			<email>coolio@penguinlovesmusic.com</email>
 			<url>http://penguinlovesmusic.de/wp-content/uploads/2009/08/iPeng054.zip</url>
 			<sha>295a4d8e324a664fe5abd766e66ec85d371477b6</sha>
 			<link>http://penguinlovesmusic.com</link>
 		</plugin>
-    <plugin name="YouTube" version="0.16" minTarget="7.5" maxTarget="7.*">
-      <title lang="EN">YouTube</title>
-      <desc lang="EN">Play audio from YouTube videos.  WARNING: this plugin will use more network bandwidth than other streaming services as the entire video is being streamed even though only the audio is played.</desc>
-      <changes lang="EN">19-Jan-2013: (1) Fixed Errors.</changes>
-      <url>http://penguinlovesmusic.de/wp-content/uploads/2013/01/YouTube-v0.16.zip</url>
-      <sha>3dcb4af7d8ba5f7d323f65eb34f5724c4f290e65</sha>
-      </plugin>
 	</plugins>
 </extensions>
 

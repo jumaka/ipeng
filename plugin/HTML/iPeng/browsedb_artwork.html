@@ -1,6 +1,6 @@
 <!--browsedb_artwork.html-->
 
-	<div class = 'floater noborder' style = "height: 170; width: 146; overflow: hidden;" cellspacing = 0 cellpadding = 0>
+	<div class = 'floater noborder' style = "height: 170px; width: 146px; overflow: hidden;" cellspacing = 0 cellpadding = 0>
 		[%- IF item.anchor -%]
 			<a name = "[% item.anchor %]"></a>
 		[%- END -%]
@@ -8,7 +8,7 @@
 		[%- IF item.coverThumb;
 			PROCESS thumbnailItemImg bgcolor='000000' height="130" width="130" style='STYLE="border: none"';
 		END -%]
-		<span style = 'position: absolute; left: 4; bottom: 2;'>
+		<span style = 'position: absolute; left: 4px; bottom: 2px;'>
 		[%- PROCESS AjaxBrowseCtrlPlay 
        	         itemobj = item.itemobj
        	         attributes = item.attributes
@@ -16,7 +16,7 @@
        	         mixerlinks = item.mixerlinks 
 				 useImg = webroot _ 'html/images/play_pure_dark.png' -%]
 		</span>
-		<span style = 'position: absolute; right: 4; bottom: 2;'>
+		<span style = 'position: absolute; right: 4px; bottom: 2px;'>
 		[%- PROCESS AjaxBrowseCtrlAdd
 		         itemobj = item.itemobj
        	         attributes = item.attributes

@@ -103,21 +103,21 @@ Sleep.prototype.Count = function (startflag) {
 
 </script>
 	 
-	<span id = "sleeptime" style = "position: absolute; font-size: 80; top: 106px; width: 320px; -webkit-box-sizing: border-box; text-align: center; color: white; display: none">&nbsp;</span>
+	<span id = "sleeptime" style = "position: absolute; font-size: 80px; top: 106px; width: 320px; -webkit-box-sizing: border-box; text-align: center; color: white; display: none">&nbsp;</span>
 
-	<div id = "sleepedit" style = "position: absolute; font-size: 32; top: 126px; width: 320px; -webkit-box-sizing: border-box; padding: 0px 35px 0px 35px;">
+	<div id = "sleepedit" style = "position: absolute; font-size: 32px; top: 126px; width: 320px; -webkit-box-sizing: border-box; padding: 0px 35px 0px 35px;">
 		<select id="s_hours" name="s_hours" class = "selectItems" title = "[% 'IPENG_HOURS' | string %]"
-				style = "float: left; font-size: 32; text-align: right; "
+				style = "float: left; font-size: 32px; text-align: right; "
 				onChange = "void(0);">
 			[% j = 0; WHILE j < 24; %]
 			<option id = "s_h[% j %]" value = "[% j %]">[% j %]</option>
 			[% j = j + 1; END %]
 		</select>
 	
-		<span style = "font-size: 48; color: white;">&nbsp;:</span>
+		<span style = "font-size: 48px; color: white;">&nbsp;:</span>
 	
 		<select id="s_minutes" name="s_minutes" title = "[% 'MINUTES' | string %]" class = "selectItems" 
-				style = "float: right; font-size: 32;"
+				style = "float: right; font-size: 32px;"
 				onChange = "void(0);">
 			[% j = 0; WHILE j < 60; %]
 			<option id = "s_m[% j %]" value = "[% IF j < 10; '0'; END; j %]">[% IF j < 10; '0'; END; j %]</option>
@@ -135,7 +135,7 @@ Sleep.prototype.Count = function (startflag) {
 			    width: 298px;
 			    height: 48px;
 			    text-align: center;
-			    font-size: 24;
+			    font-size: 24px;
 		        -webkit-box-sizing: border-box;
 		">[% 'IPENG_START' | string %]</a>
     <a id = 'sleepstop' class="iButton red" 
@@ -146,7 +146,7 @@ Sleep.prototype.Count = function (startflag) {
 				 width: 298px;
 				 height: 48px;
 				 text-align: center;
-				 font-size: 24;
+				 font-size: 24px;
 			     -webkit-box-sizing: border-box;
 			     color: white;
 		">[% 'IPENG_STOP' | string %]</a>

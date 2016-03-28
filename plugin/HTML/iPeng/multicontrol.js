@@ -49,20 +49,20 @@ mplayer_control.prototype.draw = function () {
 		{ style : 'display: ' + ((this.isplayer) ? 'block;' : 'none;') });
 	this.e_volume_bar.appendChild(new Element('img', { 
 		src : webroot + 'html/images/VolumeBlueCap.png',
-		style : 'position: absolute; left: 4; top: 5' }));
+		style : 'position: absolute; left: 4px; top: 5px' }));
 	this.e_volume_bar.appendChild(new Element('img', { 
 		src : webroot + 'html/images/VolumeWhiteMusicFill.png',
-		style : 'position: absolute; left: 9; top: 5; width: 262; height: 9;' }));
+		style : 'position: absolute; left: 9px; top: 5px; width: 262px; height: 9px;' }));
 	this.e_volume_bar.appendChild(new Element('img', { 
 		src : webroot + 'html/images/VolumeWhiteMusicCap.png',
-		style : 'position: absolute; left: 271; top: 5' }));
+		style : 'position: absolute; left: 271px; top: 5px' }));
 	this.e_volumeBar = new Element('img', { 
 		src : webroot + 'html/images/VolumeBlueFill.png',
-		style : 'position: absolute; left: 9; top: 5; width: 1; height: 9;' });
+		style : 'position: absolute; left: 9px; top: 5px; width: 1px; height: 9px;' });
 	this.e_volume_bar.appendChild(this.e_volumeBar);
 	this.e_volumeButton = new Element('img', { 
 		src : webroot + 'html/images/MusicVolumeKnobBig.png',
-		style : 'position: absolute; left: -5; top: -5' });
+		style : 'position: absolute; left: -5px; top: -5px' });
 	this.e_volume_bar.appendChild(this.e_volumeButton);
 	this.e_volume.appendChild(this.e_volume_bar);	
 	this.container.appendChild(this.e_volume);
@@ -87,12 +87,12 @@ mplayer_control.prototype.draw = function () {
 	this.e_power_on = new Element('div', { onclick : 'Mplayer(this).evtPower(0)',
 		'class' : 'm_NPSprites',
 		style : 'display: ' + ((this.power && this.canpoweroff) ? 'block;' : 'none;') +
-				'background-position: left 150; width: 40; height: 30; overflow: hidden; float: left;',
+				'background-position: left 150px; width: 40px; height: 30px; overflow: hidden; float: left;',
 		title : '[% "ON" | string %]' });
 	this.e_power_off = new Element('div', { onclick : 'Mplayer(this).evtPower(1)',
 		'class' : 'm_NPSprites',
 		style : 'display: ' + ((this.power || !this.canpoweroff) ? 'none;' : 'block;') + 
-				'background-position: left 180; width: 40; height: 30; overflow: hidden; float: left;',
+				'background-position: left 180px; width: 40px; height: 30px; overflow: hidden; float: left;',
 		title : '[% "OFF" | string %]' });
 	this.td_power.appendChild (this.e_power_on);
 	this.td_power.appendChild (this.e_power_off);
@@ -100,18 +100,18 @@ mplayer_control.prototype.draw = function () {
 	tr.appendChild(temp);
 	this.e_prev = new Element('div', { onclick : 'Mplayer(this).evtPrev()',
 		'class' : 'm_NPSprites',
-		style : 'background-position: left 120; width: 31; height: 23; overflow: hidden;',
+		style : 'background-position: left 120px; width: 31px; height: 23px; overflow: hidden;',
 		title : '[% "PREVIOUS" | string %]' });
 	temp.appendChild (this.e_prev);
 	temp = new Element ('td', { align : 'left', width : '40' });
 	tr.appendChild(temp);
 	this.e_play = new Element('div', { onclick : 'Mplayer(this).evtPause()',
 		'class' : 'm_NPSprites',
-		style : 'background-position: left 30; width: 30; height: 27; overflow: hidden;',
+		style : 'background-position: left 30px; width: 30px; height: 27px; overflow: hidden;',
 		title : '[% "PAUSE" | string %]' });
 	this.e_pause = new Element('div', { onclick : 'Mplayer(this).evtPlay()',
 		'class' : 'm_NPSprites',
-		style : 'display: none; background-position: left 60; width: 30; height: 27; overflow: hidden;',
+		style : 'display: none; background-position: left 60px; width: 30px; height: 27px; overflow: hidden;',
 		title : '[% "PLAY" | string %]' });
 	temp.appendChild (this.e_pause);
 	temp.appendChild (this.e_play);
@@ -119,10 +119,10 @@ mplayer_control.prototype.draw = function () {
 	tr.appendChild(temp);
 	this.e_next = new Element('div', { onclick : 'Mplayer(this).evtNext()',
 		'class' : 'm_NPSprites',
-		style : 'background-position: left 90; width: 31; height: 23; overflow: hidden;',
+		style : 'background-position: left 90px; width: 31px; height: 23px; overflow: hidden;',
 		title : '[% "NEXT" | string %]' });
 	temp.appendChild (this.e_next);
-	this.td_sync = new Element ('td', { align : 'right', style : 'width: 40;' });
+	this.td_sync = new Element ('td', { align : 'right', style : 'width: 40px;' });
 
 	this.e_sync_do = new Element('img', {  onclick : 'Mplayer(this).startSync()',
 		src : webroot + 'html/images/sync.png',

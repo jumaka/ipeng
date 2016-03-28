@@ -118,7 +118,7 @@ BLOCK moveuplink;
 IF !loop.first %]
 	<div style = "position: absolute; left: 0;">
 		<a [% content %] style = "position: absolute; left: 0; display: block; width: 100%; margin: -17px 0 -8px -0; padding: 8px 0 8px 0">
-		<img style = "width: 320; height: 1;" src = "[% webroot %]html/images/between_line_light.png">
+		<img style = "width: 320px; height: 1px;" src = "[% webroot %]html/images/between_line_light.png">
 		<img style = "position: relative; top: -6px; left: 38px; z-index: 1; padding: 0;" src = "[% webroot %]html/images/between_light.png">
 	</div></a> [%# a/div order intentionally wrong!!!! %]
 [%- END;
@@ -214,7 +214,7 @@ item | replace('^\s*/','');
 END;
 
 BLOCK contentcontainer %]
-<div id="[% listid or containerid or 'browsedbList' %]" style="min-height: [% containerheight || '323px' %]">
+<div id="[% listid or containerid or 'browsedbList' %]" style="min-height: [% containerheight || '323' %]px">
 [% IF !omitPCTRL;
 	PROCESS playlistCTRLcontainer;
 END %]
@@ -242,7 +242,7 @@ END %]
 	<td class = "listRow" 
 		style = "padding-left: 6px;[% IF (!controls) && (!rightcontrols); 'padding-right: '; 
 										IF map_vertical; '25px;'; ELSE; '6px;'; END ; END;
-									IF fixedwidth; 'max-width: '; fixedwidth; ';'; END %]"
+									IF fixedwidth; 'max-width: '; fixedwidth; 'px;'; END %]"
 		[%- IF csp > 1; " colspan = ";csp; END;	">";
 		IF textlink %]
 			<a class = "tapblockFull" href = "[% textlink %]" [% IF target %]target = "[% target %]"[% END; ">";

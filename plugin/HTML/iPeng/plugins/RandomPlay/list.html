@@ -95,7 +95,7 @@ ELSE %]
 					style = "height: 36; right: 5; position: absolute;" 
 					[% IF pluginRandomContinuousMode %]checked[% END %]>
 				</div-->
-				<div  style = "position: relative; width: 105">
+				<div  style = "position: relative; width: 105px">
 				<div id = "t_continuousMode" class="toggle" onclick="changeNumSelected('continuousMode');" 
 					[% pluginRandomContinuousMode ? "toggled='true'" : "" %]>
 					<span class="thumb"></span>
@@ -200,23 +200,23 @@ ELSE %]
 	
 				// Write the button using js, so it won't appear if js isn't enabled/available
 				document.write('<a class="iButton silver"  id="selectAllButton" onclick="selectAll();"' +
-									' style=" margin: 11 0 11 5; padding: 0px; width: 278;' +
-									' height: 30px; text-align: center; font-size: 15;">' 
+									' style=" margin: 11px 0 11px 5px; padding: 0px; width: 278px;' +
+									' height: 30px; text-align: center; font-size: 15px;">' 
 									+ (numSelected == numCheckBoxes ? selectNoneString : selectAllString) + '</a>');
 			</script>
 			<br>
 				[% "PLUGIN_RANDOM_BEFORE_NUM_TRACKS" | string %]
 				<div>
 					<label>[% "IPENG_RANDOM_TRACKS" | string %]</label>
-					<input class="stdedit" type="text" size="2" name="numTracks" value="[% pluginRandomNumTracks %]" style = "width: 308; padding-left: 180 !important;">
+					<input class="stdedit" type="text" size="2" name="numTracks" value="[% pluginRandomNumTracks %]" style = "width: 308px; padding-left: 180px !important;">
 				</div>
 				<div>
 					<label>[% "IPENG_RANDOM_OLDTRACKS" | string; %]</label>
-					<input class="stdedit" type="text" size="2" name="numOldTracks" value="[% pluginRandomNumOldTracks %]" style = "width: 308; padding-left: 180 !important;">
+					<input class="stdedit" type="text" size="2" name="numOldTracks" value="[% pluginRandomNumOldTracks %]" style = "width: 308px; padding-left: 180px !important;">
 				</div>
 				<a class="iButton silver" onclick="document.genreForm.submit();"
-						style=" margin: 11 0 11 5; padding: 0px; width: 278;
-								height: 30px; text-align: center; font-size: 15;">[% "SAVE" | string %]</a>
+						style=" margin: 11px 0 11px 5px; padding: 0px; width: 278px;
+								height: 30px; text-align: center; font-size: 15px;">[% "SAVE" | string %]</a>
 			[% END; %]
 		[% END %]
 	</form>

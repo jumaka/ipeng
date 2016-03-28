@@ -23,7 +23,7 @@ function doRenamePlaylist(arg) {
 		 	var elTitle = $('title');
 		 	if (name.length > 15) {
 		 		elTitle.style.fontSize = "80%";
-		 		elTitle.style.padding = "3 0"
+		 		elTitle.style.padding = "3px 0"
 				elTitle.textContent = name.truncate(18);
 			} else {
 		 		elTitle.style.fontSize = "100%";
@@ -43,7 +43,7 @@ function doRenamePlaylist(arg) {
 
 
 [% IF page_vertical %]
-<div style = "position: relative; height: 44; border: 0; padding: 0;">&nbsp;</div>  <!-- spacer to keeps margins from collapsing on safari -->
+<div style = "position: relative; height: 44px; border: 0; padding: 0;">&nbsp;</div>  <!-- spacer to keeps margins from collapsing on safari -->
 [% END %]
 
 <script>
@@ -67,11 +67,11 @@ function doRenamePlaylist(arg) {
 		<label>[% "NAME" | string %]&nbsp;</label>
 		<input class="stdedit" id="newname" name="newname" value="[% IF newname; newname; ELSE; playlist.title; END %]" size="[% maxInputSize ? maxInputSize : 40 %]"></td>
 		</tr><tr>
-		<td><a class="iButton silver" style = "height: 32; padding: 0;" value="[% "SAVE" | string %]" onclick='doRenamePlaylist([% playlist.id %]);'>[% "SAVE" | string %]</a></td>
+		<td><a class="iButton silver" style = "height: 32px; padding: 0;" value="[% "SAVE" | string %]" onclick='doRenamePlaylist([% playlist.id %]);'>[% "SAVE" | string %]</a></td>
 		<!--td><a class="iButton silver" style = "height: 32; padding: 0;" value="[% "EDIT" | string %]" onclick='document.forms["editPlaylist"].submit();'>[% "EDIT" | string %]</a></td-->
-		<td><a class="iButton silver" style = "height: 32; padding: 0; color: #888888;" value="[% "EDIT" | string %]">[% "EDIT" | string %]</a></td>
+		<td><a class="iButton silver" style = "height: 32px; padding: 0; color: #888888;" value="[% "EDIT" | string %]">[% "EDIT" | string %]</a></td>
 		[% IF playlist.title && playlist.title != untitledString %]
-			<td><div class="iButton red" style = "height: 32; padding: 0;" value="[% "DELETE" | string %]" onclick='doDeletePlaylist([% playlist.id %]);'>[% "DELETE" | string %]</div></td>[%# "DELETE_WARNING" | string %]</a>
+			<td><div class="iButton red" style = "height: 32px; padding: 0;" value="[% "DELETE" | string %]" onclick='doDeletePlaylist([% playlist.id %]);'>[% "DELETE" | string %]</div></td>[%# "DELETE_WARNING" | string %]</a>
 		[% END %]
 			<input type="hidden" name="playlist.id" value="[% playlist.id %]">
 			<input type="hidden" name="renamePlaylist" value="0">

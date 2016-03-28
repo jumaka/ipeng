@@ -60,7 +60,7 @@ BLOCK StatusHeader -%]
 	</div>
 
 	<div class = 'iTopHomeDiv' style = '-webkit-transform: translateZ(2px);' onClick='returnToViewPage();'>
-		<span class="blackLeft iButton" style = "color: white; padding: 6; padding-left: 0; padding-right: 4; text-align: center;"><img src = "[% webroot %]html/images/left.png"'></span>
+		<span class="blackLeft iButton" style = "color: white; padding: 6px; padding-left: 0; padding-right: 4px; text-align: center;"><img src = "[% webroot %]html/images/left.png"'></span>
 	</div>
 
 	<div id = 'streaminfo' style = 'display: block;'>
@@ -225,15 +225,15 @@ BLOCK player_controls %]
 			onClick='Player.controls.evtPower(0);' 
 			style = 'display: [% IF myClientState.power %]block[% ELSE %]none[% END %];
 			background-image: url([% webroot %]html/images/NowPlayingSprites.png);
-			background-position: left 150;
-			width: 40; height: 30; overflow: hidden;'
+			background-position: left 150px;
+			width: 40px; height: 30px; overflow: hidden;'
 			title = '[% "ON" | string %]'></div>
 		<div id = 'powerControlOff' 
 			onClick='Player.controls.evtPower(1);'
 			style = 'display: [% IF myClientState.power %]none[% ELSE %]block[% END %];
 			background-image: url([% webroot %]html/images/NowPlayingSprites.png);
-			background-position: left 180;
-			width: 40; height: 30; overflow: hidden;'
+			background-position: left 180px;
+			width: 40px; height: 30px; overflow: hidden;'
 			title = '[% "OFF" | string %]'></div>
 		</td>
 
@@ -241,8 +241,8 @@ BLOCK player_controls %]
 		<div id = 'playercontrol_prev' 
 			onclick="Player.controls.evtPrev();" 
 			style = 'background-image: url([% webroot %]html/images/NowPlayingSprites.png);
-			background-position: left 120;
-			width: 31; height: 23; overflow: hidden;'
+			background-position: left 120px;
+			width: 31px; height: 23px; overflow: hidden;'
 			title = [% 'PREVIOUS' | string | ucfirst %]></div>
 		</td>
 
@@ -251,15 +251,15 @@ BLOCK player_controls %]
 			onClick="Player.controls.evtPause();" 
 			style = 'display:[% IF modepause || modestop %]none[% ELSE %]block[% END %];
 			background-image: url([% webroot %]html/images/NowPlayingSprites.png);
-			background-position: left 30;
-			width: 30; height: 27; overflow: hidden;'
+			background-position: left 30px;
+			width: 30; height: 27px; overflow: hidden;'
 			title = [% 'PAUSE' | string | ucfirst %]></div>
 		<div id = 'playercontrol_play' 
 			onclick="Player.controls.evtPlay();" 
 			style = 'display:[% IF modepause || modestop %]block[% ELSE %]none[% END %];
 			background-image: url([% webroot %]html/images/NowPlayingSprites.png);
-			background-position: left 60;
-			width: 30; height: 27; overflow: hidden;'
+			background-position: left 60px;
+			width: 30px; height: 27px; overflow: hidden;'
 			title = [% 'PLAY' | string | ucfirst %]></div>
 		</td>
         
@@ -267,8 +267,8 @@ BLOCK player_controls %]
 		<div id = 'playercontrol_next' 
 			onclick="Player.controls.evtNext();" 
 			style = 'background-image: url([% webroot %]html/images/NowPlayingSprites.png);
-			background-position: left 90;
-			width: 31; height: 23; overflow: hidden;'
+			background-position: left 90px;
+			width: 31px; height: 23px; overflow: hidden;'
 			title = [% 'NEXT' | string | ucfirst %]></div>
 		</td>
 		
@@ -276,14 +276,14 @@ BLOCK player_controls %]
 		<!--a title = "Home" href = "[% webroot %]home.html?player=[% playerURI %]"-->
 		<a title = "Home" href = "javascript:goHome();">
 		<div style = 'background-image: url([% webroot %]html/images/NowPlayingSprites.png);
-			background-position: left 210;
-			width: 40; height: 30; overflow: hidden;'
+			background-position: left 210px;
+			width: 40px; height: 30px; overflow: hidden;'
 			title = [% 'IPENG_BUTTON_HOME' | string | ucfirst %]></div></a>
 		</td>
 
 	</table>
 		<img id = 'statusalarm' src = "[% webroot %]html/images/AlarmIndicator.png" style = 'display: none; position: absolute; float: right; right: 0; bottom: 0;'>
-		<img id = 'statustimer' src = "[% webroot %]html/images/TimerIndicator5.png" style = 'display: [% IF sleeptime %]block[% ELSE %]none[% END %]; position: absolute; float: right; right: 15; bottom: 0;'>
+		<img id = 'statustimer' src = "[% webroot %]html/images/TimerIndicator5.png" style = 'display: [% IF sleeptime %]block[% ELSE %]none[% END %]; position: absolute; float: right; right: 15px; bottom: 0;'>
 [% END;
 
 BLOCK player_name %]

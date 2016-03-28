@@ -873,7 +873,7 @@ var Plugins = {
 			sect.className = "NowPlayingPlugin NPPSpan";
 			parent.style.color = "#f0f0f0";
 			parent.className = "tapblock";
-			parent.style.maxWidth = "320";
+			parent.style.maxWidth = "320px";
 			if (key.name) parent.title = key.name;
 			if (key.url || key.cli) {
 				Plugins.addCmd(new PluginCmd(key.type, subsect.id + "." + key.id, (key.url) ? key.url : key.cli, key.parameters, !(key.url), (key.refreshJS) ? key.refreshJS : null));

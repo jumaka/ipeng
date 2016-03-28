@@ -11,9 +11,9 @@
 				<html>&lt;select id="sel_players"
 						name="sel_players"
 						style="-webkit-box-sizing: border-box;
-							left: 0; font-size: 15;
-							margin: 3 0 0 11;
-						    min-width: 215; min-height: 30;"
+							left: 0px; font-size: 15px;
+							margin: 3px 0 0 11px;
+						    min-width: 215px; min-height: 30px;"
 						onchange="if (this.value!=playerid) Player.switchPlayer(this.value);"
 						ontouchstart="event.stopPropagation();"
 						ontouchmove="event.stopPropagation();"

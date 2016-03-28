@@ -20,7 +20,7 @@ END -%]
 	<input type="hidden" name="pageAntiCSRFToken" value="[% pageAntiCSRFToken %]">
 	<input type=hidden value="[% page %]" name="page">
 	<input type=hidden value="[% playerid | uri %]" name="playerid">
-	<select ID="choose_setting" NAME="choose_setting" class="stdedit" style="font-size: 15; min-width: 275; min-height: 30; margin: 8 4 8 4" onchange="chooseSettings(selectedIndex,options[selectedIndex].value)">
+	<select ID="choose_setting" NAME="choose_setting" class="stdedit" style="font-size: 15px; min-width: 275px; min-height: 30px; margin: 8px 4px 8px 4px" onchange="chooseSettings(selectedIndex,options[selectedIndex].value)">
 		[% PROCESS addSetupLinks %]
 	</select>
 </form>

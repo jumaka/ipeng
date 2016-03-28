@@ -286,7 +286,7 @@ browseCategories = { BROWSE_BY_ALBUM = { icon = 'html/images/iAlbumWhite.png', t
 
 <div id = "Database" class = "MenuPage panel" title = "[% 'IPENG_BROWSE_LIBRARY' | string %]" style = 'width: 320'>
 
-<ul style = "font-size: 110%; margin-bottom: 8; margin-top: 0;">
+<ul style = "font-size: 110%; margin-bottom: 8px; margin-top: 0;">
 [%- FOREACH cat = browseCategories.keys;
 	IF additionalLinks.browse.$cat %]
 		<li class = "biggerLine">
@@ -411,7 +411,7 @@ IF player_chooser_list %]
 				style = "
 				-webkit-box-sizing: border-box;
 				left: 0;
-				font-size: 15;
+				font-size: 15px;
 			    min-width: 275px;
 				min-height: 38px;">
 			[% c_playername = ''; FOREACH playerobj IN players;
@@ -491,7 +491,7 @@ END;
 
 BLOCK browseSettings %]
 <div id = "browseSettings" class = "MenuPage panel" title = "[% 'SETTINGS' | string %]">
-<ul  style = "font-size: 110%; margin-bottom: 8;">
+<ul  style = "font-size: 110%; margin-bottom: 8px;">
 
 	<li class = "biggerLine">
 	<a href="[% webroot %]home.html?runAlarm=1"><!-- target="_onload:localOnload();"-->
@@ -540,14 +540,14 @@ END;
 	<!-- SERVER SETTINGS -->
 	<li class = "biggerLine">
 	<a href="[% webroot %]settings/server/basic.html" target="_self">
-	<!--img src="html/images/blank.png" width="40" height="30" style = "margin: 0; position: relative; float: left; top: -5;" alt = 'server settings'>&nbsp;-->
+	<!--img src="html/images/blank.png" width="40" height="30" style = "margin: 0; position: relative; float: left; top: -5px;" alt = 'server settings'>&nbsp;-->
 	<span class="secondary">[% 'SERVER_SETTINGS' | string | truncate(22) %]</span></a>
 	</li>
 
 	<!-- PLAYER SETTINGS -->
 	<li class = "biggerLine">
 	<a href="[% webroot %]settings/player/basic.html?player=[% playerURI %]&playerid=[% playerURI %]" target="_self">
-	<!--img src="html/images/blank.png" width="40" height="30" style = "margin: 0; position: relative; float: left; top: -5;" alt = 'player settings'>&nbsp;-->
+	<!--img src="html/images/blank.png" width="40" height="30" style = "margin: 0; position: relative; float: left; top: -5px;" alt = 'player settings'>&nbsp;-->
 	<span class="secondary">[% 'PLAYER_SETTINGS' | string | truncate(22) %]</span></a>
 	</li>
 </ul>	
@@ -623,10 +623,10 @@ BLOCK tune_in_form %]
 			style = "
 				 margin: 0 11px 11px 0;
 				 padding: 0px;
-				 width: 278;
+				 width: 278px;
 				 height: 30px;
 				 text-align: center;
-				 font-size: 15;
+				 font-size: 15px;
 			">[% "RADIO_TUNEIN_CHOOSE" | string; '</a>';
 END;
 

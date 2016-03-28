@@ -9,7 +9,7 @@
 	<script TYPE="text/javascript" src="[% webroot %]html/common.js?r=[% revision %]"></script>
 	<script TYPE="text/javascript" src="[% webroot %]html/global.js?r=[% revision %]"></script>
 [% END %]
-[% bodyscript = 'onload="globalOnload (); document.searchForm.query.focus();"' %]
+[% bodyscript = 'onload="document.searchForm.query.focus();"' %]
 [% pwd_list = BLOCK %]
 <a href="search.html?player=[% playerURI %][% IF liveSearch %]&amp;livesearch=1[% END %]">[% "SEARCH" | string %]</a>
 [% END %]

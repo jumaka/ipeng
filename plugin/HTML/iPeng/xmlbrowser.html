@@ -38,11 +38,7 @@ IF useAJAX; pageHeaderScripts = BLOCK %]
 	<script src="[% webroot %]html/prototype4.js?r=[% revision %]" type = 'text/javascript' defer></script>
 	<script src="[% webroot %]html/prototype5.js?r=[% revision %]" type = 'text/javascript' defer></script>
 	<script type="text/javascript" src="[% webroot %]html/scriptaculous/scriptaculous.js?load=effects,dragdrop&amp;r=[% revision %]" defer></script>
-	<script TYPE="text/javascript" src="[% webroot %]html/global.js?r=[% revision %]"></script>
-	<script TYPE="text/javascript">
-	window.onload = function () {
-		globalOnload ();
-	}</script>
+	<script type="text/javascript" src="[% webroot %]html/global.js?r=[% revision %]" defer></script>
 [% END; END;
 
 IF NOT ajaxUpdate;
@@ -65,7 +61,7 @@ a[selected], a:active {
 }
 </style>
 
-<div style = "position: relative; height: 44; border: 0; padding: 0;">&nbsp;</div>  <!-- spacer to keeps margins from collapsing on safari -->
+<div style = "position: relative; height: 44px; border: 0; padding: 0;">&nbsp;</div>  <!-- spacer to keeps margins from collapsing on safari -->
 [% PROCESS playlistCTRLcontainer;
 PROCESS activatePLcontainer;
 PROCESS storeReturnPage -%]
@@ -83,22 +79,22 @@ IF search %]
 	<form id="searchForm" name="searchForm" method="GET">
 		<input type="search" autosave="radio" id="query" name="query" size="40" 
 			style = "-webkit-border-radius:10px; 
-					 height: 32; 
-					 width: 210;
-					 margin: 11 0 0 11;
-					 padding: 5 8 8 8;
+					 height: 32px; 
+					 width: 210px;
+					 margin: 11px 0px 0px 11px;
+					 padding: 5px 8px 8px 8px;
 					 font-size: 15;
 					 color: dark blue;
 					 border-width: 1;" 
 			value="[% query %]"/>
 		<a class="iButton silver" onclick='document.forms["searchForm"].submit();' 
-			style = "position: absolute; right: 8; top: 8; width: 60; height: 32; padding: 0;">
+			style = "position: absolute; right: 8px; top: 8px; width: 60px; height: 32px; padding: 0;">
 			[% "SEARCH" | string %]</a><p>
 		<input type="hidden" value="[% player %]" name="player">
 	</form>
 [% END %]
 
-<div id="pagecontainer_vert" style = "min-height: [% IF search; '265'; ELSE; '323'; END %];">
+<div id="pagecontainer_vert" style = "min-height: [% IF search; '265'; ELSE; '323'; END %]px;">
 
 [%-
 
@@ -200,7 +196,7 @@ IF items.size;
 							 border-width: 1;" 
 						value=""/>
 					<a class="iButton silver" onclick='document.forms["searchForm[% index _ (start + loop.index) %]"].submit();' 
-						style = "margin-top: -32; position: absolute; right: 8; width: 60; height: 32; padding: 0;">[% "SEARCH" | string %]</a><p>
+						style = "margin-top: -32px; position: absolute; right: 8px; width: 60px; height: 32px; padding: 0;">[% "SEARCH" | string %]</a><p>
 					<input type="hidden" value="[% player %]" name="player" />
 					<input type="hidden" value="[% index _ (start + loop.index) %]" name="index" />
 				</form>

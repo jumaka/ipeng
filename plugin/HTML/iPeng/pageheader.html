@@ -2,11 +2,11 @@
 IF !goHomeURI; goHomeURI = '"' _ webroot _ 'home.html?player=' _ playerURI _ '"'; END;
 homeString = homeString || 'Home';
 title = title || pagetitle;
-IF !bodyscript; bodyscript = 'onload="globalOnload ();"'; END;
+IF !bodyscript; bodyscript = ''; END;
 -%]
 [%- PROCESS iHeaderVert.html -%]
 
-<div style = "position: relative; height: 44; border: 0; padding: 0; z-index:9;">&nbsp;</div>  <!-- spacer to keeps margins from collapsing on safari -->
+<div style = "position: relative; height: 44px; border: 0; padding: 0; z-index:9;">&nbsp;</div>  <!-- spacer to keeps margins from collapsing on safari -->
 [%- IF pageHeaderInfo;
 	WRAPPER contentcontainer omitPCTRL=1 containerid='pageHeaderInfoContainer' containerheight=1;
 		WRAPPER contentanchor noanchor = 1;

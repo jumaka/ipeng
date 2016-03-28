@@ -117,9 +117,9 @@ END;
 BLOCK moveuplink;
 IF !loop.first %]
 	<div style = "position: absolute; left: 0;">
-		<a [% content %] style = "position: absolute; left: 0; display: block; width: 100%; margin: -17 0 -8 -0; padding: 8 0 8 0">
+		<a [% content %] style = "position: absolute; left: 0; display: block; width: 100%; margin: -17px 0 -8px -0; padding: 8px 0 8px 0">
 		<img style = "width: 320; height: 1;" src = "[% webroot %]html/images/between_line_light.png">
-		<img style = "position: relative; top: -6; left: 38; z-index: 1; padding: 0;" src = "[% webroot %]html/images/between_light.png">
+		<img style = "position: relative; top: -6px; left: 38px; z-index: 1; padding: 0;" src = "[% webroot %]html/images/between_light.png">
 	</div></a> [%# a/div order intentionally wrong!!!! %]
 [%- END;
 END;
@@ -230,9 +230,9 @@ IF anchor;
 		anchor;
 	END;
 END %]
-<tr class = "listRow" style = "padding: 0 3 0 3; width: 100%; ">
+<tr class = "listRow" style = "padding: 0 3px 0 3px; width: 100%; ">
 	[%- IF leftcontrols -%]
-	<td class = "listRow" style="min-width: 33">
+	<td class = "listRow" style="min-width: 33px">
 		[%- PROCESS $leftcontrols;
 	"</td>";
 	END;
@@ -240,8 +240,8 @@ END %]
 	   IF !leftcontrols; csp = 2; END;
 	   IF (!rightcontrols) && (!controls); csp = csp + 1; END %]
 	<td class = "listRow" 
-		style = "padding-left: 6;[% IF (!controls) && (!rightcontrols); 'padding-right: '; 
-										IF map_vertical; '25;'; ELSE; '6;'; END ; END;
+		style = "padding-left: 6px;[% IF (!controls) && (!rightcontrols); 'padding-right: '; 
+										IF map_vertical; '25px;'; ELSE; '6px;'; END ; END;
 									IF fixedwidth; 'max-width: '; fixedwidth; ';'; END %]"
 		[%- IF csp > 1; " colspan = ";csp; END;	">";
 		IF textlink %]
@@ -253,7 +253,7 @@ END %]
 		IF textlink; "</a>"; END;
 	"</td>";
 	IF controls || rightcontrols %]
-		<td class = "listRow" align = "right" style="min-width: 34; padding-right: [% IF map_vertical; '25'; ELSE; '2'; END %]px;">
+		<td class = "listRow" align = "right" style="min-width: 34px; padding-right: [% IF map_vertical; '25'; ELSE; '2'; END %]px;">
 			[% IF controls; PROCESS $controls; END;
 			IF rightcontrols; PROCESS $rightcontrols; END;
 		"</td>";
@@ -274,7 +274,7 @@ END %]
 END;
 
 BLOCK playlistcontrols;
-	width='20'; height='20';
+	width='20px'; height='20px';
 	WRAPPER playlink;     PROCESS cmdHRef cmdType = 'jump';                           END;
 	WRAPPER moveuplink;   PROCESS cmdHRef cmdType = 'move' moveTo = MoveUp;           END;
 	WRAPPER insertlink;   PROCESS cmdHRef cmdType = 'move' moveTo = item.nextsongind; END;
@@ -346,7 +346,7 @@ PROCESS ajaxCmdHRef cmdType='play' %]", true);' border=0 alt='Play Now' title='P
 
 BLOCK browsecontrols_abbr %]
 	<span class="[% isCurrent ? "listing2" : "listing" %]">
-	[%- width='25'; height='25';
+	[%- width='25px'; height='25px';
 	IF showplayall;
 		WRAPPER playlink noTarget = 1 %]href="[% playallhref %]"[% END;
 		WRAPPER addlink  noTarget = 1 %]href="[% addallhref %]"[% END;
@@ -376,7 +376,7 @@ BLOCK browsecontrols_abbr %]
 END;
 
 BLOCK browsecontrols;
-	width='20'; height='20';
+	width='20px'; height='20px';
 	WRAPPER playlink;   PROCESS cmdHRef cmdType='play';    END;
 	WRAPPER addlink;    PROCESS cmdHRef cmdType='add';     END;
 	WRAPPER removelink; PROCESS cmdHRef cmdType='remove';  END;
@@ -387,7 +387,7 @@ BLOCK browsecontrols;
 END;
 
 BLOCK browsecontrols_small;
-	width='20'; height='11';
+	width='20px'; height='11px';
 	WRAPPER playlink;    PROCESS cmdHRef cmdType='play';    END;
 	WRAPPER addlink;     PROCESS cmdHRef cmdType='add';     END;
 	WRAPPER removelink;  PROCESS cmdHRef cmdType='remove';  END;
@@ -515,7 +515,7 @@ BLOCK by_from_info;
 		<span class = "listFullArtist">
 			[%- PROCESS artistsAsHTML.html notarget = 1 noby = 1 itemobj = item.itemobj %]<br>
 		</span>
-		<span style = "height: 0; font-size: 4">&nbsp;</span>
+		<span style = "height: 0; font-size: 4px">&nbsp;</span>
 	[%- END;
 END;
 
@@ -551,7 +551,7 @@ BLOCK expandAlphamap %]
 
 BLOCK top_pagebar;
 	IF map_vertical %]
-		<div id = 'alphamap'[% IF !page_vertical %] style = 'left: 455px; top: 25;'[% END %]>
+		<div id = 'alphamap'[% IF !page_vertical %] style = 'left: 455px; top: 25px;'[% END %]>
 	[% ELSE %]
 		<div class = 'crumblist[% IF page_vertical %]_vert[% END %]'>
 	[% END;
@@ -620,7 +620,7 @@ BLOCK pagebar;
 			[%- END;
 			IF !curpage;
 				goStart = pageinfo.alphamap.item(alphakey);
-				goHash = "#" _ alphakey | uri;
+				goHash = "#" (alphakey | uri);
 				addStyle = 'style="color: #888888;"';
 				PROCESS loadpage;
 			ELSE -%]

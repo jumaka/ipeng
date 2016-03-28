@@ -961,7 +961,6 @@ window.onload= function() {
  	Player.init();
 	Player.triggerUpdate();
 	ScrollController.init();
-	globalOnload();
 }
 
 

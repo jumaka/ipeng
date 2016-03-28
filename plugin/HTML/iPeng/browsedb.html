@@ -162,7 +162,7 @@ IF orientation == 1;
 ELSE;
 
 	BLOCK anchorctrl -%]
-		<div style = "float: right; padding: 2 [% IF map_vertical; '50'; ELSE; '30'; END %] -2 0; margin: 0 0 -2 0;">
+		<div style = "float: right; padding: 2px [% IF map_vertical; '50'; ELSE; '30'; END %]px -2px 0; margin: 0 0 -2px 0;">
 		[%- PROCESS cmdToTop;
 		PROCESS cmdToBottom;
 		'</div>';

@@ -43,11 +43,11 @@ BLOCK HomeHeader %]
 	}*/
 	div#bottombar {
 		position: absolute;
-		top: 368;
+		top: 368px;
 		left: 0;
 		background-image: url([% webroot %]html/images/iBottomBar.png);
 		color: white;
-		font-size: 12;
+		font-size: 12px;
 		font-weight: bold;
 		padding: 0;
 		border-top: 1px solid black;
@@ -170,9 +170,6 @@ BLOCK HomeHeader %]
 
 	// OnLoad
 	
-	window.onload = function() {
-		globalOnload();
-	}
 	</script>
 
 	<!--script src="[% webroot %]html/home.js?r=[% revision %]" type = 'text/javascript'></script-->
@@ -260,7 +257,7 @@ PROCESS playerChoose;
 # END;
 
 -%]
-<div id = "iPengName" class = "iPengName">iPeng v0.5 (C) 2007, 2008 J. Schwieder, E. Isaksson</div>
+<div id = "iPengName" class = "iPengName">iPeng v0.6 (C) 2007, 2008, 2016 J. Schwieder, E. Isaksson, J. Saunders</div>
 [%- PROCESS spacer;
 '</div>';
 
@@ -313,7 +310,7 @@ orderByList = {
 } -%]
 
 <!--label for="orderBy" class="backgroundtext">[% "SORT_BY" | string %]</label-->[%# 'ALBUMS' | string %]
-<div class="backgroundtext" style = "float: left; padding-top: 0; margin: 8 0 0 3; width: 120" wrap>[% "IPENG_ALBUMSORT" | string %]</div>
+<div class="backgroundtext" style = "float: left; padding-top: 0; margin: 8px 0 0 3px; width: 120px" wrap>[% "IPENG_ALBUMSORT" | string %]</div>
 <select class = "selectItems" name="orderBy" onChange="setAlbumOrderBy(selectedIndex,options[selectedIndex].value)">
 [% FOREACH orderType = orderByList.keys.sort %]
 	<option [% IF orderType == orderBy %]selected[% END %] value="[% orderType %]">[% orderByList.$orderType | string %]</option>
@@ -350,7 +347,7 @@ browseMoreExclude = [ 'PLUGIN_IPENG_CUSTOM_BROWSE_MORE', temp ];
 
 
 -%]
-<ul  style = "font-size: 110%; margin: 0 0 8 0; ">
+<ul  style = "font-size: 110%; margin: 0 0 8px 0; ">
 [%- FOREACH cat = browseMoreCategories.keys;
 	IF additionalLinks.browse.$cat -%]
 		<li class = "biggerLine">
@@ -406,8 +403,8 @@ USE Clients; players = Clients.get("id");
 IF player_chooser_list %]
 	<div id = "FullBG" style = "display: none"></div>
 	<form id = "PCDiv" style="display: none;">
-		<span style = "margin: 8">[% 'IPENG_SYNC_CHOOSE' | string %]</span>
-		<span id="currentplayername" style="display: block; font-weight: bold; margin: 8; font-size: 120%;"></span>
+		<span style = "margin: 8px">[% 'IPENG_SYNC_CHOOSE' | string %]</span>
+		<span id="currentplayername" style="display: block; font-weight: bold; margin: 8px; font-size: 120%;"></span>
 		<span><br></span>
 		<select id="synchronize" 
 				name="synchronize" multiple 
@@ -415,8 +412,8 @@ IF player_chooser_list %]
 				-webkit-box-sizing: border-box;
 				left: 0;
 				font-size: 15;
-			    min-width: 275;
-				min-height: 38;">
+			    min-width: 275px;
+				min-height: 38px;">
 			[% c_playername = ''; FOREACH playerobj IN players;
 				IF player == playerobj.id;
 					c_playername = playerobj.name;
@@ -431,12 +428,12 @@ IF player_chooser_list %]
 		href="[% webroot %]home.html"
 		target = "_self"
 		style = "
-			 margin: 11 0 11 0;
-			 padding: 5 0 0 0;
-			 width: 298;
+			 margin: 11px 0 11px 0;
+			 padding: 5px 0 0 0;
+			 width: 298px;
 			 height: 42px;
 			 text-align: center;
-			 font-size: 15;
+			 font-size: 15px;
 		     -webkit-box-sizing: border-box;
 		     color: black;
 		">[% 'SETUP_SYNCHRONIZE' | string %]</a>
@@ -445,12 +442,12 @@ IF player_chooser_list %]
 		href = "javascript:void(0);"
 		target = "_self"
 		style = "
-			 margin: 11 0;
-			 padding: 5 0 0 0;
-			 width: 298;
+			 margin: 11px 0;
+			 padding: 5px 0 0 0;
+			 width: 298px;
 			 height: 42px;
 			 text-align: center;
-			 font-size: 15;
+			 font-size: 15px;
 		     -webkit-box-sizing: border-box;
 		     color: white;
 		">[% 'CANCEL' | string %]</a>
@@ -459,7 +456,7 @@ IF player_chooser_list %]
 	<form method="get" class = "backgroundtext" style = "margin: 0 11">
 		<!--label for = "player" class = "backgroundtext" style = "position: absolute; float:left; margin: 0 16" >[% "CURRENT_PLAYER" | string %]</label-->
 		<span class = "backgroundtext" style = "float:left; margin: 0; padding: 0; display: block;" >[% 'IPENG_PLAYER' | string %]</span>
-		<select id="player" name="player" class = "selectItems" onChange="playerSubmit(this);" style = "float: right; max-width: 220; display: block; margin: -4 0 0 0;">
+		<select id="player" name="player" class = "selectItems" onChange="playerSubmit(this);" style = "float: right; max-width: 220px; display: block; margin: -4px 0 0 0;">
 		[% FOREACH playerobj IN players %]
 			<option id = "[% playerobj.id %]" value = "[% playerobj.id %]" [% IF player == playerobj.id %]selected[% END %]>[% playerobj.name %]</option>
 		[% END %]
@@ -560,7 +557,7 @@ END;
 
 
 BLOCK browseRadio %]
-<form id = "Radio" class = "MenuPage panel" name="tune" method="get" action="status.html" target = "_self" title = '[% "RADIO" | string %]' style = 'background: none; width: 320'>
+<form id = "Radio" class = "MenuPage panel" name="tune" method="get" action="status.html" target = "_self" title = '[% "RADIO" | string %]' style = 'background: none; width: 320px'>
 [% PROCESS tune_in_form %]
 <ul style = "margin-left: 0;">
 	[% IF additionalLinks.radios;
@@ -573,9 +570,9 @@ BLOCK browseRadio %]
 	END;
 	FOREACH key = linkHash.keys %]
 		<li>
-			<a href="[% webroot %][% linkHash.$key %]player=[% playerURI %]" target="_self" style = "padding: 11 0 11 0">
-			<img src="[% webroot %][% additionalLinks.icons.${key}.replace('.png', "_30x30_f.png") %]" width="30" class = "radioPic" style = "top: -7" alt="[% key | string %]">
-			<span class="secondary" style = "font-size: 80%; padding-left: 5">[% key | string | truncate(26) %]</span></a>
+			<a href="[% webroot %][% linkHash.$key %]player=[% playerURI %]" target="_self" style = "padding: 11px 0 11px 0">
+			<img src="[% webroot %][% additionalLinks.icons.${key}.replace('.png', "_30x30_f.png") %]" width="30" class = "radioPic" style = "top: -7px" alt="[% key | string %]">
+			<span class="secondary" style = "font-size: 80%; padding-left: 5px">[% key | string | truncate(26) %]</span></a>
 		</li>
 	[% END;
 '</ul>';
@@ -587,7 +584,7 @@ IF additionalLinks.music_services;
 		<li class = "biggerLine">
 			<a href="[% webroot %][% additionalLinks.music_services.$key | html %]player=[% playerURI %]" target="_self" >
 			<img src="[% webroot %][% additionalLinks.icons.${key}.replace('.png', "_30x30_f.png") %]" width="30" class = "radioPic" alt="[% key | string %]">
-			<span class="secondary" style = "font-size: 80%; padding-left: 5">[% key | string | html | truncate (26) %]</span></a>
+			<span class="secondary" style = "font-size: 80%; padding-left: 5px">[% key | string | html | truncate (26) %]</span></a>
 		</li>
 	[%- END;
 	FOREACH link = additionalLinks.music_services; 
@@ -595,14 +592,14 @@ IF additionalLinks.music_services;
 		<li class = "biggerLine">
 			<a href="[% webroot %][% link.value | html %]player=[% playerURI %]" target="_self">
 			<img src="[% webroot %][% additionalLinks.icons.${link.key}.replace('.png', "_30x30_f.png") %]" width="30" class = "radioPic" alt="[% link.key | string %]">
-			<span class="secondary" style = "font-size: 80%; padding-left: 5">[% link.key | string | html %]</span></a>
+			<span class="secondary" style = "font-size: 80%; padding-left: 5px">[% link.key | string | html %]</span></a>
 		</li>
 	[%- END;
 	END;
 	IF additionalLinks.radios.exists('PLUGIN_PANDORA_MODULE_NAME') %]
 		<li class = "biggerLine">
 			<a href="[% webroot %][% additionalLinks.radio.PLUGIN_PANDORA_MODULE_NAME | html %]player=[% playerURI %]" target="_self">
-			<span class="secondary" style = "font-size: 80%; padding-left: 5">[% "PLUGIN_PANDORA_MODULE_NAME" | string | html;
+			<span class="secondary" style = "font-size: 80%; padding-left: 5px">[% "PLUGIN_PANDORA_MODULE_NAME" | string | html;
 			'</span></a>';
 		'</li>';
 	END;
@@ -616,7 +613,7 @@ BLOCK tune_in_form %]
     <input type="hidden" name="p0" value="playlist">
     <input type="hidden" name="p1" value="play">
     <input type="hidden" name="player" value="[% player %]">
-    <fieldset style = "margin-bottom: 8">
+    <fieldset style = "margin-bottom: 8px">
         <div class="row">
             <label>[% 'RADIO_TUNEIN_RADIOURL' | string %]</label>
             <input autosave="radiourl" name="p2"/>
@@ -624,7 +621,7 @@ BLOCK tune_in_form %]
     </fieldset>
     <a class="iButton silver" onclick = 'document.forms["Radio"].submit();'
 			style = "
-				 margin: 0 11 11 0;
+				 margin: 0 11px 11px 0;
 				 padding: 0px;
 				 width: 278;
 				 height: 30px;
@@ -640,12 +637,12 @@ BLOCK homeTopbar %]
 			 href="[% webroot %]status.html?player=[% playerURI %]">
 			<img src = "[% webroot %]html/images/coolioicon.png">
 		</div-->
-		<div style = 'position: absolute; right: 4; top: 4; z-index: 12;'>
+		<div style = 'position: absolute; right: 4px; top: 4px; z-index: 12;'>
 			<a class="blackRight iButton"
 				href="[% webroot %]status.html?player=[% playerURI %]"
-				style = "color: white; width: 43; padding: 0; text-align: right;"
+				style = "color: white; width: 43px; padding: 0; text-align: right;"
 				target="_self">
-				<img src = "[% webroot %]html/images/coolioicon.png" style = "padding-right: 10"></a>
+				<img src = "[% webroot %]html/images/coolioicon.png" style = "padding-right: 10px"></a>
 		</div>
 		
 		<a id = "backButton1" class = "backButton" href="#" style = "-webkit-transform: translateX(320px); opacity: 0;"></a>
@@ -659,5 +656,5 @@ BLOCK homeTopbar %]
 
 
 BLOCK spacer %]
-<div style = "height: 48"></div>
+<div style = "height: 48px"></div>
 [% END %]

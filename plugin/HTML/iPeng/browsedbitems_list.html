@@ -7,12 +7,12 @@
 	</tr>
 [%- ELSE;
 IF darkBG %]
-	<tr [% IF rowClass %]class = "[% rowClass %][% ELSIF item.odd %]class="even[% ELSE %]class="odd black[% END %] buffered" style = "position: relative; height: 40; padding: 3">
+	<tr [% IF rowClass %]class = "[% rowClass %][% ELSIF item.odd %]class="even[% ELSE %]class="odd black[% END %] buffered" style = "position: relative; height: 40px; padding: 3px">
 	[%- truncateAt = 40;
 ELSE;
 	truncateAt = 26;
 	linkAreaClass = ' class = "linkAreaRowToPlus"' -%]
-	<tr class = "listRow" style = "padding: 3;">
+	<tr class = "listRow" style = "padding: 3px;">
 [%- END;
 		
 BLOCK openAlbumTD;
@@ -72,9 +72,9 @@ BLOCK openAlbumTD;
 			END %]
 			style = "[%-
 				IF showcover;
-					'padding-left: 0; max-width: 210;';
+					'padding-left: 0px; max-width: 210px;';
 				ELSE;
-					'padding-left: 10; max-width: 245;';
+					'padding-left: 10px; max-width: 245px;';
 				END %]" 
 			title = "[% item.text | html %]">
 		[%- IF noLink;
@@ -85,7 +85,7 @@ BLOCK openAlbumTD;
 		</td>
 		<td [% IF !enforceNoBorder %]class = "listRow" [% END %]
 			align = 'right' 
-			style = "width: [% IF darkBG %]32[% ELSE %]35[% END %]; padding-left: 0; padding-right: [% IF map_vertical %]25[% ELSIF darkBG %]3[% ELSE %]10[% END %];">
+			style = "width: [% IF darkBG %]32[% ELSE %]35[% END %]px; padding-left: 0; padding-right: [% IF map_vertical %]25[% ELSIF darkBG %]3[% ELSE %]10[% END %]px;">
 		[%- useImg = "";
 			IF (levelName == 'playlist') || (item.itemobj.content_type() == "ssp"); 
 			goCmd = 'AjaxBrowseCtrlPlay';

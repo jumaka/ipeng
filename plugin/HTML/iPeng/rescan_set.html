@@ -1,5 +1,5 @@
 
-<div id = "rescanLibrary" class = "MenuPage panel" title = "[% 'IPENG_RESCAN' | string %]" style = "width: 320;">
+<div id = "rescanLibrary" class = "MenuPage panel" title = "[% 'IPENG_RESCAN' | string %]" style = "width: 320px;">
 <script type="text/javascript">
 
 rescanStrings = { 	cleanup1 : '[% 'CLEANUP1_PROGRESS' | string %]',
@@ -56,48 +56,48 @@ checkRescan = function () {
     		onclick = 'changeOSD("[% 'IPENG_RESCAN_STARTED' | string %]"); callJSONRPC([ "rescan" ], checkRescan); showAdded();'
     		target = "none"
 			style = "
-				 margin: 0 11 11 0;
+				 margin: 0 11px 11px 0;
 				 padding: 0px;
-				 width: 278;
+				 width: 278px;
 				 height: 30px;
 				 text-align: center;
-				 font-size: 15;
+				 font-size: 15px;
 			">[% "SETUP_RESCAN_BUTTON" | string %]</a>
 <br><span class = "backgroundtext">[% 'SETUP_WIPEDB' | string %]</span><br>&nbsp;
     <a class="iButton red" 
     		onclick = 'if (!confirm("[% 'IPENG_WIPE_CONFIRM' | string %]")) return;changeOSD("[% 'IPENG_WIPE_STARTED' | string %]"); callJSONRPC([ "wipecache" ], checkRescan); showAdded();'
     		target = "none"
 			style = "
-				 margin: 0 11 11 0;
+				 margin: 0 11px 11px 0;
 				 padding: 0px;
-				 width: 278;
+				 width: 278px;
 				 height: 30px;
 				 text-align: center;
-				 font-size: 15;
+				 font-size: 15px;
 			">[% "IPENG_WIPE" | string %]</a>
 
-<div style = "margin: 16 0 0 0; position: relative; left: 0; width: 298;">
+<div style = "margin: 16px 0 0 0; position: relative; left: 0; width: 298px;">
 <img id = "rescan_left" src = "[% webroot %]html/images/fillFieldNoneLeft.png">
 <div id = "rescan_bg" style = "z-index: 10;
-				position: absolute; left: 8; top: 0;
+				position: absolute; left: 8px; top: 0;
 				background-image: url([% webroot %]html/images/fillFieldNone.png);
 				background-repeat: repeat-x;
-				width: 282; height: 31"></div>
+				width: 282px; height: 31px"></div>
 <div id = "rescan_bar" style = "z-index: 11;
-				position: absolute; left: 8; top: 0;
+				position: absolute; left: 8px; top: 0;
 				background-image: url([% webroot %]html/images/fillFieldActive.png);
 				background-repeat: repeat-x;
-				width: 0; height: 31"></div>
+				width: 0; height: 31px"></div>
 <div style = "z-index: 12;
-				position: absolute; left: 8; top: 0;
-				padding: 7; text-align:center;
-				width: 282; height: 31">
+				position: absolute; left: 8px; top: 0;
+				padding: 7px; text-align:center;
+				width: 282px; height: 31px">
 <span id = "rescan_status" style = "text-shadow: rgba(255, 255, 255, 0.4) 0px -1px 0;"
 >[% 'COMPLETE' | string %]</span>
 </div>
 <img id = "rescan_right" src = "[% webroot %]html/images/fillFieldNoneRight.png" style = "float: right">
 </div>
-<div style = "height: 48"></div>
+<div style = "height: 48px"></div>
 <script>checkRescan();</script>
 </div>
 

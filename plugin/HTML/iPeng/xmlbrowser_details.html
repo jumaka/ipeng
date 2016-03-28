@@ -16,7 +16,7 @@
 
 		<div id="linkedSongInfoItems"
 				 style = "position: absolute; float: left; 
-				  left: 0; top: 0; overflow: hidden; z-index: 12;">
+				  left: 0px; top: 0px; overflow: hidden; z-index: 12;">
 		[% IF songInfoPlayLinks; songInfoPlayLinks; END %]
 
 		[% item = (streaminfo.item.name || streaminfo.item.title) | html; title = "TITLE"; PROCESS songInfoItem %]

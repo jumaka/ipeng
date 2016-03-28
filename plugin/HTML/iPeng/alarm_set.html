@@ -588,8 +588,8 @@ localOnload = function () {
 
 </script>
 
-	<div style = "margin: 0; padding: 3 0; background-image: url(html/images/clockbgsmall.png); background-repeat: repeat-x; bakground-position: top left; background-color: #B4B4B8">
-	<div class="row" style = "margin: 3 0; border: 0;">
+	<div style = "margin: 0; padding: 3px 0px; background-image: url(html/images/clockbgsmall.png); background-repeat: repeat-x; bakground-position: top left; background-color: #B4B4B8">
+	<div class="row" style = "margin: 3px 0px; border: 0;">
 		<a id = "a_plus" class="iButton blue" href = 'javascript:startAAdd();' target = "_self"
 			style = "
 				 display: none;
@@ -602,7 +602,7 @@ localOnload = function () {
 				 text-align: center;
 				 font-size: 20;
 			">+</a>
-		<span class = "backgroundtext" style = "float: right; margin: 4 130 0 0">[% 'IPENG_FADE_IN' | string %]</span>
+		<span class = "backgroundtext" style = "float: right; margin: 4px 130px 0px 0px">[% 'IPENG_FADE_IN' | string %]</span>
 		<div id = "a_fade" class="toggle" onclick="updateFade();" 
 	[%# playerPrefs = Prefs.preferences('server').client(Clients.client(player)); %]
 	[%# playerPrefs.get('alarmfadeseconds'); %]
@@ -614,10 +614,10 @@ localOnload = function () {
 			</span><span class="toggleOn">[% 'IPENG_ON' | string %]</span><span class="toggleOff">[% 'IPENG_OFF' | string %]</span>
 		</div>
 	</div>
-	<div id = "e_add" class = "a_editrow" style = "height: 48; display: none;">
+	<div id = "e_add" class = "a_editrow" style = "height: 48px; display: none;">
 		<select id = "e_weekdays" title = "[% 'IPENG_WEEKDAY' | string %]" class = "selectItems" 
-				style = "float: left; margin: 8 4 4 8; padding: 1; 
-						 font-size: 17; height: 32; min-width: 180; max-width: 180;
+				style = "float: left; margin: 8px 4px 4px 8px; padding: 1; 
+						 font-size: 17px; height: 32px; min-width: 180px; max-width: 180px;
 						 -webkit-box-sizing: border-box;
 						 text-align: center;"
 				onclick = "event.stopPropagation();"
@@ -629,9 +629,9 @@ localOnload = function () {
 		   target = "_self"
 		   style = "
 				 float: right;
-				 margin: 8 8 4 4;
-				 padding: 1;
-				 width: 100;
+				 margin: 8px 8px 4px 4px;
+				 padding: 1px;
+				 width: 100px;
 				 height: 32px;
 				 text-align: center;
 				 font-size: 15;
@@ -643,24 +643,24 @@ localOnload = function () {
 	
 	[% i = 0; WHILE i < 8 %]
 	<div id = "alarm[% i %]" class = "alarmrow" style = "display: none" onclick="startAEdit([% i %]);event.stopPropagation();">
-		<div style = "position: absolute; left: 0; top: 0; margin: 5 3 5 6">
+		<div style = "position: absolute; left: 0; top: 0; margin: 5px 3px 5px 6px">
 		<canvas id = 'clock[% i %]' width = '76' height = '77' time = '0'></canvas>
 		<!--script>new Clock([% i %], [% i * 10000 %]);</script-->
 		</div>
 		<div id = "a_info[% i %]" style = "position: relative; height: 100%; left: 87px; overflow: hidden; padding: 12 6 6 8">
 			<span id = "a_title[% i %]" 
-				  style = "position: absolute; top: 12;">[% "ALARM_DAY$i" | getstring %]</span><br>
+				  style = "position: absolute; top: 12px;">[% "ALARM_DAY$i" | getstring %]</span><br>
 			<span id = "a_time[% i %]"
 				  style = "position: absolute; display: block; 
-						   top: 33; font-size: 80%">00:00pm</span>
+						   top: 33px; font-size: 80%">00:00pm</span>
 			<a id = "a_playlist[% i %]"
 				  target = "_none";
 				  style = "position: absolute; display: block;
-						   top: 55; width: 225; height: 17;
-						   font-size: 80%; padding: 6 0; z-index: 3">[% 'IPENG_CURRENT_PLAYLIST' | string %]
+						   top: 55px; width: 225px; height: 17px;
+						   font-size: 80%; padding: 6px 0px; z-index: 3">[% 'IPENG_CURRENT_PLAYLIST' | string %]
 			</a>
 		</div>
-		<div class = "row" style = "position: absolute; right: 0; top: 9; width: 110; border: 0;">
+		<div class = "row" style = "position: absolute; right: 0; top: 9px; width: 110px; border: 0;">
 			<div id = "a_onoff[% i %]" class="toggle" onclick="toggleDay([% i %]); event.stopPropagation();">
 				<span class="thumb"></span><span class="toggleOn">[% 'IPENG_ON' | string %]</span><span class="toggleOff">[% 'IPENG_OFF' | string %]</span>
 			</div>
@@ -672,22 +672,22 @@ localOnload = function () {
 	END %]
 	
 	<img id = "a_delete" src = "[% webroot %]html/images/minus.png" onclick = "deleteAlarm(); event.stopPropagation();"
-		 style = "position: absolute; left: 0; top: 0; margin: 5; display: none; z-index: 2">
+		 style = "position: absolute; left: 0; top: 0; margin: 5px; display: none; z-index: 2">
 	
 	<span id = "e_time"
 		  style = "position: absolute; display: none; 
-				   top: 30; font-size: 80%">
+				   top: 30px; font-size: 80%">
 		<select id="e_hours" name="e_hours" class = "selectItems" title = "[% 'IPENG_HOURS' | string %]" 
-				style = "position: absolute; top: 0; left: -5; height: 24; width: 50;"
+				style = "position: absolute; top: 0; left: -5px; height: 24px; width: 50px;"
 				onclick = "event.stopPropagation();"
 				onChange = "updateHoursMinutes();">
 			[% j = 0; WHILE j < 24; %]
 			<option id = "a_h[% j %]" value = "[% j %]">[% j %]</option>
 			[% j = j + 1; END %]
 		</select>
-		<span style = "position: absolute; left: 48; top: 3">:</span>
+		<span style = "position: absolute; left: 48px; top: 3">:</span>
 		<select id="e_minutes" name="e_minutes" title = "[% 'MINUTES' | string %]" class = "selectItems" 
-				style = "position: absolute; top: 0; left: 56; height: 24; width: 50;" 
+				style = "position: absolute; top: 0; left: 56px; height: 24px; width: 50px;" 
 				onclick = "event.stopPropagation();"
 				onChange = "updateHoursMinutes();">
 			[% j = 0; WHILE j < 60; %]
@@ -697,17 +697,17 @@ localOnload = function () {
 	</span>
 	<img id = "a_arrow" src = "[% webroot %]html/images/chevron.png" 
 	 style = "position: absolute; display: none;
-			  top: 64; left: 205; margin: 2 4; z-index: 2;">
+			  top: 64px; left: 205px; margin: 2px 4px; z-index: 2;">
 	
 	<div id = "a_moreedit" style = "display: none">
 		<div id = "e_volume" 
-			 style =  "position: relative; top: 11; left: 20; height: 22; width: 280px;" 
+			 style =  "position: relative; top: 11px; left: 20px; height: 22px; width: 280px;" 
 			 volume = "0">
 			 <!--onClick = 'evtAVolume(event);'-->
-			<img src = '[% webroot %]html/images/VolumeBlueCap.png' style = 'position: absolute; left: 4; top: 5'>
-			<img src = '[% webroot %]html/images/VolumeWhiteMusicFill.png' style = 'position: absolute; left: 9; top: 5; width: 262; height: 9;'>
-			<img src = '[% webroot %]html/images/VolumeWhiteMusicCap.png' style = 'position: absolute; left: 271; top: 5'>
-			<img id="alvolumeBar" src="[% webroot %]html/images/VolumeBlueFill.png" style = 'position: absolute; left: 9; top: 5; height: 9; width: 1'>
+			<img src = '[% webroot %]html/images/VolumeBlueCap.png' style = 'position: absolute; left: 4px; top: 5px'>
+			<img src = '[% webroot %]html/images/VolumeWhiteMusicFill.png' style = 'position: absolute; left: 9px; top: 5px; width: 262px; height: 9px;'>
+			<img src = '[% webroot %]html/images/VolumeWhiteMusicCap.png' style = 'position: absolute; left: 271px; top: 5px'>
+			<img id="alvolumeBar" src="[% webroot %]html/images/VolumeBlueFill.png" style = 'position: absolute; left: 9px; top: 5px; height: 9px; width: 1px'>
 			<img id = 'alvolumeButton' src = '[% webroot %]html/images/MusicVolumeKnob.png' style = 'position: absolute; top: 0; left: 0;' >
 		</div>
 		<a class="iButton silver" 

@@ -1,15 +1,17 @@
+<!DOCTYPE html>
+
 <!-- iHeaderVert.html -->
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
       <head>
 	[%- IF (thispage == 'songinfo') || (thispage == 'artwork') || ( orientation == 1 && (levelName == 'album' || levelName == 'age')) %]
-	<meta name="viewport" content="width=480; initial-scale=1.0; minimum-scale=1.0; maximum-scale=1.0; user-scalable=0;"/>
+	<meta name="viewport" content="width=480, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
 	[%- page_vertical = 0;
 	ELSIF (thispage == 'statusnot') %]
-	<meta name="viewport" content="width=324; initial-scale=1.0; minimum-scale=1.0; maximum-scale=1.0; user-scalable=0;"/>
+	<meta name="viewport" content="width=324, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
 	[%- page_vertical = 1;
 	ELSE %]
-	<meta name="viewport" content="width=320; initial-scale=1.0; minimum-scale=1.0; maximum-scale=1.0; user-scalable=0;"/>
+	<meta name="viewport" content="width=320, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
 	[%- page_vertical = 1;
 	END %]
 	<link rel="apple-touch-icon" href="[% webroot %]html/images/apple-touch-icon.png"/>
@@ -41,7 +43,7 @@
       </head>
 
 
-<body [% IF !page_vertical %]style = 'width: 480px;'[% ELSIF pageStyle; pageStyle; ELSE %]style = 'background-color: white; background-image: url([% webroot %]html/images/background.png); -webkit-text-size-adjust:none;'[% END %] marginwidth=0 marginheight=0 [% bodyscript %]>
+<body [% IF !page_vertical %]style = 'width: 480px;'[% ELSIF pageStyle; pageStyle; ELSE %]style = 'background-color: white; background-image: url([% webroot %]html/images/background.png); -webkit-text-size-adjust:none;'[% END %][% bodyscript %]>
 [% IF page_vertical %]
 <style type="text/css">
 
@@ -57,15 +59,15 @@ a:hover, a:visited, a:active, a:link {
 
 [% IF thispage == 'artwork' || thispage == 'browse' %]
 <div id = 'SWbg' style='display:none'></div>
-<div id='systemWorking' style='display:none; font-size: 20; padding: 18px 6px 11px 6px;'>[% 'IPENG_LOADING' | string %]<br><img id='spinner' width='30'/></div>
+<div id='systemWorking' style='display:none; font-size: 20px; padding: 18px 6px 11px 6px;'>[% 'IPENG_LOADING' | string %]<br><img id='spinner' width='30'/></div>
 [% END %]
 
 [% IF !noShowBar %]
-	<div id = 'topbar[% IF page_vertical %]_vert[% END %]' style = 'padding-top: 9; height: 34'>
+	<div id = 'topbar[% IF page_vertical %]_vert[% END %]' style = 'padding-top: 9px; height: 34px'>
 		<span id = "title"
 		[%- IF page_vertical;
 			IF title.length > 15 -%]
-				style = "font-size: 80%; display: block; padding: 3 0" >
+				style = "font-size: 80%; display: block; padding: 3px 0px" >
 				[%- title | truncate (18);
 			ELSE -%]
 				style = "font-size: 100%;" >
@@ -77,10 +79,10 @@ a:hover, a:visited, a:active, a:link {
 		END %]
 		</span>
 		
-		<div style = 'position: absolute; right: 4; top: [% 
-			IF page_vertical; '4'; ELSE; '-2'; END %]; z-index: 12;'>
-		<a class="blackRight iButton" href="[% webroot %]status.html?player=[% playerURI %]" style = "color: white; width: 43; padding: 0; text-align: right;[% 
-			IF !page_vertical; ' height: 25;'; END %]"><img src = "[% webroot %]html/images/coolioicon.png" style = "padding-right: 10"></a>
+		<div style = 'position: absolute; right: 4px; top: [% 
+			IF page_vertical; '4px'; ELSE; '-2px'; END %]; z-index: 12;'>
+		<a class="blackRight iButton" href="[% webroot %]status.html?player=[% playerURI %]" style = "color: white; width: 43px; padding: 0; text-align: right;[% 
+			IF !page_vertical; ' height: 25px;'; END %]"><img src = "[% webroot %]html/images/coolioicon.png" style = "padding-right: 10px" alt="Coolio Icon"></a>
 		</div>
 		
 		[% IF homeString;
@@ -91,7 +93,7 @@ a:hover, a:visited, a:active, a:link {
 			</div>
 		[% ELSE -%]
 			<div class = 'iTopHomeDiv' onClick='returnToLevel([% goHomeURI %]);' 
-				 style = "top: -2; height: 25;">
+				 style = "top: -2px; height: 25px;">
 				<span class="blackLeft iButton" style = "color: white; padding: 3 6 3 2; text-align: center;"><img src = "[% webroot %]html/images/left.png"'></span>
 			</div>
 		[%- END;

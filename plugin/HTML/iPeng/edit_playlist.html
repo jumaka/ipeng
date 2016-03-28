@@ -10,14 +10,14 @@
 
 <div style = "position: relative; height: 44; border: 0; padding: 0;">&nbsp;</div>  <!-- spacer to keeps margins from collapsing on safari -->
 
-	<form id="editPlaylist" method="get" action="edit_playlist.html" style = "margin: 0 11 8 11">
-		<table cellspacing = 0; cellpadding = 0;>	
+	<form id="editPlaylist" method="get" action="edit_playlist.html" style = "margin: 0px 11px 8px 11px">
+		<table cellspacing = 0 cellpadding = 0>	
 			<tr>
 				<td>
 					<label>[% "TITLE" | string %][% "COLON" | string %]</label>
 					<input type=text class="stdedit" name="form_title" value="[% form_title %]" size=30>
 				</td>
-				<td><a class="iButton silver" style = "height: 29; margin: 8 0 0 8; padding: 2 10;" onclick='document.forms.editPlaylist.submit();'>[% "ADD" | string %]</a></td>
+				<td><a class="iButton silver" style = "height: 29px; margin: 8px 0px 0px 8px; padding: 2px 10px;" onclick='document.forms.editPlaylist.submit();'>[% "ADD" | string %]</a></td>
 			</tr>
 			<tr>
 				<td colspan="2">
@@ -30,7 +30,7 @@
 	</form>
 
 [% WRAPPER contentcontainer %]
-<div style = "float: right; top: 0; right: 0; width: 0; height: 234px; padding: 0; border: 0; margin: 0; overflow: hidden;">&nbsp;</div> <!-- keep buttons at bottom -->
+<div style = "float: right; top: 0px; right: 0px; width: 0px; height: 234px; padding: 0; border: 0; margin: 0; overflow: hidden;">&nbsp;</div> <!-- keep buttons at bottom -->
 	[% FOREACH item = items %]
 		[% PROCESS edit_playlist_list.html %]
 	[% END %]

@@ -68,8 +68,8 @@ label {
 
 .alarmrow {
  	position: relative;
-	height: 88;
-	font-size: 17;
+	height: 88px;
+	font-size: 17px;
 	font-weight:bold;
 	text-shadow: #ffffff 0px 1px 1px;
 	background-color: #81b1e6;
@@ -82,8 +82,8 @@ label {
 
 .a_editrow {
  	position: relative;
-	height: 86;
-	font-size: 17;
+	height: 86px;
+	font-size: 17px;
 	font-weight:bold;
 	text-shadow: #ffffff 0px 1px 1px;
 	background-color: #81b1e6;
@@ -112,7 +112,7 @@ li.selectedli {
 
 .embedList, table.embedList, ul {
 	padding: 0;
-	margin: 10 0; /* 10 */
+	margin: 10px 0; /* 10 */
 	
 	font-size:20px;
 	font-family: Helvetica;
@@ -170,11 +170,11 @@ div#currentPlaylistControl {
 	list-style-type: none;
 	color: black;
 	
-	border-width: 1 0 0 0;
+	border-width: 1px 0 0 0;
 	border-top-style:solid;
 	border-top-color:rgb(217,217,217);
 
-	padding: 10 16 12 10;
+	padding: 10px 16px 12px 10px;
 }
 
 
@@ -183,7 +183,7 @@ div#currentPlaylistControl {
 }
 
 .embedImage {
-	width: 40;
+	width: 40px;
 }
 
 .biggerLine {
@@ -202,7 +202,7 @@ div#currentPlaylistControl {
 	position: relative;
 	float: left;
 	top: -3;
-	padding: 2 5 2 5;
+	padding: 2px 5px 2px 5px;
 }
 
 .secondary
@@ -229,8 +229,8 @@ div#currentPlaylistControl {
 	background: white; 
 	color: black; 
 	float: right; 
-	margin-right: 10;
-	max-width: 160;
+	margin-right: 10px;
+	max-width: 160px;
 	overflow: hidden;
 }
 
@@ -238,8 +238,8 @@ a.tapblock
 {
 	display: block;
 	
-	padding: 7 8 7 0;
-	margin: 0 -8 0 0;
+	padding: 7px 8px 7px 0;
+	margin: 0 -8px 0 0;
 	
 	text-decoration: none;
 	overflow: hidden;
@@ -316,7 +316,7 @@ a.tapblockHalf[selected], a.tapblockHalf:active {
 .popUpText {
 	font-size: 16px;
 /*	font-weight: bold;*/
-	padding: 5;
+	padding: 5px;
 	border: 0;
 	margin: 0;
 	text-decoration: none;
@@ -325,7 +325,7 @@ a.tapblockHalf[selected], a.tapblockHalf:active {
 .listFullTitle {
 	font-size: 14px;
 	font-weight: bold;
-	padding-left: 5;
+	padding-left: 5px;
 	margin: 0;
 	color: black;
 	text-decoration: none;
@@ -368,8 +368,8 @@ a.tapblockHalf[selected], a.tapblockHalf:active {
 .popUpHeaderTitle {
 	font-size: 14px;
 	font-style: bold;
-	padding-left: 5;
-	padding-right: 25;
+	padding-left: 5px;
+	padding-right: 25px;
 /*	border: 0;*/
 	margin: 0;
 	color: #111111;
@@ -450,7 +450,7 @@ tr.playing {
 
 tr.listRow, td.listRow, div.listRow, listRow {
 	position: relative; 
-	height: 50;
+	height: 50px;
 	border: 1px solid #d9d9d9;
 	border-left: hidden;
 	border-right: hidden;
@@ -460,25 +460,25 @@ tr.listRow, td.listRow, div.listRow, listRow {
 }
 
 .supertinytext {
-	font-size: 10;
+	font-size: 10px;
 	text-align: center;
 	color: white;
 }
 
 .coverimg, td.coverimg {
-	width: 50;
+	width: 50px;
 	padding: 0; 
 	background-image: url(html/images/cover46.png);
-	background-position: 2 2;
+	background-position: 2px 2px;
 	background-repeat: no-repeat;
 }
 
 .artworkimg {
 	position: relative;
-	width: 130;
-	height: 130;
+	width: 130px;
+	height: 130px;
 	padding: 0;
-	margin: 5 0 5 8;
+	margin: 5px 0 5px 8px;
 	background-image: url(html/images/cover130.png);
 	background-position: center center;
 	background-repeat: no-repeat;
@@ -509,8 +509,8 @@ tr.listHeader, td.listHeader {
 
 a.linkAreaRowToPlus {
  	display: block;
-	padding: 10 0 9 4;
-	margin: -0 -0 -9 -4;
+	padding: 10px 0 9px 4px;
+	margin: -0 -0 -9px -4px;
 	
 	text-decoration: none;
 	color:black;
@@ -519,8 +519,8 @@ a.linkAreaRowToPlus {
 
 a.linkAreaRowFromImg {
 	display: block;
-	padding: 5 0 8 0;
-	margin: 0 0 -5 1;
+	padding: 5px 0 8px 0;
+	margin: 0 0 -5px 1px;
 	
 	text-decoration: none;
 	color:black;
@@ -533,7 +533,7 @@ div#bottombar {
 	bottom: 0;
 	background-image: url(html/images/iBottomBar.png);
 	color: white;
-	font-size: 12;
+	font-size: 12px;
 	font-weight: bold;
 	padding: 0;
 	border-top: 1px solid black;
@@ -548,11 +548,11 @@ div#bottombar {
 div#bottombarSelect {
 	position: absolute;
 	background-image: url(html/images/iBottomSelectedButton.png);
-	width: 60;
-	height: 44;
+	width: 60px;
+	height: 44px;
 	border: 0;
-	left: 2;
-	top: 2;
+	left: 2px;
+	top: 2px;
 	padding: 0;
 	z-index: 11;
 }
@@ -562,36 +562,36 @@ div#bottombararea {
  	left: 0;
  	top: 0;
 	padding: 0;
-	height: 48;
+	height: 48px;
 	border: 0;
- 	width: 320;
+ 	width: 320px;
 	z-index: 12;
 }
 
 .bottombartext {
-	font-size: 10;
+	font-size: 10px;
 	font-weight: bold;
 	color: rgb(152,152,152);
 	text-align: center;
-	padding: 1;
+	padding: 1px;
 }
 
 .bottombartextOn {
-	font-size: 10;
+	font-size: 10px;
 	font-weight: bold;
 	color: white;
 	text-shadow: #000 0px 1px 1px;
 	text-align: center;
-	padding: 1;
+	padding: 1px;
 }
 
 a.bottombarClick {
 	display: block; 
 	position: absolute; 
-	top: 1; 
-	left: 2;
-	width: 60; 
-	height: 40; 
+	top: 1px; 
+	left: 2px;
+	width: 60px; 
+	height: 40px; 
 	margin: 0; 
 	padding: 0;
 }
@@ -601,7 +601,7 @@ div#playerSelect {
 	position: absolute;
 	right: 0;
 	top: 0;
-	height: 22;
+	height: 22px;
 	overflow: visible;
 }
 
@@ -614,7 +614,7 @@ div#playerSelect {
 div#crumblist, .crumblist {
 	position: relative;
 	width: 480px;
-	font-size: 17;
+	font-size: 17px;
 	z-index: 11;
 }
 
@@ -624,8 +624,8 @@ div#crumblist_vert, .crumblist_vert {
 	top: 0; /*80*/
 	width: 312px;
 	z-index: 11;
-	font-size: 17;
-	padding: 4;
+	font-size: 17px;
+	padding: 4px;
 	background: white;
 }
 
@@ -633,9 +633,9 @@ div#alphamap {
 	position: absolute;
 	left: 300px;
 /*	left: 0;*/
-	height: 480;
+	height: 480px;
 	width: 20px;
-	top: 50;
+	top: 50px;
 	padding: 0;
 	border: 0;
 	text-align: right;
@@ -646,14 +646,14 @@ div#alphamap {
 div#OSDbg, div#SWbg {
 	position: absolute;
 	z-index: 99;
-	top: 150;
-	left: 18;
-	width: 284;
-	height: 111;
+	top: 150px;
+	left: 18px;
+	width: 284px;
+	height: 111px;
 	border: 0;
-	padding: 25 0 0 120;
+	padding: 25px 0 0 120px;
 	margin: 0;
-	font-size: 48;
+	font-size: 48px;
 	background-image: url(html/images/OSDBackground.png);
 	background-repeat: no-repeat;
 }
@@ -661,14 +661,14 @@ div#OSDbg, div#SWbg {
 div#OSD, div#systemWorking {
 	position: absolute;
 	z-index: 100;
-	top: 150;
-	left: 18;
-	width: 284;
-	height: 111;
+	top: 150px;
+	left: 18px;
+	width: 284px;
+	height: 111px;
 	background-color: none;
 	color: white;
 	font-weight: bold;
-	font-size: 16;
+	font-size: 16px;
 	text-shadow: rgba(0, 0, 0, 0.6) 0px -1px 0;
 	padding: 26px 6px 11px 6px;
 	border: none;
@@ -677,16 +677,16 @@ div#OSD, div#systemWorking {
 }
 
 img#spinner {
-	margin: 10 0;
+	margin: 10px 0;
 }
 
 div#albumInfo {
 	position: absolute;
 	z-index: 99;
 	top: 30%;
-	left: 25;
-	width: 396;
-	background-position: 0 34;
+	left: 25px;
+	width: 396px;
+	background-position: 0px 34px;
 	color: #161616;
 	padding: 2px;
 	border: 1px solid white;
@@ -795,7 +795,7 @@ span.buttonControls {
  	   position: relative;
  	   left: 0;
  	   top: 0;
-       padding: 5; /*5 5 5 5;*/
+       padding: 5px; /*5 5 5 5;*/
 }
 
 span.artworkButtons {
@@ -807,7 +807,7 @@ span.artworkButtons {
 }
 
 span.rowtext {
-	padding: 8 8 8 8;
+	padding: 8px 8px 8px 8px;
 }
 
 .favoritesText {
@@ -817,7 +817,7 @@ span.rowtext {
 .favoritesContent {
 	font-size: 14px;
 	font-weight: bold;
-	padding: 0 0 0 5;
+	padding: 0 0 0 5px;
 	margin: 0;
 	color: black;
 	text-decoration: none;
@@ -844,11 +844,11 @@ td.opaquetext {
 
 form#PCDiv {
 	position: absolute;
-	top: -45;
+	top: -45px;
 	left: 0;
-	width: 320;
+	width: 320px;
 	z-index:99;
-	padding: 90 11 11 11;
+	padding: 90px 11px 11px 11px;
 	margin: 0 !important;
 	border: 0 !important;
 	color: white;
@@ -858,10 +858,10 @@ form#PCDiv {
 
 div#FullBG {
  	position: absolute;
- 	top: -45;
+ 	top: -45px;
  	left: 0;
- 	width: 320;
- 	height: 417;
+ 	width: 320px;
+ 	height: 417px;
  	margin: 0;
 	background-image: url(html/images/fullbg.png);
 	background-repeat: repeat-x;
@@ -890,8 +890,8 @@ div#FullBG {
 	white-space : nowrap;
 	overflow : hidden;
 	text-overflow: ellipsis;
-	top: 7;
-	left: 4;
+	top: 7px;
+	left: 4px;
 	-webkit-transition-property : none;
 	-webkit-transition-duration : 0.5s, 0.5s;
 	-webkit-transform: translateX(0px);
@@ -907,14 +907,14 @@ div#FullBG {
 	color: white;
 	text-shadow: #000 0px 1px 1px;
 	-webkit-border-image: url('html/images/rightButton.png') 0 12 0 5;
-	max-width: 43;
-	padding: 0 10 0 8;
+	max-width: 43px;
+	padding: 0 10px 0 8px;
 	text-align: right;
 	z-index: 12;
 	line-height: 29px;
 	position: absolute;
-	right: 4;
-	top: 7;
+	right: 4px;
+	top: 7px;
 }
 
 .coolioButton:active {
@@ -929,7 +929,7 @@ div#FullBG {
 	/* the titles should be displayed below the button so that they don't receive touches */
 	z-index: 10;
 	/* set up the font appearance */
-	font-size: 16pt;
+	font-size: 16px;
 	font-weight: bold;
 	color: white;
 	text-shadow: rgba(0, 0, 0, .6) 0px -1px 0px;
@@ -937,9 +937,9 @@ div#FullBG {
 	white-space : nowrap;
 	overflow : hidden;
 	text-overflow: ellipsis;
-	top: 6;
-	right: 64;
-	width: 170;
+	top: 6px;
+	right: 64px;
+	width: 170px;
 	-webkit-transition-property : none;
 	-webkit-transition-duration : 0.5s, 0.5s;
 	-webkit-transform: translateX(0px);
@@ -948,9 +948,9 @@ div#FullBG {
 .MenuPage {
     display: none;
 	position: absolute;
-	top: 44;
-	min-height: 324;
-	width: 320;
+	top: 44px;
+	min-height: 324px;
+	width: 320px;
 	overflow: hidden;
 	-webkit-transform: translateX(320px) translateY(0px);
 	-webkit-transform-style: flat;
@@ -972,9 +972,9 @@ div#FullBG {
 .coversquare {
 	position: absolute;
 	left: 0;
-	top: 44;
-	width: 320;
-	height: 320;
+	top: 44px;
+	width: 320px;
+	height: 320px;
 	overflow: hidden;
 	background-color: black;
 	background-image: url(html/images/NowPlayingTableBackground.png);
@@ -1005,16 +1005,16 @@ div#iNowPlayingTopbar {
 	background-image: url(html/images/iNowPlayingTopbar.png);
 	color: white;
 	text-shadow: #666666 0px -1px -1px;
-	font-size: 10;
+	font-size: 10px;
 	font-weight: bold;
 	text-align: center;
-	padding-top: 1;
+	padding-top: 1px;
 	border: 0;
 	border-bottom: 1px solid black;
 	top: 0;
 	left: 0;
-	height: 43;	/* 44- padding-top */
-	width: 320;
+	height: 43px;	/* 44- padding-top */
+	width: 320px;
 	overflow: hidden;
 	z-index: 90;	
 	-webkit-transform: translateZ(2px);
@@ -1022,14 +1022,14 @@ div#iNowPlayingTopbar {
 
 div#streaminfo {
 	position: absolute;
-	left: 48;
-	top: 1;
-	width: 225;
-	height: 43;
+	left: 48px;
+	top: 1px;
+	width: 225px;
+	height: 43px;
 	color: rgb(152,152,152);
 	text-align: center;
 	text-shadow: #000 0px 1px 1px;
-	font-size: 12;
+	font-size: 12px;
 	font-weight: bold;
 	overflow: hidden;
 	padding: 0;
@@ -1045,12 +1045,12 @@ div#coverart, div#radioart, div#emptyplayer {
 .iNowTextInfo {
 	position: absolute;
 	z-index: 99;
-	top: 160;
-	left: 105;
-	width: 110;
-	height: 80;
-	padding: 15 0 0 0;
-	font-size: 48;
+	top: 160px;
+	left: 105px;
+	width: 110px;
+	height: 80px;
+	padding: 15px 0 0 0;
+	font-size: 48px;
 	text-align: center;
 	background-image: url(html/images/textBG.png);
 	background-repeat: no-repeat;
@@ -1061,13 +1061,13 @@ div#coverart, div#radioart, div#emptyplayer {
 /*	background-image: url(html/images/iNowBottombar.png);*/
 	background-image: url(html/images/iNowBottomBarOverlay.png);
 	text-align: center;
-	padding-top: 8;
+	padding-top: 8px;
 	border: 0;
 /*	border-top: 1px solid black;*/
-	top: 364;
+	top: 364px;
 	left: 0;
-	height: 45;	/* 52- padding-top */
-	width: 320;
+	height: 45px;	/* 52- padding-top */
+	width: 320px;
 	overflow: hidden;
 	z-index: 20;	
 	-webkit-transform-style: flat;
@@ -1077,13 +1077,13 @@ div#iNowBottombarOld {
 	position: absolute;
 	background-image: url(html/images/iNowBottombar.png);
 	text-align: center;
-	padding-top: 8;
+	padding-top: 8px;
 	border: 0;
 	border-top: 1px solid black;
-	top: 364;
+	top: 364px;
 	left: 0;
-	height: 43;	/* 51- padding-top */
-	width: 320;
+	height: 43px;	/* 51- padding-top */
+	width: 320px;
 	overflow: hidden;
 	z-index: 20;	
 }
@@ -1112,28 +1112,28 @@ div#iNowBottombarOld {
 	position: absolute;
 	top: 0; /*44*/
 	left: 0;
-	width: 320;
-	height: 48;
+	width: 320px;
+	height: 48px;
 }
 
 .iNowOBarBottom {
 	background-image: url(html/images/NowPlayingBottomOverlay.png);
 	background-color: none;
 	position: absolute;
-	top: 272; /*316*/
+	top: 272px; /*316*/
 	left: 0;
-	width: 320;
-	height: 48;
+	width: 320px;
+	height: 48px;
 }
 
 div#playliststatus {
 	position: absolute;
 	left: 0;
-	top: 33;
-	width: 320;
+	top: 33px;
+	width: 320px;
 	overflow: hidden;
     z-index: 3;
-    font-size: 11;
+    font-size: 11px;
     color: white;
 	text-shadow: #666666 0px 1px 1px;
 	text-align: center;
@@ -1141,8 +1141,8 @@ div#playliststatus {
 
 div#shuffleControl {
 	position: absolute;
-	top: 13;
-	left: 290;
+	top: 13px;
+	left: 290px;
 	border: 0;
 	margin: 0;
 	padding: 0;
@@ -1151,14 +1151,14 @@ div#shuffleControl {
 
 div#repeatControl {
 	position: absolute;
-	top: 13;
-	left: 5;
-	width: 25;
+	top: 13px;
+	left: 5px;
+	width: 25px;
 	z-index: 3;
 }
 
 .topbartextNow {
-	font-size: 12;
+	font-size: 12px;
 	font-weight: bold;
 	color: rgb(152,152,152);
 	text-align: center;
@@ -1168,27 +1168,27 @@ div#repeatControl {
 
 div#progressbar_overlay {
 	position: absolute;
-	left: 40;
-	width: 240;
-	top: 13;
-	height: 19;
+	left: 40px;
+	width: 240px;
+	top: 13px;
+	height: 19px;
 	z-index: 2;
 }
 
 div#iNowPlayerName {
 	position: absolute;
 	left: 0;
-	bottom: 1;
+	bottom: 1px;
 	padding: 0;
-	padding-right: 3;
-	padding-left: 3;
+	padding-right: 3px;
+	padding-left: 3px;
 	margin: 0;
-	width: 320;
-	height: 10;
+	width: 320px;
+	height: 10px;
 	color: rgb(152,152,152);
 	text-align: left;
 	text-shadow: #000 0px 1px 1px;
-	font-size: 10;
+	font-size: 10px;
 	font-weight: bold;
 	overflow: hidden;
 	z-index: 12;
@@ -1196,20 +1196,20 @@ div#iNowPlayerName {
 
 div#volumeControls, .volumeControl {
 	position: absolute;
-	top: 13;
-	left: 20;
-	height: 22;
+	top: 13px;
+	left: 20px;
+	height: 22px;
 	width: 280px;
 	z-index: 3;
-	font-size: 14;
+	font-size: 14px;
 }
 
 div#trackstat_display {
 	position: absolute;
-	left: 50;
-	width: 220;
-	top: 49;
-	height: 36;
+	left: 50px;
+	width: 220px;
+	top: 49px;
+	height: 36px;
 	z-index: 3;
 }
 
@@ -1223,18 +1223,18 @@ div#trackstat_display {
 }
 
 .NPPRow {
-	max-width: 320;
-	min-height: 46;
+	max-width: 320px;
+	min-height: 46px;
 }
 
 .NPPSpan {
 	float: left;
-	padding: 5;
+	padding: 5px;
 }
 
 .pluginContent {
 	float: left;
-	margin: -5 8 0 0;
+	margin: -5px 8px 0 0;
 }
 
 
@@ -1270,8 +1270,8 @@ tr.even, td.even, div.even {
 	left: 0;
 	float: left;
 	display: block;
-	width: 320;
-	height: 75;
+	width: 320px;
+	height: 75px;
 	top: 0;
 /*	margin: -19 0 -19 0;
 	padding: 6 0 -6 0;*/
@@ -1330,16 +1330,16 @@ tr.selectedRow, td.selectedRow, div.selectedRow, selectedRow {
 div#iPengName {
 	position: absolute !important;
 	/*top: 354 !important;*/
-	bottom: 10 !important;
+	bottom: 10px !important;
 	left: 0 !important;
-	width: 310;
-	height: 10 !important;
-	padding: 0 5 0 0 !important;
+	width: 310px;
+	height: 10px !important;
+	padding: 0px 5px 0 0 !important;
 	margin: 0 !important;
 	text-shadow: #ffffff 0px 1px 1px !important;
 	color: rgb(76,86,108) !important;
 	text-align: right !important;
-	font-size: 10 !important;
+	font-size: 10px !important;
 	font-weight: bold !important;
 	background: none !important;
 	z-index: 12 !important;
@@ -1348,8 +1348,8 @@ div#iPengName {
 
 .iTopHomeDiv {
 	position: absolute; 
-	left: 4; 
-	top: 4; 
+	left: 4px; 
+	top: 4px; 
 	z-index: 91;
 }
 
@@ -1478,15 +1478,15 @@ div#topbar {
 	position: absolute;
 	background-image: url(html/images/topframe.png);
 	text-align: center;
-	font-size: 20;
+	font-size: 20px;
 	font-weight: bold;
 	color: white;
 	text-shadow: #666666 0px -1px -1px;
-	padding-top: 1;
+	padding-top: 1px;
 	top: 0;
 	left: 0;
-	height: 24; /* 25 - 1 */
-	width: 480;
+	height: 24px; /* 25 - 1 */
+	width: 480px;
 	overflow: hidden;
 	z-index: 10;
 }
@@ -1497,7 +1497,7 @@ div#topbar_vert {
 	background-color: #3755c3;
 	color: white;
 	text-shadow: #666666 0px -1px -1px;
-	font-size: 20;
+	font-size: 20px;
 	font-weight: bold;
 	text-align: center;
 /*	padding-top: 9;*/
@@ -1505,8 +1505,8 @@ div#topbar_vert {
 	border-bottom: 1px solid rgb(45, 54, 66);
 	top: 0;
 	left: 0;
-	height: 43;	/* 43 - 9 */
-	width: 320;
+	height: 43px;	/* 43 - 9 */
+	width: 320px;
 	overflow: hidden;
 	z-index: 10;
 }
@@ -1516,14 +1516,14 @@ div#topbar_vert {
 
 .songInfoTitle {
 	display: block;
-	padding: 8 0 3 0;
+	padding: 8px 0 3px 0;
 	color: #b0b0b0;
-	font-size: 14;
+	font-size: 14px;
 }
 
 .songInfoText {
 	color: white;
-	font-size: 17;
+	font-size: 17px;
 }
 
 .songInfoText > a {

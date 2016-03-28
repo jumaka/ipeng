@@ -46,11 +46,11 @@ BLOCK StatusHeader -%]
 
 -%]
 <!--div style = "position: absolute; float: left; left: 0; top: 0; width: 324; z-index: 0"></div-->
-<div id = "NowPlaying" style = "position: relative; left: 0; width: 320;"> <!-- left: 2 -->
+<div id = "NowPlaying" style = "position: relative; left: 0; width: 320px;"> <!-- left: 2 -->
 
 	<div id= 'iNowPlayingTopbar'></div>
 	
-	<div style = 'position: absolute; right: 4; top: 17; width: 44; z-index: 91; -webkit-transform: translateZ(2px);'>
+	<div style = 'position: absolute; right: 4px; top: 17px; width: 44px; z-index: 91; -webkit-transform: translateZ(2px);'>
 	[% i = 0; WHILE i < 4 %]
 		<img id = 'pdote[% i %]' src = "[% webroot %]html/images/pagesdotempty.png" style="float: right[%- 
 			IF (i == 1) || (i == 3); "; display: none"; END; 
@@ -138,8 +138,8 @@ END;
 BLOCK repeat_settings %]
 	<div id = 'repeatcontrol_content' 
 		style = "background-image: url([% webroot %]html/images/repeat.png); 
-				 width: 25; height: 21; overflow: hidden;
-				 background-position: left [% repeat * 21 %];"
+				 width: 25px; height: 21px; overflow: hidden;
+				 background-position: left [% repeat * 21 %]px;"
 		title ='[% SWITCH repeat;
 					CASE 0; "REPEAT_OFF" | string;
 					CASE 1; "REPEAT_ONE" | string;
@@ -149,7 +149,7 @@ BLOCK repeat_settings %]
 	<div id = 'repeatcontrol_custom' 
 		onClick = "Player.controls.evtRepeatShuffle('custom', 'repeat');" 
 		style = 'display: none; overflow: hidden;
-				 width: 32; height: 22;
+				 width: 32px; height: 22px;
 				 background-repeat: no-repeat;
 				 -webkit-transform: translateZ(3px);'></div>
 [% END;
@@ -157,8 +157,8 @@ BLOCK repeat_settings %]
 BLOCK shuffle_settings %]
 	<div id = 'shufflecontrol_content' 
 		style = "background-image: url([% webroot %]html/images/shuffle.png); 
-				 width: 27; height: 21; overflow: hidden;
-				 background-position: left [% shuffle * 21 %]"
+				 width: 27px; height: 21px; overflow: hidden;
+				 background-position: left [% shuffle * 21 %]px;"
 		title ='[% SWITCH shuffle;
 					CASE 0; "SHUFFLE_OFF" | string;
 					CASE 1; "SHUFFLE_ON_SONGS" | string;
@@ -168,7 +168,7 @@ BLOCK shuffle_settings %]
 	<div id = 'shufflecontrol_custom' 
 		onClick = "Player.controls.evtRepeatShuffle('custom', 'shuffle');" 
 		style = 'display: none; overflow: hidden;
-				 width: 32; height: 22;
+				 width: 32px; height: 22px;
 				 -webkit-transform: translateZ(3px);
 				 background-repeat: no-repeat;'></div>
 [% END;
@@ -190,13 +190,13 @@ BLOCK song_info_display %]
 BLOCK progress_bar_display %]
 
 <div id = 'progressbar_overlay'> 
-	<div class = "pbar" style = 'text-align: right; position: absolute; left: 0; width: 30; top: 2' nowrap id = 'elapsed'>0:00</div>
-	<div class = "pbar" style = 'text-align: left; position: absolute; right: 0; width: 33; top: 2' nowrap id = 'duration'></div>
-	<img src = '[% webroot %]html/images/VolumeBlueCap.png' style = 'position: absolute; left: 37; top: 5'>
-	<img src = '[% webroot %]html/images/VolumeWhiteMusicFill.png' style = 'position: absolute; left: 42; top: 5; width: 156; height: 9;'>
-	<img src = '[% webroot %]html/images/VolumeWhiteMusicCap.png' style = 'position: absolute; left: 196; top: 5'>
-	<img id="progressBar" name="progressBar" src="[% webroot %]html/images/VolumeBlueFill.png" style = 'position: absolute; left: 40; top: 5; height: 9; width: 1; -webkit-transform-origin: 0 0;'>
-	<img id = 'progressButton' name='progressButton' src = '[% webroot %]html/images/MusicVolumeKnobBig.png' style = 'position: absolute; top: -2; height: 27; width: 25; left: 30;' >
+	<div class = "pbar" style = 'text-align: right; position: absolute; left: 0; width: 30px; top: 2px' nowrap id = 'elapsed'>0:00</div>
+	<div class = "pbar" style = 'text-align: left; position: absolute; right: 0; width: 33px; top: 2px' nowrap id = 'duration'></div>
+	<img src = '[% webroot %]html/images/VolumeBlueCap.png' style = 'position: absolute; left: 37px; top: 5'>
+	<img src = '[% webroot %]html/images/VolumeWhiteMusicFill.png' style = 'position: absolute; left: 42px; top: 5px; width: 156px; height: 9px;'>
+	<img src = '[% webroot %]html/images/VolumeWhiteMusicCap.png' style = 'position: absolute; left: 196px; top: 5px'>
+	<img id="progressBar" name="progressBar" src="[% webroot %]html/images/VolumeBlueFill.png" style = 'position: absolute; left: 40px; top: 5px; height: 9px; width: 1px; -webkit-transform-origin: 0 0;'>
+	<img id = 'progressButton' name='progressButton' src = '[% webroot %]html/images/MusicVolumeKnobBig.png' style = 'position: absolute; top: -2px; height: 27px; width: 25px; left: 30px;' >
 </div>
 [% END;
 # old: h 19 w 17 top 2 left 34  onClick = 'Player.controls.evtTime(event);
@@ -309,11 +309,11 @@ END;
 BLOCK volume_settings %]
 <div id = 'volumeControls'>
 	[% IF isplayer %]
-		<img src = '[% webroot %]html/images/VolumeBlueCap.png' style = 'position: absolute; left: 4; top: 5'>
-	<img src = '[% webroot %]html/images/VolumeWhiteMusicFill.png' style = 'position: absolute; left: 9; top: 5; width: 262; height: 9;'>
-	<img src = '[% webroot %]html/images/VolumeWhiteMusicCap.png' style = 'position: absolute; left: 271; top: 5'>
-	<img id="volumeBar" src="[% webroot %]html/images/VolumeBlueFill.png" style = 'position: absolute; left: 9; top: 5; height: 9; width: 1; -webkit-transform-origin: 0 0;'>
-	<img id = 'volumeButton' src = '[% webroot %]html/images/MusicVolumeKnobBig.png' style = 'position: absolute; top: -5; left: -5;' >
+		<img src = '[% webroot %]html/images/VolumeBlueCap.png' style = 'position: absolute; left: 4px; top: 5px'>
+	<img src = '[% webroot %]html/images/VolumeWhiteMusicFill.png' style = 'position: absolute; left: 9px; top: 5px; width: 262px; height: 9px;'>
+	<img src = '[% webroot %]html/images/VolumeWhiteMusicCap.png' style = 'position: absolute; left: 271px; top: 5px'>
+	<img id="volumeBar" src="[% webroot %]html/images/VolumeBlueFill.png" style = 'position: absolute; left: 9px; top: 5px; height: 9px; width: 1px; -webkit-transform-origin: 0 0;'>
+	<img id = 'volumeButton' src = '[% webroot %]html/images/MusicVolumeKnobBig.png' style = 'position: absolute; top: -5px; left: -5px;' >
 	[% ELSE;
 		'<span>'; "IPENG_NO_VOLUME_CTRL" | string; '</span>';
 	END;

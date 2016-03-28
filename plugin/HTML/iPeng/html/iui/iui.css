@@ -20,9 +20,11 @@ body > *:not(.toolbar) {
     min-height: 373px;
 }
 
+/*
 body[orient="landscape"] > *:not(.toolbar) {
     min-height: 268px;
 }
+*/
 
 body > *[selected="true"] {
     display: block;

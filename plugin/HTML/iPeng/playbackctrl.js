@@ -49,6 +49,7 @@ PlaybackControl.prototype.doInit = function(isnew) {
 		QTobj.addEventListener('qt_ended', this, false);
 		
 		$('NPwrapperBody').addEventListener('webkitTransitionEnd', this, false);
+		$('NPwrapperBody').addEventListener('transitionend', this, false);
 	}
 	
 	if (Player.status.pl_first > -1) {
@@ -99,7 +100,7 @@ PlaybackControl.prototype.doInit = function(isnew) {
 }
 
 PlaybackControl.prototype.handleEvent = function(event) {
-console.log('event:' + event.type);
+// console.log('event:' + event.type);
 	switch (event.type) {
 		case 'touchstart' :
 			var el = $('pc' + parseInt(findAttribute(event.target, 'item')));
@@ -139,6 +140,7 @@ console.log('qtEnded:' + Player.status.repeat);
 			break;
 
 		case 'webkitTransitionEnd' :
+		case 'transitionend' :
 console.log("inTrandEnd");
 console.log("TransEnd:" + $('NPwrapperBody').style.webkitTransform);
 			if ($('NPwrapperBody').style.webkitTransform == 'translateX(0px)')

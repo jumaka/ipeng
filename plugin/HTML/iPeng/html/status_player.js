@@ -743,7 +743,8 @@ var ScrollController = {
 		element.addEventListener('touchstart', this, false);
 		element.addEventListener('touchmove', this, false);
 		element.addEventListener('touchend', this, false);
-//		element.addEventListener('webkitTransitionEnd', this, false);
+		element.addEventListener('webkitTransitionEnd', this, false);
+		element.addEventListener('transitionend', this, false);
 	},
 	
 	addMBody : function() {
@@ -787,6 +788,7 @@ var ScrollController = {
 	
 handleEvent : function (event) {
   // dispatch the event to the right method based on the type
+  //		console.log('HandleEvent: ' + event.type);
 		switch (event.type) {
 			case 'touchstart' :
 				this.interactionStart(event);
@@ -798,6 +800,7 @@ handleEvent : function (event) {
 				this.interactionEnd(event);
 				break;
 			case 'webkitTransitionEnd' :
+			case 'transitionend' :
 				this.transitionDone(event);
 				break;
 		}

@@ -407,7 +407,10 @@ function pushIn(fromPage, toPage, backwards, fromOffset, toOffset, axis) {
 //	if (!toPage.hasClassName("dialog"))
 //		fromPage.removeAttribute("selected");
 	if (!toPage.hasClassName("dialog"))
+	{
 		fromPage.addEventListener('webkitTransitionEnd', transitionEvent, false);
+		fromPage.addEventListener('transitionend', transitionEvent, false);
+	}
 
 	checkTimer = setInterval(checkOrientAndLocation, 300);
 	updatePage(toPage, fromPage, backwards);

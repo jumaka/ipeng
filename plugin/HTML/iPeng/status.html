@@ -46,6 +46,7 @@ BLOCK StatusHeader -%]
 
 -%]
 <!--div style = "position: absolute; float: left; left: 0; top: 0; width: 324; z-index: 0"></div-->
+<div id = 'blackblock' style='position: absolute; top: 0; left: 320px; z-index: 10; height: 364px; width: 640px; background-color: black;'></div>
 <div id = "NowPlaying" style = "position: relative; left: 0; width: 320px;"> <!-- left: 2 -->
 
 	<div id= 'iNowPlayingTopbar'></div>
@@ -60,12 +61,13 @@ BLOCK StatusHeader -%]
 	</div>
 
 	<div class = 'iTopHomeDiv' style = '-webkit-transform: translateZ(2px);' onClick='returnToViewPage();'>
-		<span class="blackLeft iButton" style = "color: white; padding: 6px; padding-left: 0; padding-right: 4px; text-align: center;"><img src = "[% webroot %]html/images/left.png"'></span>
+		<span class="blackLeft iButton" style = "color: white; padding: 3px 6px 3px 2px; padding-left: 0; padding-right: 4px; text-align: center;"><img src = "[% webroot %]html/images/left.png"'></span>
 	</div>
 
 	<div id = 'streaminfo' style = 'display: block;'>
 		[% INCLUDE song_info_display %]
 	</div>
+
 	
 	<div id = 'extWrapper' class = 'coversquare' style = 'display: block; z-index: 1; overflow: scroll; -webkit-transform: translateX(-320px);'>
 		<div id = 'extension'></div>
@@ -252,7 +254,7 @@ BLOCK player_controls %]
 			style = 'display:[% IF modepause || modestop %]none[% ELSE %]block[% END %];
 			background-image: url([% webroot %]html/images/NowPlayingSprites.png);
 			background-position: left 30px;
-			width: 30; height: 27px; overflow: hidden;'
+			width: 30px; height: 27px; overflow: hidden;'
 			title = [% 'PAUSE' | string | ucfirst %]></div>
 		<div id = 'playercontrol_play' 
 			onclick="Player.controls.evtPlay();" 

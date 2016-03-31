@@ -1452,6 +1452,7 @@ div#iPengName {
 	margin: 3px auto;
 	color: white;
 	text-shadow: #000 0px 1px 1px;	 
+	height: 29px;
 	border-width: 0 5px 0 12px;
 	-webkit-border-image: url(html/images/leftButton.png) 0 5 0 12;		
 }
@@ -1471,6 +1472,7 @@ div#iPengName {
 	border-width: 0 12px 0 5px;
 	color: white;
 	text-shadow: #000 0px 1px 1px;
+	height: 29px;
 	-webkit-border-image: url(html/images/rightButton.png) 0 12 0 5;
 }
 

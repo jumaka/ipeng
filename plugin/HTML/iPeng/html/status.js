@@ -332,6 +332,7 @@ console.log("init:" + this.DnD.item);
 				this.allowSnap();
 				break;
 			case 'webkitTransitionEnd':
+			case 'transitionend':
 				this.DnD.finishTrans();
 				break;
 		}
@@ -454,6 +455,7 @@ console.log ("target:" + target + ".ti:" + this.item + ".sD:" + this.snapdir);
 		
 		finishTrans : function() {
 			Playlist.page.elPage.removeEventListener('webkitTransitionEnd', Playlist, false);
+			Playlist.page.elPage.removeEventListener('transitionend', Playlist, false);
 			this.inTransition = false;
 			this.move(this.lastevent);
 		},
@@ -471,6 +473,7 @@ console.log ("target:" + target + ".ti:" + this.item + ".sD:" + this.snapdir);
 //console.log("scroll");
 					this.inTransition = true;
 					Playlist.page.elPage.addEventListener('webkitTransitionEnd', Playlist, false);
+					Playlist.page.elPage.addEventListener('transitionend', Playlist, false);
 					Playlist.page.vScroll(-delta, false, "0.2s");
 					this.element.style.webkitTransitionDuration = "0.2s";
 				} else

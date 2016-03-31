@@ -150,13 +150,13 @@ END;
 # the Playlist control container
 
 BLOCK playlistsavectrl %]
-	<div style = "padding-right: 4">
+	<div style = "padding-right: 4px">
 	[% PROCESS savePlaylistLink img="save_button.png" target='_self';
 	'</div>';
 END;
 
 BLOCK playlistclearctrl %]
-	<div style = "padding-left: 4">
+	<div style = "padding-left: 4px">
 	[% PROCESS clearPlaylistLink img="remove.png";
 	'</div>';
 END;
@@ -620,7 +620,8 @@ BLOCK pagebar;
 			[%- END;
 			IF !curpage;
 				goStart = pageinfo.alphamap.item(alphakey);
-				goHash = "#" (alphakey | uri);
+				goHash = alphakey | uri;
+				goHash = "#" _ goHash;
 				addStyle = 'style="color: #888888;"';
 				PROCESS loadpage;
 			ELSE -%]

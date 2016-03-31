@@ -15,10 +15,8 @@
 [% END %]
 [% PROCESS pageheader.html dontscroll=1 %]
 
-<script>
-	storeReturnLevel();
-	storeReturnPage();
-</script>
+<div id="storeReturnLevel"></div>
+<div id="storeReturnPage"></div>
 
 [% IF liveSearch %]
 
@@ -71,7 +69,7 @@
 <div id="pagecontainer_vert" style = "min-height: 222">
 
 	[% PROCESS playlistCTRLcontainer %]
-	[% PROCESS activatePLcontaiener %]
+	[% PROCESS activatePLcontainer %]
 
 	[% IF browse_items.size %]
 		<table width = '100%' class = 'noborder listNoAlbum' cellspacing = "0" bgcolor = 'white' border = "collapse">

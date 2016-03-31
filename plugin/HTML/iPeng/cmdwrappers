@@ -173,24 +173,16 @@ BLOCK playlistCTRLcontainer %]
 END;
 
 BLOCK activatePLcontainer;
-'<script>evaluatePlaylist();</script>';
-END;
-
-BLOCK activatePLcontaiener;
-'<script>evaluatePlaylist();</script>';
+'<div id="evaluatePlaylist"></div>';
 END;
 
 BLOCK storeReturnPageLevel;
-'<script>';
-	'storeReturnLevel();';
-	'storeReturnPage();';
-'</script>';
+'<div id="storeReturnLevel"></div>';
+'<div id="storeReturnPage"></div>';
 END;
 
 BLOCK storeReturnPage;
-'<script>';
-	'storeReturnPage();';
-'</script>';
+'<div id="storeReturnPage"></div>';
 END;
 
 

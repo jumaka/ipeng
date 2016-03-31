@@ -46,10 +46,8 @@ function doRenamePlaylist(arg) {
 <div style = "position: relative; height: 44px; border: 0; padding: 0;">&nbsp;</div>  <!-- spacer to keeps margins from collapsing on safari -->
 [% END %]
 
-<script>
-	storeReturnLevel();
-	storeReturnPage();
-</script>
+<div id="storeReturnLevel"></div>
+<div id="storeReturnPage"></div>
 
 	[% IF warn %]<b>[% "NOTE" | string %]</b> [% "SCAN_WARNING" | string %]<p> <hr>[% END %]
 	

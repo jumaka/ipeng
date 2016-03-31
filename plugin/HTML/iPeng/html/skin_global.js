@@ -518,3 +518,19 @@ function expandAlphamap(thediv) {
 	$('alphamap').style.height = realheight;
 }
 
+// Activate code based upon whether divs exist to remove the script for storeReturnPage out of the script
+
+if ($('storeReturnPage'))
+{
+	storeReturnPage();
+}
+
+if ($('storeReturnLevel'))
+{
+	storeReturnLevel();
+}
+
+if ($('evaluatePlaylist'))
+{
+	evaluatePlaylist();
+}

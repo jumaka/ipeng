@@ -191,7 +191,7 @@ BLOCK HomeHeader %]
 [%- PROCESS homeTopbar; %]
 
 
-<script>storeReturnPage();</script>
+<div id="storeReturnPage"></div>
 
 
 [%- PROCESS browseDatabase;
@@ -263,10 +263,8 @@ PROCESS playerChoose;
 
 PROCESS iFooterVert.html selectedButton = 'Home' context = 'home' classFooter = " selected = 'true' class = 'toolbar' ";
 
-'</body>';
-
 '<script> window.scrollBy (0,1); </script>';
-
+'</body>';
 '</html>';
 
 

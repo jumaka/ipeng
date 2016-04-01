@@ -113,15 +113,15 @@ BLOCK btDisplay -%]
 END;
 
 BLOCK browseAlbumLink;
-	'browsedb.html?hierarchy=album,track&level=0&&player=' _ playerURI;
+	'clixmlbrowser/clicmd=browselibrary+items&linktitle=BROWSE_BY_ALBUM&mode=albums/?&player=' _ playerURI;
 END;
 
 BLOCK browseArtistLink;
-	'browsedb.html?hierarchy=contributor,album,track&level=0&&player=' _ playerURI;
+	'clixmlbrowser/clicmd=browselibrary+items&linktitle=BROWSE_BY_ARTIST&mode=artists/?&player=' _ playerURI;
 END;
 
 BLOCK browsePlaylistsLink;
-	'browsedb.html?hierarchy=playlist,playlistTrack&level=0&&player=' _ playerURI;
+	'clixmlbrowser/clicmd=browselibrary+items&linktitle=SAVED_PLAYLISTS&mode=playlists/?&player=' _ playerURI;
 END;
 
 BLOCK browseSearchLink;

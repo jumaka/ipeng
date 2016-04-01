@@ -8,7 +8,7 @@
 				<namestring>ALBUMS</namestring>
 				<icon>html/images/iAlbumTrans.png</icon>
 				<selectedicon>html/images/iAlbumTransSelected.png</selectedicon>
-				<url>browsedb.html?hierarchy=album,track&amp;level=0&amp;</url> 
+				<url>clixmlbrowser/clicmd=browselibrary+items&amp;linktitle=BROWSE_BY_ALBUM&amp;mode=albums/?</url> 
 				<parameters>
 					<playerURI>player</playerURI>
 				</parameters>
@@ -19,7 +19,7 @@
 				<namestring>ARTIST</namestring>
 				<icon>html/images/iArtistTrans.png</icon>
 				<selectedicon>html/images/iArtistTransSelected.png</selectedicon>
-				<url>browsedb.html?hierarchy=contributor,album,track&amp;level=0&amp;</url> 
+				<url>clixmlbrowser/clicmd=browselibrary+items&amp;linktitle=BROWSE_BY_ARTIST&amp;mode=artists/?</url> 
 				<parameters>
 					<playerURI>player</playerURI>
 				</parameters>
@@ -30,7 +30,7 @@
 				<namestring>IPENG_BUTTON_LISTS</namestring>
 				<icon>html/images/iPlaylistTrans.png</icon>
 				<selectedicon>html/images/iPlaylistTransSelected.png</selectedicon>
-				<url>browsedb.html?hierarchy=playlist,playlistTrack&amp;level=0&amp;</url> 
+				<url>clixmlbrowser/clicmd=browselibrary+items&amp;linktitle=SAVED_PLAYLISTS&amp;mode=playlists/?</url> 
 				<parameters>
 					<playerURI>player</playerURI>
 				</parameters>
@@ -77,7 +77,7 @@
 				<namestring>IPENG_BUTTON_YEAR</namestring>
 				<icon>html/images/iTimeTrans.png</icon>
 				<selectedicon>html/images/iTimeTransSelected.png</selectedicon>
-				<url>browsedb.html?hierarchy=year,album,track&amp;level=0&amp;</url> 
+				<url>clixmlbrowser/clicmd=browselibrary+items&amp;linktitle=BROWSE_BY_YEAR&amp;mode=years/?</url> 
 				<parameters>
 					<playerURI>player</playerURI>
 				</parameters>
@@ -89,7 +89,7 @@
 				<namestring>BROWSE_BY_GENRE</namestring>
 				<icon>html/images/iGenreTrans.png</icon>
 				<selectedicon>html/images/iGenreTransSelected.png</selectedicon>
-				<url>browsedb.html?hierarchy=genre,contributor,album,track&amp;level=0&amp;</url> 
+				<url>clixmlbrowser/clicmd=browselibrary+items&amp;linktitle=BROWSE_BY_GENRE&amp;mode=genres/?</url> 
 				<parameters>
 					<playerURI>player</playerURI>
 				</parameters>
@@ -101,7 +101,7 @@
 				<namestring>BROWSE_NEW_MUSIC</namestring>
 				<icon>html/images/iNewTrans.png</icon>
 				<selectedicon>html/images/iNewTransSelected.png</selectedicon>
-				<url>browsedb.html?hierarchy=age,track&amp;level=0&amp;</url> 
+				<url>clixmlbrowser/clicmd=browselibrary+items&amp;linktitle=BROWSE_NEW_MUSIC&amp;sort=new&amp;wantMetadata=1&amp;mode=albums/?</url> 
 				<parameters>
 					<playerURI>player</playerURI>
 				</parameters>

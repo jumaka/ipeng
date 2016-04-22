@@ -15,9 +15,9 @@ This is the default page for the plugin it as a link address of `home.html#_main
 Home Page | Description | Path
 ---|---|---
 [Library](#Library) | Reached from *Browse Library* link on the home page | `home.html#_Database`
-More | Reached from *Browse More* link on the home page | `home.html#_Lists`
-Radio | Reached from the *Radio* link on the home page | `home.html#_Radio`
-Extras | Reached from *Extras* link on the home page | `home.html#_browseSettings`
+[More](#More) | Reached from *Browse More* link on the home page | `home.html#_Lists`
+[Radio](#Radio) | Reached from the *Radio* link on the home page | `home.html#_Radio`
+[Extras](#Extras) | Reached from *Extras* link on the home page | `home.html#_browseSettings`
 
 ### Bottom bar navigation
 
@@ -60,5 +60,46 @@ Music Folder| Numerical | Yes | Yes | No | All Folders
 New Music | Numerical | Yes | Yes | No | Album
 Playlists | None |
 Years| None | Yes | Yes | No | All Albums
+
+<h3 id="More">Browse More</h3>
+
+The Browse More page gives access to a number of additional
+items.
+
+Navigation | Description | Path
+---|---|---
+Playlists | Lists Play lists in alphabetical order | `clixmlbrowser/clicmd=browselibrary+items&linktitle=SAVED_PLAYLISTS&mode=playlists`
+Random Mix | Allow the selection of random songs, artists, albums and years. Additionally allows for the selection of Genres to play and the number of songs to be displayed in the Now Playing area  | `plugins/RandomPlay/list.html`
+Favorites | Allow the selection of things that can be added to favorites. New Favorites, Folders and Imports can be created |  `plugins/Favorites/index.html`
+Search | Search the library | `search.html`
+
+<h3 id="Radio">Radio</h3>
+
+Access to groups of Radio stations. Allows searching by url and genres.
+
+Navigation | Description | Path
+---|---|---
+By Language | A list of Languages can be selected, then types, then genres finally the radio station | `plugins/language/index.html`
+Music | A list of music genres, then stations | `plugins/music/index.html`
+News | List of news shows and stations | `plugins/news/index.html`
+Talk | A list of talk radio genres, then stations and shows | `plugins/talk/index.html`
+My Presets | My presets from TuneIn Radio | `plugins/presets/index.html`
+By Location | Continent then country, then as per Local Radio | `plugins/world/index.html`
+Sports | A list of sports genres, then stations and shows | `plugins/sports/index.html`
+Local Radio | A list of stations by region in the country, then by Genre, then by station | `plugins/local/index.html`
+Search TuneIn | A search for TuneIn radio stations | `plugins/search/index.html`
+Podcasts | A list of types, genres, then podcast | `plugins/podcast/index.html`
+
+<h3 id="Extras">Extras</h3>
+
+Access to advanced features and the setup pages
+
+Navigation | Description | Path
+---|---|---
+Alarm Clock | Alarm Clock Settings | `#_alarmSet`
+Sleep | Set time before the player goes to sleep | `#_sleep`
+Re-Scan | Rescan or rebuild the Library | `#_rescanLibrary`
+Server Settings | A link to a settings page (very broken) | `settings/server/basic.html`
+Player Settings | Set the player up (very broken) | `settings/player/basic.html`
 
 *** TO BE CONTINUED ***

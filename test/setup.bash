@@ -58,3 +58,14 @@ mkdir -p /vagrant/setup_log
 cd /vagrant/setup_log
 casperjs ../setup_lms.js
 
+# squeezelite
+
+apt-get -y install libasound2-dev libflac-dev libmad0-dev libvorbis-dev libfaad-dev libmpg123-dev
+cd /vagrant/software
+wget -N "https://storage.googleapis.com/google-code-archive-source/v2/code.google.com/squeezelite/source-archive.zip"
+unzip -o source-archive.zip
+cd squeezelite
+make
+cp squeezelite /usr/local/bin/squeezelite
+squeezelite -o null &
+exit 0

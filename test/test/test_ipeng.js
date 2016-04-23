@@ -5,6 +5,7 @@
 
 var x = require('casper').selectXPath;
 var d = require('utils').dump;
+var fs = require('fs');
 
 casper.options.viewportSize = {width: 1024, height: 768};
 
@@ -40,7 +41,29 @@ assertElementVisibleWithText = function(tst, t, tag, txt)
 		"Element " + tag + " found with text " + txt);
 }
 
-casper.test.begin("Testing iPeng", 13, function(test) {
+getVisibleText = function(t)
+{
+	var ret = '';
+	var h = t.getElementsInfo(x('//div'));
+	for (var i = 0; i < h.length; i ++)
+	{
+		if((h[i].visible)&&(h[i].text.tidy() != ''))
+		{
+			ret += h[i].text.tidy() + '\n';
+		}
+	}
+	return ret;
+}
+
+assertTextMatchesFile = function(tst, t, fn)
+{
+	var expect, fe, fa;
+	var actual = getVisibleText(t);
+	fs.write(fn + '.actual', actual, 'w');
+	expect = fs.read(fn + '.expect');
+	tst.assert(expect == actual, "Visible Text for " + fn + " matches");
+}
+casper.test.begin("Testing iPeng", 17, function(test) {
 
    casper.start('http://localhost:9000/ipeng', function() {
    });
@@ -51,6 +74,9 @@ casper.test.begin("Testing iPeng", 13, function(test) {
        test.assertTitle('Home');
    });
    casper.wait(1000);
+   casper.then(function() {
+       assertTextMatchesFile(test, casper, 'Home');
+   });
    casper.then(function() {
        this.capture("home.png");
        this.wait(1000);
@@ -68,6 +94,9 @@ casper.test.begin("Testing iPeng", 13, function(test) {
    });
    casper.wait(1000);
    casper.then(function() {
+       assertTextMatchesFile(test, casper, 'BrowseLibrary');
+   });
+   casper.then(function() {
        this.capture("browselibrary.png");
        var me = '//a';
        var mt = "Albums";
@@ -77,12 +106,15 @@ casper.test.begin("Testing iPeng", 13, function(test) {
    });
    casper.wait(1000);
    casper.then(function() {
-       test.assertUrlMatch(/^http:\/\/localhost:9000\/iPeng\/clixmlbrowser\/clicmd=browselibrary\+items&linktitle=BROWSE_BY_ALBUM&mode=albums\/\?&player=$/);
+       test.assertUrlMatch(/^http:\/\/localhost:9000\/iPeng\/clixmlbrowser\/clicmd=browselibrary\+items&linktitle=BROWSE_BY_ALBUM&mode=albums\/\?&player=/);
    });
    casper.then(function() {
        test.assertTitle('Albums');
    });
    casper.wait(1000);
+   casper.then(function() {
+       assertTextMatchesFile(test, casper, 'Albums');
+   });
    casper.then(function() {
        this.capture("albums.png");
    });
@@ -111,12 +143,15 @@ casper.test.begin("Testing iPeng", 13, function(test) {
        this.click(x('(' + me + ')[' + bl + ']'));
    });
    casper.then(function() {
-       test.assertUrlMatch(/^http:\/\/localhost:9000\/iPeng\/clixmlbrowser\/clicmd=browselibrary\+items&linktitle=BROWSE_BY_ARTIST&mode=artists\/\?&player=$/);
+       test.assertUrlMatch(/^http:\/\/localhost:9000\/iPeng\/clixmlbrowser\/clicmd=browselibrary\+items&linktitle=BROWSE_BY_ARTIST&mode=artists\/\?&player=/);
    });
    casper.then(function() {
        test.assertTitle('Artists');
    });
    casper.wait(1000);
+   casper.then(function() {
+       assertTextMatchesFile(test, casper, 'Artists');
+   });
    casper.then(function() {
        this.capture("artists.png");
    });

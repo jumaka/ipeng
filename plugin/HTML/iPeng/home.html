@@ -19,7 +19,7 @@ ELSIF runRescan;
 ELSE;
 
 title = 'SqueezeCenter';
-homeString = 'IPENG_BUTTON_HOME' | string; 
+homeString = 'IPENG_BUTTON_HOME' | string;
 goHomeURI = 'href = "' _ webroot _ 'home.html?player=' _ playerURI _ '"'; #  "HOME" | string
 pageHeaderScripts = PROCESS HomeHeader;
 PROCESS iHeaderVert.html noShowBar = 1;
@@ -30,14 +30,14 @@ BLOCK HomeHeader %]
 /*	body > div > ul > li > a, .panel > ul > li > a
 	{
 		display: block;
-		
+
 		padding: 9 9 11 9;
 		margin: -9 -9 -11 -9;
-		
+
 		border: 0px;
 		-webkit-border-radius: 8px;
 		-webkit-tap-highlight-color: rgba(25,79,219,0.5);
-		
+
 		text-decoration: none;
 		color:black;
 	}*/
@@ -58,10 +58,10 @@ BLOCK HomeHeader %]
 		overflow: hidden;
 		z-index: 10;
 	}
-	
+
 	</style>
 	<style type="text/css" media="screen">@import "[% webroot%]html/iui/iPiui.css";</style>
-	
+
 	<script type="text/javascript">[% PROCESS html/vars.js %]</script>
 	<script src="[% webroot %]html/prototype1.js?r=[% revision %]" type = 'text/javascript' defer></script>
 	<script src="[% webroot %]html/prototype2.js?r=[% revision %]" type = 'text/javascript' defer></script>
@@ -71,27 +71,27 @@ BLOCK HomeHeader %]
 	<script type="application/x-javascript" src="html/iui/iPiui.js" defer></script>
 	<script src="[% webroot %]html/global.js?r=[% revision %]" type = 'application/x-javascript' defer></script>
 	<!--script src="[% webroot %]html/skin_global.js?r=[% revision %]" type = 'application/x-javascript' defer></script-->
-	
+
 	<script type="text/javascript"> // need some inline code...
 
 	var url = 'status.html';
-	
+
 	var bottombarTop = 368;
 	var topbarHeight = -4; // should be 44, consider this to be a bug in MS, but MS expands every div to at least 100% height...
-	
+
 	var Pi = 3.14159265;
 
 	// Synchronization
-	
-	[%- USE Clients; 
+
+	[%- USE Clients;
 	players = Clients.get("id");
-	c_playername = ''; 
+	c_playername = '';
 	FOREACH playerobj IN players;
 		IF player == playerobj.id;
 			c_playername = playerobj.name;
 		END;
 	END %]
-	
+
 	function playerSubmit(me) {
 		if (me.value == "sync") {
 			refreshElement('currentplayername', "[% IF c_playername; c_playername; ELSE; player; END %]");
@@ -99,7 +99,7 @@ BLOCK HomeHeader %]
 			scrollOverlayUp('FullBG', 'PCDiv', -45, true);
 			$('synchronize').focus();
 			var sArray = [ 'sync', '?' ];
-			callJSONRPC(sArray, function (r2) { 
+			callJSONRPC(sArray, function (r2) {
 			 	var selnone = true;
 				[%-	players = Clients.get("id");
 				FOREACH playerobj IN players %]
@@ -121,7 +121,7 @@ BLOCK HomeHeader %]
 			me.parentNode.submit();
 		}
 	}
-			
+
 	function SyncSubmit() {
 	 	var nosel = false;
 	 	if ($('playernone').selected) nosel = true;
@@ -139,13 +139,13 @@ BLOCK HomeHeader %]
 		scrollOverlayUp('FullBG', 'PCDiv', -45, false);
 		document.forms['PCDiv'].submit();
 	}
-	
+
 	function syncCancel() {
 		scrollOverlayUp('FullBG', 'PCDiv', -45, false);
 		$('do_sync').selected = false;
 		$('[% player %]').selected = true;
 	}
-	
+
 	function playerSelectMe (me) {
 	 	if (me.value == 'none')
 	 		playerUnselectAll ();
@@ -157,7 +157,7 @@ BLOCK HomeHeader %]
 				$('playernone').selected = false;
 			}
 	}
-	
+
 	function playerUnselectAll() {
 		[%- USE Clients; players = Clients.get("id") -%]
 		[%- FOREACH playerobj IN players %]
@@ -169,7 +169,7 @@ BLOCK HomeHeader %]
 
 
 	// OnLoad
-	
+
 	</script>
 
 	<!--script src="[% webroot %]html/home.js?r=[% revision %]" type = 'text/javascript'></script-->
@@ -205,8 +205,8 @@ PROCESS browseRadio;
 -%]
 
 
-<div id = "main" 
-		title = "[% 'IPENG_BUTTON_HOME' | string %]" 
+<div id = "main"
+		title = "[% 'IPENG_BUTTON_HOME' | string %]"
 		class = "MenuPage panel"
 		style = "-webkit-transform: translateX(0px);"
 		selected = 'true'>
@@ -241,7 +241,7 @@ PROCESS browseRadio;
 		<span class="secondary">[% 'MUSIC_SERVICES' | string %]</span></a>
 	</li>
 [% END;
-	
+
 '</ul>';
 
 PROCESS playerChoose;
@@ -273,26 +273,30 @@ END;
 
 
 BLOCK browseDatabase;
-browseCategories = { BROWSE_BY_ALBUM = { icon = 'html/images/iAlbumWhite.png', text = 'ALBUMS' }, 
+browseOrder = ['BROWSE_BY_ALBUM','BROWSE_BY_ARTIST','BROWSE_BY_GENRE',
+					 'BROWSE_MUSIC_FOLDER','BROWSE_BY_YEAR','BROWSE_NEW_MUSIC' ];
+browseCategories = { BROWSE_BY_ALBUM = { icon = 'html/images/iAlbumWhite.png', text = 'ALBUMS' },
 					 BROWSE_BY_ARTIST = { icon = 'html/images/iArtistWhite.png', text = 'ARTIST' },
 					 BROWSE_BY_GENRE = { icon = 'html/images/iGenreWhite.png', text = 'GENRES' },
 					 BROWSE_MUSIC_FOLDER = { icon = 'html/images/iFolderWhite2.png', text = 'SETUP_AUDIODIR' },
 					 BROWSE_BY_YEAR = { icon = 'html/images/iTimeWhite.png', text = 'BROWSE_BY_YEAR' },
-					 BROWSE_NEW_MUSIC = { icon = 'html/images/iNewWhite.png', text = 'BROWSE_NEW_MUSIC' }, 
-					 #PLUGIN_CUSTOMBROWSE = { icon = additionalLinks.icons.${'PLUGIN_CUSTOMBROWSE'}.replace('.png', "_40x30_f.png"), text = 'PLUGIN_CUSTOMBROWSE' } 
+					 BROWSE_NEW_MUSIC = { icon = 'html/images/iNewWhite.png', text = 'BROWSE_NEW_MUSIC' },
+					 #PLUGIN_CUSTOMBROWSE = { icon = additionalLinks.icons.${'PLUGIN_CUSTOMBROWSE'}.replace('.png', "_40x30_f.png"), text = 'PLUGIN_CUSTOMBROWSE' }
 					 } -%]
 
 <div id = "Database" class = "MenuPage panel" title = "[% 'IPENG_BROWSE_LIBRARY' | string %]" style = 'width: 320'>
 
 <ul style = "font-size: 110%; margin-bottom: 8px; margin-top: 0;">
-[%- FOREACH cat = browseCategories.keys;
-	IF additionalLinks.browse.$cat %]
+[%- FOREACH cat = browseOrder;
+		IF browseCategories.exists(cat);
+			IF additionalLinks.browse.$cat %]
 		<li class = "biggerLine">
 		<a href="[% webroot %][% additionalLinks.browse.$cat %]&player=[% playerURI %]" target="_self">
 		<img src="[% webroot %][% browseCategories.$cat.icon %]" width="40" height="30" class = "paddedPic">&nbsp;
 		<span class="secondary">[% browseCategories.$cat.text | string %]</span></a>
 		</li>
 	[%- END;
+	END;
 END;
 
 '</ul>';
@@ -334,11 +338,11 @@ PROCESS spacer;
 END;
 
 BLOCK blDetails;
-browseMoreCategories = { SAVED_PLAYLISTS = { icon = 'iPlaylistWhite.png', text = 'PLAYLISTS' }, 
-						 FAVORITES = { icon = 'iFavoritesWhite.png', text = 'FAVORITES' }, 
-#						 BROWSE_NEW_MUSIC = { icon = 'iNewWhite.png', text = 'BROWSE_NEW_MUSIC' }, 
+browseMoreCategories = { SAVED_PLAYLISTS = { icon = 'iPlaylistWhite.png', text = 'PLAYLISTS' },
+						 FAVORITES = { icon = 'iFavoritesWhite.png', text = 'FAVORITES' },
+#						 BROWSE_NEW_MUSIC = { icon = 'iNewWhite.png', text = 'BROWSE_NEW_MUSIC' },
 						 PLUGIN_RANDOMPLAY = { icon = 'iRandomWhite.png', text = 'PLUGIN_RANDOMPLAY' } };
-						 
+
 temp = 'PLUGIN_IPENG_CUSTOM_BROWSE_MORE' | getstring;
 
 browseMoreExclude = [ 'PLUGIN_IPENG_CUSTOM_BROWSE_MORE', temp ];
@@ -371,7 +375,7 @@ END -%]
 			<img src="[% webroot %][% additionalLinks.icons.${link.key}.replace('.png', "_40x30_f.png") %]" width="40" height="30" class = "paddedPic">&nbsp;
 		[%- ELSE -%]
 			<img src="[% webroot %]html/images/blank.png" width="40" height="30" class = "paddedPic">&nbsp;
-		[%- END -%]		
+		[%- END -%]
 		<span class="secondary">[% link.key | string %]</span></a>
 		</li>
 	[%- END;
@@ -384,7 +388,7 @@ FOREACH link = additionalLinks.searchiPeng;
 			<img src="[% webroot %][% additionalLinks.icons.${link.key}.replace('.png', "_40x30_f.png") %]" width="40" height="30" class = "paddedPic">&nbsp;
 		[%- ELSE -%]
 			<img src="[% webroot %]html/images/blank.png" width="40" height="30" class = "paddedPic">&nbsp;
-		[%- END -%]		
+		[%- END -%]
 		<span class="secondary">[% link.key | string %]</span></a>
 		</li>
 	[% END;
@@ -404,8 +408,8 @@ IF player_chooser_list %]
 		<span style = "margin: 8px">[% 'IPENG_SYNC_CHOOSE' | string %]</span>
 		<span id="currentplayername" style="display: block; font-weight: bold; margin: 8px; font-size: 120%;"></span>
 		<span><br></span>
-		<select id="synchronize" 
-				name="synchronize" multiple 
+		<select id="synchronize"
+				name="synchronize" multiple
 				style = "
 				-webkit-box-sizing: border-box;
 				left: 0;
@@ -421,7 +425,7 @@ IF player_chooser_list %]
 			END -%]
 			<option id = "playernone" value = "none" selected>[% 'SETUP_NO_SYNCHRONIZATION' | string %]</option>
 		</select>
-	    <a class="iButton white" 
+	    <a class="iButton white"
 		onclick = 'SyncSubmit();'
 		href="[% webroot %]home.html"
 		target = "_self"
@@ -435,7 +439,7 @@ IF player_chooser_list %]
 		     -webkit-box-sizing: border-box;
 		     color: black;
 		">[% 'SETUP_SYNCHRONIZE' | string %]</a>
-	    <a class="iButton red" 
+	    <a class="iButton red"
 		onclick = "syncCancel();"
 		href = "javascript:void(0);"
 		target = "_self"
@@ -469,7 +473,7 @@ IF player_chooser_list %]
 ELSE;
 	temp = '0'; FOREACH playerobj IN players;
 		IF player == playerobj.id; temp = '1'; %]
-				<span class = "backgroundtext">[% "IPENG_PLAYER" | string; " "; 
+				<span class = "backgroundtext">[% "IPENG_PLAYER" | string; " ";
 				IF playerobj.name;
 					playerobj.name;
 				ELSE;
@@ -511,7 +515,7 @@ BLOCK browseSettings %]
 	<a href="[% webroot %][% link.value %]&player=[% playerURI %]" target="_self">
 	[% IF additionalLinks.icons.${link.key} %]
 		<img src="[% webroot %][% additionalLinks.icons.${link.key}.replace('.png', "_40x30_f.png") %]" height="30" class = "paddedPic">&nbsp;
-	[% END %]		
+	[% END %]
 	<span class="secondary">[% link.key | string | truncate (20) %]</span></a>
 	</li>
 [% END;
@@ -548,7 +552,7 @@ END;
 	<!--img src="html/images/blank.png" width="40" height="30" style = "margin: 0; position: relative; float: left; top: -5px;" alt = 'player settings'>&nbsp;-->
 	<span class="secondary">[% 'PLAYER_SETTINGS' | string | truncate(22) %]</span></a>
 	</li>
-</ul>	
+</ul>
 [% PROCESS spacer;
 '</div>';
 END;
@@ -585,7 +589,7 @@ IF additionalLinks.music_services;
 			<span class="secondary" style = "font-size: 80%; padding-left: 5px">[% key | string | html | truncate (26) %]</span></a>
 		</li>
 	[%- END;
-	FOREACH link = additionalLinks.music_services; 
+	FOREACH link = additionalLinks.music_services;
 		IF !additionalLinkOrder.music_services.grep(link.key).size %]
 		<li class = "biggerLine">
 			<a href="[% webroot %][% link.value | html %]player=[% playerURI %]" target="_self">
@@ -631,7 +635,7 @@ END;
 
 BLOCK homeTopbar %]
 	<div id = 'topbar_vert'>
-		<!--div class="coolioButton" 
+		<!--div class="coolioButton"
 			 href="[% webroot %]status.html?player=[% playerURI %]">
 			<img src = "[% webroot %]html/images/coolioicon.png">
 		</div-->
@@ -642,12 +646,12 @@ BLOCK homeTopbar %]
 				target="_self">
 				<img src = "[% webroot %]html/images/coolioicon.png" style = "padding-right: 10px"></a>
 		</div>
-		
+
 		<a id = "backButton1" class = "backButton" href="#" style = "-webkit-transform: translateX(320px); opacity: 0;"></a>
-		<div id = "pageTitle1" class = "pageTitle" 
+		<div id = "pageTitle1" class = "pageTitle"
 			 style = "-webkit-transform: translateX(320px); opacity: 0;"></div>
 		<a id = "backButton2" class = "backButton" href="#" style = "-webkit-transform: translateX(320px); opacity: 0;"></a>
-		<div id = "pageTitle2" class = "pageTitle" 
+		<div id = "pageTitle2" class = "pageTitle"
 			 style = "-webkit-transform: translateX(320px); opacity: 0;"></div>
 	</div>
 [% END;

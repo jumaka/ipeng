@@ -562,21 +562,16 @@ BLOCK browseRadio %]
 <form id = "Radio" class = "MenuPage panel" name="tune" method="get" action="status.html" target = "_self" title = '[% "RADIO" | string %]' style = 'background: none; width: 320px'>
 [% PROCESS tune_in_form %]
 <ul style = "margin-left: 0;">
-	[% IF additionalLinks.radios;
-		linkHash = additionalLinks.radios;
-		IF additionalLinks.radio;
-			linkHash.import(additionalLinks.radio);
-		END;
-	ELSE;
-		linkHash = additionalLinks.radio;
-	END;
-	FOREACH key = linkHash.keys %]
+	[% FOREACH item = additionalLinkOrder.radios;
+	  IF additionalLinks.radios.exists(item);
+	%]
 		<li>
-			<a href="[% webroot %][% linkHash.$key %]player=[% playerURI %]" target="_self" style = "padding: 11px 0 11px 0">
-			<img src="[% webroot %][% additionalLinks.icons.${key}.replace('.png', "_30x30_f.png") %]" width="30" class = "radioPic" style = "top: -7px" alt="[% key | string %]">
-			<span class="secondary" style = "font-size: 80%; padding-left: 5px">[% key | string | truncate(26) %]</span></a>
+			<a href="[% webroot %][% additionalLinks.radios.item(item) %]player=[% playerURI %]" target="_self" style = "padding: 11px 0 11px 0">
+			<img src="[% webroot %][% additionalLinks.icons.${item}.replace('.png', "_30x30_f.png") %]" width="30" class = "radioPic" style = "top: -7px" alt="[% item | string %]">
+			<span class="secondary" style = "font-size: 80%; padding-left: 5px">[% item | string | truncate(26) %]</span></a>
 		</li>
-	[% END;
+	[%  END;
+	END;
 '</ul>';
 
 IF additionalLinks.music_services;

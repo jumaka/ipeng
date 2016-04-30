@@ -1,7 +1,7 @@
 /*
  	 Copyright (c) 2007, iUI Project Members
 	 See LICENSE.txt for licensing terms
-	 
+
 	 Modified for iPeng 2008, Joerg Schwieder
  */
 
@@ -82,7 +82,7 @@ window.iui =
             if (cb)
                 cb(false);
         };
-        
+
         req.onreadystatechange = function()
         {
             if (req.readyState == 4)
@@ -121,7 +121,7 @@ window.iui =
             req.send(null);
         }
     },
-    
+
     insertPages: function(nodes)
     {
         var targetPage;
@@ -143,13 +143,13 @@ window.iui =
 
                 if (child.getAttribute("selected") == "true" || !targetPage)
                     targetPage = child;
-                
+
                 --i;
             }
         }
 
         if (targetPage)
-            iui.showPage(targetPage);    
+            iui.showPage(targetPage);
     },
 
     getSelectedPage: function()
@@ -158,7 +158,7 @@ window.iui =
         {
             if (child.nodeType == 1 && child.getAttribute("selected") == "true")
                 return child;
-        }    
+        }
     }
 };
 
@@ -176,7 +176,7 @@ addEventListener("load", function(event)
     setTimeout(preloadImages, 0);
 //    setTimeout(checkOrientAndLocation, 0);
 //    checkTimer = setInterval(checkOrientAndLocation, 300);
-    
+
 	docParent.addEventListener("click", function(event)
 	{
 //console.log("IUI link finder:" + event.target.id);
@@ -211,12 +211,12 @@ addEventListener("load", function(event)
 					addparm = "?" + addparm;
 //console.log("iPengHREF:" + link.href + ".AP:" + addparm + ".link.hash:" + link.hash);
 				if (link.href.indexOf("#") != -1)
-					document.location = link.href.substr(0, link.href.indexOf("#")) + 
+					document.location = link.href.substr(0, link.href.indexOf("#")) +
 																	addparm + link.hash;
 				else
 					document.location = link.href + addparm;
 			}
-			else if (link.target.substr(0, 8) == "_onload:") { 
+			else if (link.target.substr(0, 8) == "_onload:") {
 					link.setAttribute("selected", "progress");
 					iui.showPageByHref(link.href, null, null, null, link.target.substr(8), 1);
 					unselect();
@@ -226,17 +226,17 @@ addEventListener("load", function(event)
 			} else
 //			return;
 				document.location = link.href;// + "&player=" + player;
-			event.preventDefault();        
+			event.preventDefault();
 		}
 	}, true);
-	
+
 	docParent.addEventListener("click", function(event)
 	{
 		var div = findParent(event.target, "div");
 		if (div && div.hasClassName("toggle"))
 		{
 			div.setAttribute("toggled", div.getAttribute("toggled") != "true");
-			event.preventDefault();        
+			event.preventDefault();
 		}
 	}, true);
 
@@ -245,7 +245,7 @@ addEventListener("load", function(event)
 function checkOrientAndLocation()
 {
     if (window.innerWidth != currentWidth)
-    {   
+    {
         currentWidth = window.innerWidth;
         var orient = currentWidth == 320 ? "profile" : "landscape";
         document.body.setAttribute("orient", orient);
@@ -263,7 +263,7 @@ function showDialog(page)
 {
     currentDialog = page;
     page.setAttribute("selected", "true");
-    
+
     if (page.hasClassName("dialog") && !page.target)
         showForm(page);
 }
@@ -275,7 +275,7 @@ function showForm(form)
         event.preventDefault();
         submitForm(form);
     };
-    
+
     form.onclick = function(event)
     {
         if (event.target == form && form.hasClassName("dialog"))
@@ -294,12 +294,12 @@ function updatePage(page, fromPage, backwards)
         page.id = "__" + (++newPageCount) + "__";
 
     location.href = currentHash = hashPrefix + page.id;
-        
+
     pageHistory.push(page.id);
 
     if (page.localName.toLowerCase() == "form" && !page.target)
         showForm(page);
-        
+
     var backButton = $("backButton" + ((currentTitles == "1") ? "2" : "1"));
     var cbackButton = $("backButton" + currentTitles);
     if (backButton) {
@@ -336,7 +336,7 @@ function updatePage(page, fromPage, backwards)
     if (cpageTitle) {
 		cpageTitle.style.webkitTransitionProperty = "-webkit-transform, opacity";
 		if (backwards)
-			cpageTitle.style.webkitTransform = "translateX(320px)";	
+			cpageTitle.style.webkitTransform = "translateX(320px)";
 		cpageTitle.style.opacity = 0;
     }
 
@@ -355,7 +355,7 @@ console.log("slidePages:" + fromPage.id + ".:." + toPage.id + ".:." + backwards)
     toPage.setAttribute("selected", "true");
 	toPage.style.webkitTransitionProperty = "none";
 	if (axis != "y")
-        toPage.style.webkitTransform = 
+        toPage.style.webkitTransform =
         		"translateX(" + (backwards ? '-320px' : '320px') + ") " + toOffset;
     toPage.style.webkitTransitionDuration = "0.5s";
 	toPage.style.webkitTransitionProperty = "-webkit-transform, opacity";
@@ -364,7 +364,7 @@ console.log("slidePages:" + fromPage.id + ".:." + toPage.id + ".:." + backwards)
 	if (toPageTitle) {
 		toPageTitle.style.webkitTransitionProperty = "none";
 		toPageTitle.style.webkitTransform = (backwards) ? "translateX(0px)" : "translateX(320px)";
-	}	
+	}
     var backButton = $("backButton" + ((currentTitles == "1") ? "2" : "1"));
     if (backButton) {
         var prevPage = $(pageHistory[pageHistory.length-1]);
@@ -376,7 +376,7 @@ console.log("slidePages:" + fromPage.id + ".:." + toPage.id + ".:." + backwards)
 
     var fromOffset = Yexp.exec(fromPage.style.webkitTransform);
     fromOffset = fromOffset ? fromOffset[0] : "";
-    
+
 	fromPage.style.webkitTransitionProperty = "none";
 //    fromPage.style.webkitTransitionDuration = "0s";
 	if (axis == "y")
@@ -385,22 +385,19 @@ console.log("slidePages:" + fromPage.id + ".:." + toPage.id + ".:." + backwards)
     fromPage.style.webkitTransitionDuration = "0.5s";
     toPage.setAttribute("selected", "true");
 
-	var btop = toPage.scrollHeight + topbarHeight;
-	btop = (btop < bottombarTop) ? bottombarTop : btop;
-	if ($('bottombar'))
-		$('bottombar').style.top = btop;
-
-    setTimeout(pushIn, 0, fromPage, toPage, backwards, fromOffset, toOffset, axis);
+  console.log('iPiui:scrollHeight: ' + toPage.scrollHeight);
+  console.log('iPiui:topbarHeight: ' + topbarHeight);
+  setTimeout(pushIn, 0, fromPage, toPage, backwards, fromOffset, toOffset, axis);
 }
-    
+
 function pushIn(fromPage, toPage, backwards, fromOffset, toOffset, axis) {
     scrollTo(0, 1);
     clearInterval(checkTimer);
-    
+
     if (axis == "y")
 		(backwards ? fromPage : toPage).style.webkitTransition = "translateY(0%)";
     else {
-        fromPage.style.webkitTransform = 
+        fromPage.style.webkitTransform =
         		"translateX(" + (backwards ? '320px' : '-320px') + ") " + fromOffset;
         toPage.style.webkitTransform = "translateX(0px) " + toOffset;
     }
@@ -413,6 +410,12 @@ function pushIn(fromPage, toPage, backwards, fromOffset, toOffset, axis) {
 	}
 
 	checkTimer = setInterval(checkOrientAndLocation, 300);
+
+  var btop = toPage.scrollHeight + topbarHeight;
+	btop = (btop < bottombarTop) ? bottombarTop : btop;
+	if ($('bottombar'))
+		$('bottombar').style.top = btop + 'px';
+
 	updatePage(toPage, fromPage, backwards);
 //	setTimeout(updatePage, 0, toPage, fromPage);
 }
@@ -449,7 +452,7 @@ function encodeForm(form)
     var args = [];
     encode(form.getElementsByTagName("input"));
     encode(form.getElementsByTagName("select"));
-    return args;    
+    return args;
 }
 
 function findParent(node, localName)

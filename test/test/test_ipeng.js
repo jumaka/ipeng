@@ -10,7 +10,7 @@ var fs = require('fs');
 casper.options.viewportSize = {width: 1024, height: 768};
 
 String.prototype.tidy = function()
-{ 
+{
 		   return this.replace(/\s+/g, ' ').replace(/(^\s+)|(^\s+$)/g, '');
 }
 /* this function created because normalize-space does not seem to deal
@@ -37,14 +37,14 @@ findElementVisibleWithText = function(t, tag, txt)
 }
 assertElementVisibleWithText = function(tst, t, tag, txt)
 {
-	tst.assert(findElementVisibleWithText(t, tag, txt) > -1, 
+	tst.assert(findElementVisibleWithText(t, tag, txt) > -1,
 		"Element " + tag + " found with text " + txt);
 }
 
 getVisibleText = function(t)
 {
 	var ret = '';
-	var h = t.getElementsInfo(x('//div'));
+	var h = t.getElementsInfo(x('//*[self::div or self::li]'));
 	for (var i = 0; i < h.length; i ++)
 	{
 		if((h[i].visible)&&(h[i].text.tidy() != ''))
@@ -63,7 +63,7 @@ assertTextMatchesFile = function(tst, t, fn)
 	expect = fs.read(fn + '.expect');
 	tst.assert(expect == actual, "Visible Text for " + fn + " matches");
 }
-casper.test.begin("Testing iPeng", 17, function(test) {
+casper.test.begin("Testing iPeng", 22, function(test) {
 
    casper.start('http://localhost:9000/ipeng', function() {
    });
@@ -154,6 +154,35 @@ casper.test.begin("Testing iPeng", 17, function(test) {
    });
    casper.then(function() {
        this.capture("artists.png");
+   });
+	 casper.waitForSelector(".blueLeft.iButton",
+       function success() {
+           test.assertExists(".blueLeft.iButton");
+           this.click(".blueLeft.iButton");
+       },
+       function fail() {
+           test.assertExists(".blueLeft.iButton");
+   });
+   casper.then(function() {
+       this.wait(1000);
+       var me = '//a';
+       var mt = "Radio";
+       var bl = findElementVisibleWithText(this, x(me), mt);
+       assertElementVisibleWithText(test, this, x(me), mt);
+       this.click(x('(' + me + ')[' + bl + ']'));
+   });
+	 casper.then(function() {
+       test.assertUrlMatch(/^http:\/\/localhost:9000\/iPeng\/home.html\?player=.*#_Radio/);
+   });
+   casper.then(function() {
+       test.assertTitle('Home');
+   });
+   casper.wait(1000);
+   casper.then(function() {
+       assertTextMatchesFile(test, casper, 'Radio');
+   });
+   casper.then(function() {
+       this.capture("radio.png");
    });
 
    casper.run(function() {test.done();});

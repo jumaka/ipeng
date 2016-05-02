@@ -345,7 +345,7 @@ function updatePage(page, fromPage, backwards)
 
 function slidePages(fromPage, toPage, backwards)
 {
-console.log("slidePages:" + fromPage.id + ".:." + toPage.id + ".:." + backwards);
+// console.log("slidePages:" + fromPage.id + ".:." + toPage.id + ".:." + backwards);
     var Yexp = /translateY\([0-9.-]+px\)/;
     var toOffset = Yexp.exec(toPage.style.webkitTransform);
     toOffset = toOffset ? toOffset[0] : "";
@@ -385,8 +385,8 @@ console.log("slidePages:" + fromPage.id + ".:." + toPage.id + ".:." + backwards)
     fromPage.style.webkitTransitionDuration = "0.5s";
     toPage.setAttribute("selected", "true");
 
-  console.log('iPiui:scrollHeight: ' + toPage.scrollHeight);
-  console.log('iPiui:topbarHeight: ' + topbarHeight);
+//  console.log('iPiui:scrollHeight: ' + toPage.scrollHeight);
+//  console.log('iPiui:topbarHeight: ' + topbarHeight);
   setTimeout(pushIn, 0, fromPage, toPage, backwards, fromOffset, toOffset, axis);
 }
 

@@ -200,6 +200,7 @@ IF !additionalLinks.browseiPeng.PLUGIN_IPENG_CUSTOM_BROWSE_MORE;
 END;
 PROCESS browseSettings;
 PROCESS browseRadio;
+PROCESS browseApps;
 #PROCESS musicServices;
 #PROCESS alarmSet;
 -%]
@@ -214,18 +215,7 @@ PROCESS browseRadio;
 	<li class = "biggerLine">
 		<a href="#Database">
 		<img src="[% webroot %]html/images/iSongWhite.png" width="40" height="30" class = "paddedPic" alt = 'radio'>&nbsp;
-		[% 'IPENG_BROWSE_LIBRARY' | string %]</a>
-	</li>
-	<li class = "biggerLine">
-	[%- IF additionalLinks.browseiPeng.PLUGIN_IPENG_CUSTOM_BROWSE_MORE %]
-		<a href="[% webroot %][% additionalLinks.browseiPeng.PLUGIN_IPENG_CUSTOM_BROWSE_MORE %]&player=[% playerURI %]" target="_self">
-		<img src="[% webroot %][% additionalLinks.icons.${'PLUGIN_IPENG_CUSTOM_BROWSE_MORE'}.replace('.png', "_40x30_f.png") %]" width="40" height="30" class = "paddedPic">&nbsp;
-		<span class="secondary">[% 'PLUGIN_IPENG_CUSTOM_BROWSE_MORE' | string %]</span></a>
-	[%- ELSE -%]
-		<a href="#Lists">
-		<img src="[% webroot %]html/images/iBookWhite.png" width="40" height="30" class = "paddedPic" alt = 'radio'>&nbsp;
-		[% 'IPENG_BROWSE_MORE' | string %]</a>
-	[%- END -%]
+		[% 'MY_MUSIC' | string %]</a>
 	</li>
 </ul>
 <ul>
@@ -244,7 +234,14 @@ PROCESS browseRadio;
 
 '</ul>';
 
-PROCESS playerChoose;
+IF additionalLinks.my_apps;
+'<ul>'; %]
+<li class = "biggerLine">
+	<a href="#browseApps">
+	[%- "PLUGIN_MY_APPS_MODULE_NAME" | string; '</a>';
+'</li>';
+'</ul>';
+END;
 
 '<ul>'; %]
 	<li class = "biggerLine">
@@ -254,10 +251,12 @@ PROCESS playerChoose;
 '</ul>';
 
 
+PROCESS playerChoose;
+
 # END;
 
 -%]
-<div id = "iPengName" class = "iPengName">iPeng v0.6 (C) 2007, 2008, 2016 J. Schwieder, E. Isaksson, J. Saunders</div>
+<div id = "iPengName" class = "iPengName">iPeng v0.6 &copy; 2007, 2008, 2016 J. Schwieder, E. Isaksson, J. Saunders</div>
 [%- PROCESS spacer;
 '</div>';
 
@@ -272,31 +271,19 @@ END;
 
 
 
-BLOCK browseDatabase;
-browseOrder = ['BROWSE_BY_ALBUM','BROWSE_BY_ARTIST','BROWSE_BY_GENRE',
-					 'BROWSE_MUSIC_FOLDER','BROWSE_BY_YEAR','BROWSE_NEW_MUSIC' ];
-browseCategories = { BROWSE_BY_ALBUM = { icon = 'html/images/iAlbumWhite.png', text = 'ALBUMS' },
-					 BROWSE_BY_ARTIST = { icon = 'html/images/iArtistWhite.png', text = 'ARTIST' },
-					 BROWSE_BY_GENRE = { icon = 'html/images/iGenreWhite.png', text = 'GENRES' },
-					 BROWSE_MUSIC_FOLDER = { icon = 'html/images/iFolderWhite2.png', text = 'SETUP_AUDIODIR' },
-					 BROWSE_BY_YEAR = { icon = 'html/images/iTimeWhite.png', text = 'BROWSE_BY_YEAR' },
-					 BROWSE_NEW_MUSIC = { icon = 'html/images/iNewWhite.png', text = 'BROWSE_NEW_MUSIC' },
-					 #PLUGIN_CUSTOMBROWSE = { icon = additionalLinks.icons.${'PLUGIN_CUSTOMBROWSE'}.replace('.png', "_40x30_f.png"), text = 'PLUGIN_CUSTOMBROWSE' }
-					 } -%]
+BLOCK browseDatabase; -%]
 
-<div id = "Database" class = "MenuPage panel" title = "[% 'IPENG_BROWSE_LIBRARY' | string %]" style = 'width: 320'>
+<div id = "Database" class = "MenuPage panel" title = "[% 'MY_MUSIC' | string %]" style = 'width: 320'>
 
 <ul style = "font-size: 110%; margin-bottom: 8px; margin-top: 0;">
-[%- FOREACH cat = browseOrder;
-		IF browseCategories.exists(cat);
+[%- FOREACH cat = additionalLinkOrder.browse;
 			IF additionalLinks.browse.$cat %]
 		<li class = "biggerLine">
 		<a href="[% webroot %][% additionalLinks.browse.$cat %]&player=[% playerURI %]" target="_self">
-		<img src="[% webroot %][% browseCategories.$cat.icon %]" width="40" height="30" class = "paddedPic">&nbsp;
-		<span class="secondary">[% browseCategories.$cat.text | string %]</span></a>
+		<img src="[% webroot %][% additionalLinks.icons.${cat}.replace('.png', "_30x30_w.png") %]" height="30" class = "paddedPic">&nbsp;
+		<span class="secondary">[% cat | string | truncate(26) %]</span></a>
 		</li>
 	[%- END;
-	END;
 END;
 
 '</ul>';
@@ -567,7 +554,7 @@ BLOCK browseRadio %]
 	%]
 		<li>
 			<a href="[% webroot %][% additionalLinks.radios.item(item) %]player=[% playerURI %]" target="_self" style = "padding: 11px 0 11px 0">
-			<img src="[% webroot %][% additionalLinks.icons.${item}.replace('.png', "_30x30_f.png") %]" width="30" class = "radioPic" style = "top: -7px" alt="[% item | string %]">
+			<img src="[% webroot %][% additionalLinks.icons.${item}.replace('.png', "_30x30_w.png") %]" width="30" class = "radioPic" style = "top: -7px" alt="[% item | string %]">
 			<span class="secondary" style = "font-size: 80%; padding-left: 5px">[% item | string | truncate(26) %]</span></a>
 		</li>
 	[%  END;
@@ -580,7 +567,7 @@ IF additionalLinks.music_services;
 	FOREACH key = additionalLinkOrder.music_services %]
 		<li class = "biggerLine">
 			<a href="[% webroot %][% additionalLinks.music_services.$key | html %]player=[% playerURI %]" target="_self" >
-			<img src="[% webroot %][% additionalLinks.icons.${key}.replace('.png', "_30x30_f.png") %]" width="30" class = "radioPic" alt="[% key | string %]">
+			<img src="[% webroot %][% additionalLinks.icons.${key}.replace('.png', "_30x30_w.png") %]" width="30" class = "radioPic" alt="[% key | string %]">
 			<span class="secondary" style = "font-size: 80%; padding-left: 5px">[% key | string | html | truncate (26) %]</span></a>
 		</li>
 	[%- END;
@@ -588,7 +575,7 @@ IF additionalLinks.music_services;
 		IF !additionalLinkOrder.music_services.grep(link.key).size %]
 		<li class = "biggerLine">
 			<a href="[% webroot %][% link.value | html %]player=[% playerURI %]" target="_self">
-			<img src="[% webroot %][% additionalLinks.icons.${link.key}.replace('.png', "_30x30_f.png") %]" width="30" class = "radioPic" alt="[% link.key | string %]">
+			<img src="[% webroot %][% additionalLinks.icons.${link.key}.replace('.png', "_30x30_w.png") %]" width="30" class = "radioPic" alt="[% link.key | string %]">
 			<span class="secondary" style = "font-size: 80%; padding-left: 5px">[% link.key | string | html %]</span></a>
 		</li>
 	[%- END;
@@ -627,6 +614,22 @@ BLOCK tune_in_form %]
 			">[% "RADIO_TUNEIN_CHOOSE" | string; '</a>';
 END;
 
+BLOCK browseApps %]
+<div id = "browseApps" class = "MenuPage panel" title = "[% 'PLUGIN_MY_APPS_MODULE_NAME' | string %]">
+<ul style = "margin-left: 0;">
+	[% FOREACH item = additionalLinkOrder.my_apps;
+	  IF additionalLinks.my_apps.exists(item);
+	%]
+		<li>
+			<a href="[% webroot %][% additionalLinks.my_apps.item(item) %]player=[% playerURI %]" target="_self" style = "padding: 11px 0 11px 0">
+			<img src="[% webroot %][% additionalLinks.icons.${item}.replace('.png', "_30x30_w.png") %]" width="30" class = "radioPic" style = "top: -7px" alt="[% item | string %]">
+			<span class="secondary" style = "font-size: 80%; padding-left: 5px">[% item | string | truncate(26) %]</span></a>
+		</li>
+	[%  END;
+	END;
+'</ul>';
+'</div>';
+END;
 
 BLOCK homeTopbar %]
 	<div id = 'topbar_vert'>

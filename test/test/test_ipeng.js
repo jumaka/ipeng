@@ -287,7 +287,7 @@ casper.test.begin("Testing iPeng", 62, function(test) {
         this.click(x('(' + me + ')[' + bl + ']'));
     });
     casper.then(function() {
-        test.assertUrlMatch(/^http:\/\/localhost:9000\/iPeng\/clixmlbrowser\/clicmd=browselibrary\+items&linktitle=BROWSE_NEW_MUSIC&sort=new&wantMetadata=1&mode=albums\/\?&player=/);
+        test.assertUrlMatch(/^http:\/\/localhost:9000\/iPeng\/clixmlbrowser\/clicmd=browselibrary\+items&linktitle=BROWSE_NEW_MUSIC&mode=albums&wantMetadata=1&sort=new\/\?&player=/);
     });
     casper.then(function() {
         test.assertTitle('New Music');

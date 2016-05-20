@@ -30,6 +30,7 @@ class build-system {
 class software-cache {
   exec { "mkdir-software":
     command => "mkdir -p /vagrant/software",
+    require => Class["build-system"],
     unless => "test -d /vagrant/software",
   }
 }
@@ -39,6 +40,7 @@ class get-test-software {
     command => "wget -N 'https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-2.1.1-linux-x86_64.tar.bz2'",
     cwd => "/vagrant/software",
     returns => [0, 4],
+    require => Class["build-system"],
     unless => "test -f /vagrant/software/phantomjs-2.1.1-linux-x86_64.tar.bz2",
   }
   exec { "unpack-phantom":
@@ -56,7 +58,7 @@ class get-test-software {
   exec { "get-casper":
     command => "git clone https://github.com/n1k0/casperjs.git",
     cwd => "/vagrant/software",
-    require => Class["install-lms"],
+    require => Class["build-system"],
     unless => "test -d /vagrant/software/casperjs",
   }
   exec { "upd-casper":
@@ -75,7 +77,7 @@ class install-lms {
   exec { "get-lms":
     command => "wget -N 'http://downloads.slimdevices.com/LogitechMediaServer_v7.8.0/logitechmediaserver_7.8.0_all.deb'",
     cwd => "/vagrant/software",
-    require => Class["software-cache"],
+    require => [Class["software-cache"], Class["build-system"]],
     returns => [0, 4],
   }
   exec { "inst-lms":
@@ -105,10 +107,12 @@ class install-lms {
   exec { "get-plugin":
     command => "git clone https://github.com/jumaka/ipeng.git",
     cwd => "/home",
+    require => Class["build-system"],
     unless => "test -d /home/ipeng",
   }
   exec { "upd-plugin":
     command => "git pull",
+    require => Class["build-system"],
     cwd => "/home/ipeng",
   }
   exec { "chown-plugin":
@@ -140,7 +144,7 @@ class install-lms {
   exec { "setup-lms":
     command => "casperjs /vagrant/setup_lms.js",
     cwd => "/home/setup_log",
-    require => Exec["mkd-setup-log"],
+    require => [Exec["mkd-setup-log"],Class["get-test-software"]],
     unless => "egrep /home/sq/music /var/lib/squeezeboxserver/prefs/server.prefs",
   }
 }

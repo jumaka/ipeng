@@ -167,7 +167,8 @@ class install-squeezelite {
   exec { "make-sl":
     command => "make",
     cwd => "/vagrant/software/squeezelite",
-    require => Exec["unpack-sl"],
+    require => [ Exec["unpack-sl"], Package["libasound2-dev"], Package["libmad0-dev"], 
+      Package["libvorbis-dev"], Package["libfaad-dev"], Package["libmpg123-dev"] ],
     unless => "test -f /vagrant/software/squeezelite/squeezelite",
   }
   exec { "install-sl":

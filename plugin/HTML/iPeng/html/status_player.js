@@ -320,7 +320,7 @@ var Player = {
 				refreshElement('artist', track.artist || remotestreaming);
 				var cap;
 				var docap = true;
-				if (track.coverart)
+				if (Number(track.coverart))
 					cap = '/music/' + track.id + '/cover_320x320_f.jpg';
 				else if (track.artwork_track_id)
 					cap = '/music/' + track.artwork_track_id + '/cover_320x320_f.jpg';
@@ -328,7 +328,7 @@ var Player = {
 					cap = track.artwork_url;
 					docap = false;
 				}
-				else if (track.remote) {
+				else if (Number(track.remote)) {
 					cap = webroot + 'html/images/radio256_320x320_f.png';
 					docap = false;
 				}

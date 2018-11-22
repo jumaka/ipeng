@@ -6,9 +6,9 @@ This is a repository of documentation about this plugin.
 The plugin is difficult to follow because of the
 use of Template and a number of historic branches
 
-## Site map
+## Site Map
 
-### The home page
+<h3 id="Home">The home page</h3>
 
 This is the default page for the plugin it as a link address of `home.html#_main`
 
@@ -26,10 +26,12 @@ Navigation | Description | Path
 Albums | Browse the library by album | `clixmlbrowser/clicmd=browselibrary+items&linktitle=BROWSE_BY_ALBUM&mode=albums`
 Artist | Browse the library by artist then album | `clixmlbrowser/clicmd=browselibrary+items&linktitle=BROWSE_BY_ARTIST&mode=artists`
 Lists |  Browse the play lists | `clixmlbrowser/clicmd=browselibrary+items&linktitle=SAVED_PLAYLISTS&mode=playlists`
-Search | ?Search? | `search.html`
-Home | Back to the home page | `home.html`
+[Search](#Search) | Search the library | `search.html`
+[Home](#Home) | Back to the home page | `home.html`
 
-<h3 id="Library">The Library Page</h3>
+The Albums, Artist and Lists icons navigate to the [library browser](#Browser).
+
+<h3 id="Library">The library page</h3>
 
 Library Page | Description | Path
 ---|---|---
@@ -40,7 +42,7 @@ Genres | List all of the genres in the library in ascending alphabetical orders 
 Artist | List all of the artists in alphabetical order | `clixmlbrowser/clicmd=browselibrary+items&linktitle=BROWSE_BY_ARTIST&mode=artists`
 Music Folder |List the folders and files in the music folder heirarchically | `clixmlbrowser/clicmd=browselibrary+items&linktitle=BROWSE_MUSIC_FOLDER&mode=bmf`
 
-<h3 id="Browser">The Library Browser</h3>
+<h3 id="Browser">The library browser</h3>
 
 The library browser is a multi-functional list generator that
 displays various library contents. It has navigation
@@ -68,10 +70,10 @@ items.
 
 Navigation | Description | Path
 ---|---|---
-Playlists | Lists Play lists in alphabetical order | `clixmlbrowser/clicmd=browselibrary+items&linktitle=SAVED_PLAYLISTS&mode=playlists`
+Playlists | Lists Play lists in alphabetical order using the [library browser](#Browser) | `clixmlbrowser/clicmd=browselibrary+items&linktitle=SAVED_PLAYLISTS&mode=playlists`
 Random Mix | Allow the selection of random songs, artists, albums and years. Additionally allows for the selection of Genres to play and the number of songs to be displayed in the Now Playing area  | `plugins/RandomPlay/list.html`
 Favorites | Allow the selection of things that can be added to favorites. New Favorites, Folders and Imports can be created |  `plugins/Favorites/index.html`
-Search | Search the library | `search.html`
+[Search](#Search) | Search the library | `search.html`
 
 <h3 id="Radio">Radio</h3>
 
@@ -102,4 +104,8 @@ Re-Scan | Rescan or rebuild the Library | `#_rescanLibrary`
 Server Settings | A link to a settings page (very broken) | `settings/server/basic.html`
 Player Settings | Set the player up (very broken) | `settings/player/basic.html`
 
-*** TO BE CONTINUED ***
+<h3 id="Search">Search</h3>
+
+The search page allows the library to be searched by artist name, album title, song title or playlist name.
+
+The searches are based upon matching words.
